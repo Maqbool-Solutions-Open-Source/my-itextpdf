@@ -44,12 +44,12 @@
 package com.itextpdf.text.pdf.fonts.cmaps;
 
 import com.itextpdf.text.pdf.PRTokeniser;
+
 import java.io.IOException;
 
 /**
- *
  * @author psoares
  */
 public interface CidLocation {
-    public PRTokeniser getLocation(String location) throws IOException ;
+    public PRTokeniser getLocation(String location) throws IOException;
 }

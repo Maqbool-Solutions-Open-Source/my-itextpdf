@@ -36,26 +36,26 @@ import com.itextpdf.xmp.options.PropertyOptions;
 
 /**
  * This interface is used to return a text property together with its and options.
- * 
- * @since   23.01.2006
+ *
+ * @since 23.01.2006
  */
-public interface XMPProperty 
-{
-	/**
-	 * @return Returns the value of the property.
-	 */
-	String getValue();
-	
-	
-	/**
-	 * @return Returns the options of the property.
-	 */
-	PropertyOptions getOptions();
-	
-	
-	/**
-	 * Only set by {@link XMPMeta#getLocalizedText(String, String, String, String)}. 
-	 * @return Returns the language of the alt-text item.
-	 */
-	String getLanguage();
+public interface XMPProperty {
+    /**
+     * @return Returns the value of the property.
+     */
+    String getValue();
+
+
+    /**
+     * @return Returns the options of the property.
+     */
+    PropertyOptions getOptions();
+
+
+    /**
+     * Only set by {@link XMPMeta#getLocalizedText(String, String, String, String)}.
+     *
+     * @return Returns the language of the alt-text item.
+     */
+    String getLanguage();
 }

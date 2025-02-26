@@ -61,6 +61,7 @@ public class LineDashPattern {
 
     /**
      * Creates new {@link LineDashPattern} object.
+     *
      * @param dashArray The dash array. See {@link #getDashArray()}
      * @param dashPhase The dash phase. See {@link #getDashPhase()}
      */
@@ -72,7 +73,7 @@ public class LineDashPattern {
 
     /**
      * Getter for the dash array.
-     *
+     * <p>
      * The dash array’s elements is number that specify the lengths of
      * alternating dashes and gaps; the numbers are nonnegative. The
      * elements are expressed in user space units.
@@ -85,6 +86,7 @@ public class LineDashPattern {
 
     /**
      * Setter for the dash array. See {@link #getDashArray()}
+     *
      * @param dashArray New dash array.
      */
     public void setDashArray(PdfArray dashArray) {
@@ -93,7 +95,7 @@ public class LineDashPattern {
 
     /**
      * Getter for the dash phase.
-     *
+     * <p>
      * The dash phase shall specify the distance into the dash pattern at which
      * to start the dash. The elements are expressed in user space units.
      *
@@ -105,6 +107,7 @@ public class LineDashPattern {
 
     /**
      * Setter for the dash phase. See {@link #getDashArray()}
+     *
      * @param dashPhase New dash phase.
      */
     public void setDashPhase(float dashPhase) {
@@ -113,6 +116,7 @@ public class LineDashPattern {
 
     /**
      * Calculates and returns the next element which is either gap or dash.
+     *
      * @return The next dash array's element.
      */
     public DashArrayElem next() {

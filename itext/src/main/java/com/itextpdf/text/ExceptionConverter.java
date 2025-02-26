@@ -47,7 +47,7 @@
  * Read http://www.javaspecialists.eu/archive/Issue033.html
  * "This material from The Java(tm) Specialists' Newsletter by Maximum Solutions (South Africa).
  * Please contact Maximum Solutions for more information."
- * 
+ *
  * Copyright (C) 2001 Dr. Heinz M. Kabutz
  * Permission was granted by Dr. Kabutz to use this source code in iText.
  */
@@ -59,13 +59,18 @@ package com.itextpdf.text;
  */
 public class ExceptionConverter extends RuntimeException {
     private static final long serialVersionUID = 8657630363395849399L;
-	/** we keep a handle to the wrapped exception */
+    /**
+     * we keep a handle to the wrapped exception
+     */
     private Exception ex;
-    /** prefix for the exception */
+    /**
+     * prefix for the exception
+     */
     private String prefix;
 
     /**
      * Construct a RuntimeException based on another Exception
+     *
      * @param ex the exception that has to be turned into a RuntimeException
      */
     public ExceptionConverter(Exception ex) {
@@ -79,7 +84,7 @@ public class ExceptionConverter extends RuntimeException {
      * already an unchecked exception or return an ExceptionConverter wrapper otherwise
      *
      * @param ex the exception to convert
-     * @return an unchecked exception 
+     * @return an unchecked exception
      * @since 2.1.6
      */
     public static final RuntimeException convertException(Exception ex) {
@@ -90,7 +95,8 @@ public class ExceptionConverter extends RuntimeException {
     }
 
     /**
-     * and allow the user of ExceptionConverter to get a handle to it. 
+     * and allow the user of ExceptionConverter to get a handle to it.
+     *
      * @return the original exception
      */
     public Exception getException() {
@@ -98,7 +104,8 @@ public class ExceptionConverter extends RuntimeException {
     }
 
     /**
-     * We print the message of the checked exception 
+     * We print the message of the checked exception
+     *
      * @return message of the original exception
      */
     public String getMessage() {
@@ -107,6 +114,7 @@ public class ExceptionConverter extends RuntimeException {
 
     /**
      * and make sure we also produce a localized version
+     *
      * @return localized version of the message
      */
     public String getLocalizedMessage() {
@@ -114,21 +122,25 @@ public class ExceptionConverter extends RuntimeException {
     }
 
     /**
-     * The toString() is changed to be prefixed with ExceptionConverter 
+     * The toString() is changed to be prefixed with ExceptionConverter
+     *
      * @return String version of the exception
      */
     public String toString() {
         return prefix + ex;
     }
 
-    /** we have to override this as well */
+    /**
+     * we have to override this as well
+     */
     public void printStackTrace() {
         printStackTrace(System.err);
     }
 
     /**
      * here we prefix, with s.print(), not s.println(), the stack
-     * trace with "ExceptionConverter:" 
+     * trace with "ExceptionConverter:"
+     *
      * @param s
      */
     public void printStackTrace(java.io.PrintStream s) {
@@ -139,7 +151,8 @@ public class ExceptionConverter extends RuntimeException {
     }
 
     /**
-     * Again, we prefix the stack trace with "ExceptionConverter:" 
+     * Again, we prefix the stack trace with "ExceptionConverter:"
+     *
      * @param s
      */
     public void printStackTrace(java.io.PrintWriter s) {
@@ -152,7 +165,8 @@ public class ExceptionConverter extends RuntimeException {
     /**
      * requests to fill in the stack trace we will have to ignore.
      * We can't throw an exception here, because this method
-     * is called by the constructor of Throwable 
+     * is called by the constructor of Throwable
+     *
      * @return a Throwable
      */
     public Throwable fillInStackTrace() {

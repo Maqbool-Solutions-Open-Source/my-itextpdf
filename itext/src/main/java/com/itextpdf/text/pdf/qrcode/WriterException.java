@@ -25,17 +25,17 @@ package com.itextpdf.text.pdf.qrcode;
  */
 public final class WriterException extends Exception {
 
-	/**
-	 * A serial version UID.
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	public WriterException() {
-		super();
-	}
-	
-	public WriterException(String message) {
-		super(message);
-	}
+    /**
+     * A serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
+
+    public WriterException() {
+        super();
+    }
+
+    public WriterException(String message) {
+        super(message);
+    }
 
 }

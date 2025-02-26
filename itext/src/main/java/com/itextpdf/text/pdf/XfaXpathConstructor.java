@@ -88,6 +88,7 @@ public class XfaXpathConstructor implements XpathConstructor {
 
     /**
      * Construct for XPath expression. Depends from selected xdp package.
+     *
      * @param xdpPackage
      */
     public XfaXpathConstructor(XdpPackage xdpPackage) {

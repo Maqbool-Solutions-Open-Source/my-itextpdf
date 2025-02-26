@@ -46,25 +46,25 @@ package com.itextpdf.text.pdf;
 /**
  * A <CODE>PdfBorderArray</CODE> defines the border of a <CODE>PdfAnnotation</CODE>.
  *
- * @see		PdfArray
+ * @see PdfArray
  */
 
 public class PdfBorderArray extends PdfArray {
-    
+
     // constructors
-    
-/**
- * Constructs a new <CODE>PdfBorderArray</CODE>.
- */
-    
+
+    /**
+     * Constructs a new <CODE>PdfBorderArray</CODE>.
+     */
+
     public PdfBorderArray(float hRadius, float vRadius, float width) {
         this(hRadius, vRadius, width, null);
     }
-    
-/**
- * Constructs a new <CODE>PdfBorderArray</CODE>.
- */
-    
+
+    /**
+     * Constructs a new <CODE>PdfBorderArray</CODE>.
+     */
+
     public PdfBorderArray(float hRadius, float vRadius, float width, PdfDashPattern dash) {
         super(new PdfNumber(hRadius));
         add(new PdfNumber(vRadius));

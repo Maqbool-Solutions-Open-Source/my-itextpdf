@@ -48,7 +48,7 @@ import com.itextpdf.text.Image;
 
 /**
  * <CODE>PdfFont</CODE> is the Pdf Font object.
- * <P>
+ * <p>
  * Limitation: in this class only base 14 Type 1 fonts (courier, courier bold, courier oblique,
  * courier boldoblique, helvetica, helvetica bold, helvetica oblique, helvetica boldoblique,
  * symbol, times roman, times bold, times italic, times bolditalic, zapfdingbats) and their
@@ -56,18 +56,22 @@ import com.itextpdf.text.Image;
  * This object is described in the 'Portable Document Format Reference Manual version 1.3'
  * section 7.7 (page 198-203).
  *
- * @see		PdfName
- * @see		PdfDictionary
- * @see		BadPdfFormatException
+ * @see PdfName
+ * @see PdfDictionary
+ * @see BadPdfFormatException
  */
 
 class PdfFont implements Comparable<PdfFont> {
 
 
-    /** the font metrics. */
+    /**
+     * the font metrics.
+     */
     private BaseFont font;
 
-    /** the size. */
+    /**
+     * the size.
+     */
     private float size;
 
     protected float hScale = 1;
@@ -84,8 +88,8 @@ class PdfFont implements Comparable<PdfFont> {
     /**
      * Compares this <CODE>PdfFont</CODE> with another
      *
-     * @param	pdfFont	the other <CODE>PdfFont</CODE>
-     * @return	a value
+     * @param pdfFont the other <CODE>PdfFont</CODE>
+     * @return a value
      */
 
     public int compareTo(PdfFont pdfFont) {
@@ -100,8 +104,7 @@ class PdfFont implements Comparable<PdfFont> {
                 return 2;
             }
             return 0;
-        }
-        catch(ClassCastException cce) {
+        } catch (ClassCastException cce) {
             return -2;
         }
     }
@@ -109,7 +112,7 @@ class PdfFont implements Comparable<PdfFont> {
     /**
      * Returns the size of this font.
      *
-     * @return		a size
+     * @return a size
      */
 
     float size() {
@@ -119,7 +122,7 @@ class PdfFont implements Comparable<PdfFont> {
     /**
      * Returns the approximative width of 1 character of this font.
      *
-     * @return		a width in Text Space
+     * @return a width in Text Space
      */
 
     float width() {
@@ -129,8 +132,8 @@ class PdfFont implements Comparable<PdfFont> {
     /**
      * Returns the width of a certain character of this font.
      *
-     * @param		character	a certain character
-     * @return		a width in Text Space
+     * @param character a certain character
+     * @return a width in Text Space
      */
 
     float width(int character) {
@@ -149,19 +152,21 @@ class PdfFont implements Comparable<PdfFont> {
         try {
             BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, false);
             return new PdfFont(bf, 12);
-        }
-        catch (Exception ee) {
+        } catch (Exception ee) {
             throw new ExceptionConverter(ee);
         }
     }
+
     void setHorizontalScaling(float hScale) {
         this.hScale = hScale;
     }
+
     /**
      * Getter for the horizontal scaling.
+     *
      * @since iText 5.1.0
      */
     float getHorizontalScaling() {
-    	return hScale;
+        return hScale;
     }
 }

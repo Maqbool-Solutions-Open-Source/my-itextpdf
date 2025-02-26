@@ -53,32 +53,34 @@ import com.itextpdf.text.pdf.AcroFields.Item;
 /**
  * Allows you to add one (or more) existing PDF document(s)
  * and add the form(s) of (an)other PDF document(s).
+ *
  * @since 2.1.5
  * @deprecated since 5.5.2
  */
 class PdfCopyFormsImp extends PdfCopyFieldsImp {
 
     /**
-   * This sets up the output document
-   * @param os The Outputstream pointing to the output document
-   * @throws DocumentException
-   */
+     * This sets up the output document
+     *
+     * @param os The Outputstream pointing to the output document
+     * @throws DocumentException
+     */
     PdfCopyFormsImp(OutputStream os) throws DocumentException {
         super(os);
     }
 
     /**
      * This method feeds in the source document
+     *
      * @param reader The PDF reader containing the source document
      * @throws DocumentException
      */
     public void copyDocumentFields(PdfReader reader) throws DocumentException {
-    	if (!reader.isOpenedWithFullPermissions())
+        if (!reader.isOpenedWithFullPermissions())
             throw new IllegalArgumentException(MessageLocalization.getComposedMessage("pdfreader.not.opened.with.owner.password"));
         if (readers2intrefs.containsKey(reader)) {
             reader = new PdfReader(reader);
-        }
-        else {
+        } else {
             if (reader.isTampered())
                 throw new DocumentException(MessageLocalization.getComposedMessage("the.document.was.reused"));
             reader.consolidateNamedDestinations();

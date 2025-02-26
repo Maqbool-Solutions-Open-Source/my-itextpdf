@@ -52,12 +52,13 @@ import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 
 /**
  * Class that encapsulates the signature policy information
+ *
  * @author J. Arturo
- *
+ * <p>
  * Sample:
- *
- *      SignaturePolicyInfo spi = new SignaturePolicyInfo("2.16.724.1.3.1.1.2.1.9",
- *      "G7roucf600+f03r/o0bAOQ6WAs0=", "SHA-1", "https://sede.060.gob.es/politica_de_firma_anexo_1.pdf");
+ * <p>
+ * SignaturePolicyInfo spi = new SignaturePolicyInfo("2.16.724.1.3.1.1.2.1.9",
+ * "G7roucf600+f03r/o0bAOQ6WAs0=", "SHA-1", "https://sede.060.gob.es/politica_de_firma_anexo_1.pdf");
  */
 public class SignaturePolicyInfo {
     private String policyIdentifier;
@@ -115,7 +116,7 @@ public class SignaturePolicyInfo {
         if (this.policyUri != null && this.policyUri.length() > 0) {
             spqi = new SigPolicyQualifierInfo(PKCSObjectIdentifiers.id_spq_ets_uri, new DERIA5String(this.policyUri));
         }
-        SigPolicyQualifiers qualifiers = new SigPolicyQualifiers(new SigPolicyQualifierInfo[] {spqi});
+        SigPolicyQualifiers qualifiers = new SigPolicyQualifiers(new SigPolicyQualifierInfo[]{spqi});
 
         signaturePolicyIdentifier = new SignaturePolicyIdentifier(new SignaturePolicyId(ASN1ObjectIdentifier.getInstance(new ASN1ObjectIdentifier(this.policyIdentifier.replace("urn:oid:", ""))),
                 new OtherHashAlgAndValue(new AlgorithmIdentifier(new ASN1ObjectIdentifier(algId)), new DEROctetString(this.policyHash)), qualifiers));

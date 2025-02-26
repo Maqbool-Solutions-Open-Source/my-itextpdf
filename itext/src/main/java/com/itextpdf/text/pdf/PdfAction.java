@@ -55,60 +55,94 @@ import com.itextpdf.text.pdf.internal.PdfIsoKeys;
 /**
  * A <CODE>PdfAction</CODE> defines an action that can be triggered from a PDF file.
  *
- * @see		PdfDictionary
+ * @see PdfDictionary
  */
 
 public class PdfAction extends PdfDictionary {
 
-    /** A named action to go to the first page.
+    /**
+     * A named action to go to the first page.
      */
     public static final int FIRSTPAGE = 1;
-    /** A named action to go to the previous page.
+    /**
+     * A named action to go to the previous page.
      */
     public static final int PREVPAGE = 2;
-    /** A named action to go to the next page.
+    /**
+     * A named action to go to the next page.
      */
     public static final int NEXTPAGE = 3;
-    /** A named action to go to the last page.
+    /**
+     * A named action to go to the last page.
      */
     public static final int LASTPAGE = 4;
 
-    /** A named action to open a print dialog.
+    /**
+     * A named action to open a print dialog.
      */
     public static final int PRINTDIALOG = 5;
 
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_EXCLUDE = 1;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_INCLUDE_NO_VALUE_FIELDS = 2;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_HTML_FORMAT = 4;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_HTML_GET = 8;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_COORDINATES = 16;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_XFDF = 32;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_INCLUDE_APPEND_SAVES = 64;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_INCLUDE_ANNOTATIONS = 128;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_PDF = 256;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_CANONICAL_FORMAT = 512;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_EXCL_NON_USER_ANNOTS = 1024;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_EXCL_F_KEY = 2048;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int SUBMIT_EMBED_FORM = 8196;
-    /** a possible submitvalue */
+    /**
+     * a possible submitvalue
+     */
     public static final int RESET_EXCLUDE = 1;
 
     // constructors
 
-    /** Create an empty action.
+    /**
+     * Create an empty action.
      */
     public PdfAction() {
     }
@@ -125,6 +159,7 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Construct a new <CODE>PdfAction</CODE> of Subtype URI that accepts the x and y coordinate of the position that was clicked.
+     *
      * @param url
      * @param isMap
      */
@@ -144,6 +179,7 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Construct a new <CODE>PdfAction</CODE> of Subtype URI that accepts the x and y coordinate of the position that was clicked.
+     *
      * @param url
      * @param isMap
      */
@@ -157,6 +193,7 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Constructs a new <CODE>PdfAction</CODE> of Subtype GoTo.
+     *
      * @param destination the destination to go to
      */
 
@@ -167,8 +204,9 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Constructs a new <CODE>PdfAction</CODE> of Subtype GoToR.
+     *
      * @param filename the file name to go to
-     * @param name the named destination to go to
+     * @param name     the named destination to go to
      */
 
     public PdfAction(String filename, String name) {
@@ -179,8 +217,9 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Constructs a new <CODE>PdfAction</CODE> of Subtype GoToR.
+     *
      * @param filename the file name to go to
-     * @param page the page destination to go to
+     * @param page     the page destination to go to
      */
 
     public PdfAction(String filename, int page) {
@@ -189,8 +228,10 @@ public class PdfAction extends PdfDictionary {
         put(PdfName.D, new PdfLiteral("[" + (page - 1) + " /FitH 10000]"));
     }
 
-    /** Implements name actions. The action can be FIRSTPAGE, LASTPAGE,
+    /**
+     * Implements name actions. The action can be FIRSTPAGE, LASTPAGE,
      * NEXTPAGE, PREVPAGE and PRINTDIALOG.
+     *
      * @param named the named action
      */
     public PdfAction(int named) {
@@ -217,15 +258,17 @@ public class PdfAction extends PdfDictionary {
         }
     }
 
-    /** Launches an application or a document.
+    /**
+     * Launches an application or a document.
+     *
      * @param application the application to be launched or the document to be opened or printed.
-     * @param parameters (Windows-specific) A parameter string to be passed to the application.
-     * It can be <CODE>null</CODE>.
-     * @param operation (Windows-specific) the operation to perform: "open" - Open a document,
-     * "print" - Print a document.
-     * It can be <CODE>null</CODE>.
-     * @param defaultDir (Windows-specific) the default directory in standard DOS syntax.
-     * It can be <CODE>null</CODE>.
+     * @param parameters  (Windows-specific) A parameter string to be passed to the application.
+     *                    It can be <CODE>null</CODE>.
+     * @param operation   (Windows-specific) the operation to perform: "open" - Open a document,
+     *                    "print" - Print a document.
+     *                    It can be <CODE>null</CODE>.
+     * @param defaultDir  (Windows-specific) the default directory in standard DOS syntax.
+     *                    It can be <CODE>null</CODE>.
      */
     public PdfAction(String application, String parameters, String operation, String defaultDir) {
         put(PdfName.S, PdfName.LAUNCH);
@@ -244,22 +287,26 @@ public class PdfAction extends PdfDictionary {
         }
     }
 
-    /** Launches an application or a document.
+    /**
+     * Launches an application or a document.
+     *
      * @param application the application to be launched or the document to be opened or printed.
-     * @param parameters (Windows-specific) A parameter string to be passed to the application.
-     * It can be <CODE>null</CODE>.
-     * @param operation (Windows-specific) the operation to perform: "open" - Open a document,
-     * "print" - Print a document.
-     * It can be <CODE>null</CODE>.
-     * @param defaultDir (Windows-specific) the default directory in standard DOS syntax.
-     * It can be <CODE>null</CODE>.
+     * @param parameters  (Windows-specific) A parameter string to be passed to the application.
+     *                    It can be <CODE>null</CODE>.
+     * @param operation   (Windows-specific) the operation to perform: "open" - Open a document,
+     *                    "print" - Print a document.
+     *                    It can be <CODE>null</CODE>.
+     * @param defaultDir  (Windows-specific) the default directory in standard DOS syntax.
+     *                    It can be <CODE>null</CODE>.
      * @return a Launch action
      */
     public static PdfAction createLaunch(String application, String parameters, String operation, String defaultDir) {
         return new PdfAction(application, parameters, operation, defaultDir);
     }
 
-     /**Creates a Rendition action
+    /**
+     * Creates a Rendition action
+     *
      * @param file
      * @param fs
      * @param mimeType
@@ -274,45 +321,46 @@ public class PdfAction extends PdfDictionary {
         js.put(new PdfName("OP"), new PdfNumber(0));
         js.put(new PdfName("AN"), ref);
         return js;
-     }
+    }
 
-    /** Creates a JavaScript action. If the JavaScript is smaller than
+    /**
+     * Creates a JavaScript action. If the JavaScript is smaller than
      * 50 characters it will be placed as a string, otherwise it will
      * be placed as a compressed stream.
-     * @param code the JavaScript code
-     * @param writer the writer for this action
+     *
+     * @param code    the JavaScript code
+     * @param writer  the writer for this action
      * @param unicode select JavaScript unicode. Note that the internal
-     * Acrobat JavaScript engine does not support unicode,
-     * so this may or may not work for you
+     *                Acrobat JavaScript engine does not support unicode,
+     *                so this may or may not work for you
      * @return the JavaScript action
      */
     public static PdfAction javaScript(String code, PdfWriter writer, boolean unicode) {
         PdfAction js = new PdfAction();
         js.put(PdfName.S, PdfName.JAVASCRIPT);
         if (unicode && code.length() < 50) {
-                js.put(PdfName.JS, new PdfString(code, PdfObject.TEXT_UNICODE));
-        }
-        else if (!unicode && code.length() < 100) {
-                js.put(PdfName.JS, new PdfString(code));
-        }
-        else {
+            js.put(PdfName.JS, new PdfString(code, PdfObject.TEXT_UNICODE));
+        } else if (!unicode && code.length() < 100) {
+            js.put(PdfName.JS, new PdfString(code));
+        } else {
             try {
                 byte b[] = PdfEncodings.convertToBytes(code, unicode ? PdfObject.TEXT_UNICODE : PdfObject.TEXT_PDFDOCENCODING);
                 PdfStream stream = new PdfStream(b);
                 stream.flateCompress(writer.getCompressionLevel());
                 js.put(PdfName.JS, writer.addToBody(stream).getIndirectReference());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 js.put(PdfName.JS, new PdfString(code));
             }
         }
         return js;
     }
 
-    /** Creates a JavaScript action. If the JavaScript is smaller than
+    /**
+     * Creates a JavaScript action. If the JavaScript is smaller than
      * 50 characters it will be place as a string, otherwise it will
      * be placed as a compressed stream.
-     * @param code the JavaScript code
+     *
+     * @param code   the JavaScript code
      * @param writer the writer for this action
      * @return the JavaScript action
      */
@@ -322,7 +370,8 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * A Hide action hides or shows an object.
-     * @param obj object to hide or show
+     *
+     * @param obj  object to hide or show
      * @param hide true is hide, false is show
      * @return a Hide Action
      */
@@ -337,6 +386,7 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * A Hide action hides or shows an annotation.
+     *
      * @param annot
      * @param hide
      * @return A Hide Action
@@ -347,6 +397,7 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * A Hide action hides or shows an annotation.
+     *
      * @param name
      * @param hide
      * @return A Hide Action
@@ -360,9 +411,9 @@ public class PdfAction extends PdfDictionary {
         for (int k = 0; k < names.length; ++k) {
             Object obj = names[k];
             if (obj instanceof String)
-                array.add(new PdfString((String)obj));
+                array.add(new PdfString((String) obj));
             else if (obj instanceof PdfAnnotation)
-                array.add(((PdfAnnotation)obj).getIndirectReference());
+                array.add(((PdfAnnotation) obj).getIndirectReference());
             else
                 throw new RuntimeException(MessageLocalization.getComposedMessage("the.array.must.contain.string.or.pdfannotation"));
         }
@@ -371,6 +422,7 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * A Hide action hides or shows objects.
+     *
      * @param names
      * @param hide
      * @return A Hide Action
@@ -381,9 +433,10 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Creates a submit form.
-     * @param file	the URI to submit the form to
-     * @param names	the objects to submit
-     * @param flags	submit properties
+     *
+     * @param file  the URI to submit the form to
+     * @param names the objects to submit
+     * @param flags submit properties
      * @return A PdfAction
      */
     public static PdfAction createSubmitForm(String file, Object names[], int flags) {
@@ -401,8 +454,9 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Creates a resetform.
-     * @param names	the objects to reset
-     * @param flags	submit properties
+     *
+     * @param names the objects to reset
+     * @param flags submit properties
      * @return A PdfAction
      */
     public static PdfAction createResetForm(Object names[], int flags) {
@@ -416,6 +470,7 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Creates an Import field.
+     *
      * @param file
      * @return A PdfAction
      */
@@ -426,7 +481,9 @@ public class PdfAction extends PdfDictionary {
         return action;
     }
 
-    /** Add a chained action.
+    /**
+     * Add a chained action.
+     *
      * @param na the next action
      */
     public void next(PdfAction na) {
@@ -437,15 +494,16 @@ public class PdfAction extends PdfDictionary {
             PdfArray array = new PdfArray(nextAction);
             array.add(na);
             put(PdfName.NEXT, array);
-        }
-        else {
-            ((PdfArray)nextAction).add(na);
+        } else {
+            ((PdfArray) nextAction).add(na);
         }
     }
 
-    /** Creates a GoTo action to an internal page.
-     * @param page the page to go. First page is 1
-     * @param dest the destination for the page
+    /**
+     * Creates a GoTo action to an internal page.
+     *
+     * @param page   the page to go. First page is 1
+     * @param dest   the destination for the page
      * @param writer the writer for this action
      * @return a GoTo action
      */
@@ -461,7 +519,8 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Creates a GoTo action to a named destination.
-     * @param dest the named destination
+     *
+     * @param dest   the named destination
      * @param isName if true sets the destination as a name, if false sets it as a String
      * @return a GoTo action
      */
@@ -477,9 +536,10 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Creates a GoToR action to a named destination.
-     * @param filename the file name to go to
-     * @param dest the destination name
-     * @param isName if true sets the destination as a name, if false sets it as a String
+     *
+     * @param filename  the file name to go to
+     * @param dest      the destination name
+     * @param isName    if true sets the destination as a name, if false sets it as a String
      * @param newWindow open the document in a new window if <CODE>true</CODE>, if false the current document is replaced by the new document.
      * @return a GoToR action
      */
@@ -498,9 +558,10 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Creates a GoToE action to an embedded file.
-     * @param filename	the root document of the target (null if the target is in the same document)
-     * @param dest the named destination
-     * @param isName if true sets the destination as a name, if false sets it as a String
+     *
+     * @param filename the root document of the target (null if the target is in the same document)
+     * @param dest     the named destination
+     * @param isName   if true sets the destination as a name, if false sets it as a String
      * @return a GoToE action
      */
     public static PdfAction gotoEmbedded(String filename, PdfTargetDictionary target, String dest, boolean isName, boolean newWindow) {
@@ -512,44 +573,46 @@ public class PdfAction extends PdfDictionary {
 
     /**
      * Creates a GoToE action to an embedded file.
-     * @param filename	the root document of the target (null if the target is in the same document)
-     * @param target	a path to the target document of this action
-     * @param dest		the destination inside the target document, can be of type PdfDestination, PdfName, or PdfString
-     * @param newWindow	if true, the destination document should be opened in a new window
+     *
+     * @param filename  the root document of the target (null if the target is in the same document)
+     * @param target    a path to the target document of this action
+     * @param dest      the destination inside the target document, can be of type PdfDestination, PdfName, or PdfString
+     * @param newWindow if true, the destination document should be opened in a new window
      * @return a GoToE action
      */
     public static PdfAction gotoEmbedded(String filename, PdfTargetDictionary target, PdfObject dest, boolean newWindow) {
-    	PdfAction action = new PdfAction();
-    	action.put(PdfName.S, PdfName.GOTOE);
-    	action.put(PdfName.T, target);
-    	action.put(PdfName.D, dest);
-    	action.put(PdfName.NEWWINDOW, new PdfBoolean(newWindow));
-    	if (filename != null) {
-    		action.put(PdfName.F, new PdfString(filename));
-    	}
-    	return action;
+        PdfAction action = new PdfAction();
+        action.put(PdfName.S, PdfName.GOTOE);
+        action.put(PdfName.T, target);
+        action.put(PdfName.D, dest);
+        action.put(PdfName.NEWWINDOW, new PdfBoolean(newWindow));
+        if (filename != null) {
+            action.put(PdfName.F, new PdfString(filename));
+        }
+        return action;
     }
 
     /**
      * A set-OCG-state action (PDF 1.5) sets the state of one or more optional content
      * groups.
-     * @param state an array consisting of any number of sequences beginning with a <CODE>PdfName</CODE>
-     * or <CODE>String</CODE> (ON, OFF, or Toggle) followed by one or more optional content group dictionaries
-     * <CODE>PdfLayer</CODE> or a <CODE>PdfIndirectReference</CODE> to a <CODE>PdfLayer</CODE>.<br>
-     * The array elements are processed from left to right; each name is applied
-     * to the subsequent groups until the next name is encountered:
-     * <ul>
-     * <li>ON sets the state of subsequent groups to ON</li>
-     * <li>OFF sets the state of subsequent groups to OFF</li>
-     * <li>Toggle reverses the state of subsequent groups</li>
-     * </ul>
+     *
+     * @param state      an array consisting of any number of sequences beginning with a <CODE>PdfName</CODE>
+     *                   or <CODE>String</CODE> (ON, OFF, or Toggle) followed by one or more optional content group dictionaries
+     *                   <CODE>PdfLayer</CODE> or a <CODE>PdfIndirectReference</CODE> to a <CODE>PdfLayer</CODE>.<br>
+     *                   The array elements are processed from left to right; each name is applied
+     *                   to the subsequent groups until the next name is encountered:
+     *                   <ul>
+     *                   <li>ON sets the state of subsequent groups to ON</li>
+     *                   <li>OFF sets the state of subsequent groups to OFF</li>
+     *                   <li>Toggle reverses the state of subsequent groups</li>
+     *                   </ul>
      * @param preserveRB if <CODE>true</CODE>, indicates that radio-button state relationships between optional
-     * content groups (as specified by the RBGroups entry in the current configuration
-     * dictionary) should be preserved when the states in the
-     * <CODE>state</CODE> array are applied. That is, if a group is set to ON (either by ON or Toggle) during
-     * processing of the <CODE>state</CODE> array, any other groups belong to the same radio-button
-     * group are turned OFF. If a group is set to OFF, there is no effect on other groups.<br>
-     * If <CODE>false</CODE>, radio-button state relationships, if any, are ignored
+     *                   content groups (as specified by the RBGroups entry in the current configuration
+     *                   dictionary) should be preserved when the states in the
+     *                   <CODE>state</CODE> array are applied. That is, if a group is set to ON (either by ON or Toggle) during
+     *                   processing of the <CODE>state</CODE> array, any other groups belong to the same radio-button
+     *                   group are turned OFF. If a group is set to OFF, there is no effect on other groups.<br>
+     *                   If <CODE>false</CODE>, radio-button state relationships, if any, are ignored
      * @return the action
      */
     public static PdfAction setOCGstate(ArrayList<Object> state, boolean preserveRB) {
@@ -561,14 +624,14 @@ public class PdfAction extends PdfDictionary {
             if (o == null)
                 continue;
             if (o instanceof PdfIndirectReference)
-                a.add((PdfIndirectReference)o);
+                a.add((PdfIndirectReference) o);
             else if (o instanceof PdfLayer)
-                a.add(((PdfLayer)o).getRef());
+                a.add(((PdfLayer) o).getRef());
             else if (o instanceof PdfName)
-                a.add((PdfName)o);
+                a.add((PdfName) o);
             else if (o instanceof String) {
                 PdfName name = null;
-                String s = (String)o;
+                String s = (String) o;
                 if (s.equalsIgnoreCase("on"))
                     name = PdfName.ON;
                 else if (s.equalsIgnoreCase("off"))
@@ -578,8 +641,7 @@ public class PdfAction extends PdfDictionary {
                 else
                     throw new IllegalArgumentException(MessageLocalization.getComposedMessage("a.string.1.was.passed.in.state.only.on.off.and.toggle.are.allowed", s));
                 a.add(name);
-            }
-            else
+            } else
                 throw new IllegalArgumentException(MessageLocalization.getComposedMessage("invalid.type.was.passed.in.state.1", o.getClass().getName()));
         }
         action.put(PdfName.STATE, a);

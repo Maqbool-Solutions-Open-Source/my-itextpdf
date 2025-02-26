@@ -42,12 +42,14 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import com.itextpdf.text.error_messages.MessageLocalization;
+
 /**
  * Instance of PdfReader in each output document.
  *
@@ -108,10 +110,11 @@ class PdfReaderInstance {
 
     /**
      * Gets the content stream of a page as a PdfStream object.
-     * @param	pageNumber			the page of which you want the stream
-     * @param	compressionLevel	the compression level you want to apply to the stream
-     * @return	a PdfStream object
-     * @since	2.1.3 (the method already existed without param compressionLevel)
+     *
+     * @param pageNumber       the page of which you want the stream
+     * @param compressionLevel the compression level you want to apply to the stream
+     * @return a PdfStream object
+     * @since 2.1.3 (the method already existed without param compressionLevel)
      */
     PdfStream getFormXObject(int pageNumber, int compressionLevel) throws IOException {
         PdfDictionary page = reader.getPageNRelease(pageNumber);
@@ -120,11 +123,10 @@ class PdfReaderInstance {
         byte bout[] = null;
         if (contents != null) {
             if (contents.isStream())
-                dic.putAll((PRStream)contents);
+                dic.putAll((PRStream) contents);
             else
                 bout = reader.getPageContent(pageNumber, file);
-        }
-        else
+        } else
             bout = new byte[0];
         dic.put(PdfName.RESOURCES, PdfReader.getPdfObjectRelease(page.get(PdfName.RESOURCES)));
         dic.put(PdfName.TYPE, PdfName.XOBJECT);
@@ -139,9 +141,8 @@ class PdfReaderInstance {
         dic.put(PdfName.FORMTYPE, ONE);
         PRStream stream;
         if (bout == null) {
-            stream = new PRStream((PRStream)contents, dic);
-        }
-        else {
+            stream = new PRStream((PRStream) contents, dic);
+        } else {
             stream = new PRStream(reader, bout, compressionLevel);
             stream.putAll(dic);
         }
@@ -167,21 +168,19 @@ class PdfReaderInstance {
         try {
             file.reOpen();
             for (Object element : importedPages.values()) {
-                PdfImportedPage ip = (PdfImportedPage)element;
+                PdfImportedPage ip = (PdfImportedPage) element;
                 if (ip.isToCopy()) {
-                	writer.addToBody(ip.getFormXObject(writer.getCompressionLevel()), ip.getIndirectReference());
-                	ip.setCopied();
+                    writer.addToBody(ip.getFormXObject(writer.getCompressionLevel()), ip.getIndirectReference());
+                    ip.setCopied();
                 }
             }
             writeAllVisited();
-        }
-        finally {
+        } finally {
             try {
 // TODO: Removed - the user should be responsible for closing all PdfReaders.  But, this could cause a lot of memory leaks in code out there that hasn't been properly closing things - maybe add a finalizer to PdfReader that calls PdfReader#close() ??            	
 //                reader.close();
                 file.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 //Empty on purpose
             }
         }

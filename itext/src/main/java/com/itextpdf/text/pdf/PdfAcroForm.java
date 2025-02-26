@@ -61,19 +61,29 @@ public class PdfAcroForm extends PdfDictionary {
     private PdfWriter writer;
 
 
-    /** This is a map containing FieldTemplates. */
+    /**
+     * This is a map containing FieldTemplates.
+     */
     private HashSet<PdfTemplate> fieldTemplates = new HashSet<PdfTemplate>();
 
-    /** This is an array containing DocumentFields. */
+    /**
+     * This is an array containing DocumentFields.
+     */
     private PdfArray documentFields = new PdfArray();
 
-    /** This is an array containing the calculationorder of the fields. */
+    /**
+     * This is an array containing the calculationorder of the fields.
+     */
     private PdfArray calculationOrder = new PdfArray();
 
-    /** Contains the signature flags. */
+    /**
+     * Contains the signature flags.
+     */
     private int sigFlags = 0;
 
-    /** Creates new PdfAcroForm
+    /**
+     * Creates new PdfAcroForm
+     *
      * @param writer
      */
     public PdfAcroForm(PdfWriter writer) {
@@ -82,11 +92,12 @@ public class PdfAcroForm extends PdfDictionary {
     }
 
     public void setNeedAppearances(boolean value) {
-    	put(PdfName.NEEDAPPEARANCES, new PdfBoolean(value));
+        put(PdfName.NEEDAPPEARANCES, new PdfBoolean(value));
     }
 
     /**
      * Adds fieldTemplates.
+     *
      * @param ft
      */
 
@@ -96,6 +107,7 @@ public class PdfAcroForm extends PdfDictionary {
 
     /**
      * Adds documentFields.
+     *
      * @param ref
      */
 
@@ -105,6 +117,7 @@ public class PdfAcroForm extends PdfDictionary {
 
     /**
      * Checks if the Acroform is valid
+     *
      * @return true if the Acroform is valid
      */
 
@@ -117,12 +130,12 @@ public class PdfAcroForm extends PdfDictionary {
             put(PdfName.CO, calculationOrder);
         if (fieldTemplates.isEmpty()) return true;
         PdfDictionary dic = new PdfDictionary();
-        for (PdfTemplate template: fieldTemplates) {
-            PdfFormField.mergeResources(dic, (PdfDictionary)template.getResources());
+        for (PdfTemplate template : fieldTemplates) {
+            PdfFormField.mergeResources(dic, (PdfDictionary) template.getResources());
         }
         put(PdfName.DR, dic);
         put(PdfName.DA, new PdfString("/Helv 0 Tf 0 g "));
-        PdfDictionary fonts = (PdfDictionary)dic.get(PdfName.FONT);
+        PdfDictionary fonts = (PdfDictionary) dic.get(PdfName.FONT);
         if (fonts != null) {
             writer.eliminateFontSubset(fonts);
         }
@@ -131,6 +144,7 @@ public class PdfAcroForm extends PdfDictionary {
 
     /**
      * Adds an object to the calculationOrder.
+     *
      * @param formField
      */
 
@@ -140,6 +154,7 @@ public class PdfAcroForm extends PdfDictionary {
 
     /**
      * Sets the signature flags.
+     *
      * @param f
      */
 
@@ -149,6 +164,7 @@ public class PdfAcroForm extends PdfDictionary {
 
     /**
      * Adds a formfield to the AcroForm.
+     *
      * @param formField
      */
 
@@ -175,7 +191,7 @@ public class PdfAcroForm extends PdfDictionary {
         setButtonParams(button, PdfFormField.FF_PUSHBUTTON, name, value);
         drawButton(button, caption, font, fontSize, llx, lly, urx, ury);
         addFormField(button);
-	return button;
+        return button;
     }
 
     /**
@@ -351,7 +367,7 @@ public class PdfAcroForm extends PdfDictionary {
      */
     public void drawSingleLineOfText(PdfFormField field, String text, BaseFont font, float fontSize, float llx, float lly, float urx, float ury) {
         PdfAppearance tp = PdfAppearance.createAppearance(writer, urx - llx, ury - lly);
-        PdfAppearance tp2 = (PdfAppearance)tp.getDuplicate();
+        PdfAppearance tp2 = (PdfAppearance) tp.getDuplicate();
         tp2.setFontAndSize(font, fontSize);
         tp2.resetRGBColorFill();
         field.setDefaultAppearanceString(tp2);
@@ -384,7 +400,7 @@ public class PdfAcroForm extends PdfDictionary {
      */
     public void drawMultiLineOfText(PdfFormField field, String text, BaseFont font, float fontSize, float llx, float lly, float urx, float ury) {
         PdfAppearance tp = PdfAppearance.createAppearance(writer, urx - llx, ury - lly);
-        PdfAppearance tp2 = (PdfAppearance)tp.getDuplicate();
+        PdfAppearance tp2 = (PdfAppearance) tp.getDuplicate();
         tp2.setFontAndSize(font, fontSize);
         tp2.resetRGBColorFill();
         field.setDefaultAppearanceString(tp2);
@@ -444,8 +460,7 @@ public class PdfAcroForm extends PdfDictionary {
         if (status) {
             field.setValueAsName(value);
             field.setAppearanceState(value);
-        }
-        else {
+        } else {
             field.setValueAsName("Off");
             field.setAppearanceState("Off");
         }
@@ -466,13 +481,12 @@ public class PdfAcroForm extends PdfDictionary {
         BaseFont font = null;
         try {
             font = BaseFont.createFont(BaseFont.ZAPFDINGBATS, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
         float size = ury - lly;
         PdfAppearance tpOn = PdfAppearance.createAppearance(writer, urx - llx, ury - lly);
-        PdfAppearance tp2 = (PdfAppearance)tpOn.getDuplicate();
+        PdfAppearance tp2 = (PdfAppearance) tpOn.getDuplicate();
         tp2.setFontAndSize(font, size);
         tp2.resetRGBColorFill();
         field.setDefaultAppearanceString(tp2);
@@ -522,11 +536,10 @@ public class PdfAcroForm extends PdfDictionary {
     public PdfFormField addRadioButton(PdfFormField radiogroup, String value, float llx, float lly, float urx, float ury) {
         PdfFormField radio = PdfFormField.createEmpty(writer);
         radio.setWidget(new Rectangle(llx, lly, urx, ury), PdfAnnotation.HIGHLIGHT_TOGGLE);
-        String name = ((PdfName)radiogroup.get(PdfName.V)).toString().substring(1);
+        String name = ((PdfName) radiogroup.get(PdfName.V)).toString().substring(1);
         if (name.equals(value)) {
             radio.setAppearanceState(value);
-        }
-        else {
+        } else {
             radio.setAppearanceState("Off");
         }
         drawRadioAppearences(radio, value, llx, lly, urx, ury);
@@ -684,7 +697,7 @@ public class PdfAcroForm extends PdfDictionary {
      * @return a PdfFormField
      */
     public PdfFormField addSignature(String name,
-                    float llx, float lly, float urx, float ury) {
+                                     float llx, float lly, float urx, float ury) {
         PdfFormField signature = PdfFormField.createSignature(writer);
         setSignatureParams(signature, name, llx, lly, urx, ury);
         drawSignatureAppearences(signature, llx, lly, urx, ury);
@@ -701,7 +714,7 @@ public class PdfAcroForm extends PdfDictionary {
      * @param ury
      */
     public void setSignatureParams(PdfFormField field, String name,
-                    float llx, float lly, float urx, float ury) {
+                                   float llx, float lly, float urx, float ury) {
         field.setWidget(new Rectangle(llx, lly, urx, ury), PdfAnnotation.HIGHLIGHT_INVERT);
         field.setFieldName(name);
         field.setFlags(PdfAnnotation.FLAGS_PRINT);
@@ -718,7 +731,7 @@ public class PdfAcroForm extends PdfDictionary {
      * @param ury
      */
     public void drawSignatureAppearences(PdfFormField field,
-                    float llx, float lly, float urx, float ury) {
+                                         float llx, float lly, float urx, float ury) {
         PdfAppearance tp = PdfAppearance.createAppearance(writer, urx - llx, ury - lly);
         tp.setGrayFill(1.0f);
         tp.rectangle(0, 0, urx - llx, ury - lly);

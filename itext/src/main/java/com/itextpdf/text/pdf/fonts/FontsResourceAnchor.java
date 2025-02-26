@@ -49,11 +49,11 @@ package com.itextpdf.text.pdf.fonts;
  * @author Paulo Soares
  */
 public class FontsResourceAnchor {
-    
+
     /**
      * Creates a FontsResourceAnchor
      */
     public FontsResourceAnchor() {
     }
-    
+
 }

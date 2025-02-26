@@ -61,37 +61,40 @@ import com.itextpdf.text.pdf.PdfPTableEventSplit;
 
 public class PdfPTableEventForwarder implements PdfPTableEventAfterSplit {
 
-	/** ArrayList containing all the PageEvents that have to be executed. */
-	protected ArrayList<PdfPTableEvent> events = new ArrayList<PdfPTableEvent>();
+    /**
+     * ArrayList containing all the PageEvents that have to be executed.
+     */
+    protected ArrayList<PdfPTableEvent> events = new ArrayList<PdfPTableEvent>();
 
-	/**
-	 * Add a page event to the forwarder.
-	 * @param event an event that has to be added to the forwarder.
-	 */
-	public void addTableEvent(PdfPTableEvent event) {
-		events.add(event);
-	}
+    /**
+     * Add a page event to the forwarder.
+     *
+     * @param event an event that has to be added to the forwarder.
+     */
+    public void addTableEvent(PdfPTableEvent event) {
+        events.add(event);
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.PdfPTableEvent#tableLayout(com.itextpdf.text.pdf.PdfPTable, float[][], float[], int, int, com.itextpdf.text.pdf.PdfContentByte[])
-	 */
-	public void tableLayout(PdfPTable table, float[][] widths, float[] heights, int headerRows, int rowStart, PdfContentByte[] canvases) {
-		for (PdfPTableEvent event: events) {
-			event.tableLayout(table, widths, heights, headerRows, rowStart, canvases);
-		}
-	}
+    /**
+     * @see com.itextpdf.text.pdf.PdfPTableEvent#tableLayout(com.itextpdf.text.pdf.PdfPTable, float[][], float[], int, int, com.itextpdf.text.pdf.PdfContentByte[])
+     */
+    public void tableLayout(PdfPTable table, float[][] widths, float[] heights, int headerRows, int rowStart, PdfContentByte[] canvases) {
+        for (PdfPTableEvent event : events) {
+            event.tableLayout(table, widths, heights, headerRows, rowStart, canvases);
+        }
+    }
 
     /**
      * @see com.itextpdf.text.pdf.PdfPTableEventSplit#splitTable(com.itextpdf.text.pdf.PdfPTable)
-	 * @since iText 5.0.6
+     * @since iText 5.0.6
      */
     public void splitTable(PdfPTable table) {
-		for (PdfPTableEvent event: events) {
-			if (event instanceof PdfPTableEventSplit)
-                ((PdfPTableEventSplit)event).splitTable(table);
-		}
+        for (PdfPTableEvent event : events) {
+            if (event instanceof PdfPTableEventSplit)
+                ((PdfPTableEventSplit) event).splitTable(table);
+        }
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfPTableEventAfterSplit#afterSplitTable(com.itextpdf.text.pdf.PdfPTable, com.itextpdf.text.pdf.PdfPRow, int)
      * @since iText 5.4.3

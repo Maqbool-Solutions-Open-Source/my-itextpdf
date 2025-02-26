@@ -45,18 +45,23 @@ package com.itextpdf.text.pdf;
 
 public class PdfIsoConformanceException extends RuntimeException {
 
-	/** Serial version UID */
-	private static final long serialVersionUID = -8972376258066225871L;
+    /**
+     * Serial version UID
+     */
+    private static final long serialVersionUID = -8972376258066225871L;
 
-	/** Creates a new instance of PdfIsoConformanceException. */
+    /**
+     * Creates a new instance of PdfIsoConformanceException.
+     */
     public PdfIsoConformanceException() {
     }
 
     /**
      * Creates a new instance of PdfIsoConformanceException.
+     *
      * @param s
      */
     public PdfIsoConformanceException(String s) {
         super(s);
-    }    
+    }
 }

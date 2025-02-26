@@ -56,53 +56,59 @@ import com.itextpdf.text.pdf.PdfContentByte;
  * Helper class implementing the DrawInterface. Can be used to add
  * horizontal or vertical separators. Won't draw anything unless
  * you implement the draw method.
- * @since	2.1.2
+ *
+ * @since 2.1.2
  */
 
 public class VerticalPositionMark implements DrawInterface, Element {
 
-    /** Another implementation of the DrawInterface; its draw method will overrule LineSeparator.draw(). */
+    /**
+     * Another implementation of the DrawInterface; its draw method will overrule LineSeparator.draw().
+     */
     protected DrawInterface drawInterface = null;
 
-    /** The offset for the line. */
+    /**
+     * The offset for the line.
+     */
     protected float offset = 0;
 
-	/**
-	 * Creates a vertical position mark that won't draw anything unless
-	 * you define a DrawInterface.
-	 */
-	public VerticalPositionMark() {
-	}
+    /**
+     * Creates a vertical position mark that won't draw anything unless
+     * you define a DrawInterface.
+     */
+    public VerticalPositionMark() {
+    }
 
-	/**
-	 * Creates a vertical position mark that won't draw anything unless
-	 * you define a DrawInterface.
-	 * @param	drawInterface	the drawInterface for this vertical position mark.
-	 * @param	offset			the offset for this vertical position mark.
-	 */
-	public VerticalPositionMark(final DrawInterface drawInterface, final float offset) {
-		this.drawInterface = drawInterface;
-		this.offset = offset;
-	}
+    /**
+     * Creates a vertical position mark that won't draw anything unless
+     * you define a DrawInterface.
+     *
+     * @param drawInterface the drawInterface for this vertical position mark.
+     * @param offset        the offset for this vertical position mark.
+     */
+    public VerticalPositionMark(final DrawInterface drawInterface, final float offset) {
+        this.drawInterface = drawInterface;
+        this.offset = offset;
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.draw.DrawInterface#draw(com.itextpdf.text.pdf.PdfContentByte, float, float, float, float, float)
-	 */
-	public void draw(final PdfContentByte canvas, final float llx, final float lly, final float urx, final float ury, final float y) {
-		if (drawInterface != null) {
-			drawInterface.draw(canvas, llx, lly, urx, ury, y + offset);
-		}
-	}
+    /**
+     * @see com.itextpdf.text.pdf.draw.DrawInterface#draw(com.itextpdf.text.pdf.PdfContentByte, float, float, float, float, float)
+     */
+    public void draw(final PdfContentByte canvas, final float llx, final float lly, final float urx, final float ury, final float y) {
+        if (drawInterface != null) {
+            drawInterface.draw(canvas, llx, lly, urx, ury, y + offset);
+        }
+    }
 
     /**
      * @see com.itextpdf.text.Element#process(com.itextpdf.text.ElementListener)
      */
     public boolean process(final ElementListener listener) {
-		try {
-			return listener.add(this);
-		} catch (DocumentException e) {
-			return false;
-		}
+        try {
+            return listener.add(this);
+        } catch (DocumentException e) {
+            return false;
+        }
     }
 
     /**
@@ -130,14 +136,15 @@ public class VerticalPositionMark implements DrawInterface, Element {
      * @see com.itextpdf.text.Element#getChunks()
      */
     public List<Chunk> getChunks() {
-    	List<Chunk> list = new ArrayList<Chunk>();
-    	list.add(new Chunk(this, true));
+        List<Chunk> list = new ArrayList<Chunk>();
+        list.add(new Chunk(this, true));
         return list;
     }
 
     /**
      * Getter for the interface with the overruling draw() method.
-     * @return	a DrawInterface implementation
+     *
+     * @return a DrawInterface implementation
      */
     public DrawInterface getDrawInterface() {
         return drawInterface;
@@ -145,6 +152,7 @@ public class VerticalPositionMark implements DrawInterface, Element {
 
     /**
      * Setter for the interface with the overruling draw() method.
+     *
      * @param drawInterface a DrawInterface implementation
      */
     public void setDrawInterface(final DrawInterface drawInterface) {
@@ -153,7 +161,8 @@ public class VerticalPositionMark implements DrawInterface, Element {
 
     /**
      * Getter for the offset relative to the baseline of the current line.
-     * @return	an offset
+     *
+     * @return an offset
      */
     public float getOffset() {
         return offset;
@@ -163,7 +172,8 @@ public class VerticalPositionMark implements DrawInterface, Element {
      * Setter for the offset. The offset is relative to the current
      * Y position. If you want to underline something, you have to
      * choose a negative offset.
-     * @param offset	an offset
+     *
+     * @param offset an offset
      */
     public void setOffset(final float offset) {
         this.offset = offset;

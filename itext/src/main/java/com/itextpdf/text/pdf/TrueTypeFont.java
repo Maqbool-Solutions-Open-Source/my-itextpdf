@@ -604,16 +604,16 @@ class TrueTypeFont extends BaseFont {
                 os_2.sCapHeight = (int) (0.7 * head.unitsPerEm);
         } else if (tables.get("hhea") != null && tables.get("head") != null) {
 
-            if(head.macStyle == 0){
+            if (head.macStyle == 0) {
                 os_2.usWeightClass = 700;
                 os_2.usWidthClass = 5;
-            }else if(head.macStyle == 5){
+            } else if (head.macStyle == 5) {
                 os_2.usWeightClass = 400;
                 os_2.usWidthClass = 3;
-            }else if(head.macStyle == 6) {
+            } else if (head.macStyle == 6) {
                 os_2.usWeightClass = 400;
                 os_2.usWidthClass = 7;
-            }else{
+            } else {
                 os_2.usWeightClass = 400;
                 os_2.usWidthClass = 5;
             }
@@ -625,8 +625,8 @@ class TrueTypeFont extends BaseFont {
             os_2.ySuperscriptYOffset = 0;
             os_2.yStrikeoutSize = 0;
             os_2.yStrikeoutPosition = 0;
-            os_2.sTypoAscender = (short) (hhea.Ascender - 0.21* hhea.Ascender);
-            os_2.sTypoDescender = (short) - (Math.abs(hhea.Descender) - Math.abs(hhea.Descender)*0.07);
+            os_2.sTypoAscender = (short) (hhea.Ascender - 0.21 * hhea.Ascender);
+            os_2.sTypoDescender = (short) -(Math.abs(hhea.Descender) - Math.abs(hhea.Descender) * 0.07);
             os_2.sTypoLineGap = (short) (hhea.LineGap * 2);
             os_2.usWinAscent = hhea.Ascender;
             os_2.usWinDescent = hhea.Descender;

@@ -69,6 +69,7 @@ public abstract class ITextTest {
     /**
      * Gets the name of the resultant PDF file.
      * This name will be passed to <code>makePdf</code>, <code>assertPdf</code> and <code>comparePdf</code> methods.
+     *
      * @return
      */
     protected abstract String getOutPdf();
@@ -84,6 +85,7 @@ public abstract class ITextTest {
     /**
      * Gets the name of the compare PDF file.
      * This name will be passed to <code>comparePdf</code> method.
+     *
      * @return
      */
     protected String getCmpPdf() {

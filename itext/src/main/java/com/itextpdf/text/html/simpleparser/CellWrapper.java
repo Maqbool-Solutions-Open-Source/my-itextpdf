@@ -57,57 +57,64 @@ import com.itextpdf.text.pdf.PdfPCell;
 /**
  * We use a CellWrapper because we need some extra info
  * that isn't available in PdfPCell.
- * @author  psoares
+ *
+ * @author psoares
  * @since 5.0.6 (renamed)
  * @deprecated since 5.5.2
  */
 @Deprecated
 public class CellWrapper implements TextElementArray {
 
-	/** The cell that is wrapped in this stub. */
+    /**
+     * The cell that is wrapped in this stub.
+     */
     private final PdfPCell cell;
 
     /**
      * The width of the cell.
+     *
      * @since iText 5.0.6
      */
     private float width;
 
     /**
      * Indicates if the width is a percentage.
+     *
      * @since iText 5.0.6
      */
     private boolean percentage;
 
     /**
      * Creates a new instance of IncCell.
-     * @param	tag		the cell that is wrapped in this object.
-     * @param	chain	properties such as width
-     * @since	5.0.6
+     *
+     * @param tag   the cell that is wrapped in this object.
+     * @param chain properties such as width
+     * @since 5.0.6
      */
     public CellWrapper(final String tag, final ChainedProperties chain) {
         this.cell = createPdfPCell(tag, chain);
-    	String value = chain.getProperty(HtmlTags.WIDTH);
+        String value = chain.getProperty(HtmlTags.WIDTH);
         if (value != null) {
             value = value.trim();
-        	if (value.endsWith("%")) {
-        		percentage = true;
-        		value = value.substring(0, value.length() - 1);
-        	}
+            if (value.endsWith("%")) {
+                percentage = true;
+                value = value.substring(0, value.length() - 1);
+            }
             width = Float.parseFloat(value);
         }
     }
 
     /**
      * Creates a PdfPCell element based on a tag and its properties.
-     * @param	tag		a cell tag
-     * @param	chain	the hierarchy chain
+     *
+     * @param tag   a cell tag
+     * @param chain the hierarchy chain
      * @return the created PdfPCell
      */
-	public PdfPCell createPdfPCell(final String tag, final ChainedProperties chain) {
-		PdfPCell cell = new PdfPCell((Phrase)null);
+    public PdfPCell createPdfPCell(final String tag, final ChainedProperties chain) {
+        PdfPCell cell = new PdfPCell((Phrase) null);
         // colspan
-		String value = chain.getProperty(HtmlTags.COLSPAN);
+        String value = chain.getProperty(HtmlTags.COLSPAN);
         if (value != null)
             cell.setColspan(Integer.parseInt(value));
         // rowspan
@@ -142,10 +149,11 @@ public class CellWrapper implements TextElementArray {
         value = chain.getProperty(HtmlTags.BGCOLOR);
         cell.setBackgroundColor(HtmlUtilities.decodeColor(value));
         return cell;
-	}
+    }
 
     /**
      * Returns the PdfPCell.
+     *
      * @return the PdfPCell
      */
     public PdfPCell getCell() {
@@ -154,6 +162,7 @@ public class CellWrapper implements TextElementArray {
 
     /**
      * Getter for the cell width
+     *
      * @return the width
      * @since iText 5.0.6
      */
@@ -163,6 +172,7 @@ public class CellWrapper implements TextElementArray {
 
     /**
      * Getter for percentage
+     *
      * @return true if the width is a percentage
      * @since iText 5.0.6
      */
@@ -172,7 +182,8 @@ public class CellWrapper implements TextElementArray {
 
     /**
      * Implements the add method of the TextElementArray interface.
-     * @param	o	an element that needs to be added to the cell.
+     *
+     * @param o an element that needs to be added to the cell.
      */
     public boolean add(final Element o) {
         cell.addElement(o);

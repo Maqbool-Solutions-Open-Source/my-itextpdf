@@ -48,80 +48,88 @@ import com.itextpdf.text.error_messages.MessageLocalization;
 /**
  * An array specifying a visibility expression, used to compute visibility
  * of content based on a set of optional content groups.
+ *
  * @since 5.0.2
  */
 public class PdfVisibilityExpression extends PdfArray {
 
-	/** A boolean operator. */
-	public static final int OR = 0;
-	/** A boolean operator. */
-	public static final int AND = 1;
-	/** A boolean operator. */
-	public static final int NOT = -1;
-	
-	/**
-	 * Creates a visibility expression.
-	 * @param type should be AND, OR, or NOT
-	 */
-	public PdfVisibilityExpression(int type) {
-		super();
-		switch(type) {
-		case OR:
-			super.add(PdfName.OR);
-			break;
-		case AND:
-			super.add(PdfName.AND);
-			break;
-		case NOT:
-			super.add(PdfName.NOT);
-			break;
-		default:
-			throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));	
-		} 
-	}
+    /**
+     * A boolean operator.
+     */
+    public static final int OR = 0;
+    /**
+     * A boolean operator.
+     */
+    public static final int AND = 1;
+    /**
+     * A boolean operator.
+     */
+    public static final int NOT = -1;
 
-	/**
-	 * @see com.itextpdf.text.pdf.PdfArray#add(int, com.itextpdf.text.pdf.PdfObject)
-	 */
-	@Override
-	public void add(int index, PdfObject element) {
-		throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
-	}
+    /**
+     * Creates a visibility expression.
+     *
+     * @param type should be AND, OR, or NOT
+     */
+    public PdfVisibilityExpression(int type) {
+        super();
+        switch (type) {
+            case OR:
+                super.add(PdfName.OR);
+                break;
+            case AND:
+                super.add(PdfName.AND);
+                break;
+            case NOT:
+                super.add(PdfName.NOT);
+                break;
+            default:
+                throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
+        }
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.PdfArray#add(com.itextpdf.text.pdf.PdfObject)
-	 */
-	@Override
-	public boolean add(PdfObject object) {
-		if (object instanceof PdfLayer)
-			return super.add(((PdfLayer)object).getRef());
-		if (object instanceof PdfVisibilityExpression)
-			return super.add(object);
-		throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
-	}
+    /**
+     * @see com.itextpdf.text.pdf.PdfArray#add(int, com.itextpdf.text.pdf.PdfObject)
+     */
+    @Override
+    public void add(int index, PdfObject element) {
+        throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.PdfArray#addFirst(com.itextpdf.text.pdf.PdfObject)
-	 */
-	@Override
-	public void addFirst(PdfObject object) {
-		throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
-	}
+    /**
+     * @see com.itextpdf.text.pdf.PdfArray#add(com.itextpdf.text.pdf.PdfObject)
+     */
+    @Override
+    public boolean add(PdfObject object) {
+        if (object instanceof PdfLayer)
+            return super.add(((PdfLayer) object).getRef());
+        if (object instanceof PdfVisibilityExpression)
+            return super.add(object);
+        throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.PdfArray#add(float[])
-	 */
-	@Override
-	public boolean add(float[] values) {
-		throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
-	}
+    /**
+     * @see com.itextpdf.text.pdf.PdfArray#addFirst(com.itextpdf.text.pdf.PdfObject)
+     */
+    @Override
+    public void addFirst(PdfObject object) {
+        throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.PdfArray#add(int[])
-	 */
-	@Override
-	public boolean add(int[] values) {
-		throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
-	}
-	
+    /**
+     * @see com.itextpdf.text.pdf.PdfArray#add(float[])
+     */
+    @Override
+    public boolean add(float[] values) {
+        throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
+    }
+
+    /**
+     * @see com.itextpdf.text.pdf.PdfArray#add(int[])
+     */
+    @Override
+    public boolean add(int[] values) {
+        throw new IllegalArgumentException(MessageLocalization.getComposedMessage("illegal.ve.value"));
+    }
+
 }

@@ -60,9 +60,8 @@ public class PolyTree extends PolyNode {
 
     public PolyNode getFirst() {
         if (!childs.isEmpty()) {
-            return childs.get( 0 );
-        }
-        else {
+            return childs.get(0);
+        } else {
             return null;
         }
     }
@@ -70,7 +69,7 @@ public class PolyTree extends PolyNode {
     public int getTotalSize() {
         int result = allPolys.size();
         //with negative offsets, ignore the hidden outer polygon ...
-        if (result > 0 && childs.get( 0 ) != allPolys.get( 0 )) {
+        if (result > 0 && childs.get(0) != allPolys.get(0)) {
             result--;
         }
         return result;

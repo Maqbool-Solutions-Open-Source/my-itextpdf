@@ -57,54 +57,58 @@ public final class Version {
 
     private static final Object staticLock = new Object();
 
-	// membervariables
-    
-    /** String that will indicate if the AGPL version is used. */
-    public static String AGPL = " (AGPL-version)";
-    
-	/** The iText version instance. */
-	private static volatile Version version = null;
-	/**
-	 * This String contains the name of the product.
-	 * iText is a registered trademark by iText Group NV.
-	 * Please don't change this constant.
-	 */
-	private final String iText = "iText\u00ae";
-	/**
-	 * This String contains the version number of this iText release.
-	 * For debugging purposes, we request you NOT to change this constant.
-	 */
-	private final String release = "5.5.13.4";
-	/**
-	 * This String contains the iText version as shown in the producer line.
-	 * iText is a product developed by iText Group NV.
-	 * iText Group requests that you retain the iText producer line
-	 * in every PDF that is created or manipulated using iText.
-	 */
-	private String iTextVersion = iText + " " + release + " \u00a92000-2024 iText Group NV";
-	/**
-	 * The license key.
-	 */
-	private String key = null;
+    // membervariables
 
-	/**
-	 * Gets an instance of the iText version that is currently used.
-	 * Note that iText Group requests that you retain the iText producer line
-	 * in every PDF that is created or manipulated using iText.
-	 */
-	public static Version getInstance() {
-	    synchronized (staticLock) {
-	        if (version != null) {
-	            return version;
+    /**
+     * String that will indicate if the AGPL version is used.
+     */
+    public static String AGPL = " (AGPL-version)";
+
+    /**
+     * The iText version instance.
+     */
+    private static volatile Version version = null;
+    /**
+     * This String contains the name of the product.
+     * iText is a registered trademark by iText Group NV.
+     * Please don't change this constant.
+     */
+    private final String iText = "iText\u00ae";
+    /**
+     * This String contains the version number of this iText release.
+     * For debugging purposes, we request you NOT to change this constant.
+     */
+    private final String release = "5.5.13.4";
+    /**
+     * This String contains the iText version as shown in the producer line.
+     * iText is a product developed by iText Group NV.
+     * iText Group requests that you retain the iText producer line
+     * in every PDF that is created or manipulated using iText.
+     */
+    private String iTextVersion = iText + " " + release + " \u00a92000-2024 iText Group NV";
+    /**
+     * The license key.
+     */
+    private String key = null;
+
+    /**
+     * Gets an instance of the iText version that is currently used.
+     * Note that iText Group requests that you retain the iText producer line
+     * in every PDF that is created or manipulated using iText.
+     */
+    public static Version getInstance() {
+        synchronized (staticLock) {
+            if (version != null) {
+                return version;
             }
         }
         Version localVersion = new Version();
         try {
             Class<?> klass = Class.forName("com.itextpdf.licensekey.LicenseKey");
-            Class[] cArg  = {String.class};
-            Method m = klass.getMethod("getLicenseeInfoForVersion",cArg);
+            Class[] cArg = {String.class};
+            Method m = klass.getMethod("getLicenseeInfoForVersion", cArg);
             Object[] args = {localVersion.release};
-            String[] info = (String[]) m.invoke(klass.newInstance(),args);
+            String[] info = (String[]) m.invoke(klass.newInstance(), args);
             if (info[3] != null && info[3].trim().length() > 0) {
                 localVersion.key = info[3];
             } else {
@@ -144,11 +148,11 @@ public final class Version {
             }
             localVersion.iTextVersion += AGPL;
         }
-		return atomicSetVersion(localVersion);
-	}
+        return atomicSetVersion(localVersion);
+    }
 
-	private static boolean dependsOnTheOldLicense() {
-	    try {
+    private static boolean dependsOnTheOldLicense() {
+        try {
             Class<?> klass = Class.forName("com.itextpdf.license.LicenseKey");
             return klass.getField("PRODUCT_NAME") != null;
         } catch (Exception e) {
@@ -156,31 +160,34 @@ public final class Version {
         }
     }
 
-	/**
-	 * Gets the product name.
-	 * iText Group NV requests that you retain the iText producer line
-	 * in every PDF that is created or manipulated using iText.
+    /**
+     * Gets the product name.
+     * iText Group NV requests that you retain the iText producer line
+     * in every PDF that is created or manipulated using iText.
+     *
      * @return the product name
      */
     public String getProduct() {
         return iText;
     }
 
-	/**
-	 * Gets the release number.
-	 * iText Group NV requests that you retain the iText producer line
-	 * in every PDF that is created or manipulated using iText.
+    /**
+     * Gets the release number.
+     * iText Group NV requests that you retain the iText producer line
+     * in every PDF that is created or manipulated using iText.
+     *
      * @return the release number
      */
     public String getRelease() {
         return release;
     }
 
-	/**
-	 * Returns the iText version as shown in the producer line.
-	 * iText is a product developed by iText Group NV.
-	 * iText Group requests that you retain the iText producer line
-	 * in every PDF that is created or manipulated using iText.
+    /**
+     * Returns the iText version as shown in the producer line.
+     * iText is a product developed by iText Group NV.
+     * iText Group requests that you retain the iText producer line
+     * in every PDF that is created or manipulated using iText.
+     *
      * @return iText version
      */
     public String getVersion() {
@@ -189,14 +196,16 @@ public final class Version {
 
     /**
      * Returns a license key if one was provided, or null if not.
+     *
      * @return a license key.
      */
     public String getKey() {
-    	return key;
+        return key;
     }
-    
+
     /**
      * Checks if the AGPL version is used.
+     *
      * @return returns true if the AGPL version is used.
      */
     public static boolean isAGPLVersion() {

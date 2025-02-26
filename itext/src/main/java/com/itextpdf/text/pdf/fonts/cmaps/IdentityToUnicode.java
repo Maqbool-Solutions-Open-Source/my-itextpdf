@@ -46,7 +46,6 @@ package com.itextpdf.text.pdf.fonts.cmaps;
 import java.io.IOException;
 
 /**
- *
  * @author psoares
  */
 public class IdentityToUnicode {
@@ -55,7 +54,7 @@ public class IdentityToUnicode {
     private static CMapToUnicode identityKorea;
     private static CMapToUnicode identityGB;
     private static CMapToUnicode identityH;
-    
+
     public static CMapToUnicode GetMapFromOrdering(String ordering) throws IOException {
         if (ordering.equals("CNS1")) {
             if (identityCNS == null) {
@@ -65,8 +64,7 @@ public class IdentityToUnicode {
                 identityCNS = uni.exportToUnicode();
             }
             return identityCNS;
-        }
-        else if (ordering.equals("Japan1")) {
+        } else if (ordering.equals("Japan1")) {
             if (identityJapan == null) {
                 CMapUniCid uni = CMapCache.getCachedCMapUniCid("UniJIS-UTF16-H");
                 if (uni == null)
@@ -74,8 +72,7 @@ public class IdentityToUnicode {
                 identityJapan = uni.exportToUnicode();
             }
             return identityJapan;
-        }
-        else if (ordering.equals("Korea1")) {
+        } else if (ordering.equals("Korea1")) {
             if (identityKorea == null) {
                 CMapUniCid uni = CMapCache.getCachedCMapUniCid("UniKS-UTF16-H");
                 if (uni == null)
@@ -83,8 +80,7 @@ public class IdentityToUnicode {
                 identityKorea = uni.exportToUnicode();
             }
             return identityKorea;
-        }
-        else if (ordering.equals("GB1")) {
+        } else if (ordering.equals("GB1")) {
             if (identityGB == null) {
                 CMapUniCid uni = CMapCache.getCachedCMapUniCid("UniGB-UTF16-H");
                 if (uni == null)
@@ -92,8 +88,7 @@ public class IdentityToUnicode {
                 identityGB = uni.exportToUnicode();
             }
             return identityGB;
-        }
-        else if (ordering.equals("Identity")) {
+        } else if (ordering.equals("Identity")) {
             if (identityH == null) {
                 identityH = CMapToUnicode.getIdentity();
             }

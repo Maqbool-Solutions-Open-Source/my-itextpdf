@@ -52,55 +52,59 @@ import java.util.Map;
 
 /**
  * Extracts text from a PDF file.
- * @since	2.1.4
+ *
+ * @since 2.1.4
  */
 public final class PdfTextExtractor {
 
-	/**
-	 * This class only contains static methods.
-	 */
-	private PdfTextExtractor()  {
-	}
-        
+    /**
+     * This class only contains static methods.
+     */
+    private PdfTextExtractor() {
+    }
+
     /**
      * Extract text from a specified page using an extraction strategy.
      * Also allows registration of custom ContentOperators
-     * @param reader the reader to extract text from
-     * @param pageNumber the page to extract text from
-     * @param strategy the strategy to use for extracting text
+     *
+     * @param reader                     the reader to extract text from
+     * @param pageNumber                 the page to extract text from
+     * @param strategy                   the strategy to use for extracting text
      * @param additionalContentOperators an optional map of custom ContentOperators for rendering instructions
      * @return the extracted text
      * @throws IOException if any operation fails while reading from the provided PdfReader
      */
-    public static String getTextFromPage(PdfReader reader, int pageNumber, TextExtractionStrategy strategy, Map<String, ContentOperator> additionalContentOperators) throws IOException{
+    public static String getTextFromPage(PdfReader reader, int pageNumber, TextExtractionStrategy strategy, Map<String, ContentOperator> additionalContentOperators) throws IOException {
         PdfReaderContentParser parser = new PdfReaderContentParser(reader);
         return parser.processContent(pageNumber, strategy, additionalContentOperators).getResultantText();
     }
-	
+
     /**
      * Extract text from a specified page using an extraction strategy.
-     * @param reader the reader to extract text from
+     *
+     * @param reader     the reader to extract text from
      * @param pageNumber the page to extract text from
-     * @param strategy the strategy to use for extracting text
+     * @param strategy   the strategy to use for extracting text
      * @return the extracted text
      * @throws IOException if any operation fails while reading from the provided PdfReader
      * @since 5.0.2
      */
-    public static String getTextFromPage(PdfReader reader, int pageNumber, TextExtractionStrategy strategy) throws IOException{
+    public static String getTextFromPage(PdfReader reader, int pageNumber, TextExtractionStrategy strategy) throws IOException {
         return getTextFromPage(reader, pageNumber, strategy, new HashMap<String, ContentOperator>());
     }
-    
+
     /**
      * Extract text from a specified page using the default strategy.
      * <p><strong>Note:</strong> the default strategy is subject to change.  If using a specific strategy
      * is important, use {@link PdfTextExtractor#getTextFromPage(PdfReader, int, TextExtractionStrategy)}
-     * @param reader the reader to extract text from
+     *
+     * @param reader     the reader to extract text from
      * @param pageNumber the page to extract text from
      * @return the extracted text
      * @throws IOException if any operation fails while reading from the provided PdfReader
      * @since 5.0.2
      */
-    public static String getTextFromPage(PdfReader reader, int pageNumber) throws IOException{
+    public static String getTextFromPage(PdfReader reader, int pageNumber) throws IOException {
         return getTextFromPage(reader, pageNumber, new LocationTextExtractionStrategy());
     }
 

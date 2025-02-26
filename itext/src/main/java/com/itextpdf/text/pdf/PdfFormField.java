@@ -42,11 +42,13 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf;
+
 import java.util.ArrayList;
 
 import com.itextpdf.text.Rectangle;
 
-/** Implements form fields.
+/**
+ * Implements form fields.
  *
  * @author Paulo Soares
  */
@@ -70,6 +72,7 @@ public class PdfFormField extends PdfAnnotation {
     public static final int FF_RADIOSINUNISON = 1 << 25;
     /**
      * Allows text fields to support rich text.
+     *
      * @since 5.0.6
      */
     public static final int FF_RICHTEXT = 1 << 25;
@@ -95,14 +98,16 @@ public class PdfFormField extends PdfAnnotation {
     public static final boolean PASSWORD = true;
     static PdfName mergeTarget[] = {PdfName.FONT, PdfName.XOBJECT, PdfName.COLORSPACE, PdfName.PATTERN};
 
-    /** Holds value of property parent. */
+    /**
+     * Holds value of property parent.
+     */
     protected PdfFormField parent;
 
     protected ArrayList<PdfFormField> kids;
 
-/**
- * Constructs a new <CODE>PdfAnnotation</CODE> of subtype link (Action).
- */
+    /**
+     * Constructs a new <CODE>PdfAnnotation</CODE> of subtype link (Action).
+     */
 
     public PdfFormField(PdfWriter writer, float llx, float lly, float urx, float ury, PdfAction action) {
         super(writer, llx, lly, urx, ury, action);
@@ -111,7 +116,9 @@ public class PdfFormField extends PdfAnnotation {
         annotation = true;
     }
 
-    /** Creates new PdfFormField */
+    /**
+     * Creates new PdfFormField
+     */
     protected PdfFormField(PdfWriter writer) {
         super(writer, null);
         form = true;
@@ -219,7 +226,9 @@ public class PdfFormField extends PdfAnnotation {
         return field;
     }
 
-    /** Getter for property parent.
+    /**
+     * Getter for property parent.
+     *
      * @return Value of property parent.
      */
     public PdfFormField getParent() {
@@ -238,12 +247,13 @@ public class PdfFormField extends PdfAnnotation {
     }
 
     /**
-     * ORs together the given flags with the current /Ff value.  
+     * ORs together the given flags with the current /Ff value.
+     *
      * @param flags flags to be added.
      * @return the old flag value
      */
     public int setFieldFlags(int flags) {
-        PdfNumber obj = (PdfNumber)get(PdfName.FF);
+        PdfNumber obj = (PdfNumber) get(PdfName.FF);
         int old;
         if (obj == null)
             old = 0;
@@ -265,18 +275,19 @@ public class PdfFormField extends PdfAnnotation {
     public void setValue(PdfSignature sig) {
         put(PdfName.V, sig);
     }
-    
+
     /**
-     * Sets the rich value for this field.  
-     * It is suggested that the regular value of this field be set to an 
+     * Sets the rich value for this field.
+     * It is suggested that the regular value of this field be set to an
      * equivalent value.  Rich text values are only supported since PDF 1.5,
-     * and require that the FF_RV flag be set.  See PDF Reference chapter 
+     * and require that the FF_RV flag be set.  See PDF Reference chapter
      * 12.7.3.4 for details.
+     *
      * @param rv HTML markup for the rich value of this field
      * @since 5.0.6
      */
     public void setRichValue(String rv) {
-    	put(PdfName.RV, new PdfString( rv ));
+        put(PdfName.RV, new PdfString(rv));
     }
 
     public void setDefaultValueAsString(String s) {
@@ -294,6 +305,7 @@ public class PdfFormField extends PdfAnnotation {
 
     /**
      * The "user name" is the text shown as a tool.
+     *
      * @param s user name.
      */
     public void setUserName(String s) {
@@ -302,6 +314,7 @@ public class PdfFormField extends PdfAnnotation {
 
     /**
      * The mapping name is the name this field uses when submitting form data.
+     *
      * @param s
      */
     public void setMappingName(String s) {
@@ -310,7 +323,8 @@ public class PdfFormField extends PdfAnnotation {
 
     /**
      * Sets text alginment for this field
-     * @param v  one of the Q_* contstants
+     *
+     * @param v one of the Q_* contstants
      */
     public void setQuadding(int v) {
         put(PdfName.Q, new PdfNumber(v));
@@ -324,7 +338,7 @@ public class PdfFormField extends PdfAnnotation {
             target = mergeTarget[k];
             PdfDictionary pdfDict = source.getAsDict(target);
             if ((dic = pdfDict) != null) {
-                if ((res = (PdfDictionary)PdfReader.getPdfObject(result.get(target), result)) == null) {
+                if ((res = (PdfDictionary) PdfReader.getPdfObject(result.get(target), result)) == null) {
                     res = new PdfDictionary();
                 }
                 res.mergeDifferent(dic);
@@ -353,8 +367,8 @@ public class PdfFormField extends PdfAnnotation {
         if (templates == null)
             return;
         PdfDictionary dic = new PdfDictionary();
-        for (PdfTemplate template: templates) {
-            mergeResources(dic, (PdfDictionary)template.getResources());
+        for (PdfTemplate template : templates) {
+            mergeResources(dic, (PdfDictionary) template.getResources());
         }
         put(PdfName.DR, dic);
     }
@@ -363,13 +377,12 @@ public class PdfFormField extends PdfAnnotation {
         PdfAnnotation dup;
         if (annot.isForm()) {
             dup = new PdfFormField(annot.writer);
-            PdfFormField dupField = (PdfFormField)dup;
-            PdfFormField srcField = (PdfFormField)annot;
+            PdfFormField dupField = (PdfFormField) dup;
+            PdfFormField srcField = (PdfFormField) annot;
             dupField.parent = srcField.parent;
             dupField.kids = srcField.kids;
-        }
-        else
-            dup = annot.writer.createAnnotation(null, (PdfName)annot.get(PdfName.SUBTYPE));
+        } else
+            dup = annot.writer.createAnnotation(null, (PdfName) annot.get(PdfName.SUBTYPE));
         dup.merge(annot);
         dup.form = annot.form;
         dup.annotation = annot.annotation;

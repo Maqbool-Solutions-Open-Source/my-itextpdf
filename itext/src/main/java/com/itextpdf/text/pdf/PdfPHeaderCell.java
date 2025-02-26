@@ -50,31 +50,39 @@ package com.itextpdf.text.pdf;
  * Time: 9:57 AM
  * To change this template use File | Settings | File Templates.
  */
-public class PdfPHeaderCell extends PdfPCell{
+public class PdfPHeaderCell extends PdfPCell {
 
     // static member variables for the different styles
 
-    /** this is a possible style. */
+    /**
+     * this is a possible style.
+     */
     public static final int NONE = 0;
 
-    /** this is a possible style. */
+    /**
+     * this is a possible style.
+     */
     public static final int ROW = 1;
 
-    /** this is a possible style. */
+    /**
+     * this is a possible style.
+     */
     public static final int COLUMN = 2;
 
-    /** this is a possible style. */
+    /**
+     * this is a possible style.
+     */
     public static final int BOTH = 3;
 
-    
+
     protected int scope = NONE;
 
-    public PdfPHeaderCell(){
+    public PdfPHeaderCell() {
         super();
         role = PdfName.TH;
     }
 
-    public PdfPHeaderCell(PdfPHeaderCell headerCell){
+    public PdfPHeaderCell(PdfPHeaderCell headerCell) {
         super(headerCell);
         role = headerCell.role;
         scope = headerCell.scope;
@@ -82,15 +90,15 @@ public class PdfPHeaderCell extends PdfPCell{
     }
 
     protected String name = null;
-    
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-    
+
     public PdfName getRole() {
         return role;
     }
@@ -99,11 +107,11 @@ public class PdfPHeaderCell extends PdfPCell{
         this.role = role;
     }
 
-    public void setScope(int scope){
+    public void setScope(int scope) {
         this.scope = scope;
     }
 
-    public int getScope(){
+    public int getScope() {
         return scope;
     }
 }

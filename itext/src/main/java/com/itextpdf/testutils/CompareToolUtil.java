@@ -13,15 +13,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CompareToolUtil {
-    static private final  String SPLIT_REGEX = "((\".+?\"|[^'\\s]|'.+?')+)\\s*";
+    static private final String SPLIT_REGEX = "((\".+?\"|[^'\\s]|'.+?')+)\\s*";
 
     /**
      * Creates a temporary copy of a file.
      *
-     * @param file the path to the file to be copied
-     * @param tempFilePrefix the prefix of the copied file's name
+     * @param file            the path to the file to be copied
+     * @param tempFilePrefix  the prefix of the copied file's name
      * @param tempFilePostfix the postfix of the copied file's name
-     *
      * @return the path to the copied file
      */
     public static String createTempCopy(String file, String tempFilePrefix, String tempFilePostfix)
@@ -32,7 +31,7 @@ public class CompareToolUtil {
             copy(file, replacementFilePath);
         } catch (IOException e) {
             if (null != replacementFilePath) {
-                removeFiles(new String[] {replacementFilePath});
+                removeFiles(new String[]{replacementFilePath});
             }
             throw e;
         }
@@ -42,7 +41,7 @@ public class CompareToolUtil {
     /**
      * Creates a copy of a file.
      *
-     * @param inputFile the path to the file to be copied
+     * @param inputFile  the path to the file to be copied
      * @param outputFile the path, to which the passed file should be copied
      */
     public static void copy(String inputFile, String outputFile)
@@ -76,11 +75,11 @@ public class CompareToolUtil {
 
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
 
-        if(!(temp.delete())) {
+        if (!(temp.delete())) {
             throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
         }
 
-        if(!(temp.mkdir())) {
+        if (!(temp.mkdir())) {
             throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
         }
 
@@ -91,7 +90,6 @@ public class CompareToolUtil {
      * Removes all of the passed files.
      *
      * @param paths paths to files, which should be removed
-     *
      * @return true if all the files have been successfully removed, false otherwise
      */
     public static boolean removeFiles(String[] paths) {

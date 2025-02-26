@@ -86,18 +86,20 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Add verification according to PAdES-LTV (part 4)
+ *
  * @author Paulo Soares
  */
 public class LtvVerification {
 
-	private Logger LOGGER = LoggerFactory.getLogger(LtvVerification.class);
+    private Logger LOGGER = LoggerFactory.getLogger(LtvVerification.class);
 
     private PdfStamper stp;
     private PdfWriter writer;
     private PdfReader reader;
     private AcroFields acroFields;
-    private Map<PdfName,ValidationData> validated = new HashMap<PdfName,ValidationData>();
+    private Map<PdfName, ValidationData> validated = new HashMap<PdfName, ValidationData>();
     private boolean used = false;
+
     /**
      * What type of verification to include
      */
@@ -148,10 +150,12 @@ public class LtvVerification {
          */
         NO
     }
+
     /**
      * The verification constructor. This class should only be created with
      * PdfStamper.getLtvVerification() otherwise the information will not be
      * added to the Pdf.
+     *
      * @param stp the PdfStamper to apply the validation to
      */
     public LtvVerification(PdfStamper stp) {
@@ -163,11 +167,12 @@ public class LtvVerification {
 
     /**
      * Add verification for a particular signature
+     *
      * @param signatureName the signature to validate (it may be a timestamp)
-     * @param ocsp the interface to get the OCSP
-     * @param crl the interface to get the CRL
+     * @param ocsp          the interface to get the OCSP
+     * @param crl           the interface to get the CRL
      * @param certOption
-     * @param level the validation options to include
+     * @param level         the validation options to include
      * @param certInclude
      * @return true if a validation was generated, false otherwise
      * @throws GeneralSecurityException
@@ -183,10 +188,10 @@ public class LtvVerification {
         X509Certificate signingCert = pk.getSigningCertificate();
         ValidationData vd = new ValidationData();
         for (int k = 0; k < xc.length; ++k) {
-        	cert = (X509Certificate)xc[k];
-        	LOGGER.info("Certificate: " + cert.getSubjectDN());
+            cert = (X509Certificate) xc[k];
+            LOGGER.info("Certificate: " + cert.getSubjectDN());
             if (certOption == CertificateOption.SIGNING_CERTIFICATE
-            	&& !cert.equals(signingCert)) {
+                    && !cert.equals(signingCert)) {
                 continue;
             }
             byte[] ocspEnc = null;
@@ -216,7 +221,7 @@ public class LtvVerification {
                 }
             }
             if (certInclude == CertificateInclusion.YES) {
-            	vd.certs.add(cert.getEncoded());
+                vd.certs.add(cert.getEncoded());
             }
         }
         if (vd.crls.isEmpty() && vd.ocsps.isEmpty())
@@ -227,34 +232,33 @@ public class LtvVerification {
 
     /**
      * Returns the issuing certificate for a child certificate.
-     * @param cert	the certificate for which we search the parent
-     * @param certs	an array with certificates that contains the parent
-     * @return	the partent certificate
+     *
+     * @param cert  the certificate for which we search the parent
+     * @param certs an array with certificates that contains the parent
+     * @return the partent certificate
      */
     private X509Certificate getParent(X509Certificate cert, Certificate[] certs) {
-    	X509Certificate parent;
-    	for (int i = 0; i < certs.length; i++) {
-    		parent = (X509Certificate)certs[i];
-    		if (!cert.getIssuerDN().equals(parent.getSubjectDN()))
-    			continue;
-    		try {
-				cert.verify(parent.getPublicKey());
-				return parent;
-			} catch (Exception e) {
-				// do nothing
-			}
-    	}
-    	return null;
+        X509Certificate parent;
+        for (int i = 0; i < certs.length; i++) {
+            parent = (X509Certificate) certs[i];
+            if (!cert.getIssuerDN().equals(parent.getSubjectDN()))
+                continue;
+            try {
+                cert.verify(parent.getPublicKey());
+                return parent;
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        return null;
     }
 
     /**
-     *
      * Alternative addVerification.
      * I assume that inputs are deduplicated.
      *
      * @throws IOException
      * @throws GeneralSecurityException
-     *
      */
     public boolean addVerification(String signatureName, Collection<byte[]> ocsps, Collection<byte[]> crls, Collection<byte[]> certs) throws IOException, GeneralSecurityException {
         if (used)
@@ -296,9 +300,9 @@ public class LtvVerification {
         PdfDictionary dic = acroFields.getSignatureDictionary(signatureName);
         PdfString contents = dic.getAsString(PdfName.CONTENTS);
         byte[] bc = null;
-        if(!reader.isEncrypted()) {
+        if (!reader.isEncrypted()) {
             bc = contents.getOriginalBytes();
-        }else{
+        } else {
             bc = contents.getBytes();
         }
         byte[] bt = null;
@@ -319,6 +323,7 @@ public class LtvVerification {
     /**
      * Merges the validation with any validation already in the document or creates
      * a new one.
+     *
      * @throws IOException
      */
     public void merge() throws IOException {
@@ -375,12 +380,12 @@ public class LtvVerification {
         for (PdfObject pi : toDelete) {
             if (!pi.isIndirect())
                 continue;
-            PRIndirectReference pir = (PRIndirectReference)pi;
+            PRIndirectReference pir = (PRIndirectReference) pi;
             for (int k = 0; k < all.size(); ++k) {
                 PdfObject po = all.getPdfObject(k);
                 if (!po.isIndirect())
                     continue;
-                PRIndirectReference pod = (PRIndirectReference)po;
+                PRIndirectReference pod = (PRIndirectReference) po;
                 if (pir.getNumber() == pod.getNumber()) {
                     all.remove(k);
                     --k;
@@ -395,7 +400,7 @@ public class LtvVerification {
 
     private void outputDss(PdfDictionary dss, PdfDictionary vrim, PdfArray ocsps, PdfArray crls, PdfArray certs) throws IOException {
         writer.addDeveloperExtension(PdfDeveloperExtension.ESIC_1_7_EXTENSIONLEVEL5);
-    	PdfDictionary catalog = reader.getCatalog();
+        PdfDictionary catalog = reader.getCatalog();
         stp.markUsed(catalog);
         for (PdfName vkey : validated.keySet()) {
             PdfArray ocsp = new PdfArray();

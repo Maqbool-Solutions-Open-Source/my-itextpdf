@@ -92,16 +92,13 @@ public class GlyphList {
                 unicode2names.put(num, name);
                 names2unicode.put(name, new int[]{num.intValue()});
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("glyphlist.txt loading error: " + e.getMessage());
-        }
-        finally {
+        } finally {
             if (is != null) {
                 try {
                     is.close();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // empty on purpose
                 }
             }
@@ -113,8 +110,7 @@ public class GlyphList {
         if (v == null && name.length() == 7 && name.toLowerCase().startsWith("uni")) {
             try {
                 return new int[]{Integer.parseInt(name.substring(3), 16)};
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
             }
         }
         return v;

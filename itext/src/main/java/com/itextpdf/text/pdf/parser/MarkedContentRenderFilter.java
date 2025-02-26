@@ -45,25 +45,29 @@ package com.itextpdf.text.pdf.parser;
 
 /**
  * A {@link RenderFilter} that only allows text within a specified marked content sequence.
+ *
  * @since 5.0.2
  */
 public class MarkedContentRenderFilter extends RenderFilter {
-    
-	/** The MCID to match. */
-	private int mcid;
-	
+
+    /**
+     * The MCID to match.
+     */
+    private int mcid;
+
     /**
      * Constructs a filter
+     *
      * @param mcid the MCID to match
      */
     public MarkedContentRenderFilter(int mcid) {
         this.mcid = mcid;
     }
 
-    /** 
+    /**
      * @see com.itextpdf.text.pdf.parser.RenderFilter#allowText(com.itextpdf.text.pdf.parser.TextRenderInfo)
      */
-    public boolean allowText(TextRenderInfo renderInfo){
+    public boolean allowText(TextRenderInfo renderInfo) {
         return renderInfo.hasMcid(mcid);
     }
 

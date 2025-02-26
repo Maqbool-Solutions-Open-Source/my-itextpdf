@@ -41,23 +41,28 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
- package com.itextpdf.text.pdf;
+package com.itextpdf.text.pdf;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Iterator;
+
 /**
  * List a PDF file in human-readable form (for debugging reasons mostly)
+ *
  * @author Mark Thompson
  */
 
 public class PdfLister {
 
-	/** the printStream you want to write the output to. */
+    /**
+     * the printStream you want to write the output to.
+     */
     PrintStream out;
 
     /**
      * Create a new lister object.
+     *
      * @param out
      */
     public PdfLister(PrintStream out) {
@@ -66,34 +71,35 @@ public class PdfLister {
 
     /**
      * Visualizes a PDF object.
-     * @param object	a com.itextpdf.text.pdf object
+     *
+     * @param object a com.itextpdf.text.pdf object
      */
-    public void listAnyObject(PdfObject object)
-    {
+    public void listAnyObject(PdfObject object) {
         switch (object.type()) {
-        case PdfObject.ARRAY:
-            listArray((PdfArray)object);
-            break;
-        case PdfObject.DICTIONARY:
-            listDict((PdfDictionary) object);
-            break;
-        case PdfObject.STRING:
-            out.println("(" + object.toString() + ")");
-            break;
-        default:
-            out.println(object.toString());
-            break;
+            case PdfObject.ARRAY:
+                listArray((PdfArray) object);
+                break;
+            case PdfObject.DICTIONARY:
+                listDict((PdfDictionary) object);
+                break;
+            case PdfObject.STRING:
+                out.println("(" + object.toString() + ")");
+                break;
+            default:
+                out.println(object.toString());
+                break;
         }
     }
+
     /**
      * Visualizes a PdfDictionary object.
-     * @param dictionary	a com.itextpdf.text.pdf.PdfDictionary object
+     *
+     * @param dictionary a com.itextpdf.text.pdf.PdfDictionary object
      */
-    public void listDict(PdfDictionary dictionary)
-    {
+    public void listDict(PdfDictionary dictionary) {
         out.println("<<");
         PdfObject value;
-        for (PdfName key: dictionary.getKeys()) {
+        for (PdfName key : dictionary.getKeys()) {
             value = dictionary.get(key);
             out.print(key.toString());
             out.print(' ');
@@ -104,10 +110,10 @@ public class PdfLister {
 
     /**
      * Visualizes a PdfArray object.
-     * @param array	a com.itextpdf.text.pdf.PdfArray object
+     *
+     * @param array a com.itextpdf.text.pdf.PdfArray object
      */
-    public void listArray(PdfArray array)
-    {
+    public void listArray(PdfArray array) {
         out.println('[');
         for (Iterator<PdfObject> i = array.listIterator(); i.hasNext(); ) {
             PdfObject item = i.next();
@@ -115,13 +121,14 @@ public class PdfLister {
         }
         out.println(']');
     }
+
     /**
      * Visualizes a Stream.
+     *
      * @param stream
      * @param reader
      */
-    public void listStream(PRStream stream, PdfReaderInstance reader)
-    {
+    public void listStream(PRStream stream, PdfReaderInstance reader) {
         try {
             listDict(stream);
             out.println("startstream");
@@ -138,7 +145,7 @@ public class PdfLister {
             int len = b.length - 1;
             for (int k = 0; k < len; ++k) {
                 if (b[k] == '\r' && b[k + 1] != '\n')
-                    b[k] = (byte)'\n';
+                    b[k] = (byte) '\n';
             }
             out.println(new String(b));
             out.println("endstream");
@@ -148,12 +155,13 @@ public class PdfLister {
 //              System.err.println("Data Format Exception: " + e);
         }
     }
+
     /**
      * Visualizes an imported page
+     *
      * @param iPage
      */
-    public void listPage(PdfImportedPage iPage)
-    {
+    public void listPage(PdfImportedPage iPage) {
         int pageNum = iPage.getPageNumber();
         PdfReaderInstance readerInst = iPage.getPdfReaderInstance();
         PdfReader reader = readerInst.getReader();
@@ -164,16 +172,16 @@ public class PdfLister {
         if (obj == null)
             return;
         switch (obj.type) {
-        case PdfObject.STREAM:
-            listStream((PRStream)obj, readerInst);
-            break;
-        case PdfObject.ARRAY:
-            for (Iterator<PdfObject> i = ((PdfArray)obj).listIterator(); i.hasNext();) {
-                PdfObject o = PdfReader.getPdfObject(i.next());
-                listStream((PRStream)o, readerInst);
-                out.println("-----------");
-            }
-            break;
+            case PdfObject.STREAM:
+                listStream((PRStream) obj, readerInst);
+                break;
+            case PdfObject.ARRAY:
+                for (Iterator<PdfObject> i = ((PdfArray) obj).listIterator(); i.hasNext(); ) {
+                    PdfObject o = PdfReader.getPdfObject(i.next());
+                    listStream((PRStream) o, readerInst);
+                    out.println("-----------");
+                }
+                break;
         }
     }
 }

@@ -48,32 +48,32 @@ package com.itextpdf.text.api;
  */
 public interface Indentable {
 
-	/**
-	 * Sets the indentation on the left side.
-	 *
-	 * @param	indentation		the new indentation
-	 */
-	void setIndentationLeft(float indentation);
+    /**
+     * Sets the indentation on the left side.
+     *
+     * @param indentation the new indentation
+     */
+    void setIndentationLeft(float indentation);
 
-	/**
-	 * Sets the indentation on the right side.
-	 *
-	 * @param	indentation		the new indentation
-	 */
-	void setIndentationRight(float indentation);
+    /**
+     * Sets the indentation on the right side.
+     *
+     * @param indentation the new indentation
+     */
+    void setIndentationRight(float indentation);
 
-	/**
-	 * Gets the indentation on the left side.
-	 *
-	 * @return	the indentation
-	 */
-	float getIndentationLeft();
+    /**
+     * Gets the indentation on the left side.
+     *
+     * @return the indentation
+     */
+    float getIndentationLeft();
 
-	/**
-	 * Gets the indentation on the right side.
-	 *
-	 * @return	the indentation
-	 */
-	float getIndentationRight();
+    /**
+     * Gets the indentation on the right side.
+     *
+     * @return the indentation
+     */
+    float getIndentationRight();
 
 }

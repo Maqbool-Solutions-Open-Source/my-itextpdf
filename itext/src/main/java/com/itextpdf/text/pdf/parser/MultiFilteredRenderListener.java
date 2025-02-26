@@ -58,7 +58,8 @@ public class MultiFilteredRenderListener implements RenderListener {
 
     /**
      * Attaches a {@link RenderListener} for the corresponding filter set.
-     * @param delegate RenderListener instance to be attached.
+     *
+     * @param delegate  RenderListener instance to be attached.
      * @param filterSet filter set to be attached. The delegate will be invoked if all the filters pass.
      */
     public <E extends RenderListener> E attachRenderListener(E delegate, RenderFilter... filterSet) {

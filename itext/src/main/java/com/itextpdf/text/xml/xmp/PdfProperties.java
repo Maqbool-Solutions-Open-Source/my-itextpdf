@@ -48,11 +48,17 @@ import com.itextpdf.xmp.XMPException;
 import com.itextpdf.xmp.XMPMeta;
 
 public class PdfProperties {
-    /** Keywords. */
+    /**
+     * Keywords.
+     */
     public static final String KEYWORDS = "Keywords";
-    /** The PDF file version (for example: 1.0, 1.3, and so on). */
+    /**
+     * The PDF file version (for example: 1.0, 1.3, and so on).
+     */
     public static final String VERSION = "PDFVersion";
-    /** The Producer. */
+    /**
+     * The Producer.
+     */
     public static final String PRODUCER = "Producer";
     public static final String PART = "part";
 

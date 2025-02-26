@@ -79,10 +79,10 @@ public abstract class Line2D implements Shape, Cloneable {
 
         @Override
         public void setLine(double x1, double y1, double x2, double y2) {
-            this.x1 = (float)x1;
-            this.y1 = (float)y1;
-            this.x2 = (float)x2;
-            this.y2 = (float)y2;
+            this.x1 = (float) x1;
+            this.y1 = (float) y1;
+            this.x2 = (float) x2;
+            this.y2 = (float) y2;
         }
 
         public void setLine(float x1, float y1, float x2, float y2) {
@@ -189,7 +189,7 @@ public abstract class Line2D implements Shape, Cloneable {
     }
 
     /*
-     * Line2D path iterator 
+     * Line2D path iterator
      */
     class Iterator implements PathIterator {
 
@@ -197,17 +197,17 @@ public abstract class Line2D implements Shape, Cloneable {
          * The x coordinate of the start line point
          */
         double x1;
-        
+
         /**
          * The y coordinate of the start line point
          */
         double y1;
-        
+
         /**
          * The x coordinate of the end line point
          */
         double x2;
-        
+
         /**
          * The y coordinate of the end line point
          */
@@ -225,7 +225,8 @@ public abstract class Line2D implements Shape, Cloneable {
 
         /**
          * Constructs a new Line2D.Iterator for given line and transformation
-         * @param l - the source Line2D object
+         *
+         * @param l  - the source Line2D object
          * @param at - the AffineTransform object to apply rectangle path
          */
         Iterator(Line2D l, AffineTransform at) {
@@ -277,12 +278,12 @@ public abstract class Line2D implements Shape, Cloneable {
             int type;
             if (index == 0) {
                 type = SEG_MOVETO;
-                coords[0] = (float)x1;
-                coords[1] = (float)y1;
+                coords[0] = (float) x1;
+                coords[1] = (float) y1;
             } else {
                 type = SEG_LINETO;
-                coords[0] = (float)x2;
-                coords[1] = (float)y2;
+                coords[0] = (float) x2;
+                coords[1] = (float) y2;
             }
             if (t != null) {
                 t.transform(coords, 0, coords, 0, 1);
@@ -354,8 +355,7 @@ public abstract class Line2D implements Shape, Cloneable {
     }
 
     public static boolean linesIntersect(double x1, double y1, double x2,
-            double y2, double x3, double y3, double x4, double y4)
-    {
+                                         double y2, double x3, double y3, double x4, double y4) {
         /*
          * A = (x2-x1, y2-y1) B = (x3-x1, y3-y1) C = (x4-x1, y4-y1) D = (x4-x3,
          * y4-y3) = C-B E = (x1-x3, y1-y3) = -B F = (x2-x3, y2-y3) = A-B
@@ -380,15 +380,15 @@ public abstract class Line2D implements Shape, Cloneable {
         if (AvB == 0.0 && AvC == 0.0) {
             if (x2 != 0.0) {
                 return
-                    (x4 * x3 <= 0.0) ||
-                    ((x3 * x2 >= 0.0) &&
-                     (x2 > 0.0 ? x3 <= x2 || x4 <= x2 : x3 >= x2 || x4 >= x2));
+                        (x4 * x3 <= 0.0) ||
+                                ((x3 * x2 >= 0.0) &&
+                                        (x2 > 0.0 ? x3 <= x2 || x4 <= x2 : x3 >= x2 || x4 >= x2));
             }
             if (y2 != 0.0) {
                 return
-                    (y4 * y3 <= 0.0) ||
-                    ((y3 * y2 >= 0.0) &&
-                     (y2 > 0.0 ? y3 <= y2 || y4 <= y2 : y3 >= y2 || y4 >= y2));
+                        (y4 * y3 <= 0.0) ||
+                                ((y3 * y2 >= 0.0) &&
+                                        (y2 > 0.0 ? y3 <= y2 || y4 <= y2 : y3 >= y2 || y4 >= y2));
             }
             return false;
         }

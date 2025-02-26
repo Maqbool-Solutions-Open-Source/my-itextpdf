@@ -62,24 +62,28 @@ import com.itextpdf.text.pdf.codec.TIFFFaxDecompressor;
  * Encapsulates filter behavior for PDF streams.  Classes generally interace with this
  * using the static getDefaultFilterHandlers() method, then obtain the desired {@link FilterHandler}
  * via a lookup.
+ *
  * @since 5.0.4
  */
 // Dev note:  we eventually want to refactor PdfReader so all of the existing filter functionality is moved into this class
 // it may also be better to split the sub-classes out into a separate package 
 public final class FilterHandlers {
-    
+
     /**
      * The main interface for creating a new {@link FilterHandler}
      */
-    public static interface FilterHandler{
+    public static interface FilterHandler {
         public byte[] decode(byte[] b, PdfName filterName, PdfObject decodeParams, final PdfDictionary streamDictionary) throws IOException;
     }
-    
-    /** The default {@link FilterHandler}s used by iText */
+
+    /**
+     * The default {@link FilterHandler}s used by iText
+     */
     private static final Map<PdfName, FilterHandler> defaults;
+
     static {
         HashMap<PdfName, FilterHandler> map = new HashMap<PdfName, FilterHandler>();
-        
+
         map.put(PdfName.FLATEDECODE, new Filter_FLATEDECODE());
         map.put(PdfName.FL, new Filter_FLATEDECODE());
         map.put(PdfName.ASCIIHEXDECODE, new Filter_ASCIIHEXDECODE());
@@ -90,14 +94,14 @@ public final class FilterHandlers {
         map.put(PdfName.CCITTFAXDECODE, new Filter_CCITTFAXDECODE());
         map.put(PdfName.CRYPT, new Filter_DoNothing());
         map.put(PdfName.RUNLENGTHDECODE, new Filter_RUNLENGTHDECODE());
-        
+
         defaults = Collections.unmodifiableMap(map);
     }
-    
+
     /**
      * @return the default {@link FilterHandler}s used by iText
      */
-    public static Map<PdfName, FilterHandler> getDefaultFilterHandlers(){
+    public static Map<PdfName, FilterHandler> getDefaultFilterHandlers() {
         return defaults;
     }
 
@@ -125,7 +129,7 @@ public final class FilterHandlers {
     /**
      * Handles FLATEDECODE filter
      */
-    private static class Filter_FLATEDECODE implements FilterHandler{
+    private static class Filter_FLATEDECODE implements FilterHandler {
         public byte[] decode(byte[] b, PdfName filterName, PdfObject decodeParams, PdfDictionary streamDictionary) throws IOException {
             ByteArrayOutputStream out = enableMemoryLimitsAwareHandler(streamDictionary);
             b = PdfReader.FlateDecode(b, out);
@@ -133,11 +137,11 @@ public final class FilterHandlers {
             return b;
         }
     }
-    
+
     /**
      * Handles ASCIIHEXDECODE filter
      */
-    private static class Filter_ASCIIHEXDECODE implements FilterHandler{
+    private static class Filter_ASCIIHEXDECODE implements FilterHandler {
         public byte[] decode(byte[] b, PdfName filterName, PdfObject decodeParams, PdfDictionary streamDictionary) throws IOException {
             ByteArrayOutputStream out = enableMemoryLimitsAwareHandler(streamDictionary);
             b = PdfReader.ASCIIHexDecode(b, out);
@@ -148,18 +152,18 @@ public final class FilterHandlers {
     /**
      * Handles ASCIIHEXDECODE filter
      */
-    private static class Filter_ASCII85DECODE implements FilterHandler{
+    private static class Filter_ASCII85DECODE implements FilterHandler {
         public byte[] decode(byte[] b, PdfName filterName, PdfObject decodeParams, PdfDictionary streamDictionary) throws IOException {
             ByteArrayOutputStream out = enableMemoryLimitsAwareHandler(streamDictionary);
             b = PdfReader.ASCII85Decode(b, out);
             return b;
         }
     }
-    
+
     /**
      * Handles LZWDECODE filter
      */
-    private static class Filter_LZWDECODE implements FilterHandler{
+    private static class Filter_LZWDECODE implements FilterHandler {
         public byte[] decode(byte[] b, PdfName filterName, PdfObject decodeParams, PdfDictionary streamDictionary) throws IOException {
             ByteArrayOutputStream out = enableMemoryLimitsAwareHandler(streamDictionary);
             b = PdfReader.LZWDecode(b, out);
@@ -168,20 +172,20 @@ public final class FilterHandlers {
         }
     }
 
-    
+
     /**
      * Handles CCITTFAXDECODE filter
      */
-    private static class Filter_CCITTFAXDECODE implements FilterHandler{
+    private static class Filter_CCITTFAXDECODE implements FilterHandler {
         public byte[] decode(byte[] b, PdfName filterName, PdfObject decodeParams, PdfDictionary streamDictionary) throws IOException {
-            PdfNumber wn = (PdfNumber)PdfReader.getPdfObjectRelease(streamDictionary.get(PdfName.WIDTH));
-            PdfNumber hn = (PdfNumber)PdfReader.getPdfObjectRelease(streamDictionary.get(PdfName.HEIGHT));
+            PdfNumber wn = (PdfNumber) PdfReader.getPdfObjectRelease(streamDictionary.get(PdfName.WIDTH));
+            PdfNumber hn = (PdfNumber) PdfReader.getPdfObjectRelease(streamDictionary.get(PdfName.HEIGHT));
             if (wn == null || hn == null)
                 throw new UnsupportedPdfException(MessageLocalization.getComposedMessage("filter.ccittfaxdecode.is.only.supported.for.images"));
             int width = wn.intValue();
             int height = hn.intValue();
-            
-            PdfDictionary param = decodeParams instanceof PdfDictionary ? (PdfDictionary)decodeParams : null;
+
+            PdfDictionary param = decodeParams instanceof PdfDictionary ? (PdfDictionary) decodeParams : null;
             int k = 0;
             boolean blackIs1 = false;
             boolean byteAlign = false;
@@ -212,8 +216,7 @@ public final class FilterHandlers {
                         outBuf = outBuf2;
                     }
                 }
-            }
-            else {
+            } else {
                 TIFFFaxDecoder deca = new TIFFFaxDecoder(1, width, height);
                 deca.decodeT6(outBuf, b, 0, height, 0);
             }
@@ -223,15 +226,15 @@ public final class FilterHandlers {
                     outBuf[t] ^= 0xff;
                 }
             }
-            b = outBuf;       
+            b = outBuf;
             return b;
         }
     }
-    
+
     /**
      * A filter that doesn't modify the stream at all
      */
-    private static class Filter_DoNothing implements FilterHandler{
+    private static class Filter_DoNothing implements FilterHandler {
         public byte[] decode(byte[] b, PdfName filterName, PdfObject decodeParams, PdfDictionary streamDictionary) throws IOException {
             return b;
         }
@@ -240,24 +243,24 @@ public final class FilterHandlers {
     /**
      * Handles RUNLENGTHDECODE filter
      */
-    private static class Filter_RUNLENGTHDECODE implements FilterHandler{
+    private static class Filter_RUNLENGTHDECODE implements FilterHandler {
 
         public byte[] decode(byte[] b, PdfName filterName, PdfObject decodeParams, PdfDictionary streamDictionary) throws IOException {
-         // allocate the output buffer
+            // allocate the output buffer
             ByteArrayOutputStream out = enableMemoryLimitsAwareHandler(streamDictionary);
             byte dupCount = -1;
-            for(int i = 0; i < b.length; i++){
+            for (int i = 0; i < b.length; i++) {
                 dupCount = b[i];
                 if (dupCount == -128) break; // this is implicit end of data
-                
-                if (dupCount >= 0 && dupCount <= 127){
-                    int bytesToCopy = dupCount+1;
+
+                if (dupCount >= 0 && dupCount <= 127) {
+                    int bytesToCopy = dupCount + 1;
                     out.write(b, i, bytesToCopy);
-                    i+=bytesToCopy;
+                    i += bytesToCopy;
                 } else {
                     // make dupcount copies of the next byte
                     i++;
-                    for(int j = 0; j < 1-(int)(dupCount);j++){ 
+                    for (int j = 0; j < 1 - (int) (dupCount); j++) {
                         out.write(b[i]);
                     }
                 }
@@ -265,5 +268,5 @@ public final class FilterHandlers {
             return out.toByteArray();
         }
     }
-    
+
 }

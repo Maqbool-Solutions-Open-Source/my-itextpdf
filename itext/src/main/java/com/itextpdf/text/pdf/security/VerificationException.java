@@ -52,13 +52,15 @@ import java.security.cert.X509Certificate;
  */
 public class VerificationException extends GeneralSecurityException {
 
-	/** A Serial Version UID */
-	private static final long serialVersionUID = 2978604513926438256L;
-	
-	/**
-	 * Creates a VerificationException
-	 */
-	public VerificationException(Certificate cert, String message) {
-		super(String.format("Certificate %s failed: %s", cert == null ? "Unknown" : ((X509Certificate)cert).getSubjectDN().getName(), message));
-	}
+    /**
+     * A Serial Version UID
+     */
+    private static final long serialVersionUID = 2978604513926438256L;
+
+    /**
+     * Creates a VerificationException
+     */
+    public VerificationException(Certificate cert, String message) {
+        super(String.format("Certificate %s failed: %s", cert == null ? "Unknown" : ((X509Certificate) cert).getSubjectDN().getName(), message));
+    }
 }

@@ -193,7 +193,9 @@ public class BarcodeDatamatrix {
     /**
      * Creates an instance of this class.
      */
-    public BarcodeDatamatrix() { encoding = DEFAULT_DATA_MATRIX_ENCODING; }
+    public BarcodeDatamatrix() {
+        encoding = DEFAULT_DATA_MATRIX_ENCODING;
+    }
 
     public BarcodeDatamatrix(String code) throws UnsupportedEncodingException {
         encoding = DEFAULT_DATA_MATRIX_ENCODING;
@@ -207,13 +209,13 @@ public class BarcodeDatamatrix {
     }
 
     private void setBit(int x, int y, int xByte) {
-        image[y * xByte + x / 8] |= (byte)(128 >> (x & 7));
+        image[y * xByte + x / 8] |= (byte) (128 >> (x & 7));
     }
 
     private void draw(byte[] data, int dataSize, DmParams dm) {
         int i, j, p, x, y, xs, ys, z;
         int xByte = (dm.width + ws * 2 + 7) / 8;
-        Arrays.fill(image, (byte)0);
+        Arrays.fill(image, (byte) 0);
         //alignment patterns
         //dotted horizontal line
         for (i = ws; i < dm.height + ws; i += dm.heightSection) {
@@ -245,7 +247,7 @@ public class BarcodeDatamatrix {
                 for (xs = 0; xs < dm.width; xs += dm.widthSection) {
                     for (x = 1; x < dm.widthSection - 1; ++x) {
                         z = place[p++];
-                        if (z == 1 || z > 1 && (data[z/8-1] & 0xff & 128 >> z%8) != 0)
+                        if (z == 1 || z > 1 && (data[z / 8 - 1] & 0xff & 128 >> z % 8) != 0)
                             setBit(x + xs + ws, y + ys + ws, xByte);
                     }
                 }
@@ -262,7 +264,7 @@ public class BarcodeDatamatrix {
             int t = 129 + (position + 1) * 149 % 253 + 1;
             if (t > 254)
                 t -= 254;
-            data[position++] = (byte)t;
+            data[position++] = (byte) t;
         }
     }
 
@@ -288,22 +290,20 @@ public class BarcodeDatamatrix {
                 return -1;
 
             if (isDigit(c) && symbolIndex < 0 && ptrIn < textLength && isDigit(text[ptrIn] & 0xff)) {
-                data[ptrOut++] = (byte)((c - '0') * 10 + (text[ptrIn++] & 0xff) - '0' + 130);
-            }
-            else if (c > 127) {
+                data[ptrOut++] = (byte) ((c - '0') * 10 + (text[ptrIn++] & 0xff) - '0' + 130);
+            } else if (c > 127) {
                 if (ptrOut + 1 >= dataLength)
                     return -1;
                 data[ptrOut++] = EXTENDED_ASCII;
-                data[ptrOut++] = (byte)(c - 128 + 1);
-            }
-            else {
-                data[ptrOut++] = (byte)(c + 1);
+                data[ptrOut++] = (byte) (c - 128 + 1);
+            } else {
+                data[ptrOut++] = (byte) (c + 1);
             }
         }
         return ptrOut - origDataOffset;
     }
 
-    private static int b256Encodation(byte[] text, int textOffset, int textLength, byte[] data, int dataOffset, int dataLength,int symbolIndex, int prevEnc, int origDataOffset) {
+    private static int b256Encodation(byte[] text, int textOffset, int textLength, byte[] data, int dataOffset, int dataLength, int symbolIndex, int prevEnc, int origDataOffset) {
         int minRequiredDataIncrement;
         if (textLength == 0)
             return 0;
@@ -463,7 +463,7 @@ public class BarcodeDatamatrix {
         return ptrOut + dataOffset - origDataOffset;
     }
 
-    private static int EdifactEncodation(byte[] text, int textOffset, int textLength, byte[] data, int dataOffset, int dataLength,int symbolIndex, int prevEnc, int origDataOffset, boolean sizeFixed) {
+    private static int EdifactEncodation(byte[] text, int textOffset, int textLength, byte[] data, int dataOffset, int dataLength, int symbolIndex, int prevEnc, int origDataOffset, boolean sizeFixed) {
         int ptrIn, ptrOut, edi, pedi, c;
         if (textLength == 0)
             return 0;
@@ -841,7 +841,7 @@ public class BarcodeDatamatrix {
     private static int minValueInColumn(int[][] array, int column) {
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < 6; i++)
-            if (array[i][column] < min && array[i][column]  >= 0)
+            if (array[i][column] < min && array[i][column] >= 0)
                 min = array[i][column];
         return min != Integer.MAX_VALUE ? min : -1;
     }
@@ -953,7 +953,7 @@ public class BarcodeDatamatrix {
         int v, j, c;
         v = 0;
         for (j = 0; j < n; ++j) {
-            c = text[ptrIn++] &0xff;
+            c = text[ptrIn++] & 0xff;
             if (c < '0' || c > '9')
                 return -1;
             v = v * 10 + c - '0';
@@ -971,74 +971,73 @@ public class BarcodeDatamatrix {
         while (ptrIn < textSize) {
             if (order > 20)
                 return -1;
-            c = text[textOffset + ptrIn++] &0xff;
+            c = text[textOffset + ptrIn++] & 0xff;
             ++order;
             switch (c) {
-            case '.':
-                extOut = ptrIn;
-                return ptrOut;
-            case 'e':
-                if (ptrIn + 6 > textSize)
-                    return -1;
-                eci = getNumber(text, textOffset + ptrIn, 6);
-                if (eci < 0)
-                    return -1;
-                ptrIn += 6;
-                data[ptrOut++] = (byte)241;
-                if (eci < 127)
-                    data[ptrOut++] = (byte)(eci + 1);
-                else if (eci < 16383) {
-                    data[ptrOut++] = (byte)((eci - 127) / 254 + 128);
-                    data[ptrOut++] = (byte)((eci - 127) % 254 + 1);
-                }
-                else {
-                    data[ptrOut++] = (byte)((eci - 16383) / 64516 + 192);
-                    data[ptrOut++] = (byte)((eci - 16383) / 254 % 254 + 1);
-                    data[ptrOut++] = (byte)((eci - 16383) % 254 + 1);
-                }
-                break;
-            case 's':
-                if (order != 1)
-                    return -1;
-                if (ptrIn + 9 > textSize)
-                    return -1;
-                fn = getNumber(text, textOffset + ptrIn, 2);
-                if (fn <= 0 || fn > 16)
-                    return -1;
-                ptrIn += 2;
-                ft = getNumber(text, textOffset + ptrIn, 2);
-                if (ft <= 1 || ft > 16)
-                    return -1;
-                ptrIn += 2;
-                fi = getNumber(text, textOffset + ptrIn, 5);
-                if (fi < 0 || fn >= 64516)
-                    return -1;
-                ptrIn += 5;
-                data[ptrOut++] = (byte)233;
-                data[ptrOut++] = (byte)(fn - 1 << 4 | 17 - ft);
-                data[ptrOut++] = (byte)(fi / 254 + 1);
-                data[ptrOut++] = (byte)(fi % 254 + 1);
-                break;
-            case 'p':
-                if (order != 1)
-                    return -1;
-                data[ptrOut++] = (byte)234;
-                break;
-            case 'm':
-                if (order != 1)
-                    return -1;
-                if (ptrIn + 1 > textSize)
-                    return -1;
-                c = text[textOffset + ptrIn++] &0xff;
-                if (c != '5' && c != '5')
-                    return -1;
-                data[ptrOut++] = (byte)234;
-                data[ptrOut++] = (byte)(c == '5' ? 236 : 237);
-                break;
-            case 'f':
-                if (order != 1 && (order != 2 || text[textOffset] != 's' && text[textOffset] != 'm'))
-                    return -1;
-                data[ptrOut++] = (byte)232;
+                case '.':
+                    extOut = ptrIn;
+                    return ptrOut;
+                case 'e':
+                    if (ptrIn + 6 > textSize)
+                        return -1;
+                    eci = getNumber(text, textOffset + ptrIn, 6);
+                    if (eci < 0)
+                        return -1;
+                    ptrIn += 6;
+                    data[ptrOut++] = (byte) 241;
+                    if (eci < 127)
+                        data[ptrOut++] = (byte) (eci + 1);
+                    else if (eci < 16383) {
+                        data[ptrOut++] = (byte) ((eci - 127) / 254 + 128);
+                        data[ptrOut++] = (byte) ((eci - 127) % 254 + 1);
+                    } else {
+                        data[ptrOut++] = (byte) ((eci - 16383) / 64516 + 192);
+                        data[ptrOut++] = (byte) ((eci - 16383) / 254 % 254 + 1);
+                        data[ptrOut++] = (byte) ((eci - 16383) % 254 + 1);
+                    }
+                    break;
+                case 's':
+                    if (order != 1)
+                        return -1;
+                    if (ptrIn + 9 > textSize)
+                        return -1;
+                    fn = getNumber(text, textOffset + ptrIn, 2);
+                    if (fn <= 0 || fn > 16)
+                        return -1;
+                    ptrIn += 2;
+                    ft = getNumber(text, textOffset + ptrIn, 2);
+                    if (ft <= 1 || ft > 16)
+                        return -1;
+                    ptrIn += 2;
+                    fi = getNumber(text, textOffset + ptrIn, 5);
+                    if (fi < 0 || fn >= 64516)
+                        return -1;
+                    ptrIn += 5;
+                    data[ptrOut++] = (byte) 233;
+                    data[ptrOut++] = (byte) (fn - 1 << 4 | 17 - ft);
+                    data[ptrOut++] = (byte) (fi / 254 + 1);
+                    data[ptrOut++] = (byte) (fi % 254 + 1);
+                    break;
+                case 'p':
+                    if (order != 1)
+                        return -1;
+                    data[ptrOut++] = (byte) 234;
+                    break;
+                case 'm':
+                    if (order != 1)
+                        return -1;
+                    if (ptrIn + 1 > textSize)
+                        return -1;
+                    c = text[textOffset + ptrIn++] & 0xff;
+                    if (c != '5' && c != '5')
+                        return -1;
+                    data[ptrOut++] = (byte) 234;
+                    data[ptrOut++] = (byte) (c == '5' ? 236 : 237);
+                    break;
+                case 'f':
+                    if (order != 1 && (order != 2 || text[textOffset] != 's' && text[textOffset] != 'm'))
+                        return -1;
+                    data[ptrOut++] = (byte) 232;
             }
         }
         return -1;
@@ -1046,6 +1045,7 @@ public class BarcodeDatamatrix {
 
     /**
      * Creates a barcode. The <CODE>String</CODE> is interpreted with the ISO-8859-1 encoding
+     *
      * @param text the text
      * @return the status of the generation. It can be one of this values:
      * <p>
@@ -1059,7 +1059,7 @@ public class BarcodeDatamatrix {
         byte[] t;
         try {
             t = text.getBytes(encoding);
-        }catch (UnsupportedEncodingException exc) {
+        } catch (UnsupportedEncodingException exc) {
             throw new IllegalArgumentException("text has to be encoded in iso-8859-1");
         }
         return generate(t, 0, t.length);
@@ -1067,9 +1067,10 @@ public class BarcodeDatamatrix {
 
     /**
      * Creates a barcode.
-     * @param text the text
+     *
+     * @param text       the text
      * @param textOffset the offset to the start of the text
-     * @param textSize the text size
+     * @param textSize   the text size
      * @return the status of the generation. It can be one of this values:
      * <p>
      * <CODE>DM_NO_ERROR</CODE> - no error.<br>
@@ -1131,8 +1132,10 @@ public class BarcodeDatamatrix {
         return DM_NO_ERROR;
     }
 
-    /** Gets an <CODE>Image</CODE> with the barcode. A successful call to the method <CODE>generate()</CODE>
+    /**
+     * Gets an <CODE>Image</CODE> with the barcode. A successful call to the method <CODE>generate()</CODE>
      * before calling this method is required.
+     *
      * @return the barcode <CODE>Image</CODE>
      * @throws BadElementException on error
      */
@@ -1161,13 +1164,16 @@ public class BarcodeDatamatrix {
         int dataSize;
         int dataBlock;
         int errorBlock;
-    };
+    }
+
+    ;
 
     /**
      * Gets the generated image. The image is represented as a stream of bytes, each byte representing
      * 8 pixels, 0 for white and 1 for black, with the high-order bit of each byte first. Each row
      * is aligned at byte boundaries. The dimensions of the image are defined by height and width
      * plus 2 * ws.
+     *
      * @return the generated image
      */
     public byte[] getImage() {
@@ -1177,6 +1183,7 @@ public class BarcodeDatamatrix {
     /**
      * Gets the height of the barcode. Will contain the real height used after a successful call
      * to <CODE>generate()</CODE>. This height doesn't include the whitespace border, if any.
+     *
      * @return the height of the barcode
      */
     public int getHeight() {
@@ -1217,6 +1224,7 @@ public class BarcodeDatamatrix {
      * 120, 120<br>
      * 132, 132<br>
      * 144, 144<br>
+     *
      * @param height the height of the barcode
      */
     public void setHeight(int height) {
@@ -1226,6 +1234,7 @@ public class BarcodeDatamatrix {
     /**
      * Gets the width of the barcode. Will contain the real width used after a successful call
      * to <CODE>generate()</CODE>. This width doesn't include the whitespace border, if any.
+     *
      * @return the width of the barcode
      */
     public int getWidth() {
@@ -1266,6 +1275,7 @@ public class BarcodeDatamatrix {
      * 120, 120<br>
      * 132, 132<br>
      * 144, 144<br>
+     *
      * @param width the width of the barcode
      */
     public void setWidth(int width) {
@@ -1274,6 +1284,7 @@ public class BarcodeDatamatrix {
 
     /**
      * Gets the whitespace border around the barcode.
+     *
      * @return the whitespace border around the barcode
      */
     public int getWs() {
@@ -1282,6 +1293,7 @@ public class BarcodeDatamatrix {
 
     /**
      * Sets the whitespace border around the barcode.
+     *
      * @param ws the whitespace border around the barcode
      */
     public void setWs(int ws) {
@@ -1290,6 +1302,7 @@ public class BarcodeDatamatrix {
 
     /**
      * Gets the barcode options.
+     *
      * @return the barcode options
      */
     public int getOptions() {
@@ -1321,6 +1334,7 @@ public class BarcodeDatamatrix {
      * s020600075fe000005.Hello<p>
      * One of:<br>
      * <CODE>DM_TEST</CODE> - doesn't generate the image but returns all the other information.
+     *
      * @param options the barcode options
      */
     public void setOptions(int options) {
@@ -1356,95 +1370,113 @@ public class BarcodeDatamatrix {
 
         /* "module" places "chr+bit" with appropriate wrapping within array[] */
         private void module(int row, int col, int chr, int bit) {
-            if (row < 0) { row += nrow; col += 4 - (nrow+4)%8; }
-            if (col < 0) { col += ncol; row += 4 - (ncol+4)%8; }
-            array[row*ncol+col] = (short)(8*chr + bit);
+            if (row < 0) {
+                row += nrow;
+                col += 4 - (nrow + 4) % 8;
+            }
+            if (col < 0) {
+                col += ncol;
+                row += 4 - (ncol + 4) % 8;
+            }
+            array[row * ncol + col] = (short) (8 * chr + bit);
         }
+
         /* "utah" places the 8 bits of a utah-shaped symbol character in ECC200 */
         private void utah(int row, int col, int chr) {
-            module(row-2,col-2,chr,0);
-            module(row-2,col-1,chr,1);
-            module(row-1,col-2,chr,2);
-            module(row-1,col-1,chr,3);
-            module(row-1,col,chr,4);
-            module(row,col-2,chr,5);
-            module(row,col-1,chr,6);
-            module(row,col,chr,7);
+            module(row - 2, col - 2, chr, 0);
+            module(row - 2, col - 1, chr, 1);
+            module(row - 1, col - 2, chr, 2);
+            module(row - 1, col - 1, chr, 3);
+            module(row - 1, col, chr, 4);
+            module(row, col - 2, chr, 5);
+            module(row, col - 1, chr, 6);
+            module(row, col, chr, 7);
         }
+
         /* "cornerN" places 8 bits of the four special corner cases in ECC200 */
         private void corner1(int chr) {
-            module(nrow-1,0,chr,0);
-            module(nrow-1,1,chr,1);
-            module(nrow-1,2,chr,2);
-            module(0,ncol-2,chr,3);
-            module(0,ncol-1,chr,4);
-            module(1,ncol-1,chr,5);
-            module(2,ncol-1,chr,6);
-            module(3,ncol-1,chr,7);
+            module(nrow - 1, 0, chr, 0);
+            module(nrow - 1, 1, chr, 1);
+            module(nrow - 1, 2, chr, 2);
+            module(0, ncol - 2, chr, 3);
+            module(0, ncol - 1, chr, 4);
+            module(1, ncol - 1, chr, 5);
+            module(2, ncol - 1, chr, 6);
+            module(3, ncol - 1, chr, 7);
         }
-        private void corner2(int chr){
-            module(nrow-3,0,chr,0);
-            module(nrow-2,0,chr,1);
-            module(nrow-1,0,chr,2);
-            module(0,ncol-4,chr,3);
-            module(0,ncol-3,chr,4);
-            module(0,ncol-2,chr,5);
-            module(0,ncol-1,chr,6);
-            module(1,ncol-1,chr,7);
+
+        private void corner2(int chr) {
+            module(nrow - 3, 0, chr, 0);
+            module(nrow - 2, 0, chr, 1);
+            module(nrow - 1, 0, chr, 2);
+            module(0, ncol - 4, chr, 3);
+            module(0, ncol - 3, chr, 4);
+            module(0, ncol - 2, chr, 5);
+            module(0, ncol - 1, chr, 6);
+            module(1, ncol - 1, chr, 7);
         }
-        private void corner3(int chr){
-            module(nrow-3,0,chr,0);
-            module(nrow-2,0,chr,1);
-            module(nrow-1,0,chr,2);
-            module(0,ncol-2,chr,3);
-            module(0,ncol-1,chr,4);
-            module(1,ncol-1,chr,5);
-            module(2,ncol-1,chr,6);
-            module(3,ncol-1,chr,7);
+
+        private void corner3(int chr) {
+            module(nrow - 3, 0, chr, 0);
+            module(nrow - 2, 0, chr, 1);
+            module(nrow - 1, 0, chr, 2);
+            module(0, ncol - 2, chr, 3);
+            module(0, ncol - 1, chr, 4);
+            module(1, ncol - 1, chr, 5);
+            module(2, ncol - 1, chr, 6);
+            module(3, ncol - 1, chr, 7);
         }
-        private void corner4(int chr){
-            module(nrow-1,0,chr,0);
-            module(nrow-1,ncol-1,chr,1);
-            module(0,ncol-3,chr,2);
-            module(0,ncol-2,chr,3);
-            module(0,ncol-1,chr,4);
-            module(1,ncol-3,chr,5);
-            module(1,ncol-2,chr,6);
-            module(1,ncol-1,chr,7);
+
+        private void corner4(int chr) {
+            module(nrow - 1, 0, chr, 0);
+            module(nrow - 1, ncol - 1, chr, 1);
+            module(0, ncol - 3, chr, 2);
+            module(0, ncol - 2, chr, 3);
+            module(0, ncol - 1, chr, 4);
+            module(1, ncol - 3, chr, 5);
+            module(1, ncol - 2, chr, 6);
+            module(1, ncol - 1, chr, 7);
         }
+
         /* "ECC200" fills an nrow x ncol array with appropriate values for ECC200 */
-        private void ecc200(){
+        private void ecc200() {
             int row, col, chr;
             /* First, fill the array[] with invalid entries */
-            Arrays.fill(array, (short)0);
+            Arrays.fill(array, (short) 0);
             /* Starting in the correct location for character #1, bit 8,... */
-            chr = 1; row = 4; col = 0;
+            chr = 1;
+            row = 4;
+            col = 0;
             do {
                 /* repeatedly first check for one of the special corner cases, then... */
                 if (row == nrow && col == 0) corner1(chr++);
-                if (row == nrow-2 && col == 0 && ncol%4 != 0) corner2(chr++);
-                if (row == nrow-2 && col == 0 && ncol%8 == 4) corner3(chr++);
-                if (row == nrow+4 && col == 2 && ncol%8 == 0) corner4(chr++);
+                if (row == nrow - 2 && col == 0 && ncol % 4 != 0) corner2(chr++);
+                if (row == nrow - 2 && col == 0 && ncol % 8 == 4) corner3(chr++);
+                if (row == nrow + 4 && col == 2 && ncol % 8 == 0) corner4(chr++);
                 /* sweep upward diagonally, inserting successive characters,... */
                 do {
-                    if (row < nrow && col >= 0 && array[row*ncol+col] == 0)
-                        utah(row,col,chr++);
-                    row -= 2; col += 2;
+                    if (row < nrow && col >= 0 && array[row * ncol + col] == 0)
+                        utah(row, col, chr++);
+                    row -= 2;
+                    col += 2;
                 } while (row >= 0 && col < ncol);
-                row += 1; col += 3;
+                row += 1;
+                col += 3;
                 /* & then sweep downward diagonally, inserting successive characters,... */
 
                 do {
-                    if (row >= 0 && col < ncol && array[row*ncol+col] == 0)
-                        utah(row,col,chr++);
-                    row += 2; col -= 2;
+                    if (row >= 0 && col < ncol && array[row * ncol + col] == 0)
+                        utah(row, col, chr++);
+                    row += 2;
+                    col -= 2;
                 } while (row < nrow && col >= 0);
-                row += 3; col += 1;
+                row += 3;
+                col += 1;
                 /* ... until the entire array is scanned */
             } while (row < nrow || col < ncol);
             /* Lastly, if the lower righthand corner is untouched, fill in fixed pattern */
-            if (array[nrow*ncol-1] == 0) {
-                array[nrow*ncol-1] = array[nrow*ncol-ncol-2] = 1;
+            if (array[nrow * ncol - 1] == 0) {
+                array[nrow * ncol - 1] = array[nrow * ncol - ncol - 2] = 1;
             }
         }
     }
@@ -1452,161 +1484,161 @@ public class BarcodeDatamatrix {
     static class ReedSolomon {
 
         private static final int log[] = {
-               0, 255,   1, 240,   2, 225, 241,  53,   3,  38, 226, 133, 242,  43,  54, 210,
-               4, 195,  39, 114, 227, 106, 134,  28, 243, 140,  44,  23,  55, 118, 211, 234,
-               5, 219, 196,  96,  40, 222, 115, 103, 228,  78, 107, 125, 135,   8,  29, 162,
-             244, 186, 141, 180,  45,  99,  24,  49,  56,  13, 119, 153, 212, 199, 235,  91,
-               6,  76, 220, 217, 197,  11,  97, 184,  41,  36, 223, 253, 116, 138, 104, 193,
-             229,  86,  79, 171, 108, 165, 126, 145, 136,  34,   9,  74,  30,  32, 163,  84,
-             245, 173, 187, 204, 142,  81, 181, 190,  46,  88, 100, 159,  25, 231,  50, 207,
-              57, 147,  14,  67, 120, 128, 154, 248, 213, 167, 200,  63, 236, 110,  92, 176,
-               7, 161,  77, 124, 221, 102, 218,  95, 198,  90,  12, 152,  98,  48, 185, 179,
-              42, 209,  37, 132, 224,  52, 254, 239, 117, 233, 139,  22, 105,  27, 194, 113,
-             230, 206,  87, 158,  80, 189, 172, 203, 109, 175, 166,  62, 127, 247, 146,  66,
-             137, 192,  35, 252,  10, 183,  75, 216,  31,  83,  33,  73, 164, 144,  85, 170,
-             246,  65, 174,  61, 188, 202, 205, 157, 143, 169,  82,  72, 182, 215, 191, 251,
-              47, 178,  89, 151, 101,  94, 160, 123,  26, 112, 232,  21,  51, 238, 208, 131,
-              58,  69, 148,  18,  15,  16,  68,  17, 121, 149, 129,  19, 155,  59, 249,  70,
-             214, 250, 168,  71, 201, 156,  64,  60, 237, 130, 111,  20,  93, 122, 177, 150
+                0, 255, 1, 240, 2, 225, 241, 53, 3, 38, 226, 133, 242, 43, 54, 210,
+                4, 195, 39, 114, 227, 106, 134, 28, 243, 140, 44, 23, 55, 118, 211, 234,
+                5, 219, 196, 96, 40, 222, 115, 103, 228, 78, 107, 125, 135, 8, 29, 162,
+                244, 186, 141, 180, 45, 99, 24, 49, 56, 13, 119, 153, 212, 199, 235, 91,
+                6, 76, 220, 217, 197, 11, 97, 184, 41, 36, 223, 253, 116, 138, 104, 193,
+                229, 86, 79, 171, 108, 165, 126, 145, 136, 34, 9, 74, 30, 32, 163, 84,
+                245, 173, 187, 204, 142, 81, 181, 190, 46, 88, 100, 159, 25, 231, 50, 207,
+                57, 147, 14, 67, 120, 128, 154, 248, 213, 167, 200, 63, 236, 110, 92, 176,
+                7, 161, 77, 124, 221, 102, 218, 95, 198, 90, 12, 152, 98, 48, 185, 179,
+                42, 209, 37, 132, 224, 52, 254, 239, 117, 233, 139, 22, 105, 27, 194, 113,
+                230, 206, 87, 158, 80, 189, 172, 203, 109, 175, 166, 62, 127, 247, 146, 66,
+                137, 192, 35, 252, 10, 183, 75, 216, 31, 83, 33, 73, 164, 144, 85, 170,
+                246, 65, 174, 61, 188, 202, 205, 157, 143, 169, 82, 72, 182, 215, 191, 251,
+                47, 178, 89, 151, 101, 94, 160, 123, 26, 112, 232, 21, 51, 238, 208, 131,
+                58, 69, 148, 18, 15, 16, 68, 17, 121, 149, 129, 19, 155, 59, 249, 70,
+                214, 250, 168, 71, 201, 156, 64, 60, 237, 130, 111, 20, 93, 122, 177, 150
         };
 
         private static final int alog[] = {
-               1,   2,   4,   8,  16,  32,  64, 128,  45,  90, 180,  69, 138,  57, 114, 228,
-             229, 231, 227, 235, 251, 219, 155,  27,  54, 108, 216, 157,  23,  46,  92, 184,
-              93, 186,  89, 178,  73, 146,   9,  18,  36,  72, 144,  13,  26,  52, 104, 208,
-             141,  55, 110, 220, 149,   7,  14,  28,  56, 112, 224, 237, 247, 195, 171, 123,
-             246, 193, 175, 115, 230, 225, 239, 243, 203, 187,  91, 182,  65, 130,  41,  82,
-             164, 101, 202, 185,  95, 190,  81, 162, 105, 210, 137,  63, 126, 252, 213, 135,
-              35,  70, 140,  53, 106, 212, 133,  39,  78, 156,  21,  42,  84, 168, 125, 250,
-             217, 159,  19,  38,  76, 152,  29,  58, 116, 232, 253, 215, 131,  43,  86, 172,
-             117, 234, 249, 223, 147,  11,  22,  44,  88, 176,  77, 154,  25,  50, 100, 200,
-             189,  87, 174, 113, 226, 233, 255, 211, 139,  59, 118, 236, 245, 199, 163, 107,
-             214, 129,  47,  94, 188,  85, 170, 121, 242, 201, 191,  83, 166,  97, 194, 169,
-             127, 254, 209, 143,  51, 102, 204, 181,  71, 142,  49,  98, 196, 165, 103, 206,
-             177,  79, 158,  17,  34,  68, 136,  61, 122, 244, 197, 167,  99, 198, 161, 111,
-             222, 145,  15,  30,  60, 120, 240, 205, 183,  67, 134,  33,  66, 132,  37,  74,
-             148,   5,  10,  20,  40,  80, 160, 109, 218, 153,  31,  62, 124, 248, 221, 151,
-               3,   6,  12,  24,  48,  96, 192, 173, 119, 238, 241, 207, 179,  75, 150,   1
+                1, 2, 4, 8, 16, 32, 64, 128, 45, 90, 180, 69, 138, 57, 114, 228,
+                229, 231, 227, 235, 251, 219, 155, 27, 54, 108, 216, 157, 23, 46, 92, 184,
+                93, 186, 89, 178, 73, 146, 9, 18, 36, 72, 144, 13, 26, 52, 104, 208,
+                141, 55, 110, 220, 149, 7, 14, 28, 56, 112, 224, 237, 247, 195, 171, 123,
+                246, 193, 175, 115, 230, 225, 239, 243, 203, 187, 91, 182, 65, 130, 41, 82,
+                164, 101, 202, 185, 95, 190, 81, 162, 105, 210, 137, 63, 126, 252, 213, 135,
+                35, 70, 140, 53, 106, 212, 133, 39, 78, 156, 21, 42, 84, 168, 125, 250,
+                217, 159, 19, 38, 76, 152, 29, 58, 116, 232, 253, 215, 131, 43, 86, 172,
+                117, 234, 249, 223, 147, 11, 22, 44, 88, 176, 77, 154, 25, 50, 100, 200,
+                189, 87, 174, 113, 226, 233, 255, 211, 139, 59, 118, 236, 245, 199, 163, 107,
+                214, 129, 47, 94, 188, 85, 170, 121, 242, 201, 191, 83, 166, 97, 194, 169,
+                127, 254, 209, 143, 51, 102, 204, 181, 71, 142, 49, 98, 196, 165, 103, 206,
+                177, 79, 158, 17, 34, 68, 136, 61, 122, 244, 197, 167, 99, 198, 161, 111,
+                222, 145, 15, 30, 60, 120, 240, 205, 183, 67, 134, 33, 66, 132, 37, 74,
+                148, 5, 10, 20, 40, 80, 160, 109, 218, 153, 31, 62, 124, 248, 221, 151,
+                3, 6, 12, 24, 48, 96, 192, 173, 119, 238, 241, 207, 179, 75, 150, 1
         };
 
         private static final int poly5[] = {
-             228,  48,  15, 111,  62
+                228, 48, 15, 111, 62
         };
 
         private static final int poly7[] = {
-              23,  68, 144, 134, 240,  92, 254
+                23, 68, 144, 134, 240, 92, 254
         };
 
         private static final int poly10[] = {
-              28,  24, 185, 166, 223, 248, 116, 255, 110,  61
+                28, 24, 185, 166, 223, 248, 116, 255, 110, 61
         };
 
         private static final int poly11[] = {
-             175, 138, 205,  12, 194, 168,  39, 245,  60,  97, 120
+                175, 138, 205, 12, 194, 168, 39, 245, 60, 97, 120
         };
 
         private static final int poly12[] = {
-              41, 153, 158,  91,  61,  42, 142, 213,  97, 178, 100, 242
+                41, 153, 158, 91, 61, 42, 142, 213, 97, 178, 100, 242
         };
 
         private static final int poly14[] = {
-             156,  97, 192, 252,  95,   9, 157, 119, 138,  45,  18, 186,  83, 185
+                156, 97, 192, 252, 95, 9, 157, 119, 138, 45, 18, 186, 83, 185
         };
 
         private static final int poly18[] = {
-              83, 195, 100,  39, 188,  75,  66,  61, 241, 213, 109, 129,  94, 254, 225,  48,
-              90, 188
+                83, 195, 100, 39, 188, 75, 66, 61, 241, 213, 109, 129, 94, 254, 225, 48,
+                90, 188
         };
 
         private static final int poly20[] = {
-              15, 195, 244,   9, 233,  71, 168,   2, 188, 160, 153, 145, 253,  79, 108,  82,
-              27, 174, 186, 172
+                15, 195, 244, 9, 233, 71, 168, 2, 188, 160, 153, 145, 253, 79, 108, 82,
+                27, 174, 186, 172
         };
 
         private static final int poly24[] = {
-              52, 190,  88, 205, 109,  39, 176,  21, 155, 197, 251, 223, 155,  21,   5, 172,
-             254, 124,  12, 181, 184,  96,  50, 193
+                52, 190, 88, 205, 109, 39, 176, 21, 155, 197, 251, 223, 155, 21, 5, 172,
+                254, 124, 12, 181, 184, 96, 50, 193
         };
 
         private static final int poly28[] = {
-             211, 231,  43,  97,  71,  96, 103, 174,  37, 151, 170,  53,  75,  34, 249, 121,
-              17, 138, 110, 213, 141, 136, 120, 151, 233, 168,  93, 255
+                211, 231, 43, 97, 71, 96, 103, 174, 37, 151, 170, 53, 75, 34, 249, 121,
+                17, 138, 110, 213, 141, 136, 120, 151, 233, 168, 93, 255
         };
 
         private static final int poly36[] = {
-             245, 127, 242, 218, 130, 250, 162, 181, 102, 120,  84, 179, 220, 251,  80, 182,
-             229,  18,   2,   4,  68,  33, 101, 137,  95, 119, 115,  44, 175, 184,  59,  25,
-             225,  98,  81, 112
+                245, 127, 242, 218, 130, 250, 162, 181, 102, 120, 84, 179, 220, 251, 80, 182,
+                229, 18, 2, 4, 68, 33, 101, 137, 95, 119, 115, 44, 175, 184, 59, 25,
+                225, 98, 81, 112
         };
 
         private static final int poly42[] = {
-              77, 193, 137,  31,  19,  38,  22, 153, 247, 105, 122,   2, 245, 133, 242,   8,
-             175,  95, 100,   9, 167, 105, 214, 111,  57, 121,  21,   1, 253,  57,  54, 101,
-             248, 202,  69,  50, 150, 177, 226,   5,   9,   5
+                77, 193, 137, 31, 19, 38, 22, 153, 247, 105, 122, 2, 245, 133, 242, 8,
+                175, 95, 100, 9, 167, 105, 214, 111, 57, 121, 21, 1, 253, 57, 54, 101,
+                248, 202, 69, 50, 150, 177, 226, 5, 9, 5
         };
 
         private static final int poly48[] = {
-             245, 132, 172, 223,  96,  32, 117,  22, 238, 133, 238, 231, 205, 188, 237,  87,
-             191, 106,  16, 147, 118,  23,  37,  90, 170, 205, 131,  88, 120, 100,  66, 138,
-             186, 240,  82,  44, 176,  87, 187, 147, 160, 175,  69, 213,  92, 253, 225,  19
+                245, 132, 172, 223, 96, 32, 117, 22, 238, 133, 238, 231, 205, 188, 237, 87,
+                191, 106, 16, 147, 118, 23, 37, 90, 170, 205, 131, 88, 120, 100, 66, 138,
+                186, 240, 82, 44, 176, 87, 187, 147, 160, 175, 69, 213, 92, 253, 225, 19
         };
 
         private static final int poly56[] = {
-             175,   9, 223, 238,  12,  17, 220, 208, 100,  29, 175, 170, 230, 192, 215, 235,
-             150, 159,  36, 223,  38, 200, 132,  54, 228, 146, 218, 234, 117, 203,  29, 232,
-             144, 238,  22, 150, 201, 117,  62, 207, 164,  13, 137, 245, 127,  67, 247,  28,
-             155,  43, 203, 107, 233,  53, 143,  46
+                175, 9, 223, 238, 12, 17, 220, 208, 100, 29, 175, 170, 230, 192, 215, 235,
+                150, 159, 36, 223, 38, 200, 132, 54, 228, 146, 218, 234, 117, 203, 29, 232,
+                144, 238, 22, 150, 201, 117, 62, 207, 164, 13, 137, 245, 127, 67, 247, 28,
+                155, 43, 203, 107, 233, 53, 143, 46
         };
 
         private static final int poly62[] = {
-             242,  93, 169,  50, 144, 210,  39, 118, 202, 188, 201, 189, 143, 108, 196,  37,
-             185, 112, 134, 230, 245,  63, 197, 190, 250, 106, 185, 221, 175,  64, 114,  71,
-             161,  44, 147,   6,  27, 218,  51,  63,  87,  10,  40, 130, 188,  17, 163,  31,
-             176, 170,   4, 107, 232,   7,  94, 166, 224, 124,  86,  47,  11, 204
+                242, 93, 169, 50, 144, 210, 39, 118, 202, 188, 201, 189, 143, 108, 196, 37,
+                185, 112, 134, 230, 245, 63, 197, 190, 250, 106, 185, 221, 175, 64, 114, 71,
+                161, 44, 147, 6, 27, 218, 51, 63, 87, 10, 40, 130, 188, 17, 163, 31,
+                176, 170, 4, 107, 232, 7, 94, 166, 224, 124, 86, 47, 11, 204
         };
 
         private static final int poly68[] = {
-             220, 228, 173,  89, 251, 149, 159,  56,  89,  33, 147, 244, 154,  36,  73, 127,
-             213, 136, 248, 180, 234, 197, 158, 177,  68, 122,  93, 213,  15, 160, 227, 236,
-              66, 139, 153, 185, 202, 167, 179,  25, 220, 232,  96, 210, 231, 136, 223, 239,
-             181, 241,  59,  52, 172,  25,  49, 232, 211, 189,  64,  54, 108, 153, 132,  63,
-              96, 103,  82, 186
+                220, 228, 173, 89, 251, 149, 159, 56, 89, 33, 147, 244, 154, 36, 73, 127,
+                213, 136, 248, 180, 234, 197, 158, 177, 68, 122, 93, 213, 15, 160, 227, 236,
+                66, 139, 153, 185, 202, 167, 179, 25, 220, 232, 96, 210, 231, 136, 223, 239,
+                181, 241, 59, 52, 172, 25, 49, 232, 211, 189, 64, 54, 108, 153, 132, 63,
+                96, 103, 82, 186
         };
 
         private static int[] getPoly(int nc) {
             switch (nc) {
-            case 5:
-                return poly5;
-            case 7:
-                return poly7;
-            case 10:
-                return poly10;
-            case 11:
-                return poly11;
-            case 12:
-                return poly12;
-            case 14:
-                return poly14;
-            case 18:
-                return poly18;
-            case 20:
-                return poly20;
-            case 24:
-                return poly24;
-            case 28:
-                return poly28;
-            case 36:
-                return poly36;
-            case 42:
-                return poly42;
-            case 48:
-                return poly48;
-            case 56:
-                return poly56;
-            case 62:
-                return poly62;
-            case 68:
-                return poly68;
+                case 5:
+                    return poly5;
+                case 7:
+                    return poly7;
+                case 10:
+                    return poly10;
+                case 11:
+                    return poly11;
+                case 12:
+                    return poly12;
+                case 14:
+                    return poly14;
+                case 18:
+                    return poly18;
+                case 20:
+                    return poly20;
+                case 24:
+                    return poly24;
+                case 28:
+                    return poly28;
+                case 36:
+                    return poly36;
+                case 42:
+                    return poly42;
+                case 48:
+                    return poly48;
+                case 56:
+                    return poly56;
+                case 62:
+                    return poly62;
+                case 68:
+                    return poly68;
             }
             return null;
         }
@@ -1614,11 +1646,11 @@ public class BarcodeDatamatrix {
         private static void reedSolomonBlock(byte[] wd, int nd, byte[] ncout, int nc, int[] c) {
             int i, j, k;
 
-            for (i=0; i<=nc; i++) ncout[i] = 0;
-            for (i=0; i<nd; i++) {
+            for (i = 0; i <= nc; i++) ncout[i] = 0;
+            for (i = 0; i < nd; i++) {
                 k = (ncout[0] ^ wd[i]) & 0xff;
-                for (j=0; j<nc; j++) {
-                    ncout[j] = (byte)(ncout[j+1] ^ (k == 0 ? 0 : (byte)alog[(log[k] + log[c[nc-j-1]]) % 255]));
+                for (j = 0; j < nc; j++) {
+                    ncout[j] = (byte) (ncout[j + 1] ^ (k == 0 ? 0 : (byte) alog[(log[k] + log[c[nc - j - 1]]) % 255]));
                 }
             }
         }
@@ -1629,8 +1661,7 @@ public class BarcodeDatamatrix {
             byte[] buf = new byte[256];
             byte[] ecc = new byte[256];
             int[] c = getPoly(nc);
-            for (b = 0; b < blocks; b++)
-            {
+            for (b = 0; b < blocks; b++) {
                 int n, p = 0;
                 for (n = b; n < nd; n += blocks)
                     buf[p++] = wd[n];
@@ -1667,6 +1698,7 @@ public class BarcodeDatamatrix {
     /**
      * Creates a <CODE>java.awt.Image</CODE>. A successful call to the method <CODE>generate()</CODE>
      * before calling this method is required.
+     *
      * @param foreground the color of the bars
      * @param background the color of the background
      * @return the image

@@ -45,6 +45,7 @@
 package com.itextpdf.text.pdf.codec;
 
 import com.itextpdf.text.DocWriter;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -53,11 +54,11 @@ import java.util.zip.DeflaterOutputStream;
 /**
  * Writes a PNG image.
  *
- * @author  Paulo Soares
+ * @author Paulo Soares
  * @since 5.0.3
  */
 public class PngWriter {
-    private static final byte[] PNG_SIGNTURE = {(byte)137, 80, 78, 71, 13, 10, 26, 10};
+    private static final byte[] PNG_SIGNTURE = {(byte) 137, 80, 78, 71, 13, 10, 26, 10};
 
     private static final byte[] IHDR = DocWriter.getISOBytes("IHDR");
     private static final byte[] PLTE = DocWriter.getISOBytes("PLTE");
@@ -94,12 +95,12 @@ public class PngWriter {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DeflaterOutputStream zip = new DeflaterOutputStream(stream);
         int k;
-        for (k = 0; k < data.length-stride; k += stride) {
+        for (k = 0; k < data.length - stride; k += stride) {
             zip.write(0);
             zip.write(data, k, stride);
         }
         int remaining = data.length - k;
-        if (remaining > 0){
+        if (remaining > 0) {
             zip.write(0);
             zip.write(data, k, remaining);
         }
@@ -113,9 +114,9 @@ public class PngWriter {
 
     public void writeIccProfile(byte[] data) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        stream.write((byte)'I');
-        stream.write((byte)'C');
-        stream.write((byte)'C');
+        stream.write((byte) 'I');
+        stream.write((byte) 'C');
+        stream.write((byte) 'C');
         stream.write(0);
         stream.write(0);
         DeflaterOutputStream zip = new DeflaterOutputStream(stream);
@@ -165,10 +166,10 @@ public class PngWriter {
     }
 
     public static void outputInt(int n, OutputStream s) throws IOException {
-        s.write((byte)(n >> 24));
-        s.write((byte)(n >> 16));
-        s.write((byte)(n >> 8));
-        s.write((byte)n);
+        s.write((byte) (n >> 24));
+        s.write((byte) (n >> 16));
+        s.write((byte) (n >> 8));
+        s.write((byte) n);
     }
 
     public void writeChunk(byte[] chunkType, byte[] data) throws IOException {

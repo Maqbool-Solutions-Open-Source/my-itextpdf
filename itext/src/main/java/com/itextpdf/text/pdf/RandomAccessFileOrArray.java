@@ -55,7 +55,9 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-/** Intended to be layered on top of a low level RandomAccessSource object.  Provides
+
+/**
+ * Intended to be layered on top of a low level RandomAccessSource object.  Provides
  * functionality useful during parsing:
  * <ul>
  * 	<li>tracks current position in the file</li>
@@ -67,17 +69,17 @@ import java.net.URL;
  * @author Paulo Soares, Kevin Day
  */
 public class RandomAccessFileOrArray implements DataInput {
-	
-	/**
-	 * The source that backs this object
-	 */
-	private final RandomAccessSource byteSource;
-	
-	/**
-	 * The physical location in the underlying byte source.
-	 */
+
+    /**
+     * The source that backs this object
+     */
+    private final RandomAccessSource byteSource;
+
+    /**
+     * The physical location in the underlying byte source.
+     */
     private long byteSourcePosition;
-    
+
     /**
      * the pushed  back byte, if any
      */
@@ -88,66 +90,70 @@ public class RandomAccessFileOrArray implements DataInput {
     private boolean isBack = false;
 
     /**
-     * @deprecated use {@link RandomAccessFileOrArray#RandomAccessFileOrArray(RandomAccessSource)} instead
      * @param filename
      * @throws IOException
+     * @deprecated use {@link RandomAccessFileOrArray#RandomAccessFileOrArray(RandomAccessSource)} instead
      */
     @Deprecated
     public RandomAccessFileOrArray(String filename) throws IOException {
-    	this(new RandomAccessSourceFactory()
-		.setForceRead(false)
-		.setUsePlainRandomAccess(Document.plainRandomAccess)
-		.createBestSource(filename));
-    	
+        this(new RandomAccessSourceFactory()
+                .setForceRead(false)
+                .setUsePlainRandomAccess(Document.plainRandomAccess)
+                .createBestSource(filename));
+
     }
-    
+
     /**
      * Creates an independent view of the specified source.  Closing the new object will not close the source.
      * Closing the source will have adverse effect on the behavior of the new view.
-     * @deprecated use {@link RandomAccessFileOrArray#createView()} instead
+     *
      * @param source the source for the new independent view
+     * @deprecated use {@link RandomAccessFileOrArray#createView()} instead
      */
     @Deprecated
     public RandomAccessFileOrArray(RandomAccessFileOrArray source) {
-    	this(new IndependentRandomAccessSource(source.byteSource));
+        this(new IndependentRandomAccessSource(source.byteSource));
     }
 
     /**
      * Creates an independent view of this object (with it's own file pointer and pushback queue).  Closing the new object will not close this object.
      * Closing this object will have adverse effect on the view.
+     *
      * @return the new view
      */
-    public RandomAccessFileOrArray createView(){
-    	return new RandomAccessFileOrArray(new IndependentRandomAccessSource(byteSource));
+    public RandomAccessFileOrArray createView() {
+        return new RandomAccessFileOrArray(new IndependentRandomAccessSource(byteSource));
     }
-    
+
     public RandomAccessSource createSourceView() {
         return new IndependentRandomAccessSource(byteSource);
     }
-    
+
     /**
      * Creates a RandomAccessFileOrArray that wraps the specified byte source.  The byte source will be closed when
      * this RandomAccessFileOrArray is closed.
+     *
      * @param byteSource the byte source to wrap
      */
-    public RandomAccessFileOrArray(RandomAccessSource byteSource){
-    	this.byteSource = byteSource;
+    public RandomAccessFileOrArray(RandomAccessSource byteSource) {
+        this.byteSource = byteSource;
     }
-    
+
     /**
      * Constructs a new RandomAccessFileOrArrayObject
-     * @param filename the file to open (can be a file system file or one of the following url strings: file://, http://, https://, jar:, wsjar:, vfszip:
-     * @param forceRead if true, the entire file will be read into memory
+     *
+     * @param filename          the file to open (can be a file system file or one of the following url strings: file://, http://, https://, jar:, wsjar:, vfszip:
+     * @param forceRead         if true, the entire file will be read into memory
      * @param plainRandomAccess if true, a regular RandomAccessFile is used to access the file contents.  If false, a memory mapped file will be used, unless the file cannot be mapped into memory, in which case regular RandomAccessFile will be used
      * @throws IOException if there is a failure opening or reading the file
      * @deprecated use {@link RandomAccessSourceFactory#createBestSource(String)} and {@link RandomAccessFileOrArray#RandomAccessFileOrArray(RandomAccessSource)} instead
      */
     @Deprecated
     public RandomAccessFileOrArray(String filename, boolean forceRead, boolean plainRandomAccess) throws IOException {
-    	this(new RandomAccessSourceFactory()
-    		.setForceRead(forceRead)
-    		.setUsePlainRandomAccess(plainRandomAccess)
-    		.createBestSource(filename));
+        this(new RandomAccessSourceFactory()
+                .setForceRead(forceRead)
+                .setUsePlainRandomAccess(plainRandomAccess)
+                .createBestSource(filename));
     }
 
     /**
@@ -157,7 +163,7 @@ public class RandomAccessFileOrArray implements DataInput {
      */
     @Deprecated
     public RandomAccessFileOrArray(URL url) throws IOException {
-    	this (new RandomAccessSourceFactory().createSource(url));
+        this(new RandomAccessSourceFactory().createSource(url));
     }
 
     /**
@@ -167,50 +173,52 @@ public class RandomAccessFileOrArray implements DataInput {
      */
     @Deprecated
     public RandomAccessFileOrArray(InputStream is) throws IOException {
-    	this (new RandomAccessSourceFactory().createSource(is));
+        this(new RandomAccessSourceFactory().createSource(is));
     }
-    
+
 
     /**
      * @param arrayIn byte[]
      * @throws IOException
      * @deprecated use {@link RandomAccessSourceFactory#createSource(byte[])} and {@link RandomAccessFileOrArray#RandomAccessFileOrArray(RandomAccessSource)} instead
      */
-   @Deprecated
+    @Deprecated
     public RandomAccessFileOrArray(byte arrayIn[]) {
-    	this (new RandomAccessSourceFactory().createSource(arrayIn));
+        this(new RandomAccessSourceFactory().createSource(arrayIn));
     }
-    
+
     @Deprecated
     //TODO: I'm only putting this in here for backwards compatability with PdfReader(RAFOA, byte[]).  Once we get rid of the
     //PdfReader constructor, we can get rid of this method as well
-    protected RandomAccessSource getByteSource(){
-    	return byteSource;
+    protected RandomAccessSource getByteSource() {
+        return byteSource;
     }
-    
+
     /**
      * Pushes a byte back.  The next get() will return this byte instead of the value from the underlying data source
+     *
      * @param b the byte to push
      */
     public void pushBack(byte b) {
         back = b;
         isBack = true;
     }
-    
+
     /**
      * Reads a single byte
+     *
      * @return the byte, or -1 if EOF is reached
      * @throws IOException
      */
     public int read() throws IOException {
-        if(isBack) {
+        if (isBack) {
             isBack = false;
             return back & 0xff;
         }
-        
+
         return byteSource.get(byteSourcePosition++);
     }
-    
+
     public int read(byte[] b, int off, int len) throws IOException {
         if (len == 0)
             return 0;
@@ -221,8 +229,8 @@ public class RandomAccessFileOrArray implements DataInput {
             --len;
             count++;
         }
-        if (len > 0){
-        	int byteSourceCount = byteSource.get(byteSourcePosition, b, off, len);
+        if (len > 0) {
+            int byteSourceCount = byteSource.get(byteSourcePosition, b, off, len);
             if (byteSourceCount > 0) {
                 count += byteSourceCount;
                 byteSourcePosition += byteSourceCount;
@@ -232,15 +240,15 @@ public class RandomAccessFileOrArray implements DataInput {
             return -1;
         return count;
     }
-    
+
     public int read(byte b[]) throws IOException {
         return read(b, 0, b.length);
     }
-    
+
     public void readFully(byte b[]) throws IOException {
         readFully(b, 0, b.length);
     }
-    
+
     public void readFully(byte b[], int off, int len) throws IOException {
         int n = 0;
         do {
@@ -250,7 +258,7 @@ public class RandomAccessFileOrArray implements DataInput {
             n += count;
         } while (n < len);
     }
-    
+
     public long skip(long n) throws IOException {
         if (n <= 0) {
             return 0;
@@ -260,8 +268,7 @@ public class RandomAccessFileOrArray implements DataInput {
             isBack = false;
             if (n == 1) {
                 return 1;
-            }
-            else {
+            } else {
                 --n;
                 adj = 1;
             }
@@ -269,7 +276,7 @@ public class RandomAccessFileOrArray implements DataInput {
         long pos;
         long len;
         long newpos;
-        
+
         pos = getFilePointer();
         len = length();
         newpos = pos + n;
@@ -277,71 +284,71 @@ public class RandomAccessFileOrArray implements DataInput {
             newpos = len;
         }
         seek(newpos);
-        
+
         /* return the actual number of bytes skipped */
         return newpos - pos + adj;
     }
-    
+
     public int skipBytes(int n) throws IOException {
-        return (int)skip(n);
+        return (int) skip(n);
     }
-    
+
     @Deprecated
     //TODO: remove all references to this call, then remove this method
     public void reOpen() throws IOException {
         seek(0);
     }
 
-    
+
     public void close() throws IOException {
         isBack = false;
-        
+
         byteSource.close();
     }
-    
+
     public long length() throws IOException {
-    	return byteSource.length();
+        return byteSource.length();
     }
-    
+
     public void seek(long pos) throws IOException {
-    	byteSourcePosition = pos;
-    	isBack = false;
+        byteSourcePosition = pos;
+        isBack = false;
     }
-    
+
     //TODO: consider changing method name to getPosition or something like that - might not be worth making a breaking change, though
     public long getFilePointer() throws IOException {
-    	return byteSourcePosition - (isBack ? 1 : 0);
+        return byteSourcePosition - (isBack ? 1 : 0);
     }
-    
+
     public boolean readBoolean() throws IOException {
         int ch = this.read();
         if (ch < 0)
             throw new EOFException();
         return (ch != 0);
     }
-    
+
     public byte readByte() throws IOException {
         int ch = this.read();
         if (ch < 0)
             throw new EOFException();
-        return (byte)(ch);
+        return (byte) (ch);
     }
-    
+
     public int readUnsignedByte() throws IOException {
         int ch = this.read();
         if (ch < 0)
             throw new EOFException();
         return ch;
     }
-    
+
     public short readShort() throws IOException {
         int ch1 = this.read();
         int ch2 = this.read();
         if ((ch1 | ch2) < 0)
             throw new EOFException();
-        return (short)((ch1 << 8) + ch2);
+        return (short) ((ch1 << 8) + ch2);
     }
-    
+
     /**
      * Reads a signed 16-bit number from this stream in little-endian order.
      * The method reads two
@@ -357,20 +364,20 @@ public class RandomAccessFileOrArray implements DataInput {
      * This method blocks until the two bytes are read, the end of the
      * stream is detected, or an exception is thrown.
      *
-     * @return     the next two bytes of this stream, interpreted as a signed
-     *             16-bit number.
-     * @exception  EOFException  if this stream reaches the end before reading
-     *               two bytes.
-     * @exception  IOException   if an I/O error occurs.
+     * @return the next two bytes of this stream, interpreted as a signed
+     * 16-bit number.
+     * @throws EOFException if this stream reaches the end before reading
+     *                      two bytes.
+     * @throws IOException  if an I/O error occurs.
      */
     public final short readShortLE() throws IOException {
         int ch1 = this.read();
         int ch2 = this.read();
         if ((ch1 | ch2) < 0)
             throw new EOFException();
-        return (short)((ch2 << 8) + (ch1 << 0));
+        return (short) ((ch2 << 8) + (ch1 << 0));
     }
-    
+
     public int readUnsignedShort() throws IOException {
         int ch1 = this.read();
         int ch2 = this.read();
@@ -378,7 +385,7 @@ public class RandomAccessFileOrArray implements DataInput {
             throw new EOFException();
         return (ch1 << 8) + ch2;
     }
-    
+
     /**
      * Reads an unsigned 16-bit number from this stream in little-endian order.
      * This method reads
@@ -394,11 +401,11 @@ public class RandomAccessFileOrArray implements DataInput {
      * This method blocks until the two bytes are read, the end of the
      * stream is detected, or an exception is thrown.
      *
-     * @return     the next two bytes of this stream, interpreted as an
-     *             unsigned 16-bit integer.
-     * @exception  EOFException  if this stream reaches the end before reading
-     *               two bytes.
-     * @exception  IOException   if an I/O error occurs.
+     * @return the next two bytes of this stream, interpreted as an
+     * unsigned 16-bit integer.
+     * @throws EOFException if this stream reaches the end before reading
+     *                      two bytes.
+     * @throws IOException  if an I/O error occurs.
      */
     public final int readUnsignedShortLE() throws IOException {
         int ch1 = this.read();
@@ -407,15 +414,15 @@ public class RandomAccessFileOrArray implements DataInput {
             throw new EOFException();
         return (ch2 << 8) + (ch1 << 0);
     }
-    
+
     public char readChar() throws IOException {
         int ch1 = this.read();
         int ch2 = this.read();
         if ((ch1 | ch2) < 0)
             throw new EOFException();
-        return (char)((ch1 << 8) + ch2);
+        return (char) ((ch1 << 8) + ch2);
     }
-    
+
     /**
      * Reads a Unicode character from this stream in little-endian order.
      * This method reads two
@@ -431,19 +438,19 @@ public class RandomAccessFileOrArray implements DataInput {
      * This method blocks until the two bytes are read, the end of the
      * stream is detected, or an exception is thrown.
      *
-     * @return     the next two bytes of this stream as a Unicode character.
-     * @exception  EOFException  if this stream reaches the end before reading
-     *               two bytes.
-     * @exception  IOException   if an I/O error occurs.
+     * @return the next two bytes of this stream as a Unicode character.
+     * @throws EOFException if this stream reaches the end before reading
+     *                      two bytes.
+     * @throws IOException  if an I/O error occurs.
      */
     public final char readCharLE() throws IOException {
         int ch1 = this.read();
         int ch2 = this.read();
         if ((ch1 | ch2) < 0)
             throw new EOFException();
-        return (char)((ch2 << 8) + (ch1 << 0));
+        return (char) ((ch2 << 8) + (ch1 << 0));
     }
-    
+
     public int readInt() throws IOException {
         int ch1 = this.read();
         int ch2 = this.read();
@@ -453,7 +460,7 @@ public class RandomAccessFileOrArray implements DataInput {
             throw new EOFException();
         return ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + ch4);
     }
-    
+
     /**
      * Reads a signed 32-bit integer from this stream in little-endian order.
      * This method reads 4
@@ -469,11 +476,11 @@ public class RandomAccessFileOrArray implements DataInput {
      * This method blocks until the four bytes are read, the end of the
      * stream is detected, or an exception is thrown.
      *
-     * @return     the next four bytes of this stream, interpreted as an
-     *             <code>int</code>.
-     * @exception  EOFException  if this stream reaches the end before reading
-     *               four bytes.
-     * @exception  IOException   if an I/O error occurs.
+     * @return the next four bytes of this stream, interpreted as an
+     * <code>int</code>.
+     * @throws EOFException if this stream reaches the end before reading
+     *                      four bytes.
+     * @throws IOException  if an I/O error occurs.
      */
     public final int readIntLE() throws IOException {
         int ch1 = this.read();
@@ -484,7 +491,7 @@ public class RandomAccessFileOrArray implements DataInput {
             throw new EOFException();
         return ((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1 << 0));
     }
-    
+
     /**
      * Reads an unsigned 32-bit integer from this stream. This method reads 4
      * bytes from the stream, starting at the current stream pointer.
@@ -499,11 +506,11 @@ public class RandomAccessFileOrArray implements DataInput {
      * This method blocks until the four bytes are read, the end of the
      * stream is detected, or an exception is thrown.
      *
-     * @return     the next four bytes of this stream, interpreted as a
-     *             <code>long</code>.
-     * @exception  EOFException  if this stream reaches the end before reading
-     *               four bytes.
-     * @exception  IOException   if an I/O error occurs.
+     * @return the next four bytes of this stream, interpreted as a
+     * <code>long</code>.
+     * @throws EOFException if this stream reaches the end before reading
+     *                      four bytes.
+     * @throws IOException  if an I/O error occurs.
      */
     public final long readUnsignedInt() throws IOException {
         long ch1 = this.read();
@@ -514,7 +521,7 @@ public class RandomAccessFileOrArray implements DataInput {
             throw new EOFException();
         return ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4 << 0));
     }
-    
+
     public final long readUnsignedIntLE() throws IOException {
         long ch1 = this.read();
         long ch2 = this.read();
@@ -524,38 +531,38 @@ public class RandomAccessFileOrArray implements DataInput {
             throw new EOFException();
         return ((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1 << 0));
     }
-    
+
     public long readLong() throws IOException {
-        return ((long)(readInt()) << 32) + (readInt() & 0xFFFFFFFFL);
+        return ((long) (readInt()) << 32) + (readInt() & 0xFFFFFFFFL);
     }
-    
+
     public final long readLongLE() throws IOException {
         int i1 = readIntLE();
         int i2 = readIntLE();
-        return ((long)i2 << 32) + (i1 & 0xFFFFFFFFL);
+        return ((long) i2 << 32) + (i1 & 0xFFFFFFFFL);
     }
-    
+
     public float readFloat() throws IOException {
         return Float.intBitsToFloat(readInt());
     }
-    
+
     public final float readFloatLE() throws IOException {
         return Float.intBitsToFloat(readIntLE());
     }
-    
+
     public double readDouble() throws IOException {
         return Double.longBitsToDouble(readLong());
     }
-    
+
     public final double readDoubleLE() throws IOException {
         return Double.longBitsToDouble(readLongLE());
     }
-    
+
     public String readLine() throws IOException {
         StringBuilder input = new StringBuilder();
         int c = -1;
         boolean eol = false;
-        
+
         while (!eol) {
             switch (c = read()) {
                 case -1:
@@ -570,24 +577,26 @@ public class RandomAccessFileOrArray implements DataInput {
                     }
                     break;
                 default:
-                    input.append((char)c);
+                    input.append((char) c);
                     break;
             }
         }
-        
+
         if ((c == -1) && (input.length() == 0)) {
             return null;
         }
         return input.toString();
     }
-    
+
     public String readUTF() throws IOException {
         return DataInputStream.readUTF(this);
     }
-    
-    /** Reads a <CODE>String</CODE> from the font file as bytes using the given
-     *  encoding.
-     * @param length the length of bytes to read
+
+    /**
+     * Reads a <CODE>String</CODE> from the font file as bytes using the given
+     * encoding.
+     *
+     * @param length   the length of bytes to read
      * @param encoding the given encoding
      * @return the <CODE>String</CODE> read
      * @throws IOException the font file could not be read
@@ -597,10 +606,9 @@ public class RandomAccessFileOrArray implements DataInput {
         readFully(buf);
         try {
             return new String(buf, encoding);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
-    
+
 }

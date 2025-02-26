@@ -61,7 +61,6 @@ import com.itextpdf.text.xml.simpleparser.SimpleXMLParser;
 import com.itextpdf.text.xml.XMLUtil;
 
 /**
- *
  * @author Paulo Soares
  */
 public final class SimpleNamedDestination implements SimpleXMLDocHandler {
@@ -79,8 +78,8 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
             pages.put(reader.getPageOrigRef(k).getNumber(), k);
         HashMap<String, PdfObject> names = fromNames ? reader.getNamedDestinationFromNames() : reader.getNamedDestinationFromStrings();
         HashMap<String, String> n2 = new HashMap<String, String>(names.size());
-        for (Map.Entry<String, PdfObject> entry: names.entrySet()) {
-            PdfArray arr = (PdfArray)entry.getValue();
+        for (Map.Entry<String, PdfObject> entry : names.entrySet()) {
+            PdfArray arr = (PdfArray) entry.getValue();
             StringBuffer s = new StringBuffer();
             try {
                 s.append(pages.get(arr.getAsIndirectObject(0).getNumber()));
@@ -88,8 +87,7 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
                 for (int k = 2; k < arr.size(); ++k)
                     s.append(' ').append(arr.getPdfObject(k).toString());
                 n2.put(entry.getKey(), s.toString());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
         return n2;
@@ -106,11 +104,12 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
      * &gt;
      * &lt;!ELEMENT Destination (Name)*&gt;
      * </pre>
-     * @param names the names
-     * @param out the export destination. The stream is not closed
-     * @param encoding the encoding according to IANA conventions
+     *
+     * @param names     the names
+     * @param out       the export destination. The stream is not closed
+     * @param encoding  the encoding according to IANA conventions
      * @param onlyASCII codes above 127 will always be escaped with &amp;#nn; if <CODE>true</CODE>,
-     * whatever the encoding
+     *                  whatever the encoding
      * @throws IOException on error
      * @since 5.0.1 (generic type in signature)
      */
@@ -122,11 +121,12 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
 
     /**
      * Exports the destinations to XML.
-     * @param names the names
-     * @param wrt the export destination. The writer is not closed
-     * @param encoding the encoding according to IANA conventions
+     *
+     * @param names     the names
+     * @param wrt       the export destination. The writer is not closed
+     * @param encoding  the encoding according to IANA conventions
      * @param onlyASCII codes above 127 will always be escaped with &amp;#nn; if <CODE>true</CODE>,
-     * whatever the encoding
+     *                  whatever the encoding
      * @throws IOException on error
      * @since 5.0.1 (generic type in signature)
      */
@@ -134,7 +134,7 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
         wrt.write("<?xml version=\"1.0\" encoding=\"");
         wrt.write(XMLUtil.escapeXML(encoding, onlyASCII));
         wrt.write("\"?>\n<Destination>\n");
-        for (Map.Entry<String, String> entry: names.entrySet()) {
+        for (Map.Entry<String, String> entry : names.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             wrt.write("  <Name Page=\"");
@@ -149,9 +149,10 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
 
     /**
      * Import the names from XML.
+     *
      * @param in the XML source. The stream is not closed
-     * @throws IOException on error
      * @return the names
+     * @throws IOException on error
      */
     public static HashMap<String, String> importFromXML(InputStream in) throws IOException {
         SimpleNamedDestination names = new SimpleNamedDestination();
@@ -161,9 +162,10 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
 
     /**
      * Import the names from XML.
+     *
      * @param in the XML source. The reader is not closed
-     * @throws IOException on error
      * @return the names
+     * @throws IOException on error
      */
     public static HashMap<String, String> importFromXML(Reader in) throws IOException {
         SimpleNamedDestination names = new SimpleNamedDestination();
@@ -179,8 +181,7 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
         if (!tk.hasMoreTokens()) {
             ar.add(PdfName.XYZ);
             ar.add(new float[]{0, 10000, 0});
-        }
-        else {
+        } else {
             String fn = tk.nextToken();
             if (fn.startsWith("/"))
                 fn = fn.substring(1);
@@ -198,15 +199,14 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
 
     public static PdfDictionary outputNamedDestinationAsNames(HashMap<String, String> names, PdfWriter writer) {
         PdfDictionary dic = new PdfDictionary();
-        for (Map.Entry<String, String> entry: names.entrySet()) {
+        for (Map.Entry<String, String> entry : names.entrySet()) {
             try {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 PdfArray ar = createDestinationArray(value, writer);
                 PdfName kn = new PdfName(key);
                 dic.put(kn, ar);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // empty on purpose
             }
         }
@@ -215,13 +215,12 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
 
     public static PdfDictionary outputNamedDestinationAsStrings(HashMap<String, String> names, PdfWriter writer) throws IOException {
         HashMap<String, PdfObject> n2 = new HashMap<String, PdfObject>(names.size());
-        for (Map.Entry<String, String> entry: names.entrySet()) {
+        for (Map.Entry<String, String> entry : names.entrySet()) {
             try {
                 String value = entry.getValue();
                 PdfArray ar = createDestinationArray(value, writer);
                 n2.put(entry.getKey(), writer.addToBody(ar).getIndirectReference());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
         return PdfNameTree.writeTree(n2, writer);
@@ -237,8 +236,7 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
                 buf.append('\\');
                 String octal = "00" + Integer.toOctalString(c);
                 buf.append(octal.substring(octal.length() - 3));
-            }
-            else if (c == '\\')
+            } else if (c == '\\')
                 buf.append("\\\\");
             else
                 buf.append(c);
@@ -266,18 +264,15 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
                         if (c >= '0' && c <= '7') {
                             ++k;
                             n = n * 8 + c - '0';
-                        }
-                        else {
+                        } else {
                             break;
                         }
                     }
                     --k;
-                    buf.append((char)n);
-                }
-                else
+                    buf.append((char) n);
+                } else
                     buf.append(c);
-            }
-            else
+            } else
                 buf.append(c);
         }
         return buf.toString();
@@ -311,8 +306,7 @@ public final class SimpleNamedDestination implements SimpleXMLDocHandler {
             if (tag.equals("Destination")) {
                 xmlNames = new HashMap<String, String>();
                 return;
-            }
-            else
+            } else
                 throw new RuntimeException(MessageLocalization.getComposedMessage("root.element.is.not.destination"));
         }
         if (!tag.equals("Name"))

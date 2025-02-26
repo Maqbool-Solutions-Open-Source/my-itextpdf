@@ -53,54 +53,70 @@ import java.util.HashMap;
 
 /**
  * A <CODE>Paragraph</CODE> is a series of <CODE>Chunk</CODE>s and/or <CODE>Phrases</CODE>.
- * <P>
+ * <p>
  * A <CODE>Paragraph</CODE> has the same qualities of a <CODE>Phrase</CODE>, but also
  * some additional layout-parameters:
  * <UL>
  * <LI>the indentation
  * <LI>the alignment of the text
  * </UL>
- *
+ * <p>
  * Example:
  * <BLOCKQUOTE><PRE>
  * <STRONG>Paragraph p = new Paragraph("This is a paragraph",
- *               FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLDITALIC, new Color(0, 0, 255)));</STRONG>
+ * FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLDITALIC, new Color(0, 0, 255)));</STRONG>
  * </PRE></BLOCKQUOTE>
  *
- * @see		Element
- * @see		Phrase
- * @see		ListItem
+ * @see Element
+ * @see Phrase
+ * @see ListItem
  */
 
 public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessibleElement {
 
-	// constants
-	private static final long serialVersionUID = 7852314969733375514L;
+    // constants
+    private static final long serialVersionUID = 7852314969733375514L;
 
     // membervariables
 
-	/** The alignment of the text. */
+    /**
+     * The alignment of the text.
+     */
     protected int alignment = Element.ALIGN_UNDEFINED;
 
-    /** The indentation of this paragraph on the left side. */
+    /**
+     * The indentation of this paragraph on the left side.
+     */
     protected float indentationLeft;
 
-    /** The indentation of this paragraph on the right side. */
+    /**
+     * The indentation of this paragraph on the right side.
+     */
     protected float indentationRight;
 
-    /** Holds value of property firstLineIndent. */
+    /**
+     * Holds value of property firstLineIndent.
+     */
     private float firstLineIndent = 0;
 
-    /** The spacing before the paragraph. */
+    /**
+     * The spacing before the paragraph.
+     */
     protected float spacingBefore;
 
-    /** The spacing after the paragraph. */
+    /**
+     * The spacing after the paragraph.
+     */
     protected float spacingAfter;
 
-    /** Holds value of property extraParagraphSpace. */
+    /**
+     * Holds value of property extraParagraphSpace.
+     */
     private float extraParagraphSpace = 0;
 
-    /** Does the paragraph has to be kept together on 1 page. */
+    /**
+     * Does the paragraph has to be kept together on 1 page.
+     */
     protected boolean keeptogether = false;
 
     protected float paddingTop;
@@ -121,7 +137,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Constructs a <CODE>Paragraph</CODE> with a certain leading.
      *
-     * @param	leading		the leading
+     * @param leading the leading
      */
     public Paragraph(float leading) {
         super(leading);
@@ -130,7 +146,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Constructs a <CODE>Paragraph</CODE> with a certain <CODE>Chunk</CODE>.
      *
-     * @param	chunk		a <CODE>Chunk</CODE>
+     * @param chunk a <CODE>Chunk</CODE>
      */
     public Paragraph(Chunk chunk) {
         super(chunk);
@@ -140,8 +156,8 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
      * Constructs a <CODE>Paragraph</CODE> with a certain <CODE>Chunk</CODE>
      * and a certain leading.
      *
-     * @param	leading		the leading
-     * @param	chunk		a <CODE>Chunk</CODE>
+     * @param leading the leading
+     * @param chunk   a <CODE>Chunk</CODE>
      */
     public Paragraph(float leading, Chunk chunk) {
         super(leading, chunk);
@@ -150,7 +166,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Constructs a <CODE>Paragraph</CODE> with a certain <CODE>String</CODE>.
      *
-     * @param	string		a <CODE>String</CODE>
+     * @param string a <CODE>String</CODE>
      */
     public Paragraph(String string) {
         super(string);
@@ -160,8 +176,8 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
      * Constructs a <CODE>Paragraph</CODE> with a certain <CODE>String</CODE>
      * and a certain <CODE>Font</CODE>.
      *
-     * @param	string		a <CODE>String</CODE>
-     * @param	font		a <CODE>Font</CODE>
+     * @param string a <CODE>String</CODE>
+     * @param font   a <CODE>Font</CODE>
      */
     public Paragraph(String string, Font font) {
         super(string, font);
@@ -171,8 +187,8 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
      * Constructs a <CODE>Paragraph</CODE> with a certain <CODE>String</CODE>
      * and a certain leading.
      *
-     * @param	leading		the leading
-     * @param	string		a <CODE>String</CODE>
+     * @param leading the leading
+     * @param string  a <CODE>String</CODE>
      */
     public Paragraph(float leading, String string) {
         super(leading, string);
@@ -182,9 +198,9 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
      * Constructs a <CODE>Paragraph</CODE> with a certain leading, <CODE>String</CODE>
      * and <CODE>Font</CODE>.
      *
-     * @param	leading		the leading
-     * @param	string		a <CODE>String</CODE>
-     * @param	font		a <CODE>Font</CODE>
+     * @param leading the leading
+     * @param string  a <CODE>String</CODE>
+     * @param font    a <CODE>Font</CODE>
      */
     public Paragraph(float leading, String string, Font font) {
         super(leading, string, font);
@@ -193,19 +209,19 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Constructs a <CODE>Paragraph</CODE> with a certain <CODE>Phrase</CODE>.
      *
-     * @param	phrase		a <CODE>Phrase</CODE>
+     * @param phrase a <CODE>Phrase</CODE>
      */
     public Paragraph(Phrase phrase) {
         super(phrase);
         if (phrase instanceof Paragraph) {
-        	Paragraph p = (Paragraph)phrase;
-        	setAlignment(p.alignment);
-        	setIndentationLeft(p.getIndentationLeft());
-        	setIndentationRight(p.getIndentationRight());
-        	setFirstLineIndent(p.getFirstLineIndent());
-        	setSpacingAfter(p.getSpacingAfter());
-        	setSpacingBefore(p.getSpacingBefore());
-        	setExtraParagraphSpace(p.getExtraParagraphSpace());
+            Paragraph p = (Paragraph) phrase;
+            setAlignment(p.alignment);
+            setIndentationLeft(p.getIndentationLeft());
+            setIndentationRight(p.getIndentationRight());
+            setFirstLineIndent(p.getFirstLineIndent());
+            setSpacingAfter(p.getSpacingAfter());
+            setSpacingBefore(p.getSpacingBefore());
+            setExtraParagraphSpace(p.getExtraParagraphSpace());
             setRole(p.role);
             id = p.getId();
             if (p.accessibleAttributes != null)
@@ -215,12 +231,13 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
 
     /**
      * Creates a shallow clone of the Paragraph.
+     *
      * @return
      */
     public Paragraph cloneShallow(boolean spacingBefore) {
-    	Paragraph copy = new Paragraph();
+        Paragraph copy = new Paragraph();
         populateProperties(copy, spacingBefore);
-    	return copy;
+        return copy;
     }
 
     protected void populateProperties(Paragraph copy, boolean spacingBefore) {
@@ -241,21 +258,22 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
         copy.setTabSettings(getTabSettings());
         copy.setKeepTogether(getKeepTogether());
     }
-    
+
     /**
      * Breaks this Paragraph up in different parts, separating paragraphs, lists and tables from each other.
+     *
      * @return
      */
     public java.util.List<Element> breakUp() {
-    	java.util.List<Element> list = new ArrayList<Element>();
-		Paragraph tmp = null;
-		for (Element e : this) {
-			if (e.type() == Element.LIST || e.type() == Element.PTABLE || e.type() == Element.PARAGRAPH) {
-				if (tmp != null && tmp.size() > 0) {
+        java.util.List<Element> list = new ArrayList<Element>();
+        Paragraph tmp = null;
+        for (Element e : this) {
+            if (e.type() == Element.LIST || e.type() == Element.PTABLE || e.type() == Element.PARAGRAPH) {
+                if (tmp != null && tmp.size() > 0) {
                     tmp.setSpacingAfter(0);
-					list.add(tmp);
-					tmp = cloneShallow(false);
-				}
+                    list.add(tmp);
+                    tmp = cloneShallow(false);
+                }
                 if (list.size() == 0) {
                     switch (e.type()) {
                         case Element.PTABLE:
@@ -265,7 +283,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
                             ((Paragraph) e).setSpacingBefore(getSpacingBefore());
                             break;
                         case Element.LIST:
-                            ListItem firstItem = ((List)e).getFirstItem();
+                            ListItem firstItem = ((List) e).getFirstItem();
                             if (firstItem != null) {
                                 firstItem.setSpacingBefore(getSpacingBefore());
                             }
@@ -274,29 +292,28 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
                             break;
                     }
                 }
-				list.add(e);
-			}
-			else {
+                list.add(e);
+            } else {
                 if (tmp == null) {
                     tmp = cloneShallow(list.size() == 0);
                 }
-				tmp.add(e);
-			}
-		}
-		if (tmp != null && tmp.size() > 0) {
-			list.add(tmp);
+                tmp.add(e);
+            }
+        }
+        if (tmp != null && tmp.size() > 0) {
+            list.add(tmp);
         }
         if (list.size() != 0) {
             Element lastElement = list.get(list.size() - 1);
             switch (lastElement.type()) {
-                case Element.PTABLE :
-                    ((PdfPTable)lastElement).setSpacingAfter(getSpacingAfter());
+                case Element.PTABLE:
+                    ((PdfPTable) lastElement).setSpacingAfter(getSpacingAfter());
                     break;
-                case Element.PARAGRAPH :
-                    ((Paragraph)lastElement).setSpacingAfter(getSpacingAfter());
+                case Element.PARAGRAPH:
+                    ((Paragraph) lastElement).setSpacingAfter(getSpacingAfter());
                     break;
-                case Element.LIST :
-                    ListItem lastItem = ((List)lastElement).getLastItem();
+                case Element.LIST:
+                    ListItem lastItem = ((List) lastElement).getLastItem();
                     if (lastItem != null) {
                         lastItem.setSpacingAfter(getSpacingAfter());
                     }
@@ -305,15 +322,15 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
                     break;
             }
         }
-    	return list;
+        return list;
     }
-    
+
     // implementation of the Element-methods
 
     /**
      * Gets the type of the text element.
      *
-     * @return	a type
+     * @return a type
      */
     @Override
     public int type() {
@@ -325,7 +342,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Adds an <CODE>Element</CODE> to the <CODE>Paragraph</CODE>.
      *
-     * @param	o the element to add.
+     * @param o the element to add.
      * @return true is adding the object succeeded
      */
     @Override
@@ -335,14 +352,12 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
             list.setIndentationLeft(list.getIndentationLeft() + indentationLeft);
             list.setIndentationRight(indentationRight);
             return super.add(list);
-        }
-        else if (o instanceof Image) {
+        } else if (o instanceof Image) {
             super.addSpecial(o);
             return true;
-        }
-        else if (o instanceof Paragraph) {
-        	super.addSpecial(o);
-        	return true;
+        } else if (o instanceof Paragraph) {
+            super.addSpecial(o);
+            return true;
         }
         return super.add(o);
     }
@@ -352,28 +367,29 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Sets the alignment of this paragraph.
      *
-     * @param	alignment		the new alignment
+     * @param alignment the new alignment
      */
     public void setAlignment(int alignment) {
         this.alignment = alignment;
     }
 
     /* (non-Javadoc)
-	 * @see com.itextpdf.text.Indentable#setIndentationLeft(float)
-	 */
+     * @see com.itextpdf.text.Indentable#setIndentationLeft(float)
+     */
     public void setIndentationLeft(float indentation) {
         this.indentationLeft = indentation;
     }
 
     /* (non-Javadoc)
-	 * @see com.itextpdf.text.Indentable#setIndentationRight(float)
-	 */
+     * @see com.itextpdf.text.Indentable#setIndentationRight(float)
+     */
     public void setIndentationRight(float indentation) {
         this.indentationRight = indentation;
     }
 
     /**
      * Setter for property firstLineIndent.
+     *
      * @param firstLineIndent New value of property firstLineIndent.
      */
     public void setFirstLineIndent(float firstLineIndent) {
@@ -381,15 +397,15 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     }
 
     /* (non-Javadoc)
-	 * @see com.itextpdf.text.Spaceable#setSpacingBefore(float)
-	 */
+     * @see com.itextpdf.text.Spaceable#setSpacingBefore(float)
+     */
     public void setSpacingBefore(float spacing) {
         this.spacingBefore = spacing;
     }
 
     /* (non-Javadoc)
-	 * @see com.itextpdf.text.Spaceable#setSpacingAfter(float)
-	 */
+     * @see com.itextpdf.text.Spaceable#setSpacingAfter(float)
+     */
     public void setSpacingAfter(float spacing) {
         this.spacingAfter = spacing;
     }
@@ -397,7 +413,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Indicates that the paragraph has to be kept together on one page.
      *
-     * @param   keeptogether    true of the paragraph may not be split over 2 pages
+     * @param keeptogether true of the paragraph may not be split over 2 pages
      */
     public void setKeepTogether(boolean keeptogether) {
         this.keeptogether = keeptogether;
@@ -406,7 +422,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Checks if this paragraph has to be kept together on one page.
      *
-     * @return  true if the paragraph may not be split over 2 pages.
+     * @return true if the paragraph may not be split over 2 pages.
      */
     public boolean getKeepTogether() {
         return keeptogether;
@@ -414,31 +430,32 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
 
     // methods to retrieve information
 
-	/**
+    /**
      * Gets the alignment of this paragraph.
      *
-     * @return	alignment
+     * @return alignment
      */
     public int getAlignment() {
         return alignment;
     }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.Indentable#getIndentationLeft()
-	 */
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.Indentable#getIndentationLeft()
+     */
     public float getIndentationLeft() {
         return indentationLeft;
     }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.Indentable#getIndentationRight()
-	 */
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.Indentable#getIndentationRight()
+     */
     public float getIndentationRight() {
         return indentationRight;
     }
 
     /**
      * Getter for property firstLineIndent.
+     *
      * @return Value of property firstLineIndent.
      */
     public float getFirstLineIndent() {
@@ -446,21 +463,22 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     }
 
     /* (non-Javadoc)
-	 * @see com.itextpdf.text.Spaceable#getSpacingBefore()
-	 */
+     * @see com.itextpdf.text.Spaceable#getSpacingBefore()
+     */
     public float getSpacingBefore() {
-    	return spacingBefore;
+        return spacingBefore;
     }
 
     /* (non-Javadoc)
-	 * @see com.itextpdf.text.Spaceable#getSpacingAfter()
-	 */
+     * @see com.itextpdf.text.Spaceable#getSpacingAfter()
+     */
     public float getSpacingAfter() {
-    	return spacingAfter;
+        return spacingAfter;
     }
 
     /**
      * Getter for property extraParagraphSpace.
+     *
      * @return Value of property extraParagraphSpace.
      */
     public float getExtraParagraphSpace() {
@@ -469,6 +487,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
 
     /**
      * Setter for property extraParagraphSpace.
+     *
      * @param extraParagraphSpace New value of property extraParagraphSpace.
      */
     public void setExtraParagraphSpace(float extraParagraphSpace) {
@@ -480,7 +499,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Gets the spacing before this paragraph.
      *
-     * @return	the spacing
+     * @return the spacing
      * @deprecated As of iText 2.1.5, replaced by {@link #getSpacingBefore()},
      * scheduled for removal at 2.3.0
      */
@@ -492,7 +511,7 @@ public class Paragraph extends Phrase implements Indentable, Spaceable, IAccessi
     /**
      * Gets the spacing after this paragraph.
      *
-     * @return	the spacing
+     * @return the spacing
      * @deprecated As of iText 2.1.5, replaced by {@link #getSpacingAfter()},
      * scheduled for removal at 2.3.0
      */

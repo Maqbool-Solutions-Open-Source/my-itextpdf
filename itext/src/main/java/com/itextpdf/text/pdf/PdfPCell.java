@@ -88,7 +88,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
      * Fixed height of the cell.
      */
     private float fixedHeight = 0;
-    
+
     /**
      * Fixed height of the cell.
      */
@@ -123,7 +123,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
     /**
      * Holds value of property rowspan.
      *
-     * @since	2.1.6
+     * @since 2.1.6
      */
     private int rowspan = 1;
 
@@ -202,7 +202,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
      * default padding is 0.25 for a border width of 0.5.
      *
      * @param image the <CODE>Image</CODE>
-     * @param fit <CODE>true</CODE> to fit the image to the cell
+     * @param fit   <CODE>true</CODE> to fit the image to the cell
      */
     public PdfPCell(Image image, boolean fit) {
         super(0, 0, 0, 0);
@@ -234,8 +234,8 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
      * constructor allows nested tables.
      *
      * @param table The <CODE>PdfPTable</CODE>
-     * @param style	The style to apply to the cell (you could use
-     * getDefaultCell())
+     * @param style The style to apply to the cell (you could use
+     *              getDefaultCell())
      * @since 2.1.0
      */
     public PdfPCell(PdfPTable table, PdfPCell style) {
@@ -546,7 +546,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
      * fixedLeading+multipliedLeading*maxFontSize where maxFontSize is the size
      * of the biggest font in the line.
      *
-     * @param fixedLeading the fixed leading
+     * @param fixedLeading      the fixed leading
      * @param multipliedLeading the variable leading
      */
     public void setLeading(float fixedLeading, float multipliedLeading) {
@@ -628,7 +628,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
     /**
      * Tells you whether the height was calculated.
      *
-     * @return	true if the height was calculated.
+     * @return true if the height was calculated.
      */
     public boolean hasCalculatedHeight() {
         return getCalculatedHeight() > 0;
@@ -657,7 +657,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
     /**
      * Tells you whether the cell has a fixed height.
      *
-     * @return	true is a fixed height was set.
+     * @return true is a fixed height was set.
      * @since 2.1.5
      */
     public boolean hasFixedHeight() {
@@ -667,6 +667,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
     /**
      * Gets the height which was calculated on last call of getMaxHeight().
      * If cell's bBox and content wasn't changed this value is actual maxHeight of the cell.
+     *
      * @return max height which was calculated on last call of getMaxHeight(); if getMaxHeight() wasn't called the return value is 0
      */
     public float getCachedMaxHeight() {
@@ -700,7 +701,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
     /**
      * Tells you whether the cell has a minimum height.
      *
-     * @return	true if a minimum height was set.
+     * @return true if a minimum height was set.
      * @since 2.1.5
      */
     public boolean hasMinimumHeight() {
@@ -768,7 +769,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
      * Getter for property rowspan.
      *
      * @return Value of property rowspan.
-     * @since	2.1.6
+     * @since 2.1.6
      */
     public int getRowspan() {
         return rowspan;
@@ -778,7 +779,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
      * Setter for property rowspan.
      *
      * @param rowspan New value of property rowspan.
-     * @since	2.1.6
+     * @since 2.1.6
      */
     public void setRowspan(int rowspan) {
         this.rowspan = rowspan;
@@ -837,7 +838,7 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
      * character spacing will be zero.
      *
      * @param spaceCharRatio the ratio between the extra word spacing and the
-     * extra character spacing
+     *                       extra character spacing
      */
     public void setSpaceCharRatio(float spaceCharRatio) {
         column.setSpaceCharRatio(spaceCharRatio);
@@ -981,8 +982,8 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
     /**
      * Returns the list of composite elements of the column.
      *
-     * @return	a List object.
-     * @since	2.1.1
+     * @return a List object.
+     * @since 2.1.1
      */
     public List<Element> getCompositeElements() {
         return getColumn().compositeElements;
@@ -1026,8 +1027,8 @@ public class PdfPCell extends Rectangle implements IAccessibleElement {
     /**
      * Returns the height of the cell.
      *
-     * @return	the height of the cell
-     * @since	3.0.0
+     * @return the height of the cell
+     * @since 3.0.0
      */
     public float getMaxHeight() {
         boolean pivoted = getRotation() == 90 || getRotation() == 270;

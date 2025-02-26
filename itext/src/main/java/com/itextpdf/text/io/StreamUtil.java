@@ -49,8 +49,8 @@ import java.io.OutputStream;
 
 /**
  * Utility class with commonly used stream operations
- * @since 5.3.5
  *
+ * @since 5.3.5
  */
 public final class StreamUtil {
 
@@ -59,6 +59,7 @@ public final class StreamUtil {
 
     /**
      * Reads the full content of a stream and returns them in a byte array
+     *
      * @param is the stream to read
      * @return a byte array containing all of the bytes from the stream
      * @throws IOException if there is a problem reading from the input stream
@@ -82,10 +83,10 @@ public final class StreamUtil {
         long idx = start;
         byte[] buf = new byte[8192];
         while (length > 0) {
-            long n = source.get(idx, buf,0, (int)Math.min((long)buf.length, length));
+            long n = source.get(idx, buf, 0, (int) Math.min((long) buf.length, length));
             if (n <= 0)
                 throw new EOFException();
-            outs.write(buf, 0, (int)n);
+            outs.write(buf, 0, (int) n);
             idx += n;
             length -= n;
         }
@@ -93,6 +94,7 @@ public final class StreamUtil {
 
     /**
      * Gets the resource's inputstream.
+     *
      * @param key the full name of the resource
      * @return the <CODE>InputStream</CODE> to get the resource or
      * <CODE>null</CODE> if not found
@@ -104,7 +106,8 @@ public final class StreamUtil {
     /**
      * Gets the resource's inputstream
      * .
-     * @param key the full name of the resource
+     *
+     * @param key    the full name of the resource
      * @param loader the ClassLoader to load the resource or null to try the ones available
      * @return the <CODE>InputStream</CODE> to get the resource or
      * <CODE>null</CODE> if not found

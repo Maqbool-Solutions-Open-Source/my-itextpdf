@@ -72,7 +72,9 @@ import java.util.Map;
 
 public class IanaEncodings {
 
-	/** The object that maps IANA to Java encodings. */
+    /**
+     * The object that maps IANA to Java encodings.
+     */
     private static final Map<String, String> MAP = new HashMap<String, String>();
 
     static {
@@ -271,6 +273,7 @@ public class IanaEncodings {
     /**
      * Gets the java encoding from the IANA encoding. If the encoding cannot be found
      * it returns the input.
+     *
      * @param iana the IANA encoding
      * @return the java encoding
      */

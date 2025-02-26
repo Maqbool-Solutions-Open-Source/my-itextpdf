@@ -43,30 +43,30 @@
  */
 
 /**
- *     The below 2 methods are from pdfbox.
- *
- *     private ASN1Primitive createDERForRecipient(byte[] in, X509Certificate cert) ;
- *     private KeyTransRecipientInfo computeRecipientInfo(X509Certificate x509certificate, byte[] abyte0);
- *
- *     2006-11-22 Aiken Sam.
+ * The below 2 methods are from pdfbox.
+ * <p>
+ * private ASN1Primitive createDERForRecipient(byte[] in, X509Certificate cert) ;
+ * private KeyTransRecipientInfo computeRecipientInfo(X509Certificate x509certificate, byte[] abyte0);
+ * <p>
+ * 2006-11-22 Aiken Sam.
  */
 
 /**
  * Copyright (c) 2003-2006, www.pdfbox.org
  * All rights reserved.
- *
+ * <p>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * <p>
  * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ * this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
  * 3. Neither the name of pdfbox; nor the names of its
- *    contributors may be used to endorse or promote products derived from this
- *    software without specific prior written permission.
- *
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ * <p>
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -77,9 +77,8 @@
  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * <p>
  * http://www.pdfbox.org
- *
  */
 
 package com.itextpdf.text.pdf;
@@ -169,20 +168,20 @@ public class PdfPublicKeySecurityHandler {
 
         if (cms != null) return cms;
 
-        Certificate certificate  = recipient.getCertificate();
-        int permission =  recipient.getPermission();//PdfWriter.AllowCopy | PdfWriter.AllowPrinting | PdfWriter.AllowScreenReaders | PdfWriter.AllowAssembly;
+        Certificate certificate = recipient.getCertificate();
+        int permission = recipient.getPermission();//PdfWriter.AllowCopy | PdfWriter.AllowPrinting | PdfWriter.AllowScreenReaders | PdfWriter.AllowAssembly;
         int revision = 3;
 
-        permission |= revision==3 ? 0xfffff0c0 : 0xffffffc0;
+        permission |= revision == 3 ? 0xfffff0c0 : 0xffffffc0;
         permission &= 0xfffffffc;
         permission += 1;
 
         byte[] pkcs7input = new byte[24];
 
-        byte one = (byte)permission;
-        byte two = (byte)(permission >> 8);
-        byte three = (byte)(permission >> 16);
-        byte four = (byte)(permission >> 24);
+        byte one = (byte) permission;
+        byte two = (byte) (permission >> 8);
+        byte three = (byte) (permission >> 16);
+        byte four = (byte) (permission >> 24);
 
         System.arraycopy(seed, 0, pkcs7input, 0, 20); // put this seed in the pkcs7 input
 
@@ -191,7 +190,7 @@ public class PdfPublicKeySecurityHandler {
         pkcs7input[22] = two;
         pkcs7input[23] = one;
 
-        ASN1Primitive obj = createDERForRecipient(pkcs7input, (X509Certificate)certificate);
+        ASN1Primitive obj = createDERForRecipient(pkcs7input, (X509Certificate) certificate);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -207,26 +206,25 @@ public class PdfPublicKeySecurityHandler {
     }
 
     public PdfArray getEncodedRecipients() throws IOException,
-                                         GeneralSecurityException {
+            GeneralSecurityException {
         PdfArray EncodedRecipients = new PdfArray();
         byte[] cms = null;
-        for (int i=0; i<recipients.size(); i++)
-        try {
-            cms = getEncodedRecipient(i);
-            EncodedRecipients.add(new PdfLiteral(StringUtils.escapeString(cms)));
-        } catch (GeneralSecurityException e) {
-            EncodedRecipients = null;
-        } catch (IOException e) {
-            EncodedRecipients = null;
-        }
+        for (int i = 0; i < recipients.size(); i++)
+            try {
+                cms = getEncodedRecipient(i);
+                EncodedRecipients.add(new PdfLiteral(StringUtils.escapeString(cms)));
+            } catch (GeneralSecurityException e) {
+                EncodedRecipients = null;
+            } catch (IOException e) {
+                EncodedRecipients = null;
+            }
 
         return EncodedRecipients;
     }
 
     private ASN1Primitive createDERForRecipient(byte[] in, X509Certificate cert)
-        throws IOException,
-               GeneralSecurityException
-    {
+            throws IOException,
+            GeneralSecurityException {
 
         String s = "1.2.840.113549.3.2";
 
@@ -246,34 +244,33 @@ public class PdfPublicKeySecurityHandler {
         DERSet derset = new DERSet(new RecipientInfo(keytransrecipientinfo));
         AlgorithmIdentifier algorithmidentifier = new AlgorithmIdentifier(new ASN1ObjectIdentifier(s), derobject);
         EncryptedContentInfo encryptedcontentinfo =
-            new EncryptedContentInfo(PKCSObjectIdentifiers.data, algorithmidentifier, deroctetstring);
+                new EncryptedContentInfo(PKCSObjectIdentifiers.data, algorithmidentifier, deroctetstring);
         ASN1Set set = null;
         EnvelopedData env = new EnvelopedData(null, derset, encryptedcontentinfo, set);
         ContentInfo contentinfo =
-            new ContentInfo(PKCSObjectIdentifiers.envelopedData, env);
+                new ContentInfo(PKCSObjectIdentifiers.envelopedData, env);
         return contentinfo.toASN1Primitive();
     }
 
     private KeyTransRecipientInfo computeRecipientInfo(X509Certificate x509certificate, byte[] abyte0)
-        throws GeneralSecurityException, IOException
-    {
+            throws GeneralSecurityException, IOException {
         ASN1InputStream asn1inputstream =
-            new ASN1InputStream(new ByteArrayInputStream(x509certificate.getTBSCertificate()));
+                new ASN1InputStream(new ByteArrayInputStream(x509certificate.getTBSCertificate()));
         TBSCertificateStructure tbscertificatestructure =
-            TBSCertificateStructure.getInstance(asn1inputstream.readObject());
+                TBSCertificateStructure.getInstance(asn1inputstream.readObject());
         AlgorithmIdentifier algorithmidentifier = tbscertificatestructure.getSubjectPublicKeyInfo().getAlgorithm();
         IssuerAndSerialNumber issuerandserialnumber =
-            new IssuerAndSerialNumber(
-                tbscertificatestructure.getIssuer(),
-                tbscertificatestructure.getSerialNumber().getValue());
+                new IssuerAndSerialNumber(
+                        tbscertificatestructure.getIssuer(),
+                        tbscertificatestructure.getSerialNumber().getValue());
         Cipher cipher = Cipher.getInstance(algorithmidentifier.getAlgorithm().getId());
-        try{
-        cipher.init(1, x509certificate);
-        }catch(InvalidKeyException e){
-        	cipher.init(1,x509certificate.getPublicKey());
+        try {
+            cipher.init(1, x509certificate);
+        } catch (InvalidKeyException e) {
+            cipher.init(1, x509certificate.getPublicKey());
         }
         DEROctetString deroctetstring = new DEROctetString(cipher.doFinal(abyte0));
         RecipientIdentifier recipId = new RecipientIdentifier(issuerandserialnumber);
-        return new KeyTransRecipientInfo( recipId, algorithmidentifier, deroctetstring);
+        return new KeyTransRecipientInfo(recipId, algorithmidentifier, deroctetstring);
     }
 }

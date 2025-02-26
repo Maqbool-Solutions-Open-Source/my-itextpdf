@@ -61,21 +61,21 @@ import java.util.Stack;
  * Formats text in a columnwise form. The text is bound on the left and on the
  * right by a sequence of lines. This allows the column to have any shape, not
  * only rectangular.
- * <P>
+ * <p>
  * Several parameters can be set like the first paragraph line indent and extra
  * space between paragraphs.
- * <P>
+ * <p>
  * A call to the method <CODE>go</CODE> will return one of the following
  * situations: the column ended or the text ended.
- * <P>
+ * <p>
  * If the column ended, a new column definition can be loaded with the method
  * <CODE>setColumns</CODE> and the method <CODE>go</CODE> can be called again.
- * <P>
+ * <p>
  * If the text ended, more text can be loaded with <CODE>addText</CODE> and the
  * method <CODE>go</CODE> can be called again.<BR>
  * The only limitation is that one or more complete paragraphs must be loaded
  * each time.
- * <P>
+ * <p>
  * Full bidirectional reordering is supported. If the run direction is
  * <CODE>PdfWriter.RUN_DIRECTION_RTL</CODE> the meaning of the horizontal
  * alignments and margins is mirrored.
@@ -353,7 +353,7 @@ public class ColumnText {
      * Creates a <CODE>ColumnText</CODE>.
      *
      * @param canvas the place where the text will be written to. Can be a
-     * template.
+     *               template.
      */
     public ColumnText(final PdfContentByte canvas) {
         this.canvas = canvas;
@@ -683,7 +683,7 @@ public class ColumnText {
      */
     protected float[] findLimitsTwoLines() {
         boolean repeat = false;
-        for (;;) {
+        for (; ; ) {
             if (repeat && currentLeading == 0) {
                 return null;
             }
@@ -716,7 +716,7 @@ public class ColumnText {
      * <CODE>float[]</CODE> with the line points [x1,y1,x2,y2,...]. The array
      * must have at least 4 elements.
      *
-     * @param leftLine the left column bound
+     * @param leftLine  the left column bound
      * @param rightLine the right column bound
      */
     public void setColumns(final float leftLine[], final float rightLine[]) {
@@ -732,12 +732,12 @@ public class ColumnText {
     /**
      * Simplified method for rectangular columns.
      *
-     * @param phrase a <CODE>Phrase</CODE>
-     * @param llx the lower left x corner
-     * @param lly the lower left y corner
-     * @param urx the upper right x corner
-     * @param ury the upper right y corner
-     * @param leading the leading
+     * @param phrase    a <CODE>Phrase</CODE>
+     * @param llx       the lower left x corner
+     * @param lly       the lower left y corner
+     * @param urx       the upper right x corner
+     * @param ury       the upper right y corner
+     * @param leading   the leading
      * @param alignment the column alignment
      */
     public void setSimpleColumn(final Phrase phrase, final float llx, final float lly, final float urx, final float ury, final float leading, final int alignment) {
@@ -748,11 +748,11 @@ public class ColumnText {
     /**
      * Simplified method for rectangular columns.
      *
-     * @param llx the lower left x corner
-     * @param lly the lower left y corner
-     * @param urx the upper right x corner
-     * @param ury the upper right y corner
-     * @param leading the leading
+     * @param llx       the lower left x corner
+     * @param lly       the lower left y corner
+     * @param urx       the upper right x corner
+     * @param ury       the upper right y corner
+     * @param leading   the leading
      * @param alignment the column alignment
      */
     public void setSimpleColumn(final float llx, final float lly, final float urx, final float ury, final float leading, final int alignment) {
@@ -785,7 +785,7 @@ public class ColumnText {
     /**
      * Simplified method for rectangular columns.
      *
-     * @param rect	the rectangle for the column
+     * @param rect the rectangle for the column
      */
     public void setSimpleColumn(Rectangle rect) {
         setSimpleColumn(rect.getLeft(), rect.getBottom(), rect.getRight(), rect.getTop());
@@ -806,7 +806,7 @@ public class ColumnText {
      * fixedLeading+multipliedLeading*maxFontSize where maxFontSize is the size
      * of the biggest font in the line.
      *
-     * @param fixedLeading the fixed leading
+     * @param fixedLeading      the fixed leading
      * @param multipliedLeading the variable leading
      */
     public void setLeading(final float fixedLeading, final float multipliedLeading) {
@@ -887,9 +887,9 @@ public class ColumnText {
     /**
      * Sets the first paragraph line indent.
      *
-     * @param indent the indent
-     * @param	repeatFirstLineIndent	do we need to repeat the indentation of the
-     * first line after a newline?
+     * @param indent                the indent
+     * @param repeatFirstLineIndent do we need to repeat the indentation of the
+     *                              first line after a newline?
      */
     public void setIndent(final float indent, final boolean repeatFirstLineIndent) {
         this.indent = indent;
@@ -1086,8 +1086,7 @@ public class ColumnText {
                 yLine -= currentLeading;
                 if (!simulate && !dirty) {
                     // TODO this is not quite right. Currently, reversed chars may appear whenever bidi algorithm was applied, which is run direction is not NO_BIDI
-                    if (line.isRTL && canvas.isTagged())
-                    {
+                    if (line.isRTL && canvas.isTagged()) {
                         canvas.beginMarkedContentSequence(PdfName.REVERSEDCHARS);
                         rtl = true;
                     }
@@ -1123,8 +1122,7 @@ public class ColumnText {
                 line = bidiLine.processLine(x1, x2 - x1 - firstIndent - rightIndent, alignment, localRunDirection, arabicOptions, minY, yLine, descender);
                 if (!simulate && !dirty) {
                     // TODO this is not quite right. Currently, reversed chars may appear whenever bidi algorithm was applied, which is run direction is not NO_BIDI
-                    if (line.isRTL && canvas.isTagged())
-                    {
+                    if (line.isRTL && canvas.isTagged()) {
                         canvas.beginMarkedContentSequence(PdfName.REVERSEDCHARS);
                         rtl = true;
                     }
@@ -1231,7 +1229,7 @@ public class ColumnText {
      * character spacing will be zero.
      *
      * @param spaceCharRatio the ratio between the extra word spacing and the
-     * extra character spacing
+     *                       extra character spacing
      */
     public void setSpaceCharRatio(final float spaceCharRatio) {
         this.spaceCharRatio = spaceCharRatio;
@@ -1309,8 +1307,8 @@ public class ColumnText {
      * Gets the width that the line will occupy after writing. Only the width of
      * the first line is returned.
      *
-     * @param phrase the <CODE>Phrase</CODE> containing the line
-     * @param runDirection the run direction
+     * @param phrase        the <CODE>Phrase</CODE> containing the line
+     * @param runDirection  the run direction
      * @param arabicOptions the options for the arabic shaping
      * @return the width of the line
      */
@@ -1340,13 +1338,13 @@ public class ColumnText {
     /**
      * Shows a line of text. Only the first line is written.
      *
-     * @param canvas where the text is to be written to
-     * @param alignment the alignment. It is not influenced by the run direction
-     * @param phrase the <CODE>Phrase</CODE> with the text
-     * @param x the x reference position
-     * @param y the y reference position
-     * @param rotation the rotation to be applied in degrees counterclockwise
-     * @param runDirection the run direction
+     * @param canvas        where the text is to be written to
+     * @param alignment     the alignment. It is not influenced by the run direction
+     * @param phrase        the <CODE>Phrase</CODE> with the text
+     * @param x             the x reference position
+     * @param y             the y reference position
+     * @param rotation      the rotation to be applied in degrees counterclockwise
+     * @param runDirection  the run direction
      * @param arabicOptions the options for the arabic shaping
      */
     public static void showTextAligned(final PdfContentByte canvas, int alignment, final Phrase phrase, final float x, final float y, final float rotation, final int runDirection, final int arabicOptions) {
@@ -1407,12 +1405,12 @@ public class ColumnText {
     /**
      * Shows a line of text. Only the first line is written.
      *
-     * @param canvas where the text is to be written to
+     * @param canvas    where the text is to be written to
      * @param alignment the alignment
-     * @param phrase the <CODE>Phrase</CODE> with the text
-     * @param x the x reference position
-     * @param y the y reference position
-     * @param rotation the rotation to be applied in degrees counterclockwise
+     * @param phrase    the <CODE>Phrase</CODE> with the text
+     * @param x         the x reference position
+     * @param y         the y reference position
+     * @param rotation  the rotation to be applied in degrees counterclockwise
      */
     public static void showTextAligned(final PdfContentByte canvas, final int alignment, final Phrase phrase, final float x, final float y, final float rotation) {
         showTextAligned(canvas, alignment, phrase, x, y, rotation, PdfWriter.RUN_DIRECTION_NO_BIDI, 0);
@@ -1421,10 +1419,10 @@ public class ColumnText {
     /**
      * Fits the text to some rectangle adjusting the font size as needed.
      *
-     * @param font the font to use
-     * @param text the text
-     * @param rect the rectangle where the text must fit
-     * @param maxFontSize the maximum font size
+     * @param font         the font to use
+     * @param text         the text
+     * @param rect         the rectangle where the text must fit
+     * @param maxFontSize  the maximum font size
      * @param runDirection the run direction
      * @return the calculated font size that makes the text fit
      */
@@ -1799,7 +1797,7 @@ public class ColumnText {
                     kTemp--;
                 }
 
-                if ( kTemp < (table.size() - 1) && !table.getRow(kTemp).isMayNotBreak()) {
+                if (kTemp < (table.size() - 1) && !table.getRow(kTemp).isMayNotBreak()) {
                     kTemp++;
                 }
 
@@ -1835,7 +1833,7 @@ public class ColumnText {
                             else {
                                 // don't drop the row if the table is incomplete and if there's only one row (not counting the header rows)
                                 // if there's only one row and this check wasn't here the row would have been deleted and not added at all
-                                if ( !(!table.isComplete() && k == 1 ) ) {
+                                if (!(!table.isComplete() && k == 1)) {
                                     table.getRows().remove(k);
                                 }
                                 return NO_MORE_COLUMN;
@@ -2168,7 +2166,7 @@ public class ColumnText {
     /**
      * Enables/Disables adjustment of first line height based on max ascender.
      *
-     * @param useAscender	enable adjustment if true
+     * @param useAscender enable adjustment if true
      */
     public void setUseAscender(final boolean useAscender) {
         this.useAscender = useAscender;
@@ -2204,7 +2202,7 @@ public class ColumnText {
      * Replaces the <CODE>filledWidth</CODE> if greater than the existing one.
      *
      * @param w the new <CODE>filledWidth</CODE> if greater than the existing
-     * one
+     *          one
      */
     public void updateFilledWidth(final float w) {
         if (w > filledWidth) {
@@ -2229,7 +2227,7 @@ public class ColumnText {
      * after the other in the same column calling go() several times.
      *
      * @param adjustFirstLine <CODE>true</CODE> to adjust the first line,
-     * <CODE>false</CODE> otherwise
+     *                        <CODE>false</CODE> otherwise
      */
     public void setAdjustFirstLine(final boolean adjustFirstLine) {
         this.adjustFirstLine = adjustFirstLine;

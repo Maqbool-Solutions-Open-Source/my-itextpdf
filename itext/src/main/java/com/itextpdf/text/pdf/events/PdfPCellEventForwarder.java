@@ -59,23 +59,26 @@ import com.itextpdf.text.pdf.PdfPCellEvent;
 
 public class PdfPCellEventForwarder implements PdfPCellEvent {
 
-	/** ArrayList containing all the PageEvents that have to be executed. */
-	protected ArrayList<PdfPCellEvent> events = new ArrayList<PdfPCellEvent>();
+    /**
+     * ArrayList containing all the PageEvents that have to be executed.
+     */
+    protected ArrayList<PdfPCellEvent> events = new ArrayList<PdfPCellEvent>();
 
-	/**
-	 * Add a page event to the forwarder.
-	 * @param event an event that has to be added to the forwarder.
-	 */
-	public void addCellEvent(PdfPCellEvent event) {
-		events.add(event);
-	}
+    /**
+     * Add a page event to the forwarder.
+     *
+     * @param event an event that has to be added to the forwarder.
+     */
+    public void addCellEvent(PdfPCellEvent event) {
+        events.add(event);
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.PdfPCellEvent#cellLayout(com.itextpdf.text.pdf.PdfPCell, com.itextpdf.text.Rectangle, com.itextpdf.text.pdf.PdfContentByte[])
-	 */
-	public void cellLayout(PdfPCell cell, Rectangle position, PdfContentByte[] canvases) {
-		for (PdfPCellEvent event: events) {
-			event.cellLayout(cell, position, canvases);
-		}
-	}
+    /**
+     * @see com.itextpdf.text.pdf.PdfPCellEvent#cellLayout(com.itextpdf.text.pdf.PdfPCell, com.itextpdf.text.Rectangle, com.itextpdf.text.pdf.PdfContentByte[])
+     */
+    public void cellLayout(PdfPCell cell, Rectangle position, PdfContentByte[] canvases) {
+        for (PdfPCellEvent event : events) {
+            event.cellLayout(cell, position, canvases);
+        }
+    }
 }

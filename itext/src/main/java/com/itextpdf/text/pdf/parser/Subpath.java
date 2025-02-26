@@ -66,6 +66,7 @@ public class Subpath {
 
     /**
      * Copy constuctor.
+     *
      * @param subpath
      */
     public Subpath(Subpath subpath) {
@@ -90,6 +91,7 @@ public class Subpath {
 
     /**
      * Sets the start point of the subpath.
+     *
      * @param startPoint
      */
     public void setStartPoint(Point2D startPoint) {
@@ -98,6 +100,7 @@ public class Subpath {
 
     /**
      * Sets the start point of the subpath.
+     *
      * @param x
      * @param y
      */
@@ -129,6 +132,7 @@ public class Subpath {
     /**
      * Adds a segment to the subpath.
      * Note: each new segment shall start at the end of the previous segment.
+     *
      * @param segment new segment.
      */
     public void addSegment(Shape segment) {
@@ -145,7 +149,7 @@ public class Subpath {
 
     /**
      * @return {@link java.util.List} comprising all the segments
-     *         the subpath made on.
+     * the subpath made on.
      */
     public List<Shape> getSegments() {
         return segments;
@@ -153,6 +157,7 @@ public class Subpath {
 
     /**
      * Checks whether subpath is empty or not.
+     *
      * @return true if the subpath is empty, false otherwise.
      */
     public boolean isEmpty() {
@@ -161,7 +166,7 @@ public class Subpath {
 
     /**
      * @return <CODE>true</CODE> if this subpath contains only one point and it is not closed,
-     *         <CODE>false</CODE> otherwise
+     * <CODE>false</CODE> otherwise
      */
     public boolean isSinglePointOpen() {
         return segments.size() == 0 && !closed;
@@ -218,7 +223,7 @@ public class Subpath {
 
     /**
      * @return {@link java.util.List} containing points of piecewise linear approximation
-     *         for this subpath.
+     * for this subpath.
      * @since 5.5.6
      */
     public List<Point2D> getPiecewiseLinearApproximation() {

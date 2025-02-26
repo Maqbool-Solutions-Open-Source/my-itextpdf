@@ -48,38 +48,41 @@ import com.itextpdf.text.pdf.PdfName;
 
 /**
  * Dictionary that stores signature build properties.
+ *
  * @author Kwinten Pisman
  */
 public class PdfSignatureBuildProperties extends PdfDictionary {
 
-	/** Creates new PdfSignatureBuildProperties */
-	public PdfSignatureBuildProperties() {
-		super();
-	}
+    /**
+     * Creates new PdfSignatureBuildProperties
+     */
+    public PdfSignatureBuildProperties() {
+        super();
+    }
 
-	/**
-	 * Sets the signatureCreator property in the underlying
-	 * {@link PdfSignatureAppDictionary} dictionary.
-	 * 
-	 * @param name
-	 */
-	public void setSignatureCreator(String name) {
-		getPdfSignatureAppProperty().setSignatureCreator(name);
-	}
+    /**
+     * Sets the signatureCreator property in the underlying
+     * {@link PdfSignatureAppDictionary} dictionary.
+     *
+     * @param name
+     */
+    public void setSignatureCreator(String name) {
+        getPdfSignatureAppProperty().setSignatureCreator(name);
+    }
 
-	/**
-	 * Gets the {@link PdfSignatureAppDictionary} from this dictionary. If it
-	 * does not exist, it adds a new {@link PdfSignatureAppDictionary} and
-	 * returns this instance.
-	 * 
-	 * @return {@link PdfSignatureAppDictionary}
-	 */
-	private PdfSignatureAppDictionary getPdfSignatureAppProperty() {
-		PdfSignatureAppDictionary appPropDic = (PdfSignatureAppDictionary) getAsDict(PdfName.APP);
-		if (appPropDic == null) {
-			appPropDic = new PdfSignatureAppDictionary();
-			put(PdfName.APP, appPropDic);
-		}
-		return appPropDic;
-	}
+    /**
+     * Gets the {@link PdfSignatureAppDictionary} from this dictionary. If it
+     * does not exist, it adds a new {@link PdfSignatureAppDictionary} and
+     * returns this instance.
+     *
+     * @return {@link PdfSignatureAppDictionary}
+     */
+    private PdfSignatureAppDictionary getPdfSignatureAppProperty() {
+        PdfSignatureAppDictionary appPropDic = (PdfSignatureAppDictionary) getAsDict(PdfName.APP);
+        if (appPropDic == null) {
+            appPropDic = new PdfSignatureAppDictionary();
+            put(PdfName.APP, appPropDic);
+        }
+        return appPropDic;
+    }
 }

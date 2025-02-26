@@ -44,19 +44,19 @@
 package com.itextpdf.text.pdf;
 
 /**
- *
- * @author  Paulo Soares
+ * @author Paulo Soares
  */
 public class CMYKColor extends ExtendedColor {
 
     private static final long serialVersionUID = 5940378778276468452L;
-	float cyan;
+    float cyan;
     float magenta;
     float yellow;
     float black;
 
     /**
      * Constructs a CMYK Color based on 4 color values (values are integers from 0 to 255).
+     *
      * @param intCyan
      * @param intMagenta
      * @param intYellow
@@ -68,6 +68,7 @@ public class CMYKColor extends ExtendedColor {
 
     /**
      * Construct a CMYK Color.
+     *
      * @param floatCyan
      * @param floatMagenta
      * @param floatYellow
@@ -80,7 +81,7 @@ public class CMYKColor extends ExtendedColor {
         yellow = normalize(floatYellow);
         black = normalize(floatBlack);
     }
-    
+
     /**
      * @return the cyan value
      */
@@ -112,12 +113,12 @@ public class CMYKColor extends ExtendedColor {
     public boolean equals(Object obj) {
         if (!(obj instanceof CMYKColor))
             return false;
-        CMYKColor c2 = (CMYKColor)obj;
+        CMYKColor c2 = (CMYKColor) obj;
         return (cyan == c2.cyan && magenta == c2.magenta && yellow == c2.yellow && black == c2.black);
     }
-    
+
     public int hashCode() {
-        return Float.floatToIntBits(cyan) ^ Float.floatToIntBits(magenta) ^ Float.floatToIntBits(yellow) ^ Float.floatToIntBits(black); 
+        return Float.floatToIntBits(cyan) ^ Float.floatToIntBits(magenta) ^ Float.floatToIntBits(yellow) ^ Float.floatToIntBits(black);
     }
-    
+
 }

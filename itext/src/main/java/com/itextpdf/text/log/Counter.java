@@ -44,24 +44,28 @@ package com.itextpdf.text.log;
 /**
  * Interface that can be implemented if you want to count the number of documents
  * that are being processed by iText.
- * 
+ * <p>
  * Implementers may use this method to record actual system usage for licensing purposes
  * (e.g. count the number of documents or the volumne in bytes in the context of a SaaS license).
  */
 public interface Counter {
-	
-	/** Gets a Counter instance for a specific class. */
-	Counter getCounter(Class<?> klass);
-	
-	/**
-	 * This method gets triggered if a file is read.
-	 * @param l	the length of the file that was written
-	 */
-	void read(long l);
-	
-	/**
-	 * This method gets triggered if a file is written.
-	 * @param l	the length of the file that was written 
-	 */
-	void written(long l);
+
+    /**
+     * Gets a Counter instance for a specific class.
+     */
+    Counter getCounter(Class<?> klass);
+
+    /**
+     * This method gets triggered if a file is read.
+     *
+     * @param l the length of the file that was written
+     */
+    void read(long l);
+
+    /**
+     * This method gets triggered if a file is written.
+     *
+     * @param l the length of the file that was written
+     */
+    void written(long l);
 }

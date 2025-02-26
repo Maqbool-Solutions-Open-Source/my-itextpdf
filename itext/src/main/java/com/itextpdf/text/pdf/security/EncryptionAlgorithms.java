@@ -51,10 +51,12 @@ import java.util.HashMap;
  */
 public class EncryptionAlgorithms {
 
-	/** Maps IDs of encryption algorithms with its human-readable name. */
-	static final HashMap<String, String> algorithmNames = new HashMap<String, String>();
+    /**
+     * Maps IDs of encryption algorithms with its human-readable name.
+     */
+    static final HashMap<String, String> algorithmNames = new HashMap<String, String>();
 
-	static {
+    static {
         algorithmNames.put("1.2.840.113549.1.1.1", "RSA");
         algorithmNames.put("1.2.840.10040.4.1", "DSA");
         algorithmNames.put("1.2.840.113549.1.1.2", "RSA");
@@ -72,42 +74,44 @@ public class EncryptionAlgorithms {
         algorithmNames.put("1.3.36.3.3.1.3", "RSA");
         algorithmNames.put("1.3.36.3.3.1.4", "RSA");
         algorithmNames.put("1.2.643.2.2.19", "ECGOST3410");
-	}
+    }
 
-	/**
-	 * Gets the algorithm name for a certain id.
-	 * @param oid	an id (for instance "1.2.840.113549.1.1.1")
-	 * @return	an algorithm name (for instance "RSA")
-	 */
-	public static String getAlgorithm(String oid) {
-	    String ret = algorithmNames.get(oid);
-	    if (ret == null)
-	        return oid;
-	    else
-	        return ret;
-	}
-	
-	/**
-	 * Allows new oid to be added.
-	 * @param oid
-	 * @param name
-	 */
-	public static boolean addAlgorithm(String oid, String name) throws GeneralSecurityException{
-		boolean status = false;
-		if(oid!=null && !oid.equals("")){
-			if(!algorithmNames.containsKey(oid)){
-				algorithmNames.put(oid, name);
-				status = true;
-			}else if(algorithmNames.get(oid).equals(name)){
-				status = false;
-			} else{
-				throw new GeneralSecurityException("already registered oid="+oid+", with name="+algorithmNames.get(oid));
-			}
-		} else{
-			throw new GeneralSecurityException("Can not register oid's with null or empty");
-		}
-		return status;
-	}     
+    /**
+     * Gets the algorithm name for a certain id.
+     *
+     * @param oid an id (for instance "1.2.840.113549.1.1.1")
+     * @return an algorithm name (for instance "RSA")
+     */
+    public static String getAlgorithm(String oid) {
+        String ret = algorithmNames.get(oid);
+        if (ret == null)
+            return oid;
+        else
+            return ret;
+    }
+
+    /**
+     * Allows new oid to be added.
+     *
+     * @param oid
+     * @param name
+     */
+    public static boolean addAlgorithm(String oid, String name) throws GeneralSecurityException {
+        boolean status = false;
+        if (oid != null && !oid.equals("")) {
+            if (!algorithmNames.containsKey(oid)) {
+                algorithmNames.put(oid, name);
+                status = true;
+            } else if (algorithmNames.get(oid).equals(name)) {
+                status = false;
+            } else {
+                throw new GeneralSecurityException("already registered oid=" + oid + ", with name=" + algorithmNames.get(oid));
+            }
+        } else {
+            throw new GeneralSecurityException("Can not register oid's with null or empty");
+        }
+        return status;
+    }
 }
 
 

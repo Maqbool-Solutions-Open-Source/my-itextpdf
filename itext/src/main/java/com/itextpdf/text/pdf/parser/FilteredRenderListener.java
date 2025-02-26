@@ -45,20 +45,26 @@ package com.itextpdf.text.pdf.parser;
 
 /**
  * A text render listener that filters text operations before passing them on to a delegate
+ *
  * @since 5.0.1
  */
 
 public class FilteredRenderListener implements RenderListener {
 
-    /** The delegate that will receive the text render operation if the filters all pass */
+    /**
+     * The delegate that will receive the text render operation if the filters all pass
+     */
     private final RenderListener delegate;
-    /** The filters to be applied */
+    /**
+     * The filters to be applied
+     */
     private final RenderFilter[] filters;
 
     /**
      * Construction
+     *
      * @param delegate the delegate {@link RenderListener} that will receive filtered text operations
-     * @param filters the filter(s) to apply
+     * @param filters  the filter(s) to apply
      */
     public FilteredRenderListener(RenderListener delegate, RenderFilter... filters) {
         this.delegate = delegate;
@@ -67,6 +73,7 @@ public class FilteredRenderListener implements RenderListener {
 
     /**
      * Applies filters, then delegates to the delegate if all filters pass
+     *
      * @param renderInfo contains info to render text
      * @see com.itextpdf.text.pdf.parser.RenderListener#renderText(com.itextpdf.text.pdf.parser.TextRenderInfo)
      */
@@ -80,6 +87,7 @@ public class FilteredRenderListener implements RenderListener {
 
     /**
      * This class delegates this call
+     *
      * @see com.itextpdf.text.pdf.parser.RenderListener#beginTextBlock()
      */
     public void beginTextBlock() {
@@ -88,6 +96,7 @@ public class FilteredRenderListener implements RenderListener {
 
     /**
      * This class delegates this call
+     *
      * @see com.itextpdf.text.pdf.parser.RenderListener#endTextBlock()
      */
     public void endTextBlock() {
@@ -96,6 +105,7 @@ public class FilteredRenderListener implements RenderListener {
 
     /**
      * Applies filters, then delegates to the delegate if all filters pass
+     *
      * @see com.itextpdf.text.pdf.parser.RenderListener#renderImage(com.itextpdf.text.pdf.parser.ImageRenderInfo)
      * @since 5.0.1
      */

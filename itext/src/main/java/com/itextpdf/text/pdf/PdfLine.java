@@ -57,19 +57,29 @@ public class PdfLine {
 
     // membervariables
 
-    /** The arraylist containing the chunks. */
+    /**
+     * The arraylist containing the chunks.
+     */
     protected ArrayList<PdfChunk> line;
 
-    /** The left indentation of the line. */
+    /**
+     * The left indentation of the line.
+     */
     protected float left;
 
-    /** The width of the line. */
+    /**
+     * The width of the line.
+     */
     protected float width;
 
-    /** The alignment of the line. */
+    /**
+     * The alignment of the line.
+     */
     protected int alignment;
 
-    /** The height of the line. */
+    /**
+     * The height of the line.
+     */
     protected float height;
 
     /** The listsymbol (if necessary). */
@@ -78,20 +88,24 @@ public class PdfLine {
     /** The listsymbol (if necessary). */
 //    protected float symbolIndent;
 
-    /** <CODE>true</CODE> if the chunk splitting was caused by a newline. */
+    /**
+     * <CODE>true</CODE> if the chunk splitting was caused by a newline.
+     */
     protected boolean newlineSplit = false;
 
-    /** The original width. */
+    /**
+     * The original width.
+     */
     protected float originalWidth;
 
     protected boolean isRTL = false;
 
     protected ListItem listItem = null;
-    
+
     protected TabStop tabStop = null;
 
     protected float tabStopAnchorPosition = Float.NaN;
-    
+
     protected float tabPosition = Float.NaN;
 
     // constructors
@@ -99,10 +113,10 @@ public class PdfLine {
     /**
      * Constructs a new <CODE>PdfLine</CODE>-object.
      *
-     * @param	left		the limit of the line at the left
-     * @param	right		the limit of the line at the right
-     * @param	alignment	the alignment of the line
-     * @param	height		the height of the line
+     * @param left      the limit of the line at the left
+     * @param right     the limit of the line at the right
+     * @param alignment the alignment of the line
+     * @param height    the height of the line
      */
 
     PdfLine(float left, float right, int alignment, float height) {
@@ -116,13 +130,14 @@ public class PdfLine {
 
     /**
      * Creates a PdfLine object.
-     * @param left				the left offset
-     * @param originalWidth		the original width of the line
-     * @param remainingWidth	bigger than 0 if the line isn't completely filled
-     * @param alignment			the alignment of the line
-     * @param newlineSplit		was the line splitted (or does the paragraph end with this line)
-     * @param line				an array of PdfChunk objects
-     * @param isRTL				do you have to read the line from Right to Left?
+     *
+     * @param left           the left offset
+     * @param originalWidth  the original width of the line
+     * @param remainingWidth bigger than 0 if the line isn't completely filled
+     * @param alignment      the alignment of the line
+     * @param newlineSplit   was the line splitted (or does the paragraph end with this line)
+     * @param line           an array of PdfChunk objects
+     * @param isRTL          do you have to read the line from Right to Left?
      */
     PdfLine(float left, float originalWidth, float remainingWidth, int alignment, boolean newlineSplit, ArrayList<PdfChunk> line, boolean isRTL) {
         this.left = left;
@@ -139,11 +154,11 @@ public class PdfLine {
     /**
      * Adds a <CODE>PdfChunk</CODE> to the <CODE>PdfLine</CODE>.
      *
-     * @param		chunk		        the <CODE>PdfChunk</CODE> to add
-     * @param		currentLeading		new value for the height of the line
-     * @return		<CODE>null</CODE> if the chunk could be added completely; if not
-     *				a <CODE>PdfChunk</CODE> containing the part of the chunk that could
-     *				not be added is returned
+     * @param chunk          the <CODE>PdfChunk</CODE> to add
+     * @param currentLeading new value for the height of the line
+     * @return <CODE>null</CODE> if the chunk could be added completely; if not
+     * a <CODE>PdfChunk</CODE> containing the part of the chunk that could
+     * not be added is returned
      */
 
     PdfChunk add(PdfChunk chunk, float currentLeading) {
@@ -161,25 +176,25 @@ public class PdfLine {
     /**
      * Adds a <CODE>PdfChunk</CODE> to the <CODE>PdfLine</CODE>.
      *
-     * @param		chunk		the <CODE>PdfChunk</CODE> to add
-     * @return		<CODE>null</CODE> if the chunk could be added completely; if not
-     *				a <CODE>PdfChunk</CODE> containing the part of the chunk that could
-     *				not be added is returned
+     * @param chunk the <CODE>PdfChunk</CODE> to add
+     * @return <CODE>null</CODE> if the chunk could be added completely; if not
+     * a <CODE>PdfChunk</CODE> containing the part of the chunk that could
+     * not be added is returned
      */
 
     PdfChunk add(PdfChunk chunk) {
         // nothing happens if the chunk is null.
         if (chunk == null || chunk.toString().equals("")) {
-        	return null;
+            return null;
         }
 
         // we split the chunk to be added
         PdfChunk overflow = chunk.split(width);
         newlineSplit = chunk.isNewlineSplit() || overflow == null;
         if (chunk.isTab()) {
-        	Object[] tab = (Object[])chunk.getAttribute(Chunk.TAB);
-            if (chunk.isAttribute(Chunk.TABSETTINGS))  {
-                boolean isWhiteSpace = (Boolean)tab[1];
+            Object[] tab = (Object[]) chunk.getAttribute(Chunk.TAB);
+            if (chunk.isAttribute(Chunk.TABSETTINGS)) {
+                boolean isWhiteSpace = (Boolean) tab[1];
                 if (!isWhiteSpace || !line.isEmpty()) {
                     flush();
                     tabStopAnchorPosition = Float.NaN;
@@ -208,8 +223,8 @@ public class PdfLine {
                     return null;
             } else {
                 //Keep deprecated tab logic for backward compatibility...
-                Float tabStopPosition = ((Float)tab[1]).floatValue();
-                boolean newline = ((Boolean)tab[2]).booleanValue();
+                Float tabStopPosition = ((Float) tab[1]).floatValue();
+                boolean newline = ((Boolean) tab[2]).booleanValue();
                 if (newline && tabStopPosition < originalWidth - width) {
                     return chunk;
                 }
@@ -241,8 +256,7 @@ public class PdfLine {
                     addToLine(overflow);
                 return null;
             }
-        }
-        else {
+        } else {
             width += (line.get(line.size() - 1)).trimLastSpace();
         }
         return overflow;
@@ -250,16 +264,15 @@ public class PdfLine {
 
     private void addToLine(PdfChunk chunk) {
         if (chunk.changeLeading) {
-        	float f;
-        	if (chunk.isImage()) {
-        		Image img = chunk.getImage();
-        		f = chunk.getImageHeight() + chunk.getImageOffsetY()
-        				+ img.getBorderWidthTop() + img.getSpacingBefore();
-        	}
-        	else {
-        		f = chunk.getLeading();
-        	}
-        	if (f > height) height = f;
+            float f;
+            if (chunk.isImage()) {
+                Image img = chunk.getImage();
+                f = chunk.getImageHeight() + chunk.getImageOffsetY()
+                        + img.getBorderWidthTop() + img.getSpacingBefore();
+            } else {
+                f = chunk.getLeading();
+            }
+            if (f > height) height = f;
         }
         if (tabStop != null && tabStop.getAlignment() == TabStop.Alignment.ANCHOR && Float.isNaN(tabStopAnchorPosition)) {
             String value = chunk.toString();
@@ -269,7 +282,7 @@ public class PdfLine {
                 tabStopAnchorPosition = originalWidth - width - subWidth;
             }
         }
-    	line.add(chunk);
+        line.add(chunk);
     }
 
     // methods to retrieve information
@@ -277,7 +290,7 @@ public class PdfLine {
     /**
      * Returns the number of chunks in the line.
      *
-     * @return	a value
+     * @return a value
      */
 
     public int size() {
@@ -287,7 +300,7 @@ public class PdfLine {
     /**
      * Returns an iterator of <CODE>PdfChunk</CODE>s.
      *
-     * @return	an <CODE>Iterator</CODE>
+     * @return an <CODE>Iterator</CODE>
      */
 
     public Iterator<PdfChunk> iterator() {
@@ -297,7 +310,7 @@ public class PdfLine {
     /**
      * Returns the height of the line.
      *
-     * @return	a value
+     * @return a value
      */
 
     float height() {
@@ -307,7 +320,7 @@ public class PdfLine {
     /**
      * Returns the left indentation of the line taking the alignment of the line into account.
      *
-     * @return	a value
+     * @return a value
      */
 
     float indentLeft() {
@@ -337,7 +350,7 @@ public class PdfLine {
     /**
      * Checks if this line has to be justified.
      *
-     * @return	<CODE>true</CODE> if the alignment equals <VAR>ALIGN_JUSTIFIED</VAR> and there is some width left.
+     * @return <CODE>true</CODE> if the alignment equals <VAR>ALIGN_JUSTIFIED</VAR> and there is some width left.
      */
 
     public boolean hasToBeJustified() {
@@ -346,7 +359,7 @@ public class PdfLine {
 
     /**
      * Resets the alignment of this line.
-     * <P>
+     * <p>
      * The alignment of the last line of for instance a <CODE>Paragraph</CODE>
      * that has to be justified, has to be reset to <VAR>ALIGN_LEFT</VAR>.
      */
@@ -357,17 +370,19 @@ public class PdfLine {
         }
     }
 
-    /** Adds extra indentation to the left (for Paragraph.setFirstLineIndent). */
+    /**
+     * Adds extra indentation to the left (for Paragraph.setFirstLineIndent).
+     */
     void setExtraIndent(float extra) {
-    	left += extra;
-    	width -= extra;
-    	originalWidth -= extra;
+        left += extra;
+        width -= extra;
+        originalWidth -= extra;
     }
 
     /**
      * Returns the width that is left, after a maximum of characters is added to the line.
      *
-     * @return	a value
+     * @return a value
      */
 
     float widthLeft() {
@@ -377,7 +392,7 @@ public class PdfLine {
     /**
      * Returns the number of space-characters in this line.
      *
-     * @return	a value
+     * @return a value
      */
 
     int numberOfSpaces() {
@@ -396,7 +411,7 @@ public class PdfLine {
 
     /**
      * Sets the listsymbol of this line.
-     * <P>
+     * <p>
      * This is only necessary for the first line of a <CODE>ListItem</CODE>.
      *
      * @param listItem the list symbol
@@ -411,7 +426,7 @@ public class PdfLine {
     /**
      * Returns the listsymbol of this line.
      *
-     * @return	a <CODE>PdfChunk</CODE> if the line has a listsymbol; <CODE>null</CODE> otherwise
+     * @return a <CODE>PdfChunk</CODE> if the line has a listsymbol; <CODE>null</CODE> otherwise
      */
 
     public Chunk listSymbol() {
@@ -421,7 +436,7 @@ public class PdfLine {
     /**
      * Return the indentation needed to show the listsymbol.
      *
-     * @return	a value
+     * @return a value
      */
 
     public float listIndent() {
@@ -435,7 +450,7 @@ public class PdfLine {
     /**
      * Get the string representation of what is in this line.
      *
-     * @return	a <CODE>String</CODE>
+     * @return a <CODE>String</CODE>
      */
 
     @Override
@@ -449,19 +464,21 @@ public class PdfLine {
 
     /**
      * Returns the length of a line in UTF32 characters
-     * @return	the length in UTF32 characters
-     * @since	2.1.2; Get changed into get in 5.0.2
+     *
+     * @return the length in UTF32 characters
+     * @since 2.1.2; Get changed into get in 5.0.2
      */
     public int getLineLengthUtf32() {
         int total = 0;
         for (Object element : line) {
-            total += ((PdfChunk)element).lengthUtf32();
+            total += ((PdfChunk) element).lengthUtf32();
         }
         return total;
     }
 
     /**
      * Checks if a newline caused the line split.
+     *
      * @return <CODE>true</CODE> if a newline caused the line split
      */
     public boolean isNewlineSplit() {
@@ -470,6 +487,7 @@ public class PdfLine {
 
     /**
      * Gets the index of the last <CODE>PdfChunk</CODE> with metric attributes
+     *
      * @return the last <CODE>PdfChunk</CODE> with metric attributes
      */
     public int getLastStrokeChunk() {
@@ -484,6 +502,7 @@ public class PdfLine {
 
     /**
      * Gets a <CODE>PdfChunk</CODE> by index.
+     *
      * @param idx the index
      * @return the <CODE>PdfChunk</CODE> or null if beyond the array
      */
@@ -495,6 +514,7 @@ public class PdfLine {
 
     /**
      * Gets the original width of the line.
+     *
      * @return the original width of the line
      */
     public float getOriginalWidth() {
@@ -524,12 +544,13 @@ public class PdfLine {
      * Gets the difference between the "normal" leading and the maximum
      * size (for instance when there are images in the chunk and the leading
      * has to be taken into account).
-     * @return	an extra leading for images
-     * @since	2.1.5
+     *
+     * @return an extra leading for images
+     * @since 2.1.5
      */
     float[] getMaxSize(float fixedLeading, float multipliedLeading) {
-    	float normal_leading = 0;
-    	float image_leading = -10000;
+        float normal_leading = 0;
+        float image_leading = -10000;
         PdfChunk chunk;
         for (int k = 0; k < line.size(); ++k) {
             chunk = line.get(k);
@@ -556,29 +577,31 @@ public class PdfLine {
     /**
      * Gets the number of separators in the line.
      * Returns -1 if there's a tab in the line.
-     * @return	the number of separators in the line
-     * @since	2.1.2
+     *
+     * @return the number of separators in the line
+     * @since 2.1.2
      */
     int getSeparatorCount() {
-    	int s = 0;
-    	PdfChunk ck;
+        int s = 0;
+        PdfChunk ck;
         for (Object element : line) {
-        	ck = (PdfChunk)element;
-        	if (ck.isTab()) {
+            ck = (PdfChunk) element;
+            if (ck.isTab()) {
                 if (ck.isAttribute(Chunk.TABSETTINGS))
                     continue;
                 //It seems justification was forbidden in the deprecated tab logic!!!
-        		return -1;
-        	}
-        	if (ck.isHorizontalSeparator()) {
-        		s++;
-        	}
+                return -1;
+            }
+            if (ck.isHorizontalSeparator()) {
+                s++;
+            }
         }
         return s;
     }
 
     /**
      * Gets a width corrected with a charSpacing and wordSpacing.
+     *
      * @param charSpacing
      * @param wordSpacing
      * @return a corrected width
@@ -592,31 +615,33 @@ public class PdfLine {
         return total;
     }
 
-/**
- * Gets the maximum size of the ascender for all the fonts used
- * in this line.
- * @return maximum size of all the ascenders used in this line
- */
+    /**
+     * Gets the maximum size of the ascender for all the fonts used
+     * in this line.
+     *
+     * @return maximum size of all the ascenders used in this line
+     */
     public float getAscender() {
-       float ascender = 0;
-       for (int k = 0; k < line.size(); ++k) {
-           PdfChunk ck = line.get(k);
-           if (ck.isImage())
-               ascender = Math.max(ascender, ck.getImageHeight() + ck.getImageOffsetY());
-           else {
-               PdfFont font = ck.font();
-               float textRise = ck.getTextRise();
-               ascender = Math.max(ascender, (textRise > 0 ? textRise : 0) + font.getFont().getFontDescriptor(BaseFont.ASCENT, font.size()));
-           }
-       }
-       return ascender;
+        float ascender = 0;
+        for (int k = 0; k < line.size(); ++k) {
+            PdfChunk ck = line.get(k);
+            if (ck.isImage())
+                ascender = Math.max(ascender, ck.getImageHeight() + ck.getImageOffsetY());
+            else {
+                PdfFont font = ck.font();
+                float textRise = ck.getTextRise();
+                ascender = Math.max(ascender, (textRise > 0 ? textRise : 0) + font.getFont().getFontDescriptor(BaseFont.ASCENT, font.size()));
+            }
+        }
+        return ascender;
     }
 
-/**
- * Gets the biggest descender for all the fonts used
- * in this line.  Note that this is a negative number.
- * @return maximum size of all the descenders used in this line
- */
+    /**
+     * Gets the biggest descender for all the fonts used
+     * in this line.  Note that this is a negative number.
+     *
+     * @return maximum size of all the descenders used in this line
+     */
     public float getDescender() {
         float descender = 0;
         for (int k = 0; k < line.size(); ++k) {

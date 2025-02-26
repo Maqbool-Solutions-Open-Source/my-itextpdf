@@ -49,35 +49,47 @@ import java.util.HashMap;
 
 import com.itextpdf.text.ExceptionConverter;
 import com.itextpdf.text.pdf.BaseFont;
-/** Default class to map awt fonts to BaseFont.
+
+/**
+ * Default class to map awt fonts to BaseFont.
+ *
  * @author Paulo Soares
  */
 
 public class DefaultFontMapper implements FontMapper {
 
-    /** A representation of BaseFont parameters.
+    /**
+     * A representation of BaseFont parameters.
      */
     public static class BaseFontParameters {
-        /** The font name.
+        /**
+         * The font name.
          */
         public String fontName;
-        /** The encoding for that font.
+        /**
+         * The encoding for that font.
          */
         public String encoding;
-        /** The embedding for that font.
+        /**
+         * The embedding for that font.
          */
         public boolean embedded;
-        /** Whether the font is cached of not.
+        /**
+         * Whether the font is cached of not.
          */
         public boolean cached;
-        /** The font bytes for ttf and afm.
+        /**
+         * The font bytes for ttf and afm.
          */
         public byte ttfAfm[];
-        /** The font bytes for pfb.
+        /**
+         * The font bytes for pfb.
          */
         public byte pfb[];
 
-        /** Constructs default BaseFont parameters.
+        /**
+         * Constructs default BaseFont parameters.
+         *
          * @param fontName the font name or location
          */
         public BaseFontParameters(String fontName) {
@@ -88,17 +100,20 @@ public class DefaultFontMapper implements FontMapper {
         }
     }
 
-    /** Maps aliases to names.
+    /**
+     * Maps aliases to names.
      */
     private HashMap<String, String> aliases = new HashMap<String, String>();
-    /** Maps names to BaseFont parameters.
+    /**
+     * Maps names to BaseFont parameters.
      */
     private HashMap<String, BaseFontParameters> mapper = new HashMap<String, BaseFontParameters>();
+
     /**
      * Returns a BaseFont which can be used to represent the given AWT Font
      *
-     * @param	font		the font to be converted
-     * @return	a BaseFont which has similar properties to the provided Font
+     * @param font the font to be converted
+     * @return a BaseFont which has similar properties to the provided Font
      */
 
     public BaseFont awtToPdf(Font font) {
@@ -166,8 +181,7 @@ public class DefaultFontMapper implements FontMapper {
                 }
             }
             return BaseFont.createFont(fontKey, BaseFont.CP1252, false);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
@@ -175,9 +189,9 @@ public class DefaultFontMapper implements FontMapper {
     /**
      * Returns an AWT Font which can be used to represent the given BaseFont
      *
-     * @param	font		the font to be converted
-     * @param	size		the desired point size of the resulting font
-     * @return	a Font which has similar properties to the provided BaseFont
+     * @param font the font to be converted
+     * @param size the desired point size of the resulting font
+     * @return a Font which has similar properties to the provided BaseFont
      */
 
     public Font pdfToAwt(BaseFont font, int size) {
@@ -203,23 +217,29 @@ public class DefaultFontMapper implements FontMapper {
         return new Font(finalName, 0, size);
     }
 
-    /** Maps a name to a BaseFont parameter.
-     * @param awtName the name
+    /**
+     * Maps a name to a BaseFont parameter.
+     *
+     * @param awtName    the name
      * @param parameters the BaseFont parameter
      */
     public void putName(String awtName, BaseFontParameters parameters) {
         mapper.put(awtName, parameters);
     }
 
-    /** Maps an alias to a name.
-     * @param alias the alias
+    /**
+     * Maps an alias to a name.
+     *
+     * @param alias   the alias
      * @param awtName the name
      */
     public void putAlias(String alias, String awtName) {
         aliases.put(alias, awtName);
     }
 
-    /** Looks for a BaseFont parameter associated with a name.
+    /**
+     * Looks for a BaseFont parameter associated with a name.
+     *
      * @param name the name
      * @return the BaseFont parameter or <CODE>null</CODE> if not found.
      */
@@ -236,11 +256,12 @@ public class DefaultFontMapper implements FontMapper {
 
     /**
      * Inserts the names in this map.
+     *
      * @param allNames the returned value of calling {@link BaseFont#getAllFontNames(String, String, byte[])}
-     * @param path the full path to the font
+     * @param path     the full path to the font
      */
     public void insertNames(Object allNames[], String path) {
-        String names[][] = (String[][])allNames[2];
+        String names[][] = (String[][]) allNames[2];
         String main = null;
         for (int k = 0; k < names.length; ++k) {
             String name[] = names[k];
@@ -256,12 +277,14 @@ public class DefaultFontMapper implements FontMapper {
         for (int k = 0; k < names.length; ++k) {
             aliases.put(names[k][3], main);
         }
-        aliases.put((String)allNames[0], main);
+        aliases.put((String) allNames[0], main);
     }
 
-    /** Inserts one font file into the map. The encoding
+    /**
+     * Inserts one font file into the map. The encoding
      * will be <CODE>BaseFont.CP1252</CODE> but can be
      * changed later.
+     *
      * @param file the file to insert
      * @return the number of files inserted
      * @since 5.0.5
@@ -287,10 +310,12 @@ public class DefaultFontMapper implements FontMapper {
         return 0;
     }
 
-    /** Inserts all the fonts recognized by iText in the
+    /**
+     * Inserts all the fonts recognized by iText in the
      * <CODE>directory</CODE> into the map. The encoding
      * will be <CODE>BaseFont.CP1252</CODE> but can be
      * changed later.
+     *
      * @param dir the directory to scan
      * @return the number of files processed
      */

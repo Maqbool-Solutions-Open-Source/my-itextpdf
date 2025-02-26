@@ -54,7 +54,8 @@ import com.itextpdf.text.pdf.languages.ArabicLigaturizer;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Does all the line bidirectional processing with PdfChunk assembly.
+/**
+ * Does all the line bidirectional processing with PdfChunk assembly.
  *
  * @author Paulo Soares
  */
@@ -89,11 +90,13 @@ public class BidiLine {
     protected boolean isWordSplit = false;
 
     protected boolean shortStore;
-//    protected ArabicShaping arabic = new ArabicShaping(ArabicShaping.LETTERS_SHAPE | ArabicShaping.LENGTH_GROW_SHRINK | ArabicShaping.TEXT_DIRECTION_LOGICAL);
+    //    protected ArabicShaping arabic = new ArabicShaping(ArabicShaping.LETTERS_SHAPE | ArabicShaping.LENGTH_GROW_SHRINK | ArabicShaping.TEXT_DIRECTION_LOGICAL);
     protected static final IntHashtable mirrorChars = new IntHashtable();
     protected int arabicOptions;
 
-    /** Creates new BidiLine */
+    /**
+     * Creates new BidiLine
+     */
     public BidiLine() {
     }
 
@@ -154,7 +157,7 @@ public class BidiLine {
             int len = s.length();
             for (; indexChunkChar < len; ++indexChunkChar) {
                 c = s.charAt(indexChunkChar);
-                uniC = (char)bf.getUnicodeEquivalent(c);
+                uniC = (char) bf.getUnicodeEquivalent(c);
                 if (uniC == '\r' || uniC == '\n') {
                     // next condition is never true for CID
                     if (uniC == '\r' && indexChunkChar + 1 < len && s.charAt(indexChunkChar + 1) == '\n')
@@ -181,7 +184,7 @@ public class BidiLine {
         // remove trailing WS
         totalTextLength = trimRight(0, totalTextLength - 1) + 1;
         if (totalTextLength == 0) {
-        	return true;
+            return true;
         }
 
         if (runDirection != PdfWriter.RUN_DIRECTION_NO_BIDI) {
@@ -295,7 +298,7 @@ public class BidiLine {
             if ((orderLevels[k] & 1) == 1) {
                 int mirror = mirrorChars.get(text[k]);
                 if (mirror != 0)
-                    text[k] = (char)mirror;
+                    text[k] = (char) mirror;
             }
         }
     }
@@ -303,7 +306,7 @@ public class BidiLine {
     public void doArabicShapping() {
         int src = 0;
         int dest = 0;
-        for (;;) {
+        for (; ; ) {
             while (src < totalTextLength) {
                 char c = text[src];
                 if (c >= 0x0600 && c <= 0x06ff)
@@ -335,8 +338,7 @@ public class BidiLine {
                     detailChunks[dest] = detailChunks[startArabicIdx];
                     orderLevels[dest++] = orderLevels[startArabicIdx++];
                 }
-            }
-            else
+            } else
                 dest += size;
         }
     }
@@ -378,7 +380,7 @@ public class BidiLine {
                 Image img = ck.getImage();
                 if (img.isScaleToFitHeight() && yLine + 2 * descender - img.getScaledHeight() - ck.getImageOffsetY() - img.getSpacingBefore() < minY) {
                     float scalePercent = (yLine + 2 * descender - ck.getImageOffsetY() - img.getSpacingBefore() - minY) / img.getScaledHeight();
-                	ck.setImageScalePercentage(scalePercent);
+                    ck.setImageScalePercentage(scalePercent);
                 }
             }
             surrogate = Utilities.isSurrogatePair(text, currentChar);
@@ -398,18 +400,18 @@ public class BidiLine {
                 }
             }
             if (width - charWidth < 0) {
-            	// If the chunk is an image and it is the first one in line, check if resize requested
-            	// If so, resize to fit the current line width
-            	if (lastValidChunk == null && ck.isImage()) {
-            		Image img = ck.getImage();
-            		if (img.isScaleToFitLineWhenOverflow()) {
-            			//float scalePercent = width / img.getWidth() * 100;
-            			//img.scalePercent(scalePercent);
-            			float scalePercent = width / img.getWidth();
-            			ck.setImageScalePercentage(scalePercent);
-            			charWidth = width;
-            		}
-            	}
+                // If the chunk is an image and it is the first one in line, check if resize requested
+                // If so, resize to fit the current line width
+                if (lastValidChunk == null && ck.isImage()) {
+                    Image img = ck.getImage();
+                    if (img.isScaleToFitLineWhenOverflow()) {
+                        //float scalePercent = width / img.getWidth() * 100;
+                        //img.scalePercent(scalePercent);
+                        float scalePercent = width / img.getWidth();
+                        ck.setImageScalePercentage(scalePercent);
+                        charWidth = width;
+                    }
+                }
             }
             if (ck.isTab()) {
                 if (ck.isAttribute(Chunk.TABSETTINGS)) {
@@ -434,21 +436,20 @@ public class BidiLine {
                         tabStopAnchorPosition = Float.NaN;
                     }
                 } else {
-                    Object[] tab = (Object[])ck.getAttribute(Chunk.TAB);
+                    Object[] tab = (Object[]) ck.getAttribute(Chunk.TAB);
                     //Keep deprecated tab logic for backward compatibility...
-                    float tabStopPosition = ((Float)tab[1]).floatValue();
-                    boolean newLine = ((Boolean)tab[2]).booleanValue();
+                    float tabStopPosition = ((Float) tab[1]).floatValue();
+                    boolean newLine = ((Boolean) tab[2]).booleanValue();
                     if (newLine && tabStopPosition < originalWidth - width) {
                         return new PdfLine(0, originalWidth, width, alignment, true, createArrayOfPdfChunks(oldCurrentChar, currentChar - 1), isRTL);
                     }
                     detailChunks[currentChar].adjustLeft(leftX);
                     width = originalWidth - tabStopPosition;
                 }
-            }
-            else if (ck.isSeparator()) {
-                Object[] sep = (Object[])ck.getAttribute(Chunk.SEPARATOR);
-                DrawInterface di = (DrawInterface)sep[0];
-                Boolean vertical = (Boolean)sep[1];
+            } else if (ck.isSeparator()) {
+                Object[] sep = (Object[]) ck.getAttribute(Chunk.SEPARATOR);
+                DrawInterface di = (DrawInterface) sep[0];
+                Boolean vertical = (Boolean) sep[1];
                 if (vertical && di instanceof LineSeparator) {
                     float separatorWidth = originalWidth * ((LineSeparator) di).getPercentage() / 100f;
                     width -= separatorWidth;
@@ -458,7 +459,7 @@ public class BidiLine {
                 }
             } else {
                 boolean splitChar = ck.isExtSplitCharacter(oldCurrentChar, currentChar, totalTextLength, text, detailChunks);
-                if (splitChar && Character.isWhitespace((char)uniC))
+                if (splitChar && Character.isWhitespace((char) uniC))
                     lastSplit = currentChar;
                 if (width - charWidth < 0)
                     break;
@@ -500,7 +501,7 @@ public class BidiLine {
             return new PdfLine(0, originalWidth, width, alignment, false, createArrayOfPdfChunks(oldCurrentChar, currentChar - 1), isRTL);
         }
         if (newCurrentChar == currentChar - 1) { // middle of word
-            HyphenationEvent he = (HyphenationEvent)lastValidChunk.getAttribute(Chunk.HYPHENATION);
+            HyphenationEvent he = (HyphenationEvent) lastValidChunk.getAttribute(Chunk.HYPHENATION);
             if (he != null) {
                 int word[] = getWord(oldCurrentChar, newCurrentChar);
                 if (word != null) {
@@ -549,24 +550,29 @@ public class BidiLine {
 
     /**
      * Call this after processLine() to know if any word was split into several lines.
+     *
      * @return
      */
     public boolean isWordSplit() {
         return isWordSplit;
     }
 
-    /** Gets the width of a range of characters.
+    /**
+     * Gets the width of a range of characters.
+     *
      * @param startIdx the first index to calculate
-     * @param lastIdx the last inclusive index to calculate
+     * @param lastIdx  the last inclusive index to calculate
      * @return the sum of all widths
      */
     public float getWidth(int startIdx, int lastIdx) {
         return getWidth(startIdx, lastIdx, 0);
     }
 
-    /** Gets the width of a range of characters.
-     * @param startIdx the first index to calculate
-     * @param lastIdx the last inclusive index to calculate
+    /**
+     * Gets the width of a range of characters.
+     *
+     * @param startIdx      the first index to calculate
+     * @param lastIdx       the last inclusive index to calculate
      * @param originalWidth the full width of the line. It is used in case of RTL and tab stops
      * @return the sum of all widths
      */
@@ -605,13 +611,12 @@ public class BidiLine {
             } else if (surrogate) {
                 width += detailChunks[startIdx].getCharWidth(Utilities.convertToUtf32(text, startIdx));
                 ++startIdx;
-            }
-            else {
+            } else {
                 c = text[startIdx];
                 ck = detailChunks[startIdx];
                 if (PdfChunk.noPrint(ck.getUnicodeEquivalent(c)))
                     continue;
-                if (tabStop != null && tabStop.getAlignment() != TabStop.Alignment.ANCHOR && Float.isNaN(tabStopAnchorPosition) && tabStop.getAnchorChar() == (char)ck.getUnicodeEquivalent(c)) {
+                if (tabStop != null && tabStop.getAlignment() != TabStop.Alignment.ANCHOR && Float.isNaN(tabStopAnchorPosition) && tabStop.getAnchorChar() == (char) ck.getUnicodeEquivalent(c)) {
                     tabStopAnchorPosition = width;
                 }
                 width += detailChunks[startIdx].getCharWidth(c);
@@ -652,11 +657,9 @@ public class BidiLine {
                     buf = new StringBuffer();
                 }
                 ar.add(ck);
-            }
-            else if (ck == refCk) {
+            } else if (ck == refCk) {
                 buf.append(c);
-            }
-            else {
+            } else {
                 if (buf.length() > 0) {
                     ar.add(new PdfChunk(buf.toString(), refCk));
                     buf = new StringBuffer();
@@ -697,7 +700,7 @@ public class BidiLine {
         int idx = endIdx;
         char c;
         for (; idx >= startIdx; --idx) {
-            c = (char)detailChunks[idx].getUnicodeEquivalent(text[idx]);
+            c = (char) detailChunks[idx].getUnicodeEquivalent(text[idx]);
             if (!isWS(c))
                 break;
         }
@@ -708,7 +711,7 @@ public class BidiLine {
         int idx = startIdx;
         char c;
         for (; idx <= endIdx; ++idx) {
-            c = (char)detailChunks[idx].getUnicodeEquivalent(text[idx]);
+            c = (char) detailChunks[idx].getUnicodeEquivalent(text[idx]);
             if (!isWS(c))
                 break;
         }
@@ -719,13 +722,13 @@ public class BidiLine {
         int idx = endIdx;
         char c = 0;
         for (; idx >= startIdx; --idx) {
-            c = (char)detailChunks[idx].getUnicodeEquivalent(text[idx]);
+            c = (char) detailChunks[idx].getUnicodeEquivalent(text[idx]);
             if (!isWS(c) && !PdfChunk.noPrint(c)) {
                 if (detailChunks[idx].isTab()
                         //Keep deprecated tab logic for backward compatibility...
                         && detailChunks[idx].isAttribute(Chunk.TABSETTINGS)) {
-                    Object[] tab = (Object[])detailChunks[idx].getAttribute(Chunk.TAB);
-                    boolean isWhitespace = (Boolean)tab[1];
+                    Object[] tab = (Object[]) detailChunks[idx].getAttribute(Chunk.TAB);
+                    boolean isWhitespace = (Boolean) tab[1];
                     if (isWhitespace)
                         continue;
                 }
@@ -739,13 +742,13 @@ public class BidiLine {
         int idx = startIdx;
         char c = 0;
         for (; idx <= endIdx; ++idx) {
-            c = (char)detailChunks[idx].getUnicodeEquivalent(text[idx]);
+            c = (char) detailChunks[idx].getUnicodeEquivalent(text[idx]);
             if (!isWS(c) && !PdfChunk.noPrint(c)) {
                 if (detailChunks[idx].isTab()
                         //Keep deprecated tab logic for backward compatibility...
                         && detailChunks[idx].isAttribute(Chunk.TABSETTINGS)) {
-                    Object[] tab = (Object[])detailChunks[idx].getAttribute(Chunk.TAB);
-                    boolean isWhitespace = (Boolean)tab[1];
+                    Object[] tab = (Object[]) detailChunks[idx].getAttribute(Chunk.TAB);
+                    boolean isWhitespace = (Boolean) tab[1];
                     if (isWhitespace)
                         continue;
                 }
@@ -778,8 +781,8 @@ public class BidiLine {
         minLevel |= 1;
         for (; maxLevel >= minLevel; --maxLevel) {
             int pstart = start;
-            for (;;) {
-                for (;pstart <= end; ++pstart) {
+            for (; ; ) {
+                for (; pstart <= end; ++pstart) {
                     if (orderLevels[pstart] >= maxLevel)
                         break;
                 }
@@ -1130,24 +1133,25 @@ public class BidiLine {
         mirrorChars.put(0xFF62, 0xFF63); // [BEST FIT] HALFWIDTH LEFT CORNER BRACKET
         mirrorChars.put(0xFF63, 0xFF62); // [BEST FIT] HALFWIDTH RIGHT CORNER BRACKET
     }
-    
+
     /**
      * Method that changes a String with Arabic characters into a String in which the ligatures are made.
-     * @param s	the original String
+     *
+     * @param s             the original String
      * @param runDirection
      * @param arabicOptions
      * @return the String with the ligatures
      */
     public static String processLTR(String s, int runDirection, int arabicOptions) {
-    	BidiLine bidi = new BidiLine();
-    	bidi.addChunk(new PdfChunk(new Chunk(s), null));
-    	bidi.arabicOptions = arabicOptions;
-    	bidi.getParagraph(runDirection);
-    	ArrayList<PdfChunk> arr = bidi.createArrayOfPdfChunks(0, bidi.totalTextLength - 1);
-    	StringBuilder sb = new StringBuilder();
-    	for (PdfChunk ck : arr) {
-    		sb.append(ck.toString());
-    	}
-    	return sb.toString();
+        BidiLine bidi = new BidiLine();
+        bidi.addChunk(new PdfChunk(new Chunk(s), null));
+        bidi.arabicOptions = arabicOptions;
+        bidi.getParagraph(runDirection);
+        ArrayList<PdfChunk> arr = bidi.createArrayOfPdfChunks(0, bidi.totalTextLength - 1);
+        StringBuilder sb = new StringBuilder();
+        for (PdfChunk ck : arr) {
+            sb.append(ck.toString());
+        }
+        return sb.toString();
     }
 }

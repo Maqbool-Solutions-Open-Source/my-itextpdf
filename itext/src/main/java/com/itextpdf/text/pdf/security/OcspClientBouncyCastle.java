@@ -105,6 +105,7 @@ public class OcspClientBouncyCastle implements OcspClient {
 
     /**
      * Create {@code OcspClient}
+     *
      * @param verifier will be used for response verification. {@see OCSPVerifier}.
      */
     public OcspClientBouncyCastle(OCSPVerifier verifier) {

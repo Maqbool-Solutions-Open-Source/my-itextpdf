@@ -42,19 +42,21 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf;
+
 import java.util.HashMap;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.error_messages.MessageLocalization;
+
 /**
  * <CODE>PdfPage</CODE> is the PDF Page-object.
- * <P>
+ * <p>
  * A Page object is a dictionary whose keys describe a single page containing text,
  * graphics, and images. A Page object is a leaf of the Pages tree.<BR>
  * This object is described in the 'Portable Document Format Reference Manual version 1.3'
  * section 6.4 (page 73-81)
  *
- * @see		PdfPages
+ * @see PdfPages
  */
 
 public class PdfPage extends PdfDictionary {
@@ -63,37 +65,47 @@ public class PdfPage extends PdfDictionary {
     private static final PdfName boxNames[] = {PdfName.CROPBOX, PdfName.TRIMBOX, PdfName.ARTBOX, PdfName.BLEEDBOX};
     // membervariables
 
-/** value of the <B>Rotate</B> key for a page in PORTRAIT */
+    /**
+     * value of the <B>Rotate</B> key for a page in PORTRAIT
+     */
     public static final PdfNumber PORTRAIT = new PdfNumber(0);
 
-/** value of the <B>Rotate</B> key for a page in LANDSCAPE */
+    /**
+     * value of the <B>Rotate</B> key for a page in LANDSCAPE
+     */
     public static final PdfNumber LANDSCAPE = new PdfNumber(90);
 
-/** value of the <B>Rotate</B> key for a page in INVERTEDPORTRAIT */
+    /**
+     * value of the <B>Rotate</B> key for a page in INVERTEDPORTRAIT
+     */
     public static final PdfNumber INVERTEDPORTRAIT = new PdfNumber(180);
 
-/**	value of the <B>Rotate</B> key for a page in SEASCAPE */
+    /**
+     * value of the <B>Rotate</B> key for a page in SEASCAPE
+     */
     public static final PdfNumber SEASCAPE = new PdfNumber(270);
 
-/** value of the <B>MediaBox</B> key */
+    /**
+     * value of the <B>MediaBox</B> key
+     */
     PdfRectangle mediaBox;
 
     // constructors
 
-/**
- * Constructs a <CODE>PdfPage</CODE>.
- *
- * @param		mediaBox		a value for the <B>MediaBox</B> key
- * @param		resources		an indirect reference to a <CODE>PdfResources</CODE>-object
- * @param		rotate			a value for the <B>Rotate</B> key
- * @throws DocumentException 
- */
+    /**
+     * Constructs a <CODE>PdfPage</CODE>.
+     *
+     * @param mediaBox  a value for the <B>MediaBox</B> key
+     * @param resources an indirect reference to a <CODE>PdfResources</CODE>-object
+     * @param rotate    a value for the <B>Rotate</B> key
+     * @throws DocumentException
+     */
 
     PdfPage(PdfRectangle mediaBox, HashMap<String, PdfRectangle> boxSize, PdfDictionary resources, int rotate) throws DocumentException {
         super(PAGE);
         this.mediaBox = mediaBox;
         if (mediaBox != null && (mediaBox.width() > 14400 || mediaBox.height() > 14400)) {
-        	throw new DocumentException(MessageLocalization.getComposedMessage("the.page.size.must.be.smaller.than.14400.by.14400.its.1.by.2", mediaBox.width(), mediaBox.height()));
+            throw new DocumentException(MessageLocalization.getComposedMessage("the.page.size.must.be.smaller.than.14400.by.14400.its.1.by.2", mediaBox.width(), mediaBox.height()));
         }
         put(PdfName.MEDIABOX, mediaBox);
         put(PdfName.RESOURCES, resources);
@@ -107,25 +119,25 @@ public class PdfPage extends PdfDictionary {
         }
     }
 
-/**
- * Constructs a <CODE>PdfPage</CODE>.
- *
- * @param		mediaBox		a value for the <B>MediaBox</B> key
- * @param		resources		an indirect reference to a <CODE>PdfResources</CODE>-object
- * @throws DocumentException 
- */
+    /**
+     * Constructs a <CODE>PdfPage</CODE>.
+     *
+     * @param mediaBox  a value for the <B>MediaBox</B> key
+     * @param resources an indirect reference to a <CODE>PdfResources</CODE>-object
+     * @throws DocumentException
+     */
 
     PdfPage(PdfRectangle mediaBox, HashMap<String, PdfRectangle> boxSize, PdfDictionary resources) throws DocumentException {
         this(mediaBox, boxSize, resources, 0);
     }
 
-/**
- * Checks if this page element is a tree of pages.
- * <P>
- * This method always returns <CODE>false</CODE>.
- *
- * @return	<CODE>false</CODE> because this is a single page
- */
+    /**
+     * Checks if this page element is a tree of pages.
+     * <p>
+     * This method always returns <CODE>false</CODE>.
+     *
+     * @return <CODE>false</CODE> because this is a single page
+     */
 
     public boolean isParent() {
         return false;
@@ -133,33 +145,33 @@ public class PdfPage extends PdfDictionary {
 
     // methods
 
-/**
- * Adds an indirect reference pointing to a <CODE>PdfContents</CODE>-object.
- *
- * @param		contents		an indirect reference to a <CODE>PdfContents</CODE>-object
- */
+    /**
+     * Adds an indirect reference pointing to a <CODE>PdfContents</CODE>-object.
+     *
+     * @param contents an indirect reference to a <CODE>PdfContents</CODE>-object
+     */
 
     void add(PdfIndirectReference contents) {
         put(PdfName.CONTENTS, contents);
     }
 
-/**
- * Rotates the mediabox, but not the text in it.
- *
- * @return		a <CODE>PdfRectangle</CODE>
- */
+    /**
+     * Rotates the mediabox, but not the text in it.
+     *
+     * @return a <CODE>PdfRectangle</CODE>
+     */
 
     PdfRectangle rotateMediaBox() {
-        this.mediaBox =  mediaBox.rotate();
+        this.mediaBox = mediaBox.rotate();
         put(PdfName.MEDIABOX, this.mediaBox);
         return this.mediaBox;
     }
 
-/**
- * Returns the MediaBox of this Page.
- *
- * @return		a <CODE>PdfRectangle</CODE>
- */
+    /**
+     * Returns the MediaBox of this Page.
+     *
+     * @return a <CODE>PdfRectangle</CODE>
+     */
 
     PdfRectangle getMediaBox() {
         return mediaBox;

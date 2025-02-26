@@ -80,6 +80,7 @@ public class PdfLayerMembership extends PdfDictionary implements PdfOCG {
 
     /**
      * Creates a new, empty, membership layer.
+     *
      * @param writer the writer
      */
     public PdfLayerMembership(PdfWriter writer) {
@@ -90,6 +91,7 @@ public class PdfLayerMembership extends PdfDictionary implements PdfOCG {
 
     /**
      * Gets the <CODE>PdfIndirectReference</CODE> that represents this membership layer.
+     *
      * @return the <CODE>PdfIndirectReference</CODE> that represents this layer
      */
     public PdfIndirectReference getRef() {
@@ -98,6 +100,7 @@ public class PdfLayerMembership extends PdfDictionary implements PdfOCG {
 
     /**
      * Adds a new member to the layer.
+     *
      * @param layer the new member to the layer
      */
     public void addMember(PdfLayer layer) {
@@ -109,6 +112,7 @@ public class PdfLayerMembership extends PdfDictionary implements PdfOCG {
 
     /**
      * Gets the member layers.
+     *
      * @return the member layers
      */
     public Collection<PdfLayer> getLayers() {
@@ -119,6 +123,7 @@ public class PdfLayerMembership extends PdfDictionary implements PdfOCG {
      * Sets the visibility policy for content belonging to this
      * membership dictionary. Possible values are ALLON, ANYON, ANYOFF and ALLOFF.
      * The default value is ANYON.
+     *
      * @param type the visibility policy
      */
     public void setVisibilityPolicy(PdfName type) {
@@ -128,9 +133,10 @@ public class PdfLayerMembership extends PdfDictionary implements PdfOCG {
     /**
      * Sets the visibility expression for content belonging to this
      * membership dictionary.
+     *
      * @param ve A (nested) array of which the first value is /And, /Or, or /Not
-     * followed by a series of indirect references to OCGs or other visibility
-     * expressions.
+     *           followed by a series of indirect references to OCGs or other visibility
+     *           expressions.
      * @since 5.0.2
      */
     public void setVisibilityExpression(PdfVisibilityExpression ve) {
@@ -139,6 +145,7 @@ public class PdfLayerMembership extends PdfDictionary implements PdfOCG {
 
     /**
      * Gets the dictionary representing the membership layer. It just returns <CODE>this</CODE>.
+     *
      * @return the dictionary representing the layer
      */
     public PdfObject getPdfObject() {

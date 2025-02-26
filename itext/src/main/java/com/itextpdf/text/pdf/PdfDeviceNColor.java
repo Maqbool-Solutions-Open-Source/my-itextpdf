@@ -101,22 +101,22 @@ public class PdfDeviceNColor implements ICachedColorSpace, IPdfSpecialColorSpace
                 colorantsDict.put(spotColorant.getName(), spotColorant.getPdfObject(writer));
             BaseColor color = spotColorant.getAlternativeCS();
             if (color instanceof ExtendedColor) {
-                int type = ((ExtendedColor)color).type;
+                int type = ((ExtendedColor) color).type;
                 switch (type) {
                     case ExtendedColor.TYPE_GRAY:
                         CMYK[0][i] = 0;
                         CMYK[1][i] = 0;
                         CMYK[2][i] = 0;
-                        CMYK[3][i] = 1 - ((GrayColor)color).getGray();
+                        CMYK[3][i] = 1 - ((GrayColor) color).getGray();
                         break;
                     case ExtendedColor.TYPE_CMYK:
-                        CMYK[0][i] = ((CMYKColor)color).getCyan();
-                        CMYK[1][i] = ((CMYKColor)color).getMagenta();
-                        CMYK[2][i] = ((CMYKColor)color).getYellow();
-                        CMYK[3][i] = ((CMYKColor)color).getBlack();
+                        CMYK[0][i] = ((CMYKColor) color).getCyan();
+                        CMYK[1][i] = ((CMYKColor) color).getMagenta();
+                        CMYK[2][i] = ((CMYKColor) color).getYellow();
+                        CMYK[3][i] = ((CMYKColor) color).getBlack();
                         break;
                     case ExtendedColor.TYPE_LAB:
-                        CMYKColor cmyk = ((LabColor)color).toCmyk();
+                        CMYKColor cmyk = ((LabColor) color).toCmyk();
                         CMYK[0][i] = cmyk.getCyan();
                         CMYK[1][i] = cmyk.getMagenta();
                         CMYK[2][i] = cmyk.getYellow();
@@ -132,18 +132,18 @@ public class PdfDeviceNColor implements ICachedColorSpace, IPdfSpecialColorSpace
                 float computedC = 0, computedM = 0, computedY = 0, computedK = 0;
 
                 // BLACK
-                if (r==0 && g==0 && b==0) {
+                if (r == 0 && g == 0 && b == 0) {
                     computedK = 1;
                 } else {
-                    computedC = 1 - (r/255);
-                    computedM = 1 - (g/255);
-                    computedY = 1 - (b/255);
+                    computedC = 1 - (r / 255);
+                    computedM = 1 - (g / 255);
+                    computedY = 1 - (b / 255);
 
                     float minCMY = Math.min(computedC,
-                            Math.min(computedM,computedY));
-                    computedC = (computedC - minCMY) / (1 - minCMY) ;
-                    computedM = (computedM - minCMY) / (1 - minCMY) ;
-                    computedY = (computedY - minCMY) / (1 - minCMY) ;
+                            Math.min(computedM, computedY));
+                    computedC = (computedC - minCMY) / (1 - minCMY);
+                    computedM = (computedM - minCMY) / (1 - minCMY);
+                    computedY = (computedY - minCMY) / (1 - minCMY);
                     computedK = minCMY;
                 }
                 CMYK[0][i] = computedC;

@@ -64,27 +64,36 @@ import com.itextpdf.xmp.options.SerializeOptions;
  */
 public class XmpWriter {
 
-	/** A possible charset for the XMP. */
-	public static final String UTF8 = "UTF-8";
-	/** A possible charset for the XMP. */
-	public static final String UTF16 = "UTF-16";
-	/** A possible charset for the XMP. */
-	public static final String UTF16BE = "UTF-16BE";
-	/** A possible charset for the XMP. */
-	public static final String UTF16LE = "UTF-16LE";
+    /**
+     * A possible charset for the XMP.
+     */
+    public static final String UTF8 = "UTF-8";
+    /**
+     * A possible charset for the XMP.
+     */
+    public static final String UTF16 = "UTF-16";
+    /**
+     * A possible charset for the XMP.
+     */
+    public static final String UTF16BE = "UTF-16BE";
+    /**
+     * A possible charset for the XMP.
+     */
+    public static final String UTF16LE = "UTF-16LE";
 
     protected XMPMeta xmpMeta;
     protected OutputStream outputStream;
     protected SerializeOptions serializeOptions;
 
-	/**
-	 * Creates an XmpWriter.
-	 * @param os
-	 * @param utfEncoding
-	 * @param extraSpace
-	 * @throws IOException
-	 */
-	public XmpWriter(OutputStream os, String utfEncoding, int extraSpace) throws IOException {
+    /**
+     * Creates an XmpWriter.
+     *
+     * @param os
+     * @param utfEncoding
+     * @param extraSpace
+     * @throws IOException
+     */
+    public XmpWriter(OutputStream os, String utfEncoding, int extraSpace) throws IOException {
         outputStream = os;
         serializeOptions = new SerializeOptions();
         if (UTF16BE.equals(utfEncoding) || UTF16.equals(utfEncoding))
@@ -98,17 +107,19 @@ public class XmpWriter {
         try {
             xmpMeta.setProperty(XMPConst.NS_DC, DublinCoreProperties.FORMAT, "application/pdf");
             xmpMeta.setProperty(XMPConst.NS_PDF, PdfProperties.PRODUCER, Version.getInstance().getVersion());
-        } catch (XMPException xmpExc) {}
-	}
+        } catch (XMPException xmpExc) {
+        }
+    }
 
-	/**
-	 * Creates an XmpWriter.
-	 * @param os
-	 * @throws IOException
-	 */
-	public XmpWriter(OutputStream os) throws IOException {
-		this(os, UTF8, 2000);
-	}
+    /**
+     * Creates an XmpWriter.
+     *
+     * @param os
+     * @throws IOException
+     */
+    public XmpWriter(OutputStream os) throws IOException {
+        this(os, UTF8, 2000);
+    }
 
     /**
      * @param os
@@ -137,7 +148,7 @@ public class XmpWriter {
             }
         }
     }
-    
+
     /**
      * @param os
      * @param info
@@ -162,31 +173,34 @@ public class XmpWriter {
             }
         }
     }
-    
+
     public XMPMeta getXmpMeta() {
         return xmpMeta;
     }
 
-    /** Sets the XMP to read-only */
-	public void setReadOnly() {
+    /**
+     * Sets the XMP to read-only
+     */
+    public void setReadOnly() {
         serializeOptions.setReadOnlyPacket(true);
-	}
+    }
 
-	/**
-	 * @param about The about to set.
-	 */
-	public void setAbout(String about) {
+    /**
+     * @param about The about to set.
+     */
+    public void setAbout(String about) {
         xmpMeta.setObjectName(about);
-	}
+    }
 
-	/**
-	 * Adds an rdf:Description.
-	 * @param xmlns
-	 * @param content
-	 * @throws IOException
-	 */
+    /**
+     * Adds an rdf:Description.
+     *
+     * @param xmlns
+     * @param content
+     * @throws IOException
+     */
     @Deprecated
-	public void addRdfDescription(String xmlns, String content) throws IOException {
+    public void addRdfDescription(String xmlns, String content) throws IOException {
         try {
             String str = "<rdf:RDF xmlns:rdf=\"" + XMPConst.NS_RDF + "\">" +
                     "<rdf:Description rdf:about=\"" + xmpMeta.getObjectName() +
@@ -200,15 +214,16 @@ public class XmpWriter {
         } catch (XMPException xmpExc) {
             throw new IOException(xmpExc.getMessage());
         }
-	}
+    }
 
-	/**
-	 * Adds an rdf:Description.
-	 * @param s
-	 * @throws IOException
-	 */
+    /**
+     * Adds an rdf:Description.
+     *
+     * @param s
+     * @throws IOException
+     */
     @Deprecated
-	public void addRdfDescription(XmpSchema s) throws IOException {
+    public void addRdfDescription(XmpSchema s) throws IOException {
         try {
             String str = "<rdf:RDF xmlns:rdf=\"" + XMPConst.NS_RDF + "\">" +
                     "<rdf:Description rdf:about=\"" + xmpMeta.getObjectName() +
@@ -222,7 +237,7 @@ public class XmpWriter {
         } catch (XMPException xmpExc) {
             throw new IOException(xmpExc.getMessage());
         }
-	}
+    }
 
     /**
      * @param schemaNS The namespace URI for the property. Has the same usage as in getProperty.
@@ -286,17 +301,19 @@ public class XmpWriter {
 
     /**
      * Flushes and closes the XmpWriter.
+     *
      * @throws IOException
      */
     public void serialize(OutputStream externalOutputStream) throws XMPException {
         XMPMetaFactory.serialize(xmpMeta, externalOutputStream, serializeOptions);
     }
 
-	/**
-	 * Flushes and closes the XmpWriter.
-	 * @throws IOException
-	 */
-	public void close() throws IOException {
+    /**
+     * Flushes and closes the XmpWriter.
+     *
+     * @throws IOException
+     */
+    public void close() throws IOException {
         if (outputStream == null)
             return;
         try {

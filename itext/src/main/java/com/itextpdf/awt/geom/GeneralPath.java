@@ -37,7 +37,7 @@ public final class GeneralPath implements Shape, Cloneable {
      * The buffers size
      */
     private static final int BUFFER_SIZE = 10;
-    
+
     /**
      * The buffers capacity
      */
@@ -47,24 +47,24 @@ public final class GeneralPath implements Shape, Cloneable {
      * The point's types buffer
      */
     byte[] types;
-    
+
     /**
      * The points buffer
      */
     float[] points;
-    
+
     /**
      * The point's type buffer size
      */
     int typeSize;
-    
+
     /**
      * The points buffer size
      */
     int pointSize;
-    
+
     /**
-     * The path rule 
+     * The path rule
      */
     int rule;
 
@@ -79,7 +79,7 @@ public final class GeneralPath implements Shape, Cloneable {
             0}; // CLOSE
 
     /*
-     * GeneralPath path iterator 
+     * GeneralPath path iterator
      */
     class Iterator implements PathIterator {
 
@@ -87,17 +87,17 @@ public final class GeneralPath implements Shape, Cloneable {
          * The current cursor position in types buffer
          */
         int typeIndex;
-        
+
         /**
          * The current cursor position in points buffer
          */
         int pointIndex;
-        
+
         /**
          * The source GeneralPath object
          */
         GeneralPath p;
-        
+
         /**
          * The path iterator transformation
          */
@@ -105,6 +105,7 @@ public final class GeneralPath implements Shape, Cloneable {
 
         /**
          * Constructs a new GeneralPath.Iterator for given general path
+         *
          * @param path - the source GeneralPath object
          */
         Iterator(GeneralPath path) {
@@ -113,8 +114,9 @@ public final class GeneralPath implements Shape, Cloneable {
 
         /**
          * Constructs a new GeneralPath.Iterator for given general path and transformation
+         *
          * @param path - the source GeneralPath object
-         * @param at - the AffineTransform object to apply rectangle path
+         * @param at   - the AffineTransform object to apply rectangle path
          */
         Iterator(GeneralPath path, AffineTransform at) {
             this.p = path;
@@ -201,7 +203,8 @@ public final class GeneralPath implements Shape, Cloneable {
     }
 
     /**
-     * Checks points and types buffer size to add pointCount points. If necessary realloc buffers to enlarge size.   
+     * Checks points and types buffer size to add pointCount points. If necessary realloc buffers to enlarge size.
+     *
      * @param pointCount - the point count to be added in buffer
      */
     void checkBuf(int pointCount, boolean checkMove) {
@@ -276,30 +279,29 @@ public final class GeneralPath implements Shape, Cloneable {
         while (!path.isDone()) {
             float coords[] = new float[6];
             switch (path.currentSegment(coords)) {
-            case PathIterator.SEG_MOVETO:
-                if (!connect || typeSize == 0) {
-                    moveTo(coords[0], coords[1]);
+                case PathIterator.SEG_MOVETO:
+                    if (!connect || typeSize == 0) {
+                        moveTo(coords[0], coords[1]);
+                        break;
+                    }
+                    if (types[typeSize - 1] != PathIterator.SEG_CLOSE &&
+                            points[pointSize - 2] == coords[0] &&
+                            points[pointSize - 1] == coords[1]) {
+                        break;
+                    }
+                    // NO BREAK;
+                case PathIterator.SEG_LINETO:
+                    lineTo(coords[0], coords[1]);
                     break;
-                }
-                if (types[typeSize - 1] != PathIterator.SEG_CLOSE &&
-                    points[pointSize - 2] == coords[0] &&
-                    points[pointSize - 1] == coords[1])
-                {
+                case PathIterator.SEG_QUADTO:
+                    quadTo(coords[0], coords[1], coords[2], coords[3]);
                     break;
-                }
-            // NO BREAK;
-            case PathIterator.SEG_LINETO:
-                lineTo(coords[0], coords[1]);
-                break;
-            case PathIterator.SEG_QUADTO:
-                quadTo(coords[0], coords[1], coords[2], coords[3]);
-                break;
-            case PathIterator.SEG_CUBICTO:
-                curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-                break;
-            case PathIterator.SEG_CLOSE:
-                closePath();
-                break;
+                case PathIterator.SEG_CUBICTO:
+                    curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+                    break;
+                case PathIterator.SEG_CLOSE:
+                    closePath();
+                    break;
             }
             path.next();
             connect = false;
@@ -334,7 +336,7 @@ public final class GeneralPath implements Shape, Cloneable {
     }
 
     public Shape createTransformedShape(AffineTransform t) {
-        GeneralPath p = (GeneralPath)clone();
+        GeneralPath p = (GeneralPath) clone();
         if (t != null) {
             p.transform(t);
         }
@@ -354,16 +356,14 @@ public final class GeneralPath implements Shape, Cloneable {
                 float x = points[i--];
                 if (x < rx1) {
                     rx1 = x;
-                } else
-                    if (x > rx2) {
-                        rx2 = x;
-                    }
+                } else if (x > rx2) {
+                    rx2 = x;
+                }
                 if (y < ry1) {
                     ry1 = y;
-                } else
-                    if (y > ry2) {
-                        ry2 = y;
-                    }
+                } else if (y > ry2) {
+                    ry2 = y;
+                }
             }
         }
         return new Rectangle2D.Float(rx1, ry1, rx2 - rx1, ry2 - ry1);
@@ -374,9 +374,10 @@ public final class GeneralPath implements Shape, Cloneable {
     }
 
     /**
-     * Checks cross count according to path rule to define is it point inside shape or not. 
+     * Checks cross count according to path rule to define is it point inside shape or not.
+     *
      * @param cross - the point cross count
-     * @return true if point is inside path, or false otherwise 
+     * @return true if point is inside path, or false otherwise
      */
     boolean isInside(int cross) {
         if (rule == WIND_NON_ZERO) {

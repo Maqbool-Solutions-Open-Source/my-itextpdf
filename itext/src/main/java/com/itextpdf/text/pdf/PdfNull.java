@@ -45,37 +45,41 @@ package com.itextpdf.text.pdf;
 
 /**
  * <CODE>PdfNull</CODE> is the Null object represented by the keyword <VAR>null</VAR>.
- * <P>
+ * <p>
  * This object is described in the 'Portable Document Format Reference Manual version 1.7'
  * section 3.2.8 (page 63).
  *
- * @see		PdfObject
+ * @see PdfObject
  */
 
 public class PdfNull extends PdfObject {
-    
+
     // CLASS CONSTANTS
-    
-    /** An instance of the <CODE>PdfNull</CODE>-object. */
-    public static final PdfNull	PDFNULL = new PdfNull();
-    
-    /** The content of the <CODE>PdfNull</CODE>-object. */
+
+    /**
+     * An instance of the <CODE>PdfNull</CODE>-object.
+     */
+    public static final PdfNull PDFNULL = new PdfNull();
+
+    /**
+     * The content of the <CODE>PdfNull</CODE>-object.
+     */
     private static final String CONTENT = "null";
-    
+
     // CONSTRUCTOR
-    
+
     /**
      * Constructs a <CODE>PdfNull</CODE>-object.
-     * <P>
+     * <p>
      * You never need to do this yourself, you can always use the static final object <VAR>PDFNULL</VAR>.
      */
     public PdfNull() {
         super(NULL, CONTENT);
     }
-    
+
     // CLASS METHOD
-    
+
     public String toString() {
-    	return "null";
+        return "null";
     }
 }

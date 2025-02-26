@@ -41,7 +41,7 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
- package com.itextpdf.text;
+package com.itextpdf.text;
 
 import java.util.*;
 import java.util.List;
@@ -58,7 +58,8 @@ public class TabSettings {
     private java.util.List<TabStop> tabStops = new ArrayList<TabStop>();
     private float tabInterval = DEFAULT_TAB_INTERVAL;
 
-    public TabSettings(){}
+    public TabSettings() {
+    }
 
     public TabSettings(java.util.List<TabStop> tabStops) {
         this.tabStops = tabStops;

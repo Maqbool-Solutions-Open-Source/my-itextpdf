@@ -49,6 +49,7 @@ import java.util.HashMap;
 
 /**
  * Creates a name tree.
+ *
  * @author Paulo Soares
  */
 public class PdfNameTree {
@@ -57,15 +58,16 @@ public class PdfNameTree {
 
     /**
      * Writes a name tree to a PdfWriter.
-     * @param items the item of the name tree. The key is a <CODE>String</CODE>
-     * and the value is a <CODE>PdfObject</CODE>. Note that although the
-     * keys are strings only the lower byte is used and no check is made for chars
-     * with the same lower byte and different upper byte. This will generate a wrong
-     * tree name.
+     *
+     * @param items  the item of the name tree. The key is a <CODE>String</CODE>
+     *               and the value is a <CODE>PdfObject</CODE>. Note that although the
+     *               keys are strings only the lower byte is used and no check is made for chars
+     *               with the same lower byte and different upper byte. This will generate a wrong
+     *               tree name.
      * @param writer the writer
-     * @throws IOException on error
      * @return the dictionary with the name tree. This dictionary is the one
      * generally pointed to by the key /Dests, for example
+     * @throws IOException on error
      */
     public static PdfDictionary writeTree(HashMap<String, ? extends PdfObject> items, PdfWriter writer) throws IOException {
         if (items.isEmpty())
@@ -112,7 +114,7 @@ public class PdfNameTree {
                 return dic;
             }
             skip *= leafSize;
-            int tt = (names.length + skip - 1 )/ skip;
+            int tt = (names.length + skip - 1) / skip;
             for (int k = 0; k < tt; ++k) {
                 int offset = k * leafSize;
                 int end = Math.min(offset + leafSize, top);
@@ -133,12 +135,12 @@ public class PdfNameTree {
     }
 
     private static PdfString iterateItems(PdfDictionary dic, HashMap<String, PdfObject> items, PdfString leftOverString) {
-        PdfArray nn = (PdfArray)PdfReader.getPdfObjectRelease(dic.get(PdfName.NAMES));
+        PdfArray nn = (PdfArray) PdfReader.getPdfObjectRelease(dic.get(PdfName.NAMES));
         if (nn != null) {
             for (int k = 0; k < nn.size(); ++k) {
                 PdfString s;
                 if (leftOverString == null)
-                    s = (PdfString)PdfReader.getPdfObjectRelease(nn.getPdfObject(k++));
+                    s = (PdfString) PdfReader.getPdfObjectRelease(nn.getPdfObject(k++));
                 else {
                     // this is the leftover string from the previous loop
                     s = leftOverString;
@@ -149,9 +151,9 @@ public class PdfNameTree {
                 else
                     return s;
             }
-        } else if ((nn = (PdfArray)PdfReader.getPdfObjectRelease(dic.get(PdfName.KIDS))) != null) {
+        } else if ((nn = (PdfArray) PdfReader.getPdfObjectRelease(dic.get(PdfName.KIDS))) != null) {
             for (int k = 0; k < nn.size(); ++k) {
-                PdfDictionary kid = (PdfDictionary)PdfReader.getPdfObjectRelease(nn.getPdfObject(k));
+                PdfDictionary kid = (PdfDictionary) PdfReader.getPdfObjectRelease(nn.getPdfObject(k));
                 leftOverString = iterateItems(kid, items, leftOverString);
             }
         }

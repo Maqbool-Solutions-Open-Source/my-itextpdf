@@ -71,15 +71,17 @@ public class TextRenderInfo {
     private double[] fontMatrix = null;
     /**
      * Array containing marked content info for the text.
+     *
      * @since 5.0.2
      */
     private final Collection<MarkedContentInfo> markedContentInfos;
 
     /**
      * Creates a new TextRenderInfo object
-     * @param string the PDF string that should be displayed
-     * @param gs the graphics state (note: at this time, this is not immutable, so don't cache it)
-     * @param textMatrix the text matrix at the time of the render operation
+     *
+     * @param string            the PDF string that should be displayed
+     * @param gs                the graphics state (note: at this time, this is not immutable, so don't cache it)
+     * @param textMatrix        the text matrix at the time of the render operation
      * @param markedContentInfo the marked content sequence, if available
      */
     TextRenderInfo(PdfString string, GraphicsState gs, Matrix textMatrix, Collection<MarkedContentInfo> markedContentInfo) {
@@ -92,23 +94,24 @@ public class TextRenderInfo {
 
     /**
      * Used for creating sub-TextRenderInfos for each individual character
-     * @param parent the parent TextRenderInfo
-     * @param string the content of a TextRenderInfo
+     *
+     * @param parent           the parent TextRenderInfo
+     * @param string           the content of a TextRenderInfo
      * @param horizontalOffset the unscaled horizontal offset of the character that this TextRenderInfo represents
      * @since 5.3.3
      */
-    private TextRenderInfo(TextRenderInfo parent, PdfString string, float horizontalOffset){
+    private TextRenderInfo(TextRenderInfo parent, PdfString string, float horizontalOffset) {
         this.string = string;
-    	this.textToUserSpaceTransformMatrix = new Matrix(horizontalOffset, 0).multiply(parent.textToUserSpaceTransformMatrix);
-    	this.gs = parent.gs;
-    	this.markedContentInfos = parent.markedContentInfos;
+        this.textToUserSpaceTransformMatrix = new Matrix(horizontalOffset, 0).multiply(parent.textToUserSpaceTransformMatrix);
+        this.gs = parent.gs;
+        this.markedContentInfos = parent.markedContentInfos;
         this.fontMatrix = gs.font.getFontMatrix();
     }
 
     /**
      * @return the text to render
      */
-    public String getText(){
+    public String getText() {
         if (text == null)
             text = decode(string);
         return text;
@@ -117,23 +120,27 @@ public class TextRenderInfo {
     /**
      * @return original PDF string
      */
-    public PdfString getPdfString() { return string; }
-
-	/**
-	 * Checks if the text belongs to a marked content sequence
-	 * with a given mcid.
-	 * @param mcid a marked content id
-	 * @return true if the text is marked with this id
-	 * @since 5.0.2
-	 */
-	public boolean hasMcid(int mcid) {
-        return hasMcid(mcid, false);
-	}
+    public PdfString getPdfString() {
+        return string;
+    }
 
     /**
-	 * Checks if the text belongs to a marked content sequence
-	 * with a given mcid.
+     * Checks if the text belongs to a marked content sequence
+     * with a given mcid.
+     *
      * @param mcid a marked content id
+     * @return true if the text is marked with this id
+     * @since 5.0.2
+     */
+    public boolean hasMcid(int mcid) {
+        return hasMcid(mcid, false);
+    }
+
+    /**
+     * Checks if the text belongs to a marked content sequence
+     * with a given mcid.
+     *
+     * @param mcid                     a marked content id
      * @param checkTheTopmostLevelOnly indicates whether to check the topmost level of marked content stack only
      * @return true if the text is marked with this id
      * @since 5.3.5
@@ -147,7 +154,7 @@ public class TextRenderInfo {
         } else {
             for (MarkedContentInfo info : markedContentInfos) {
                 if (info.hasMcid())
-                    if(info.getMcid() == mcid)
+                    if (info.getMcid() == mcid)
                         return true;
             }
         }
@@ -159,17 +166,17 @@ public class TextRenderInfo {
      */
     public Integer getMcid() {
         if (markedContentInfos instanceof ArrayList) {
-            ArrayList<MarkedContentInfo> mci = (ArrayList<MarkedContentInfo>)markedContentInfos;
+            ArrayList<MarkedContentInfo> mci = (ArrayList<MarkedContentInfo>) markedContentInfos;
             MarkedContentInfo info = mci.size() > 0 ? mci.get(mci.size() - 1) : null;
             return (info != null && info.hasMcid()) ? info.getMcid() : null;
         }
         return null;
     }
 
-	/**
+    /**
      * @return the unscaled (i.e. in Text space) width of the text
      */
-    float getUnscaledWidth(){
+    float getUnscaledWidth() {
         if (unscaledWidth == null)
             unscaledWidth = Float.valueOf(getPdfStringWidth(string, false));
         return unscaledWidth;
@@ -178,10 +185,11 @@ public class TextRenderInfo {
     /**
      * Gets the baseline for the text (i.e. the line that the text 'sits' on)
      * This value includes the Rise of the draw operation - see {@link #getRise()} for the amount added by Rise
+     *
      * @return the baseline line segment
      * @since 5.0.2
      */
-    public LineSegment getBaseline(){
+    public LineSegment getBaseline() {
         return getUnscaledBaselineWithOffset(0 + gs.rise).transformBy(textToUserSpaceTransformMatrix);
     }
 
@@ -192,10 +200,11 @@ public class TextRenderInfo {
     /**
      * Gets the ascentline for the text (i.e. the line that represents the topmost extent that a string of the current font could have)
      * This value includes the Rise of the draw operation - see {@link #getRise()} for the amount added by Rise
+     *
      * @return the ascentline line segment
      * @since 5.0.2
      */
-    public LineSegment getAscentLine(){
+    public LineSegment getAscentLine() {
         float ascent = gs.getFont().getFontDescriptor(BaseFont.ASCENT, gs.getFontSize());
         return getUnscaledBaselineWithOffset(ascent + gs.rise).transformBy(textToUserSpaceTransformMatrix);
     }
@@ -203,34 +212,36 @@ public class TextRenderInfo {
     /**
      * Gets the descentline for the text (i.e. the line that represents the bottom most extent that a string of the current font could have).
      * This value includes the Rise of the draw operation - see {@link #getRise()} for the amount added by Rise
+     *
      * @return the descentline line segment
      * @since 5.0.2
      */
-    public LineSegment getDescentLine(){
+    public LineSegment getDescentLine() {
         // per getFontDescription() API, descent is returned as a negative number, so we apply that as a normal vertical offset
         float descent = gs.getFont().getFontDescriptor(BaseFont.DESCENT, gs.getFontSize());
         return getUnscaledBaselineWithOffset(descent + gs.rise).transformBy(textToUserSpaceTransformMatrix);
     }
 
-    private LineSegment getUnscaledBaselineWithOffset(float yOffset){
-    	// we need to correct the width so we don't have an extra character and word spaces at the end.  The extra character and word spaces
-    	// are important for tracking relative text coordinate systems, but should not be part of the baseline
+    private LineSegment getUnscaledBaselineWithOffset(float yOffset) {
+        // we need to correct the width so we don't have an extra character and word spaces at the end.  The extra character and word spaces
+        // are important for tracking relative text coordinate systems, but should not be part of the baseline
         String unicodeStr = string.toUnicodeString();
 
-    	float correctedUnscaledWidth = getUnscaledWidth() - (gs.characterSpacing +
+        float correctedUnscaledWidth = getUnscaledWidth() - (gs.characterSpacing +
                 (unicodeStr.length() > 0 && unicodeStr.charAt(unicodeStr.length() - 1) == ' ' ? gs.wordSpacing : 0)) * gs.horizontalScaling;
 
         return new LineSegment(new Vector(0, yOffset, 1), new Vector(correctedUnscaledWidth, yOffset, 1));
     }
 
-	/**
-	 * Getter for the font
-	 * @return the font
-	 * @since iText 5.0.2
-	 */
-	public DocumentFont getFont() {
-		return gs.getFont();
-	}
+    /**
+     * Getter for the font
+     *
+     * @return the font
+     * @since iText 5.0.2
+     */
+    public DocumentFont getFont() {
+        return gs.getFont();
+    }
 
 // removing - this shouldn't be needed now that we are exposing getCharacterRenderInfos()
 //	/**
@@ -249,47 +260,46 @@ public class TextRenderInfo {
 //		return convertWidthFromTextSpaceToUserSpace(gs.wordSpacing);
 //	}
 
-	/**
-	 * The rise represents how far above the nominal baseline the text should be rendered.  The {@link #getBaseline()}, {@link #getAscentLine()} and {@link #getDescentLine()} methods already include Rise.
-	 * This method is exposed to allow listeners to determine if an explicit rise was involved in the computation of the baseline (this might be useful, for example, for identifying superscript rendering)
-	 * @return The Rise for the text draw operation, in user space units (Ts value, scaled to user space)
-	 * @since 5.3.3
-	 */
-	public float getRise(){
-		if (gs.rise == 0) return 0; // optimize the common case
+    /**
+     * The rise represents how far above the nominal baseline the text should be rendered.  The {@link #getBaseline()}, {@link #getAscentLine()} and {@link #getDescentLine()} methods already include Rise.
+     * This method is exposed to allow listeners to determine if an explicit rise was involved in the computation of the baseline (this might be useful, for example, for identifying superscript rendering)
+     *
+     * @return The Rise for the text draw operation, in user space units (Ts value, scaled to user space)
+     * @since 5.3.3
+     */
+    public float getRise() {
+        if (gs.rise == 0) return 0; // optimize the common case
 
-		return convertHeightFromTextSpaceToUserSpace(gs.rise);
-	}
+        return convertHeightFromTextSpaceToUserSpace(gs.rise);
+    }
 
-	/**
-	 *
-	 * @param width the width, in text space
-	 * @return the width in user space
-	 * @since 5.3.3
-	 */
-	private float convertWidthFromTextSpaceToUserSpace(float width){
+    /**
+     * @param width the width, in text space
+     * @return the width in user space
+     * @since 5.3.3
+     */
+    private float convertWidthFromTextSpaceToUserSpace(float width) {
         LineSegment textSpace = new LineSegment(new Vector(0, 0, 1), new Vector(width, 0, 1));
         LineSegment userSpace = textSpace.transformBy(textToUserSpaceTransformMatrix);
         return userSpace.getLength();
-	}
+    }
 
-	/**
-	 *
-	 * @param height the height, in text space
-	 * @return the height in user space
-	 * @since 5.3.3
-	 */
-	private float convertHeightFromTextSpaceToUserSpace(float height){
+    /**
+     * @param height the height, in text space
+     * @return the height in user space
+     * @since 5.3.3
+     */
+    private float convertHeightFromTextSpaceToUserSpace(float height) {
         LineSegment textSpace = new LineSegment(new Vector(0, 0, 1), new Vector(0, height, 1));
         LineSegment userSpace = textSpace.transformBy(textToUserSpaceTransformMatrix);
         return userSpace.getLength();
-	}
+    }
 
     /**
      * @return The width, in user space units, of a single space character in the current font
      */
-    public float getSingleSpaceWidth(){
-    	return convertWidthFromTextSpaceToUserSpace(getUnscaledFontSpaceWidth());
+    public float getSingleSpaceWidth() {
+        return convertWidthFromTextSpaceToUserSpace(getUnscaledFontSpaceWidth());
     }
 
     /**
@@ -307,7 +317,7 @@ public class TextRenderInfo {
      * </ul>
      * @since iText 5.0.1
      */
-    public int getTextRenderMode(){
+    public int getTextRenderMode() {
         return gs.renderMode;
     }
 
@@ -315,7 +325,7 @@ public class TextRenderInfo {
      * @return the current fill color.
      */
     public BaseColor getFillColor() {
-    	return gs.fillColor;
+        return gs.fillColor;
     }
 
 
@@ -323,16 +333,17 @@ public class TextRenderInfo {
      * @return the current stroke color.
      */
     public BaseColor getStrokeColor() {
-    	return gs.strokeColor;
+        return gs.strokeColor;
     }
 
     /**
      * Calculates the width of a space character.  If the font does not define
      * a width for a standard space character \u0020, we also attempt to use
      * the width of \u00A0 (a non-breaking space in many fonts)
+     *
      * @return the width of a single space character in text space units
      */
-    private float getUnscaledFontSpaceWidth(){
+    private float getUnscaledFontSpaceWidth() {
         char charToUse = ' ';
         if (gs.font.getWidth(charToUse) == 0)
             charToUse = '\u00A0';
@@ -341,10 +352,11 @@ public class TextRenderInfo {
 
     /**
      * Gets the width of a String in text space units
-     * @param string    the string that needs measuring
-     * @return          the width of a String in text space units
+     *
+     * @param string the string that needs measuring
+     * @return the width of a String in text space units
      */
-    private float getStringWidth(String string){
+    private float getStringWidth(String string) {
         float totalWidth = 0;
         for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
@@ -357,10 +369,11 @@ public class TextRenderInfo {
 
     /**
      * Gets the width of a PDF string in text space units
-     * @param string        the string that needs measuring
-     * @return  the width of a String in text space units
+     *
+     * @param string the string that needs measuring
+     * @return the width of a String in text space units
      */
-    private float getPdfStringWidth(PdfString string, boolean singleCharString){
+    private float getPdfStringWidth(PdfString string, boolean singleCharString) {
         if (singleCharString) {
             float[] widthAndWordSpacing = getWidthAndWordSpacing(string, singleCharString);
             return (widthAndWordSpacing[0] * gs.fontSize + gs.characterSpacing + widthAndWordSpacing[1]) * gs.horizontalScaling;
@@ -375,10 +388,11 @@ public class TextRenderInfo {
 
     /**
      * Provides detail useful if a listener needs access to the position of each individual glyph in the text render operation
-     * @return  A list of {@link TextRenderInfo} objects that represent each glyph used in the draw operation. The next effect is if there was a separate Tj opertion for each character in the rendered string
-     * @since   5.3.3
+     *
+     * @return A list of {@link TextRenderInfo} objects that represent each glyph used in the draw operation. The next effect is if there was a separate Tj opertion for each character in the rendered string
+     * @since 5.3.3
      */
-    public List<TextRenderInfo> getCharacterRenderInfos(){
+    public List<TextRenderInfo> getCharacterRenderInfos() {
         List<TextRenderInfo> rslt = new ArrayList<TextRenderInfo>(string.length());
         PdfString[] strings = splitString(string);
         float totalWidth = 0;
@@ -395,16 +409,17 @@ public class TextRenderInfo {
 
     /**
      * Calculates width and word spacing of a single character PDF string.
-     * @param string            a character to calculate width.
-     * @param singleCharString  true if PDF string represents single character, false otherwise.
-     * @return                  array of 2 items: first item is a character width, second item is a calculated word spacing.
+     *
+     * @param string           a character to calculate width.
+     * @param singleCharString true if PDF string represents single character, false otherwise.
+     * @return array of 2 items: first item is a character width, second item is a calculated word spacing.
      */
     private float[] getWidthAndWordSpacing(PdfString string, boolean singleCharString) {
         if (singleCharString == false)
             throw new UnsupportedOperationException();
         float[] result = new float[2];
         String decoded = decode(string);
-        result[0] = (float)((gs.font.getWidth(getCharCode(decoded)) * fontMatrix[0]));
+        result[0] = (float) ((gs.font.getWidth(getCharCode(decoded)) * fontMatrix[0]));
         result[1] = decoded.equals(" ") ? gs.wordSpacing : 0;
         return result;
     }
@@ -412,10 +427,11 @@ public class TextRenderInfo {
     /**
      * Decodes a PdfString (which will contain glyph ids encoded in the font's encoding)
      * based on the active font, and determine the unicode equivalent
-     * @param in	the String that needs to be encoded
-     * @return	    the encoded String
+     *
+     * @param in the String that needs to be encoded
+     * @return the encoded String
      */
-    private String decode(PdfString in){
+    private String decode(PdfString in) {
         byte[] bytes = in.getBytes();
         return gs.font.decode(bytes, 0, bytes.length);
     }
@@ -445,8 +461,9 @@ public class TextRenderInfo {
 
     /**
      * Split PDF string into array of single character PDF strings.
-     * @param string    PDF string to be splitted.
-     * @return          splitted PDF string.
+     *
+     * @param string PDF string to be splitted.
+     * @return splitted PDF string.
      */
     private PdfString[] splitString(PdfString string) {
         List<PdfString> strings = new ArrayList<PdfString>();

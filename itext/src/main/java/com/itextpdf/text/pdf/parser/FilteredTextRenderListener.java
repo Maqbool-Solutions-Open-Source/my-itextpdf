@@ -45,18 +45,22 @@ package com.itextpdf.text.pdf.parser;
 
 /**
  * A text render listener that filters text operations before passing them on to a delegate
+ *
  * @since 5.0.1
  */
 
 public class FilteredTextRenderListener extends FilteredRenderListener implements TextExtractionStrategy {
 
-    /** The delegate that will receive the text render operation if the filters all pass */
+    /**
+     * The delegate that will receive the text render operation if the filters all pass
+     */
     private final TextExtractionStrategy delegate;
 
     /**
      * Construction
+     *
      * @param delegate the delegate {@link RenderListener} that will receive filtered text operations
-     * @param filters the filter(s) to apply
+     * @param filters  the filter(s) to apply
      */
     public FilteredTextRenderListener(TextExtractionStrategy delegate, RenderFilter... filters) {
         super(delegate, filters);
@@ -65,6 +69,7 @@ public class FilteredTextRenderListener extends FilteredRenderListener implement
 
     /**
      * This class delegates this call
+     *
      * @see com.itextpdf.text.pdf.parser.TextExtractionStrategy#getResultantText()
      */
     public String getResultantText() {

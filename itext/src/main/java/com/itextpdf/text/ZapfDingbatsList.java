@@ -44,61 +44,60 @@
 package com.itextpdf.text;
 
 /**
- *
  * A special-version of <CODE>LIST</CODE> which use zapfdingbats-letters.
  *
- * @see com.itextpdf.text.List
  * @author Michael Niedermair and Bruno Lowagie
+ * @see com.itextpdf.text.List
  */
 
 public class ZapfDingbatsList extends List {
 
-	/**
-	 * char-number in zapfdingbats
-	 */
-	protected int zn;
+    /**
+     * char-number in zapfdingbats
+     */
+    protected int zn;
 
-	/**
-	 * Creates a ZapfDingbatsList
-	 *
-	 * @param zn a char-number
-	 */
-	public ZapfDingbatsList(int zn) {
-		super(true);
-		this.zn = zn;
-		float fontsize = symbol.getFont().getSize();
-		symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL));
-		postSymbol = " ";
-	}
+    /**
+     * Creates a ZapfDingbatsList
+     *
+     * @param zn a char-number
+     */
+    public ZapfDingbatsList(int zn) {
+        super(true);
+        this.zn = zn;
+        float fontsize = symbol.getFont().getSize();
+        symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL));
+        postSymbol = " ";
+    }
 
-	/**
-	 * Creates a ZapfDingbatsList
-	 *
-	 * @param zn a char-number
-	 * @param symbolIndent	indent
-	 */
-	public ZapfDingbatsList(int zn, int symbolIndent) {
-		super(true, symbolIndent);
-		this.zn = zn;
-		float fontsize = symbol.getFont().getSize();
-		symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL));
-		postSymbol = " ";
-	}
+    /**
+     * Creates a ZapfDingbatsList
+     *
+     * @param zn           a char-number
+     * @param symbolIndent indent
+     */
+    public ZapfDingbatsList(int zn, int symbolIndent) {
+        super(true, symbolIndent);
+        this.zn = zn;
+        float fontsize = symbol.getFont().getSize();
+        symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL));
+        postSymbol = " ";
+    }
 
     /**
      * Creates a ZapfDingbatList with a colored symbol
      *
-     * @param zn a char-number
-     * @param symbolIndent indent
+     * @param zn               a char-number
+     * @param symbolIndent     indent
      * @param zapfDingbatColor color for the ZpafDingbat
      */
     public ZapfDingbatsList(int zn, int symbolIndent, BaseColor zapfDingbatColor) {
-		super(true, symbolIndent);
-		this.zn = zn;
-		float fontsize = symbol.getFont().getSize();
-		symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL, zapfDingbatColor));
-		postSymbol = " ";
-	}
+        super(true, symbolIndent);
+        this.zn = zn;
+        float fontsize = symbol.getFont().getSize();
+        symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL, zapfDingbatColor));
+        postSymbol = " ";
+    }
 
     /**
      * Sets the dingbat's color.
@@ -110,54 +109,55 @@ public class ZapfDingbatsList extends List {
         symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL, zapfDingbatColor));
     }
 
-	/**
-	 * set the char-number
-	 * @param zn a char-number
-	 */
-	public void setCharNumber(int zn) {
-		this.zn = zn;
-	}
+    /**
+     * set the char-number
+     *
+     * @param zn a char-number
+     */
+    public void setCharNumber(int zn) {
+        this.zn = zn;
+    }
 
-	/**
-	 * get the char-number
-	 *
-	 * @return	char-number
-	 */
-	public int getCharNumber() {
-		return zn;
-	}
+    /**
+     * get the char-number
+     *
+     * @return char-number
+     */
+    public int getCharNumber() {
+        return zn;
+    }
 
-	/**
-	 * Adds an <CODE>Element</CODE> to the <CODE>List</CODE>.
-	 *
-	 * @param	o	the object to add.
-	 * @return true if adding the object succeeded
-	 */
-	@Override
-	public boolean add(Element o) {
-		if (o instanceof ListItem) {
-			ListItem item = (ListItem) o;
-			Chunk chunk = new Chunk(preSymbol, symbol.getFont());
+    /**
+     * Adds an <CODE>Element</CODE> to the <CODE>List</CODE>.
+     *
+     * @param o the object to add.
+     * @return true if adding the object succeeded
+     */
+    @Override
+    public boolean add(Element o) {
+        if (o instanceof ListItem) {
+            ListItem item = (ListItem) o;
+            Chunk chunk = new Chunk(preSymbol, symbol.getFont());
             chunk.setAttributes(symbol.getAttributes());
-			chunk.append(String.valueOf((char)zn));
-			chunk.append(postSymbol);
-			item.setListSymbol(chunk);
-			item.setIndentationLeft(symbolIndent, autoindent);
-			item.setIndentationRight(0);
-			list.add(item);
-		} else if (o instanceof List) {
-			List nested = (List) o;
-			nested.setIndentationLeft(nested.getIndentationLeft() + symbolIndent);
-			first--;
-			return list.add(nested);
-		}
-		return false;
-	}
+            chunk.append(String.valueOf((char) zn));
+            chunk.append(postSymbol);
+            item.setListSymbol(chunk);
+            item.setIndentationLeft(symbolIndent, autoindent);
+            item.setIndentationRight(0);
+            list.add(item);
+        } else if (o instanceof List) {
+            List nested = (List) o;
+            nested.setIndentationLeft(nested.getIndentationLeft() + symbolIndent);
+            first--;
+            return list.add(nested);
+        }
+        return false;
+    }
 
-	@Override
-	public List cloneShallow() {
-		ZapfDingbatsList clone = new ZapfDingbatsList(zn);
-		populateProperties(clone);
-		return clone;
-	}
+    @Override
+    public List cloneShallow() {
+        ZapfDingbatsList clone = new ZapfDingbatsList(zn);
+        populateProperties(clone);
+        return clone;
+    }
 }

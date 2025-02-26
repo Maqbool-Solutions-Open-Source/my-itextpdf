@@ -45,12 +45,14 @@ package com.itextpdf.text.pdf.parser;
 
 /**
  * Defines an interface for {@link RenderListener}s that can return text
+ *
  * @since 5.0.2
  */
 public interface TextExtractionStrategy extends RenderListener {
     /**
      * Returns the result so far.
-     * @return  a String with the resulting text.
+     *
+     * @return a String with the resulting text.
      */
     public String getResultantText();
 }

@@ -66,8 +66,8 @@ public class BezierCurve implements Shape {
      * through both (x2, y2) and (x3, y3) nor (x1, y1) = (x4, y4) we
      * use the square of the sum of the distances mentioned below in
      * compare to this field as the criterion of good approximation.
-     *     1. The distance between the line and (x2, y2)
-     *     2. The distance between the line and (x3, y3)
+     * 1. The distance between the line and (x2, y2)
+     * 2. The distance between the line and (x3, y3)
      */
     public static double distanceToleranceSquare = 0.025D;
 
@@ -87,6 +87,7 @@ public class BezierCurve implements Shape {
 
     /**
      * Constructs new bezier curve.
+     *
      * @param controlPoints Curve's control points.
      */
     public BezierCurve(List<Point2D> controlPoints) {
@@ -106,7 +107,7 @@ public class BezierCurve implements Shape {
      * {@link #distanceToleranceManhattan}
      *
      * @return {@link java.util.List} containing points of piecewise linear approximation
-     *         for this bezier curve.
+     * for this bezier curve.
      * @since 5.5.6
      */
     public List<Point2D> getPiecewiseLinearApproximation() {
@@ -114,9 +115,9 @@ public class BezierCurve implements Shape {
         points.add(controlPoints.get(0));
 
         recursiveApproximation(controlPoints.get(0).getX(), controlPoints.get(0).getY(),
-                               controlPoints.get(1).getX(), controlPoints.get(1).getY(),
-                               controlPoints.get(2).getX(), controlPoints.get(2).getY(),
-                               controlPoints.get(3).getX(), controlPoints.get(3).getY(), points);
+                controlPoints.get(1).getX(), controlPoints.get(1).getY(),
+                controlPoints.get(2).getX(), controlPoints.get(2).getY(),
+                controlPoints.get(3).getX(), controlPoints.get(3).getY(), points);
 
         points.add(controlPoints.get(controlPoints.size() - 1));
         return points;

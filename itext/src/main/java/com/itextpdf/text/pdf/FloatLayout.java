@@ -121,7 +121,7 @@ public class FloatLayout {
         filledWidth = 0;
     }
 
-    public int layout(PdfContentByte canvas, boolean simulate)  throws DocumentException  {
+    public int layout(PdfContentByte canvas, boolean simulate) throws DocumentException {
         compositeColumn.setCanvas(canvas);
         int status = ColumnText.NO_MORE_TEXT;
 
@@ -130,7 +130,7 @@ public class FloatLayout {
 
         while (!content.isEmpty()) {
             if (content.get(0) instanceof PdfDiv) {
-                PdfDiv floatingElement = (PdfDiv)content.get(0);
+                PdfDiv floatingElement = (PdfDiv) content.get(0);
                 if (floatingElement.getFloatType() == PdfDiv.FloatType.LEFT || floatingElement.getFloatType() == PdfDiv.FloatType.RIGHT) {
                     floatingElements.add(floatingElement);
                     content.remove(0);
@@ -238,7 +238,7 @@ public class FloatLayout {
                     }
                     if (simulate) {
                         if (nextElement instanceof PdfPTable)
-                            currentCompositeColumn.addElement(new PdfPTable((PdfPTable)nextElement));
+                            currentCompositeColumn.addElement(new PdfPTable((PdfPTable) nextElement));
                         else
                             currentCompositeColumn.addElement(nextElement);
                     } else {
@@ -271,7 +271,7 @@ public class FloatLayout {
                         leftWidth = 0;
                         rightWidth = 0;
                         if (simulate && nextElement instanceof PdfPTable) {
-                            currentCompositeColumn.addElement(new PdfPTable((PdfPTable)nextElement));
+                            currentCompositeColumn.addElement(new PdfPTable((PdfPTable) nextElement));
                         }
 
                         currentCompositeColumn.setSimpleColumn(floatLeftX, yLine, floatRightX, minY);
@@ -330,11 +330,11 @@ public class FloatLayout {
             }
 
             if (ignoreSpacingBefore && nextElement.getChunks().size() == 0) {
-                if (nextElement instanceof Paragraph){
+                if (nextElement instanceof Paragraph) {
                     Paragraph p = (Paragraph) nextElement;
                     Element e = p.get(0);
-                    if (e instanceof WritableDirectElement){
-                        WritableDirectElement writableElement  = (WritableDirectElement) e;
+                    if (e instanceof WritableDirectElement) {
+                        WritableDirectElement writableElement = (WritableDirectElement) e;
                         if (writableElement.getDirectElementType() != WritableDirectElement.DIRECT_ELEMENT_TYPE_HEADER) {
                             ignoreSpacingBefore = false;
                         }

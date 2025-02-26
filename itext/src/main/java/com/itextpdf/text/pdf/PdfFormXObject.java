@@ -48,26 +48,32 @@ package com.itextpdf.text.pdf;
  */
 
 public class PdfFormXObject extends PdfStream {
-    
+
     // public static final variables
-    
-/** This is a PdfNumber representing 0. */
+
+    /**
+     * This is a PdfNumber representing 0.
+     */
     public static final PdfNumber ZERO = new PdfNumber(0);
-    
-/** This is a PdfNumber representing 1. */
+
+    /**
+     * This is a PdfNumber representing 1.
+     */
     public static final PdfNumber ONE = new PdfNumber(1);
-    
-/** This is the 1 - matrix. */
+
+    /**
+     * This is the 1 - matrix.
+     */
     public static final PdfLiteral MATRIX = new PdfLiteral("[1 0 0 1 0 0]");
-    
-/**
- * Constructs a <CODE>PdfFormXObject</CODE>-object.
- *
- * @param	template			the template
- * @param	compressionLevel	the compression level for the stream
- * @since	2.1.3 (Replacing the existing constructor with param compressionLevel)
- */
-    
+
+    /**
+     * Constructs a <CODE>PdfFormXObject</CODE>-object.
+     *
+     * @param template         the template
+     * @param compressionLevel the compression level for the stream
+     * @since 2.1.3 (Replacing the existing constructor with param compressionLevel)
+     */
+
     PdfFormXObject(PdfTemplate template, int compressionLevel) // throws BadPdfFormatException
     {
         super();
@@ -88,9 +94,9 @@ public class PdfFormXObject extends PdfStream {
         bytes = template.toPdf(null);
         put(PdfName.LENGTH, new PdfNumber(bytes.length));
         if (template.getAdditional() != null) {
-        	putAll(template.getAdditional());
+            putAll(template.getAdditional());
         }
         flateCompress(compressionLevel);
     }
-    
+
 }

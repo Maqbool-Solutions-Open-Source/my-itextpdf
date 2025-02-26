@@ -50,12 +50,11 @@ import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfString;
 
 /**
- *
  * @author psoares
  */
 public class CMapUniCid extends AbstractCMap {
     private IntHashtable map = new IntHashtable(65537);
-    
+
     @Override
     void addChar(PdfString mark, PdfObject code) {
         if (!(code instanceof PdfNumber))
@@ -65,14 +64,14 @@ public class CMapUniCid extends AbstractCMap {
         if (Utilities.isSurrogatePair(s, 0))
             codepoint = Utilities.convertToUtf32(s, 0);
         else
-            codepoint = (int)s.charAt(0);
-        map.put(codepoint, ((PdfNumber)code).intValue());
+            codepoint = (int) s.charAt(0);
+        map.put(codepoint, ((PdfNumber) code).intValue());
     }
-    
+
     public int lookup(int character) {
         return map.get(character);
     }
-    
+
     public CMapToUnicode exportToUnicode() {
         CMapToUnicode uni = new CMapToUnicode();
         int[] keys = map.toOrderedKeys();
@@ -81,6 +80,6 @@ public class CMapUniCid extends AbstractCMap {
         }
         return uni;
     }
-    
+
 }
 

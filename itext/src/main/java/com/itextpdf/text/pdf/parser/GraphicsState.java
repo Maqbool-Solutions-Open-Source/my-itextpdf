@@ -50,39 +50,70 @@ import com.itextpdf.text.pdf.PdfName;
 
 /**
  * Keeps all the parameters of the graphics state.
- * @since	2.1.4
+ *
+ * @since 2.1.4
  */
 public class GraphicsState {
-    /** The current transformation matrix. */
+    /**
+     * The current transformation matrix.
+     */
     Matrix ctm;
-    /** The current character spacing. */
+    /**
+     * The current character spacing.
+     */
     float characterSpacing;
-    /** The current word spacing. */
+    /**
+     * The current word spacing.
+     */
     float wordSpacing;
-    /** The current horizontal scaling */
+    /**
+     * The current horizontal scaling
+     */
     float horizontalScaling;
-    /** The current leading. */
+    /**
+     * The current leading.
+     */
     float leading;
-    /** The active font. */
+    /**
+     * The active font.
+     */
     CMapAwareDocumentFont font;
-    /** The current font size. */
+    /**
+     * The current font size.
+     */
     float fontSize;
-    /** The current render mode. */
+    /**
+     * The current render mode.
+     */
     int renderMode;
-    /** The current text rise */
+    /**
+     * The current text rise
+     */
     float rise;
-    /** The current knockout value. */
+    /**
+     * The current knockout value.
+     */
     boolean knockout;
-    /** The current color space for stroke. */
+    /**
+     * The current color space for stroke.
+     */
     PdfName colorSpaceFill;
-    /** The current color space for stroke. */
+    /**
+     * The current color space for stroke.
+     */
     PdfName colorSpaceStroke;
-    /** The current fill color. */
+    /**
+     * The current fill color.
+     */
     BaseColor fillColor = BaseColor.BLACK;
-    /** The current stroke color. */
+    /**
+     * The current stroke color.
+     */
     BaseColor strokeColor = BaseColor.BLACK;
 
-    /** The line width for stroking operations */
+    /**
+     * The line width for stroking operations
+     */
     private float lineWidth;
 
     /**
@@ -97,16 +128,20 @@ public class GraphicsState {
      */
     private int lineJoinStyle;
 
-    /** The mitir limit value */
+    /**
+     * The mitir limit value
+     */
     private float miterLimit;
 
-    /** The line dash pattern */
+    /**
+     * The line dash pattern
+     */
     private LineDashPattern lineDashPattern;
-    
+
     /**
      * Constructs a new Graphics State object with the default values.
      */
-    public GraphicsState(){
+    public GraphicsState() {
         ctm = new Matrix();
         characterSpacing = 0;
         wordSpacing = 0;
@@ -126,12 +161,13 @@ public class GraphicsState {
         lineJoinStyle = PdfContentByte.LINE_JOIN_MITER;
         miterLimit = 10.0f;
     }
-    
+
     /**
      * Copy constructor.
-     * @param source	another GraphicsState object
+     *
+     * @param source another GraphicsState object
      */
-    public GraphicsState(GraphicsState source){
+    public GraphicsState(GraphicsState source) {
         // note: all of the following are immutable, with the possible exception of font
         // so it is safe to copy them as-is
         ctm = source.ctm;
@@ -158,128 +194,141 @@ public class GraphicsState {
         }
     }
 
-	/**
-	 * Getter for the current transformation matrix
-	 * @return the ctm
-	 * @since iText 5.0.1
-	 */
-	public Matrix getCtm() {
-		return ctm;
-	}
+    /**
+     * Getter for the current transformation matrix
+     *
+     * @return the ctm
+     * @since iText 5.0.1
+     */
+    public Matrix getCtm() {
+        return ctm;
+    }
 
-	/**
-	 * Getter for the character spacing.
-	 * @return the character spacing
-	 * @since iText 5.0.1
-	 */
-	public float getCharacterSpacing() {
-		return characterSpacing;
-	}
+    /**
+     * Getter for the character spacing.
+     *
+     * @return the character spacing
+     * @since iText 5.0.1
+     */
+    public float getCharacterSpacing() {
+        return characterSpacing;
+    }
 
-	/**
-	 * Getter for the word spacing
-	 * @return the word spacing
-	 * @since iText 5.0.1
-	 */
-	public float getWordSpacing() {
-		return wordSpacing;
-	}
+    /**
+     * Getter for the word spacing
+     *
+     * @return the word spacing
+     * @since iText 5.0.1
+     */
+    public float getWordSpacing() {
+        return wordSpacing;
+    }
 
-	/**
-	 * Getter for the horizontal scaling
-	 * @return the horizontal scaling
-	 * @since iText 5.0.1
-	 */
-	public float getHorizontalScaling() {
-		return horizontalScaling;
-	}
+    /**
+     * Getter for the horizontal scaling
+     *
+     * @return the horizontal scaling
+     * @since iText 5.0.1
+     */
+    public float getHorizontalScaling() {
+        return horizontalScaling;
+    }
 
-	/**
-	 * Getter for the leading
-	 * @return the leading
-	 * @since iText 5.0.1
-	 */
-	public float getLeading() {
-		return leading;
-	}
+    /**
+     * Getter for the leading
+     *
+     * @return the leading
+     * @since iText 5.0.1
+     */
+    public float getLeading() {
+        return leading;
+    }
 
-	/**
-	 * Getter for the font
-	 * @return the font
-	 * @since iText 5.0.1
-	 */
-	public CMapAwareDocumentFont getFont() {
-		return font;
-	}
+    /**
+     * Getter for the font
+     *
+     * @return the font
+     * @since iText 5.0.1
+     */
+    public CMapAwareDocumentFont getFont() {
+        return font;
+    }
 
-	/**
-	 * Getter for the font size
-	 * @return the font size
-	 * @since iText 5.0.1
-	 */
-	public float getFontSize() {
-		return fontSize;
-	}
+    /**
+     * Getter for the font size
+     *
+     * @return the font size
+     * @since iText 5.0.1
+     */
+    public float getFontSize() {
+        return fontSize;
+    }
 
-	/**
-	 * Getter for the render mode
-	 * @return the renderMode
-	 * @since iText 5.0.1
-	 */
-	public int getRenderMode() {
-		return renderMode;
-	}
+    /**
+     * Getter for the render mode
+     *
+     * @return the renderMode
+     * @since iText 5.0.1
+     */
+    public int getRenderMode() {
+        return renderMode;
+    }
 
-	/**
-	 * Getter for text rise
-	 * @return the text rise
-	 * @since iText 5.0.1
-	 */
-	public float getRise() {
-		return rise;
-	}
+    /**
+     * Getter for text rise
+     *
+     * @return the text rise
+     * @since iText 5.0.1
+     */
+    public float getRise() {
+        return rise;
+    }
 
-	/**
-	 * Getter for knockout
-	 * @return the knockout
-	 * @since iText 5.0.1
-	 */
-	public boolean isKnockout() {
-		return knockout;
-	}
-	
-	/**
-	 * Gets the current color space for fill operations
-	 */
-	public PdfName getColorSpaceFill() {
-		return colorSpaceFill;
-	}
-	
-	/**
-	 * Gets the current color space for stroke operations
-	 */
-	public PdfName getColorSpaceStroke() {
-		return colorSpaceStroke;
-	}
+    /**
+     * Getter for knockout
+     *
+     * @return the knockout
+     * @since iText 5.0.1
+     */
+    public boolean isKnockout() {
+        return knockout;
+    }
 
-	/**
-	 * Gets the current fill color
-	 * @return a BaseColor
-	 */
-	public BaseColor getFillColor() {
-		return fillColor;
-	}
+    /**
+     * Gets the current color space for fill operations
+     */
+    public PdfName getColorSpaceFill() {
+        return colorSpaceFill;
+    }
 
-	/**
-	 * Gets the current stroke color
-	 * @return a BaseColor
-	 */
-	public BaseColor getStrokeColor() {
-		return strokeColor;
-	}
+    /**
+     * Gets the current color space for stroke operations
+     */
+    public PdfName getColorSpaceStroke() {
+        return colorSpaceStroke;
+    }
+
+    /**
+     * Gets the current fill color
+     *
+     * @return a BaseColor
+     */
+    public BaseColor getFillColor() {
+        return fillColor;
+    }
+
+    /**
+     * Gets the current stroke color
+     *
+     * @return a BaseColor
+     */
+    public BaseColor getStrokeColor() {
+        return strokeColor;
+    }
 
     /**
      * Getter for the line width.
+     *
      * @return The line width
      * @since 5.5.6
      */
@@ -289,6 +338,7 @@ public class GraphicsState {
 
     /**
      * Setter for the line width.
+     *
      * @param lineWidth New line width.
      * @since 5.5.6
      */
@@ -299,6 +349,7 @@ public class GraphicsState {
     /**
      * Getter for the line cap style.
      * For possible values see {@link PdfContentByte}
+     *
      * @return The line cap style.
      * @since 5.5.6
      */
@@ -309,6 +360,7 @@ public class GraphicsState {
     /**
      * Setter for the line cap style.
      * For possible values see {@link PdfContentByte}
+     *
      * @param lineCapStyle New line cap style.
      * @since 5.5.6
      */
@@ -319,6 +371,7 @@ public class GraphicsState {
     /**
      * Getter for the line join style.
      * For possible values see {@link PdfContentByte}
+     *
      * @return The line join style.
      * @since 5.5.6
      */
@@ -329,6 +382,7 @@ public class GraphicsState {
     /**
      * Setter for the line join style.
      * For possible values see {@link PdfContentByte}
+     *
      * @param lineJoinStyle New line join style.
      * @since 5.5.6
      */
@@ -338,6 +392,7 @@ public class GraphicsState {
 
     /**
      * Getter for the miter limit value.
+     *
      * @return The miter limit.
      * @since 5.5.6
      */
@@ -347,6 +402,7 @@ public class GraphicsState {
 
     /**
      * Setter for the miter limit value.
+     *
      * @param miterLimit New miter limit.
      * @since 5.5.6
      */
@@ -356,6 +412,7 @@ public class GraphicsState {
 
     /**
      * Getter for the line dash pattern.
+     *
      * @return The line dash pattern.
      * @since 5.5.6
      */
@@ -365,6 +422,7 @@ public class GraphicsState {
 
     /**
      * Setter for the line dash pattern.
+     *
      * @param lineDashPattern New line dash pattern.
      * @since 5.5.6
      */

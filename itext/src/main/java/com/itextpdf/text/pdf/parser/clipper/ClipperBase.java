@@ -86,34 +86,37 @@ public abstract class ClipperBase implements Clipper {
         Edge leftBound;
         Edge rightBound;
         LocalMinima next;
-    };
+    }
+
+    ;
 
     protected class Scanbeam {
         long y;
         Scanbeam next;
-    };
+    }
 
-    private static void initEdge( Edge e, Edge eNext, Edge ePrev, LongPoint pt ) {
+    ;
+
+    private static void initEdge(Edge e, Edge eNext, Edge ePrev, LongPoint pt) {
         e.next = eNext;
         e.prev = ePrev;
-        e.setCurrent( new LongPoint( pt ) );
+        e.setCurrent(new LongPoint(pt));
         e.outIdx = Edge.UNASSIGNED;
     }
 
-    private static void initEdge2( Edge e, PolyType polyType ) {
+    private static void initEdge2(Edge e, PolyType polyType) {
         if (e.getCurrent().getY() >= e.next.getCurrent().getY()) {
-            e.setBot( new LongPoint( e.getCurrent() ) );
-            e.setTop( new LongPoint( e.next.getCurrent() ) );
-        }
-        else {
-            e.setTop( new LongPoint( e.getCurrent() ) );
-            e.setBot( new LongPoint( e.next.getCurrent() ) );
+            e.setBot(new LongPoint(e.getCurrent()));
+            e.setTop(new LongPoint(e.next.getCurrent()));
+        } else {
+            e.setTop(new LongPoint(e.getCurrent()));
+            e.setBot(new LongPoint(e.next.getCurrent()));
         }
         e.updateDeltaX();
         e.polyTyp = polyType;
     }
 
-    private static boolean rangeTest( LongPoint Pt, boolean useFullRange ) {
+    private static boolean rangeTest(LongPoint Pt, boolean useFullRange) {
         if (useFullRange) {
             if (Pt.getX() > HI_RANGE || Pt.getY() > HI_RANGE || -Pt.getX() > HI_RANGE || -Pt.getY() > HI_RANGE)
                 throw new IllegalStateException("Coordinate outside allowed range");
@@ -124,7 +127,7 @@ public abstract class ClipperBase implements Clipper {
         return useFullRange;
     }
 
-    private static Edge removeEdge( Edge e ) {
+    private static Edge removeEdge(Edge e) {
         //removes e from double_linked_list (but without removing from memory)
         e.prev.next = e.next;
         e.next.prev = e.prev;
@@ -149,9 +152,9 @@ public abstract class ClipperBase implements Clipper {
 
     protected final boolean preserveCollinear;
 
-    private final static Logger LOGGER = Logger.getLogger( Clipper.class.getName() );
+    private final static Logger LOGGER = Logger.getLogger(Clipper.class.getName());
 
-    protected ClipperBase( boolean preserveCollinear ) //constructor (nb: no external instantiation)
+    protected ClipperBase(boolean preserveCollinear) //constructor (nb: no external instantiation)
     {
         this.preserveCollinear = preserveCollinear;
         minimaList = null;
@@ -160,19 +163,19 @@ public abstract class ClipperBase implements Clipper {
         edges = new ArrayList<List<Edge>>();
     }
 
-    public boolean addPath( Path pg, PolyType polyType, boolean Closed ) {
+    public boolean addPath(Path pg, PolyType polyType, boolean Closed) {
 
         if (!Closed && polyType == PolyType.CLIP) {
-            throw new IllegalStateException( "AddPath: Open paths must be subject." );
+            throw new IllegalStateException("AddPath: Open paths must be subject.");
         }
 
         int highI = pg.size() - 1;
         if (Closed) {
-            while (highI > 0 && pg.get( highI ).equals( pg.get( 0 ) )) {
+            while (highI > 0 && pg.get(highI).equals(pg.get(0))) {
                 --highI;
             }
         }
-        while (highI > 0 && pg.get( highI ).equals( pg.get( highI - 1 ) )) {
+        while (highI > 0 && pg.get(highI).equals(pg.get(highI - 1))) {
             --highI;
         }
         if (Closed && highI < 2 || !Closed && highI < 1) {
@@ -180,45 +183,44 @@ public abstract class ClipperBase implements Clipper {
         }
 
         //create a new edge array ...
-        final List<Edge> edges = new ArrayList<Edge>( highI + 1 );
+        final List<Edge> edges = new ArrayList<Edge>(highI + 1);
         for (int i = 0; i <= highI; i++) {
-            edges.add( new Edge() );
+            edges.add(new Edge());
         }
 
         boolean IsFlat = true;
 
         //1. Basic (first) edge initialization ...
-        edges.get( 1 ).setCurrent( new LongPoint( pg.get( 1 ) ) );
-        useFullRange = rangeTest( pg.get( 0 ), useFullRange );
-        useFullRange = rangeTest( pg.get( highI ), useFullRange );
-        initEdge( edges.get( 0 ), edges.get( 1 ), edges.get( highI ), pg.get( 0 ) );
-        initEdge( edges.get( highI ), edges.get( 0 ), edges.get( highI - 1 ), pg.get( highI ) );
+        edges.get(1).setCurrent(new LongPoint(pg.get(1)));
+        useFullRange = rangeTest(pg.get(0), useFullRange);
+        useFullRange = rangeTest(pg.get(highI), useFullRange);
+        initEdge(edges.get(0), edges.get(1), edges.get(highI), pg.get(0));
+        initEdge(edges.get(highI), edges.get(0), edges.get(highI - 1), pg.get(highI));
         for (int i = highI - 1; i >= 1; --i) {
-            useFullRange = rangeTest( pg.get( i ), useFullRange );
-            initEdge( edges.get( i ), edges.get( i + 1 ), edges.get( i - 1 ), pg.get( i ) );
+            useFullRange = rangeTest(pg.get(i), useFullRange);
+            initEdge(edges.get(i), edges.get(i + 1), edges.get(i - 1), pg.get(i));
         }
-        Edge eStart = edges.get( 0 );
+        Edge eStart = edges.get(0);
 
         //2. Remove duplicate vertices, and (when closed) collinear edges ...
         Edge e = eStart, eLoopStop = eStart;
-        for (;;) {
+        for (; ; ) {
             //nb: allows matching start and end points when not Closed ...
-            if (e.getCurrent().equals( e.next.getCurrent() ) && (Closed || !e.next.equals( eStart ))) {
+            if (e.getCurrent().equals(e.next.getCurrent()) && (Closed || !e.next.equals(eStart))) {
                 if (e == e.next) {
                     break;
                 }
                 if (e == eStart) {
                     eStart = e.next;
                 }
-                e = removeEdge( e );
+                e = removeEdge(e);
                 eLoopStop = e;
                 continue;
             }
             if (e.prev == e.next) {
                 break; //only two vertices
-            }
-            else if (Closed && Point.slopesEqual( e.prev.getCurrent(), e.getCurrent(), e.next.getCurrent(), useFullRange )
-                            && (!isPreserveCollinear() || !Point.isPt2BetweenPt1AndPt3( e.prev.getCurrent(), e.getCurrent(), e.next.getCurrent() ))) {
+            } else if (Closed && Point.slopesEqual(e.prev.getCurrent(), e.getCurrent(), e.next.getCurrent(), useFullRange)
+                    && (!isPreserveCollinear() || !Point.isPt2BetweenPt1AndPt3(e.prev.getCurrent(), e.getCurrent(), e.next.getCurrent()))) {
                 //Collinear edges are allowed for open paths but in closed paths
                 //the default is to merge adjacent collinear edges into a single edge.
                 //However, if the PreserveCollinear property is enabled, only overlapping
@@ -226,7 +228,7 @@ public abstract class ClipperBase implements Clipper {
                 if (e == eStart) {
                     eStart = e.next;
                 }
-                e = removeEdge( e );
+                e = removeEdge(e);
                 e = e.prev;
                 eLoopStop = e;
                 continue;
@@ -249,7 +251,7 @@ public abstract class ClipperBase implements Clipper {
         //3. Do second stage of edge initialization ...
         e = eStart;
         do {
-            initEdge2( e, polyType );
+            initEdge2(e, polyType);
             e = e.next;
             if (IsFlat && e.getCurrent().getY() != eStart.getCurrent().getY()) {
                 IsFlat = false;
@@ -273,34 +275,32 @@ public abstract class ClipperBase implements Clipper {
             locMin.rightBound = e;
             locMin.rightBound.side = Edge.Side.RIGHT;
             locMin.rightBound.windDelta = 0;
-            for ( ; ; )
-            {
+            for (; ; ) {
                 if (e.getBot().getX() != e.prev.getTop().getX()) e.reverseHorizontal();
                 if (e.next.outIdx == Edge.SKIP) break;
                 e.nextInLML = e.next;
                 e = e.next;
             }
-            insertLocalMinima( locMin );
-            this.edges.add( edges );
+            insertLocalMinima(locMin);
+            this.edges.add(edges);
             return true;
         }
 
-        this.edges.add( edges );
+        this.edges.add(edges);
         boolean leftBoundIsForward;
         Edge EMin = null;
 
         //workaround to avoid an endless loop in the while loop below when
         //open paths have matching start and end points ...
-        if (e.prev.getBot().equals( e.prev.getTop() )) {
+        if (e.prev.getBot().equals(e.prev.getTop())) {
             e = e.next;
         }
 
-        for (;;) {
+        for (; ; ) {
             e = e.findNextLocMin();
             if (e == EMin) {
                 break;
-            }
-            else if (EMin == null) {
+            } else if (EMin == null) {
                 EMin = e;
             }
 
@@ -313,8 +313,7 @@ public abstract class ClipperBase implements Clipper {
                 locMin.leftBound = e.prev;
                 locMin.rightBound = e;
                 leftBoundIsForward = false; //Q.nextInLML = Q.prev
-            }
-            else {
+            } else {
                 locMin.leftBound = e;
                 locMin.rightBound = e.prev;
                 leftBoundIsForward = true; //Q.nextInLML = Q.next
@@ -324,32 +323,29 @@ public abstract class ClipperBase implements Clipper {
 
             if (!Closed) {
                 locMin.leftBound.windDelta = 0;
-            }
-            else if (locMin.leftBound.next == locMin.rightBound) {
+            } else if (locMin.leftBound.next == locMin.rightBound) {
                 locMin.leftBound.windDelta = -1;
-            }
-            else {
+            } else {
                 locMin.leftBound.windDelta = 1;
             }
             locMin.rightBound.windDelta = -locMin.leftBound.windDelta;
 
-            e = processBound( locMin.leftBound, leftBoundIsForward );
+            e = processBound(locMin.leftBound, leftBoundIsForward);
             if (e.outIdx == Edge.SKIP) {
-                e = processBound( e, leftBoundIsForward );
+                e = processBound(e, leftBoundIsForward);
             }
 
-            Edge E2 = processBound( locMin.rightBound, !leftBoundIsForward );
+            Edge E2 = processBound(locMin.rightBound, !leftBoundIsForward);
             if (E2.outIdx == Edge.SKIP) {
-                E2 = processBound( E2, !leftBoundIsForward );
+                E2 = processBound(E2, !leftBoundIsForward);
             }
 
             if (locMin.leftBound.outIdx == Edge.SKIP) {
                 locMin.leftBound = null;
-            }
-            else if (locMin.rightBound.outIdx == Edge.SKIP) {
+            } else if (locMin.rightBound.outIdx == Edge.SKIP) {
                 locMin.rightBound = null;
             }
-            insertLocalMinima( locMin );
+            insertLocalMinima(locMin);
             if (!leftBoundIsForward) {
                 e = E2;
             }
@@ -358,10 +354,10 @@ public abstract class ClipperBase implements Clipper {
 
     }
 
-    public boolean addPaths( Paths ppg, PolyType polyType, boolean closed ) {
+    public boolean addPaths(Paths ppg, PolyType polyType, boolean closed) {
         boolean result = false;
         for (int i = 0; i < ppg.size(); ++i) {
-            if (addPath( ppg.get( i ), polyType, closed )) {
+            if (addPath(ppg.get(i), polyType, closed)) {
                 result = true;
             }
         }
@@ -384,15 +380,13 @@ public abstract class ClipperBase implements Clipper {
         currentLM = null;
     }
 
-    private void insertLocalMinima( LocalMinima newLm ) {
+    private void insertLocalMinima(LocalMinima newLm) {
         if (minimaList == null) {
             minimaList = newLm;
-        }
-        else if (newLm.y >= minimaList.y) {
+        } else if (newLm.y >= minimaList.y) {
             newLm.next = minimaList;
             minimaList = newLm;
-        }
-        else {
+        } else {
             LocalMinima tmpLm = minimaList;
             while (tmpLm.next != null && newLm.y < tmpLm.next.y) {
                 tmpLm = tmpLm.next;
@@ -407,14 +401,14 @@ public abstract class ClipperBase implements Clipper {
     }
 
     protected void popLocalMinima() {
-        LOGGER.entering( ClipperBase.class.getName(), "popLocalMinima" );
+        LOGGER.entering(ClipperBase.class.getName(), "popLocalMinima");
         if (currentLM == null) {
             return;
         }
         currentLM = currentLM.next;
     }
 
-    private Edge processBound( Edge e, boolean LeftBoundIsForward ) {
+    private Edge processBound(Edge e, boolean LeftBoundIsForward) {
         Edge EStart, result = e;
         Edge Horz;
 
@@ -429,8 +423,7 @@ public abstract class ClipperBase implements Clipper {
                 while (e != result && e.deltaX == Edge.HORIZONTAL) {
                     e = e.prev;
                 }
-            }
-            else {
+            } else {
                 while (e.getTop().getY() == e.prev.getBot().getY()) {
                     e = e.prev;
                 }
@@ -441,17 +434,14 @@ public abstract class ClipperBase implements Clipper {
             if (e == result) {
                 if (LeftBoundIsForward) {
                     result = e.next;
-                }
-                else {
+                } else {
                     result = e.prev;
                 }
-            }
-            else {
+            } else {
                 //there are more edges in the bound beyond result starting with E
                 if (LeftBoundIsForward) {
                     e = result.next;
-                }
-                else {
+                } else {
                     e = result.prev;
                 }
                 final LocalMinima locMin = new LocalMinima();
@@ -460,8 +450,8 @@ public abstract class ClipperBase implements Clipper {
                 locMin.leftBound = null;
                 locMin.rightBound = e;
                 e.windDelta = 0;
-                result = processBound( e, LeftBoundIsForward );
-                insertLocalMinima( locMin );
+                result = processBound(e, LeftBoundIsForward);
+                insertLocalMinima(locMin);
             }
             return result;
         }
@@ -472,16 +462,14 @@ public abstract class ClipperBase implements Clipper {
             //Also, consecutive horz. edges may start heading left before going right.
             if (LeftBoundIsForward) {
                 EStart = e.prev;
-            }
-            else {
+            } else {
                 EStart = e.next;
             }
             if (EStart.deltaX == Edge.HORIZONTAL) //ie an adjoining horizontal skip edge
             {
                 if (EStart.getBot().getX() != e.getBot().getX() && EStart.getTop().getX() != e.getBot().getX())
                     e.reverseHorizontal();
-            }
-            else if (EStart.getBot().getX() != e.getBot().getX())
+            } else if (EStart.getBot().getX() != e.getBot().getX())
                 e.reverseHorizontal();
         }
 
@@ -511,8 +499,7 @@ public abstract class ClipperBase implements Clipper {
                 e.reverseHorizontal();
             }
             result = result.next; //move to the edge just beyond current bound
-        }
-        else {
+        } else {
             while (result.getTop().getY() == result.prev.getBot().getY() && result.prev.outIdx != Edge.SKIP) {
                 result = result.prev;
             }
@@ -557,13 +544,13 @@ public abstract class ClipperBase implements Clipper {
         while (lm != null) {
             Edge e = lm.leftBound;
             if (e != null) {
-                e.setCurrent( new LongPoint( e.getBot() ) );
+                e.setCurrent(new LongPoint(e.getBot()));
                 e.side = Edge.Side.LEFT;
                 e.outIdx = Edge.UNASSIGNED;
             }
             e = lm.rightBound;
             if (e != null) {
-                e.setCurrent( new LongPoint( e.getBot() ) );
+                e.setCurrent(new LongPoint(e.getBot()));
                 e.side = Edge.Side.RIGHT;
                 e.outIdx = Edge.UNASSIGNED;
             }

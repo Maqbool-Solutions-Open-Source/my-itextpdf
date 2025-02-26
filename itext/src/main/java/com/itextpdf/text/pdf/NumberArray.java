@@ -48,29 +48,32 @@ import java.util.List;
 
 /**
  * A PdfArray object consisting of nothing but PdfNumber objects
+ *
  * @since 5.1.0
  */
 public class NumberArray extends PdfArray {
 
-	/**
-	 * Creates a PdfArray consisting of PdfNumber objects.
-	 * @param numbers float values
-	 */
-	public NumberArray(float... numbers) {
-		super();
-		for (float f : numbers) {
-			add(new PdfNumber(f));
-		}
-	}
-	
-	/**
-	 * Creates a PdfArray consisting of PdfNumber objects.
-	 * @param numbers a List containing PdfNumber objects
-	 */
-	public NumberArray(List<PdfNumber> numbers) {
-		super();
-		for (PdfNumber n : numbers) {
-			add(n);
-		}
-	}
+    /**
+     * Creates a PdfArray consisting of PdfNumber objects.
+     *
+     * @param numbers float values
+     */
+    public NumberArray(float... numbers) {
+        super();
+        for (float f : numbers) {
+            add(new PdfNumber(f));
+        }
+    }
+
+    /**
+     * Creates a PdfArray consisting of PdfNumber objects.
+     *
+     * @param numbers a List containing PdfNumber objects
+     */
+    public NumberArray(List<PdfNumber> numbers) {
+        super();
+        for (PdfNumber n : numbers) {
+            add(n);
+        }
+    }
 }

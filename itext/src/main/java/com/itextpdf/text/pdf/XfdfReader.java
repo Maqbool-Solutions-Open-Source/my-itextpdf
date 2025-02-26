@@ -59,27 +59,30 @@ import com.itextpdf.text.xml.simpleparser.SimpleXMLParser;
 
 /**
  * Reads a XFDF.
+ *
  * @author Leonard Rosenthol (leonardr@pdfsages.com)
  */
 public class XfdfReader implements SimpleXMLDocHandler {
-	// stuff used during parsing to handle state
-	private boolean foundRoot = false;
+    // stuff used during parsing to handle state
+    private boolean foundRoot = false;
     private final Stack<String> fieldNames = new Stack<String>();
     private final Stack<String> fieldValues = new Stack<String>();
 
     // storage for the field list and their values
-	HashMap<String, String>	fields;
-	/**
-	 * Storage for field values if there's more than one value for a field.
-	 * @since	2.1.4
-	 */
-	protected HashMap<String, List<String>> listFields;
+    HashMap<String, String> fields;
+    /**
+     * Storage for field values if there's more than one value for a field.
+     *
+     * @since 2.1.4
+     */
+    protected HashMap<String, List<String>> listFields;
 
-	// storage for the path to referenced PDF, if any
-	String	fileSpec;
+    // storage for the path to referenced PDF, if any
+    String fileSpec;
 
-   /**
-    * Reads an XFDF form.
+    /**
+     * Reads an XFDF form.
+     *
      * @param filename the file name of the form
      * @throws IOException on error
      */
@@ -88,41 +91,51 @@ public class XfdfReader implements SimpleXMLDocHandler {
         try {
             fin = new FileInputStream(filename);
             SimpleXMLParser.parse(this, fin);
-        }
-        finally {
-            try{if (fin != null) {fin.close();}}catch(Exception e){}
+        } finally {
+            try {
+                if (fin != null) {
+                    fin.close();
+                }
+            } catch (Exception e) {
+            }
         }
     }
 
     /**
      * Reads an XFDF form.
+     *
      * @param xfdfIn the byte array with the form
      * @throws IOException on error
      */
     public XfdfReader(byte xfdfIn[]) throws IOException {
         this(new ByteArrayInputStream(xfdfIn));
-   }
+    }
 
     /**
      * Reads an XFDF form.
+     *
      * @param is an InputStream to read the form
      * @throws IOException on error
      * @since 5.0.1
      */
     public XfdfReader(InputStream is) throws IOException {
-        SimpleXMLParser.parse( this, is);
-   }
+        SimpleXMLParser.parse(this, is);
+    }
 
-    /** Gets all the fields. The map is keyed by the fully qualified
+    /**
+     * Gets all the fields. The map is keyed by the fully qualified
      * field name and the value is a merged <CODE>PdfDictionary</CODE>
      * with the field content.
+     *
      * @return all the fields
      */
     public HashMap<String, String> getFields() {
         return fields;
     }
 
-    /** Gets the field value.
+    /**
+     * Gets the field value.
+     *
      * @param name the fully qualified field name
      * @return the field's value
      */
@@ -130,8 +143,10 @@ public class XfdfReader implements SimpleXMLDocHandler {
         return fields.get(name);
     }
 
-    /** Gets the field value or <CODE>null</CODE> if the field does not
+    /**
+     * Gets the field value or <CODE>null</CODE> if the field does not
      * exist or has no value defined.
+     *
      * @param name the fully qualified field name
      * @return the field value or <CODE>null</CODE>
      */
@@ -140,21 +155,24 @@ public class XfdfReader implements SimpleXMLDocHandler {
         if (field == null)
             return null;
         else
-        	return field;
+            return field;
     }
 
     /**
      * Gets the field values for a list or <CODE>null</CODE> if the field does not
      * exist or has no value defined.
+     *
      * @param name the fully qualified field name
      * @return the field values or <CODE>null</CODE>
-     * @since	2.1.4
+     * @since 2.1.4
      */
     public List<String> getListValues(String name) {
         return listFields.get(name);
     }
 
-    /** Gets the PDF file specification contained in the FDF.
+    /**
+     * Gets the PDF file specification contained in the FDF.
+     *
      * @return the PDF file specification contained in the FDF
      */
     public String getFileSpec() {
@@ -163,57 +181,58 @@ public class XfdfReader implements SimpleXMLDocHandler {
 
     /**
      * Called when a start tag is found.
+     *
      * @param tag the tag name
-     * @param h the tag's attributes
+     * @param h   the tag's attributes
      */
-    public void startElement(String tag, Map<String, String> h)
-    {
-        if ( !foundRoot ) {
+    public void startElement(String tag, Map<String, String> h) {
+        if (!foundRoot) {
             if (!tag.equals("xfdf"))
                 throw new RuntimeException(MessageLocalization.getComposedMessage("root.element.is.not.xfdf.1", tag));
             else
-            	foundRoot = true;
+                foundRoot = true;
         }
 
-        if ( tag.equals("xfdf") ){
+        if (tag.equals("xfdf")) {
 
-    	} else if ( tag.equals("f") ) {
-    		fileSpec = h.get( "href" );
-    	} else if ( tag.equals("fields") ) {
-            fields = new HashMap<String, String>();		// init it!
+        } else if (tag.equals("f")) {
+            fileSpec = h.get("href");
+        } else if (tag.equals("fields")) {
+            fields = new HashMap<String, String>();        // init it!
             listFields = new HashMap<String, List<String>>();
-    	} else if ( tag.equals("field") ) {
-    		String	fName = h.get( "name" );
-    		fieldNames.push( fName );
-    	} else if ( tag.equals("value") ) {
-    		fieldValues.push( "" );
-    	}
+        } else if (tag.equals("field")) {
+            String fName = h.get("name");
+            fieldNames.push(fName);
+        } else if (tag.equals("value")) {
+            fieldValues.push("");
+        }
     }
+
     /**
      * Called when an end tag is found.
+     *
      * @param tag the tag name
      */
     public void endElement(String tag) {
-        if ( tag.equals("value") ) {
-            String	fName = "";
+        if (tag.equals("value")) {
+            String fName = "";
             for (int k = 0; k < fieldNames.size(); ++k) {
                 fName += "." + fieldNames.elementAt(k);
             }
             if (fName.startsWith("."))
                 fName = fName.substring(1);
             String fVal = fieldValues.pop();
-            String old = fields.put( fName, fVal );
+            String old = fields.put(fName, fVal);
             if (old != null) {
-            	List<String> l = listFields.get(fName);
-            	if (l == null) {
-            		l = new ArrayList<String>();
-            		l.add(old);
-            	}
-            	l.add(fVal);
-            	listFields.put(fName, l);
+                List<String> l = listFields.get(fName);
+                if (l == null) {
+                    l = new ArrayList<String>();
+                    l.add(old);
+                }
+                l.add(fVal);
+                listFields.put(fName, l);
             }
-        }
-        else if (tag.equals("field") ) {
+        } else if (tag.equals("field")) {
             if (!fieldNames.isEmpty())
                 fieldNames.pop();
         }
@@ -222,23 +241,23 @@ public class XfdfReader implements SimpleXMLDocHandler {
     /**
      * Called when the document starts to be parsed.
      */
-    public void startDocument()
-    {
+    public void startDocument() {
         fileSpec = "";
     }
+
     /**
      * Called after the document is parsed.
      */
-    public void endDocument()
-	{
+    public void endDocument() {
 
-	}
+    }
+
     /**
      * Called when a text element is found.
+     *
      * @param str the text element, probably a fragment.
      */
-    public void text(String str)
-    {
+    public void text(String str) {
         if (fieldNames.isEmpty() || fieldValues.isEmpty())
             return;
 

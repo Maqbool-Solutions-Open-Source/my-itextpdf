@@ -30,6 +30,7 @@
 package com.itextpdf.text.pdf;
 
 // import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -124,7 +125,7 @@ public class IntHashtable implements Cloneable {
     /***
      * <p>Returns the number of keys in this hashtable.</p>
      *
-     * @return  the number of keys in this hashtable.
+     * @return the number of keys in this hashtable.
      */
     public int size() {
         return count;
@@ -153,7 +154,7 @@ public class IntHashtable implements Cloneable {
      *             <code>value</code> argument in this hashtable as
      *             determined by the <tt>equals</tt> method;
      *             <code>false</code> otherwise.
-     * @throws  NullPointerException  if the value is <code>null</code>.
+     * @throws NullPointerException  if the value is <code>null</code>.
      * @see        #containsKey(int)
      * @see        #containsValue(int)
      * @see        java.util.Map
@@ -161,7 +162,7 @@ public class IntHashtable implements Cloneable {
     public boolean contains(int value) {
 
         Entry tab[] = table;
-        for (int i = tab.length; i-- > 0;) {
+        for (int i = tab.length; i-- > 0; ) {
             for (Entry e = tab[i]; e != null; e = e.next) {
                 if (e.value == value) {
                     return true;
@@ -169,7 +170,7 @@ public class IntHashtable implements Cloneable {
             }
         }
         return false;
-     }
+    }
 
     /***
      * <p>Returns <code>true</code> if this HashMap maps one or more keys
@@ -212,7 +213,7 @@ public class IntHashtable implements Cloneable {
      * <p>Returns the value to which the specified key is mapped in this map.</p>
      *
      * @param   key   a key in the hashtable.
-     * @return  the value to which the key is mapped in this hashtable;
+     * @return the value to which the key is mapped in this hashtable;
      *          0 if the key is not mapped to any value in
      *          this hashtable.
      * @see     #put(int, int)
@@ -233,23 +234,23 @@ public class IntHashtable implements Cloneable {
      * <p>Returns thes value to which the specified key is mapped in this map.</p>
      *
      * @param   key   a key in the hashtable.
-     * @return  the values to which the key is mapped in this hashtable;
+     * @return the values to which the key is mapped in this hashtable;
      *          <code>null</code> if the key is not mapped to any value in
      *          this hashtable.
      * @see     #put(int, int)
     public ArrayList<Integer> getValues(int key) {
-        Entry tab[] = table;
-        int hash = key;
-        int index = (hash & 0x7FFFFFFF) % tab.length;
-        for (Entry e = tab[index]; e != null; e = e.next) {
-            if (e.hash == hash && e.key == key) {
-                return e.values;
-            }
-        }
-        return null;
+    Entry tab[] = table;
+    int hash = key;
+    int index = (hash & 0x7FFFFFFF) % tab.length;
+    for (Entry e = tab[index]; e != null; e = e.next) {
+    if (e.hash == hash && e.key == key) {
+    return e.values;
+    }
+    }
+    return null;
     }
      */
-    
+
     /***
      * <p>Increases the capacity of and internally reorganizes this
      * hashtable, in order to accommodate and access its entries more
@@ -269,8 +270,8 @@ public class IntHashtable implements Cloneable {
         threshold = (int) (newCapacity * loadFactor);
         table = newMap;
 
-        for (int i = oldCapacity; i-- > 0;) {
-            for (Entry old = oldMap[i]; old != null;) {
+        for (int i = oldCapacity; i-- > 0; ) {
+            for (Entry old = oldMap[i]; old != null; ) {
                 Entry e = old;
                 old = old.next;
 
@@ -293,7 +294,7 @@ public class IntHashtable implements Cloneable {
      * @param value   the value.
      * @return the previous value of the specified key in this hashtable,
      *         or <code>null</code> if it did not have one.
-     * @throws  NullPointerException  if the key is <code>null</code>.
+     * @throws NullPointerException  if the key is <code>null</code>.
      * @see     #get(int)
      */
     public int put(int key, int value) {
@@ -318,11 +319,11 @@ public class IntHashtable implements Cloneable {
             index = (hash & 0x7FFFFFFF) % tab.length;
         }
 
-         // Creates the new entry.
-         Entry e = new Entry(hash, key, value, tab[index]);
-         tab[index] = e;
-         count++;
-         return 0;
+        // Creates the new entry.
+        Entry e = new Entry(hash, key, value, tab[index]);
+        tab[index] = e;
+        count++;
+        return 0;
     }
 
     /***
@@ -333,7 +334,7 @@ public class IntHashtable implements Cloneable {
      * hashtable.</p>
      *
      * @param   key   the key that needs to be removed.
-     * @return  the value to which the key had been mapped in this hashtable,
+     * @return the value to which the key had been mapped in this hashtable,
      *          or <code>null</code> if the key did not have a mapping.
      */
     public int remove(int key) {
@@ -360,12 +361,12 @@ public class IntHashtable implements Cloneable {
      * <p>Clears this hashtable so that it contains no keys.</p>
      */
     public void clear() {
-    	Entry tab[] = table;
-        for (int index = tab.length; --index >= 0;) {
+        Entry tab[] = table;
+        for (int index = tab.length; --index >= 0; ) {
             tab[index] = null;
         }
         count = 0;
-	}
+    }
 
     /***
      * <p>Innerclass that acts as a datastructure to create a new entry in the
@@ -393,27 +394,30 @@ public class IntHashtable implements Cloneable {
             this.next = next;
             //values.add(value);
         }
-/*
-        public void addValue(int old) {
-        	if (!(hash == 0 || values.contains(old)))
-        		values.add(old);
-        }
-        
-        public ArrayList<Integer> getValues() {
-        	return values;
-        }
-*/        
+
+        /*
+                public void addValue(int old) {
+                    if (!(hash == 0 || values.contains(old)))
+                        values.add(old);
+                }
+
+                public ArrayList<Integer> getValues() {
+                    return values;
+                }
+        */
         // extra methods for inner class Entry by Paulo
         public int getKey() {
-        	return key;
+            return key;
         }
+
         public int getValue() {
-        	return value;
+            return value;
         }
+
         @Override
         protected Object clone() {
-        	Entry entry = new Entry(hash, key, value, next != null ? (Entry)next.clone() : null);
-        	return entry;
+            Entry entry = new Entry(hash, key, value, next != null ? (Entry) next.clone() : null);
+            return entry;
         }
     }
 
@@ -424,34 +428,36 @@ public class IntHashtable implements Cloneable {
         Entry entry;
 
         IntHashtableIterator(Entry table[]) {
-        	this.table = table;
-        	this.index = table.length;
+            this.table = table;
+            this.index = table.length;
         }
+
         public boolean hasNext() {
-        	if (entry != null) {
-        		return true;
-        	}
-        	while (index-- > 0) {
-        	    if ((entry = table[index]) != null) {
-        	        return true;
-        	    }
-        	}
-        	return false;
+            if (entry != null) {
+                return true;
+            }
+            while (index-- > 0) {
+                if ((entry = table[index]) != null) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public Entry next() {
             if (entry == null) {
-                while (index-- > 0 && (entry = table[index]) == null);
+                while (index-- > 0 && (entry = table[index]) == null) ;
             }
             if (entry != null) {
-            	Entry e = entry;
-            	entry = e.next;
-            	return e;
+                Entry e = entry;
+                entry = e.next;
+                return e;
             }
-        	throw new NoSuchElementException(MessageLocalization.getComposedMessage("inthashtableiterator"));
+            throw new NoSuchElementException(MessageLocalization.getComposedMessage("inthashtableiterator"));
         }
+
         public void remove() {
-        	throw new UnsupportedOperationException(MessageLocalization.getComposedMessage("remove.not.supported"));
+            throw new UnsupportedOperationException(MessageLocalization.getComposedMessage("remove.not.supported"));
         }
     }
 
@@ -462,52 +468,52 @@ public class IntHashtable implements Cloneable {
     }
 
     public int[] toOrderedKeys() {
-    	int res[] = getKeys();
-    	Arrays.sort(res);
-    	return res;
+        int res[] = getKeys();
+        Arrays.sort(res);
+        return res;
     }
 
     public int[] getKeys() {
-    	int res[] = new int[count];
-    	int ptr = 0;
-    	int index = table.length;
-    	Entry entry = null;
-    	while (true) {
-    		if (entry == null)
-    			while (index-- > 0 && (entry = table[index]) == null);
-    		if (entry == null)
-    			break;
-    		Entry e = entry;
-    		entry = e.next;
-    		res[ptr++] = e.key;
-    	}
-    	return res;
+        int res[] = new int[count];
+        int ptr = 0;
+        int index = table.length;
+        Entry entry = null;
+        while (true) {
+            if (entry == null)
+                while (index-- > 0 && (entry = table[index]) == null) ;
+            if (entry == null)
+                break;
+            Entry e = entry;
+            entry = e.next;
+            res[ptr++] = e.key;
+        }
+        return res;
     }
 
     public int getOneKey() {
-    	if (count == 0)
-    		return 0;
-    	int index = table.length;
-    	Entry entry = null;
-    	while (index-- > 0 && (entry = table[index]) == null);
-    	if (entry == null)
-    		return 0;
-    	return entry.key;
+        if (count == 0)
+            return 0;
+        int index = table.length;
+        Entry entry = null;
+        while (index-- > 0 && (entry = table[index]) == null) ;
+        if (entry == null)
+            return 0;
+        return entry.key;
     }
 
     @Override
     public Object clone() {
-    	try {
-    		IntHashtable t = (IntHashtable)super.clone();
-    		t.table = new Entry[table.length];
-    		for (int i = table.length ; i-- > 0 ; ) {
-    			t.table[i] = table[i] != null
-    			? (Entry)table[i].clone() : null;
-    		}
-    		return t;
-    	} catch (CloneNotSupportedException e) {
-    		// this shouldn't happen, since we are Cloneable
-    		throw new InternalError();
-    	}
+        try {
+            IntHashtable t = (IntHashtable) super.clone();
+            t.table = new Entry[table.length];
+            for (int i = table.length; i-- > 0; ) {
+                t.table[i] = table[i] != null
+                        ? (Entry) table[i].clone() : null;
+            }
+            return t;
+        } catch (CloneNotSupportedException e) {
+            // this shouldn't happen, since we are Cloneable
+            throw new InternalError();
+        }
     }
 }

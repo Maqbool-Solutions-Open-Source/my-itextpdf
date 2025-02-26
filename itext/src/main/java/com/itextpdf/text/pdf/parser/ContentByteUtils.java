@@ -67,14 +67,14 @@ public class ContentByteUtils {
     /**
      * Gets the content bytes from a content object, which may be a reference
      * a stream or an array.
+     *
      * @param contentObject the object to read bytes from
      * @return the content bytes
      * @throws IOException
      */
     public static byte[] getContentBytesFromContentObject(final PdfObject contentObject) throws IOException {
         final byte[] result;
-        switch (contentObject.type())
-        {
+        switch (contentObject.type()) {
             case PdfObject.INDIRECT:
                 final PRIndirectReference ref = (PRIndirectReference) contentObject;
                 final PdfObject directObject = PdfReader.getPdfObjectRelease(ref);
@@ -90,26 +90,26 @@ public class ContentByteUtils {
                 final ByteArrayOutputStream allBytes = new ByteArrayOutputStream();
                 final PdfArray contentArray = (PdfArray) contentObject;
                 final ListIterator<PdfObject> iter = contentArray.listIterator();
-                while (iter.hasNext())
-                {
+                while (iter.hasNext()) {
                     final PdfObject element = iter.next();
                     allBytes.write(getContentBytesFromContentObject(element));
-                    allBytes.write((byte)' ');
+                    allBytes.write((byte) ' ');
                 }
                 result = allBytes.toByteArray();
                 break;
             default:
                 final String msg = "Unable to handle Content of type " + contentObject.getClass();
-            throw new IllegalStateException(msg);
+                throw new IllegalStateException(msg);
         }
         return result;
     }
-    
+
     /**
      * Gets the content bytes of a page from a reader
+     *
      * @param reader  the reader to get content bytes from
-     * @param pageNum   the page number of page you want get the content stream from
-     * @return  a byte array with the effective content stream of a page
+     * @param pageNum the page number of page you want get the content stream from
+     * @return a byte array with the effective content stream of a page
      * @throws IOException
      * @since 5.0.1
      */
@@ -118,7 +118,7 @@ public class ContentByteUtils {
         final PdfObject contentObject = pageDictionary.get(PdfName.CONTENTS);
         if (contentObject == null)
             return new byte[0];
-        
+
         final byte[] contentBytes = ContentByteUtils.getContentBytesFromContentObject(contentObject);
         return contentBytes;
     }

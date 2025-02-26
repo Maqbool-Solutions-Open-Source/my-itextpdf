@@ -41,7 +41,7 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
- package com.itextpdf.text.pdf.security;
+package com.itextpdf.text.pdf.security;
 
 import java.security.cert.X509Certificate;
 import java.util.Collection;
@@ -49,14 +49,16 @@ import java.util.Collection;
 /**
  * Interface that needs to be implemented if you want to embed
  * Certificate Revocation Lists into your PDF.
+ *
  * @author Paulo Soares
  */
 public interface CrlClient {
-	/**
-	 * Gets an encoded byte array.
-	 * @param	checkCert	the certificate from which a CRL URL can be obtained
-	 * @param	url		a CRL url if you don't want to obtain it from the certificate
-	 * @return	a collection of byte array each representing a crl. It may return null or an empty collection
-	 */
+    /**
+     * Gets an encoded byte array.
+     *
+     * @param checkCert the certificate from which a CRL URL can be obtained
+     * @param url       a CRL url if you don't want to obtain it from the certificate
+     * @return a collection of byte array each representing a crl. It may return null or an empty collection
+     */
     public Collection<byte[]> getEncoded(X509Certificate checkCert, String url);
 }

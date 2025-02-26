@@ -60,29 +60,31 @@ import java.util.HashMap;
 
 /**
  * PAdES-LTV Timestamp
+ *
  * @author Paulo Soares
  */
 public class LtvTimestamp {
     /**
      * Signs a document with a PAdES-LTV Timestamp. The document is closed at the end.
-     * @param sap the signature appearance
-     * @param tsa the timestamp generator
+     *
+     * @param sap           the signature appearance
+     * @param tsa           the timestamp generator
      * @param signatureName the signature name or null to have a name generated
-     * automatically
-     * @throws DocumentException 
-     * @throws IOException 
+     *                      automatically
+     * @throws DocumentException
+     * @throws IOException
      * @throws GeneralSecurityException
      */
     public static void timestamp(PdfSignatureAppearance sap, TSAClient tsa, String signatureName) throws IOException, DocumentException, GeneralSecurityException {
         int contentEstimated = tsa.getTokenSizeEstimate();
         sap.addDeveloperExtension(PdfDeveloperExtension.ESIC_1_7_EXTENSIONLEVEL5);
-        sap.setVisibleSignature(new Rectangle(0,0,0,0), 1, signatureName);
+        sap.setVisibleSignature(new Rectangle(0, 0, 0, 0), 1, signatureName);
 
         PdfSignature dic = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ETSI_RFC3161);
         dic.put(PdfName.TYPE, PdfName.DOCTIMESTAMP);
         sap.setCryptoDictionary(dic);
 
-        HashMap<PdfName,Integer> exc = new HashMap<PdfName,Integer>();
+        HashMap<PdfName, Integer> exc = new HashMap<PdfName, Integer>();
         exc.put(PdfName.CONTENTS, new Integer(contentEstimated * 2 + 2));
         sap.preClose(exc);
         InputStream data = sap.getRangeStream();
@@ -95,10 +97,9 @@ public class LtvTimestamp {
         byte[] tsImprint = messageDigest.digest();
         byte[] tsToken;
         try {
-        	tsToken = tsa.getTimeStampToken(tsImprint);
-        }
-        catch(Exception e) {
-        	throw new GeneralSecurityException(e);
+            tsToken = tsa.getTimeStampToken(tsImprint);
+        } catch (Exception e) {
+            throw new GeneralSecurityException(e);
         }
 
         if (contentEstimated + 2 < tsToken.length)

@@ -44,6 +44,7 @@
 package com.itextpdf.text.pdf;
 
 import com.itextpdf.text.SplitCharacter;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

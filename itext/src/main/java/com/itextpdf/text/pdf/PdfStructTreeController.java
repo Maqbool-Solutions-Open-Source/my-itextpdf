@@ -63,7 +63,9 @@ public class PdfStructTreeController {
     private PdfIndirectReference nullReference = null;
 //    private HashSet<Integer> openedDocuments = new HashSet<Integer>();
 
-    public static enum returnType {BELOW, FOUND, ABOVE, NOTFOUND};
+    public static enum returnType {BELOW, FOUND, ABOVE, NOTFOUND}
+
+    ;
 
     protected PdfStructTreeController(PdfReader reader, PdfCopy writer) throws BadPdfFormatException {
         if (!writer.isTagged())
@@ -177,7 +179,7 @@ public class PdfStructTreeController {
                 while (obj.isIndirect()) obj = PdfReader.getPdfObjectRelease(obj);
                 if (obj.isArray()) {
                     PdfObject firstNotNullKid = null;
-                    for (PdfObject numObj: (PdfArray)obj){
+                    for (PdfObject numObj : (PdfArray) obj) {
                         if (numObj.isNull()) {
                             if (nullReference == null)
                                 nullReference = writer.addToBody(new PdfNull()).getIndirectReference();
@@ -190,11 +192,11 @@ public class PdfStructTreeController {
                     }
                     attachStructTreeRootKids(firstNotNullKid);
                 } else if (obj.isDictionary()) {
-                    PdfDictionary k = getKDict((PdfDictionary)obj);
+                    PdfDictionary k = getKDict((PdfDictionary) obj);
                     if (k == null)
                         return returnType.NOTFOUND;
                     PdfObject res = writer.copyObject(obj1, true, false);
-                    structureTreeRoot.setAnnotationMark(newArrayNumber, (PdfIndirectReference)res);
+                    structureTreeRoot.setAnnotationMark(newArrayNumber, (PdfIndirectReference) res);
                 } else
                     return returnType.NOTFOUND;
                 return returnType.FOUND;
@@ -229,7 +231,7 @@ public class PdfStructTreeController {
             if (structKids.isIndirect()) {
                 addKid(structKids);
             } else { //structKids.isArray()
-                for (PdfObject kid: (PdfArray)structKids)
+                for (PdfObject kid : (PdfArray) structKids)
                     addKid(kid);
             }
         }
@@ -259,8 +261,8 @@ public class PdfStructTreeController {
 
     private void addKid(PdfObject obj) throws IOException, BadPdfFormatException {
         if (!obj.isIndirect()) return;
-        PRIndirectReference currRef = (PRIndirectReference)obj;
-        RefKey key =  new RefKey(currRef);
+        PRIndirectReference currRef = (PRIndirectReference) obj;
+        RefKey key = new RefKey(currRef);
         if (!writer.indirects.containsKey(key)) {
             writer.copyIndirect(currRef, true, false);
         }

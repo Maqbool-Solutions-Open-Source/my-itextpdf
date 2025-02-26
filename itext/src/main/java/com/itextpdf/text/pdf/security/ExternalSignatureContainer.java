@@ -44,25 +44,29 @@
 package com.itextpdf.text.pdf.security;
 
 import com.itextpdf.text.pdf.PdfDictionary;
+
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 
 /**
  * Interface to sign a document. The signing is fully done externally, including the container composition.
+ *
  * @author Paulo Soares
  */
 public interface ExternalSignatureContainer {
     /**
      * Produces the container with the signature.
+     *
      * @param data the data to sign
      * @return a container with the signature and other objects, like CRL and OCSP. The container will generally be a PKCS7 one.
-     * @throws GeneralSecurityException 
+     * @throws GeneralSecurityException
      */
     public byte[] sign(InputStream data) throws GeneralSecurityException;
-    
+
     /**
-     * Modifies the signature dictionary to suit the container. At least the keys PdfName.FILTER and 
+     * Modifies the signature dictionary to suit the container. At least the keys PdfName.FILTER and
      * PdfName.SUBFILTER will have to be set.
+     *
      * @param signDic the signature dictionary
      */
     public void modifySigningDictionary(PdfDictionary signDic);

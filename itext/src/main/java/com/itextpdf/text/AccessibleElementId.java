@@ -63,7 +63,7 @@ public class AccessibleElementId implements Comparable<AccessibleElementId>, Ser
     }
 
     public boolean equals(Object o) {
-        return (o instanceof AccessibleElementId) && (id == ((AccessibleElementId)o).id);
+        return (o instanceof AccessibleElementId) && (id == ((AccessibleElementId) o).id);
     }
 
     public int compareTo(AccessibleElementId elementId) {

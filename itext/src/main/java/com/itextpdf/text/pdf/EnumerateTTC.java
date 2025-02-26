@@ -48,11 +48,13 @@ import java.util.HashMap;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.error_messages.MessageLocalization;
-/** Enumerates all the fonts inside a True Type Collection.
+
+/**
+ * Enumerates all the fonts inside a True Type Collection.
  *
- * @author  Paulo Soares
+ * @author Paulo Soares
  */
-class EnumerateTTC extends TrueTypeFont{
+class EnumerateTTC extends TrueTypeFont {
 
     protected String[] names;
 
@@ -78,7 +80,7 @@ class EnumerateTTC extends TrueTypeFont{
             rf.skipBytes(4);
             int dirCount = rf.readInt();
             names = new String[dirCount];
-            int dirPos = (int)rf.getFilePointer();
+            int dirPos = (int) rf.getFilePointer();
             for (int dirIdx = 0; dirIdx < dirCount; ++dirIdx) {
                 tables.clear();
                 rf.seek(dirPos);
@@ -99,8 +101,7 @@ class EnumerateTTC extends TrueTypeFont{
                 }
                 names[dirIdx] = getBaseFont();
             }
-        }
-        finally {
+        } finally {
             if (rf != null)
                 rf.close();
         }

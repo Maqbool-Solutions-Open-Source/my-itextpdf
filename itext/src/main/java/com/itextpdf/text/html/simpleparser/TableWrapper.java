@@ -60,17 +60,19 @@ import com.itextpdf.text.pdf.PdfPTable;
 /**
  * We use a TableWrapper because PdfPTable is rather complex
  * to put on the HTMLWorker stack.
- * @author  psoares
+ *
+ * @author psoares
  * @since 5.0.6 (renamed)
  * @deprecated since 5.5.2
  */
 @Deprecated
 
 public class TableWrapper implements Element {
-	/**
-	 * The styles that need to be applied to the table
-	 * @since 5.0.6 renamed from props
-	 */
+    /**
+     * The styles that need to be applied to the table
+     *
+     * @since 5.0.6 renamed from props
+     */
     private final Map<String, String> styles = new HashMap<String, String>();
     /**
      * Nested list containing the PdfPCell elements that are part of this table.
@@ -79,13 +81,15 @@ public class TableWrapper implements Element {
 
     /**
      * Array containing the widths of the columns.
+     *
      * @since iText 5.0.6
      */
     private float[] colWidths;
 
     /**
      * Creates a new instance of IncTable.
-     * @param	attrs	a Map containing attributes
+     *
+     * @param attrs a Map containing attributes
      */
     public TableWrapper(final Map<String, String> attrs) {
         this.styles.putAll(attrs);
@@ -93,6 +97,7 @@ public class TableWrapper implements Element {
 
     /**
      * Adds a new row to the table.
+     *
      * @param row a list of PdfPCell elements
      */
     public void addRow(List<PdfPCell> row) {
@@ -105,6 +110,7 @@ public class TableWrapper implements Element {
 
     /**
      * Setter for the column widths
+     *
      * @since iText 5.0.6
      */
     public void setColWidths(final float[] colWidths) {
@@ -114,10 +120,11 @@ public class TableWrapper implements Element {
     /**
      * Creates a new PdfPTable based on the info assembled
      * in the table stub.
-     * @return	a PdfPTable
+     *
+     * @return a PdfPTable
      */
     public PdfPTable createTable() {
-    	// no rows = simplest table possible
+        // no rows = simplest table possible
         if (rows.isEmpty())
             return new PdfPTable(1);
         // how many columns?
@@ -142,17 +149,17 @@ public class TableWrapper implements Element {
         String alignment = styles.get(HtmlTags.ALIGN);
         int align = Element.ALIGN_LEFT;
         if (alignment != null) {
-        	align = HtmlUtilities.alignmentValue(alignment);
+            align = HtmlUtilities.alignmentValue(alignment);
         }
         table.setHorizontalAlignment(align);
         // column widths
-		try {
-			if (colWidths != null)
-				table.setWidths(colWidths);
-		} catch (Exception e) {
-			// fail silently
-		}
-		// add the cells
+        try {
+            if (colWidths != null)
+                table.setWidths(colWidths);
+        } catch (Exception e) {
+            // fail silently
+        }
+        // add the cells
         for (List<PdfPCell> col : rows) {
             for (PdfPCell pc : col) {
                 table.addCell(pc);

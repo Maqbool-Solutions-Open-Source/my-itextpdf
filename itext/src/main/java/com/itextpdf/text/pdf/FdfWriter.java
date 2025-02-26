@@ -57,7 +57,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-/** Writes an FDF form.
+/**
+ * Writes an FDF form.
+ *
  * @author Paulo Soares
  */
 public class FdfWriter {
@@ -65,11 +67,15 @@ public class FdfWriter {
     HashMap<String, Object> fields = new HashMap<String, Object>();
     Wrt wrt = null;
 
-    /** The PDF file associated with the FDF. */
+    /**
+     * The PDF file associated with the FDF.
+     */
     private String file;
     private String statusMessage;
 
-    /** Creates a new FdfWriter. */
+    /**
+     * Creates a new FdfWriter.
+     */
     public FdfWriter() {
     }
 
@@ -77,7 +83,9 @@ public class FdfWriter {
         wrt = new Wrt(os, this);
     }
 
-    /** Writes the content to a stream.
+    /**
+     * Writes the content to a stream.
+     *
      * @param os the stream
      * @throws IOException on error
      */
@@ -112,20 +120,17 @@ public class FdfWriter {
                 if (obj == null) {
                     obj = new HashMap<String, Object>();
                     map.put(s, obj);
-                    map = (HashMap<String, Object>)obj;
+                    map = (HashMap<String, Object>) obj;
                     continue;
-                }
-                else if (obj instanceof HashMap)
-                    map = (HashMap<String, Object>)obj;
+                } else if (obj instanceof HashMap)
+                    map = (HashMap<String, Object>) obj;
                 else
                     return false;
-            }
-            else {
+            } else {
                 if (!(obj instanceof HashMap)) {
                     map.put(s, value);
                     return true;
-                }
-                else
+                } else
                     return false;
             }
         }
@@ -133,17 +138,19 @@ public class FdfWriter {
 
     @SuppressWarnings("unchecked")
     void iterateFields(HashMap<String, Object> values, HashMap<String, Object> map, String name) {
-        for (Map.Entry<String, Object> entry: map.entrySet()) {
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             String s = entry.getKey();
             Object obj = entry.getValue();
             if (obj instanceof HashMap)
-                iterateFields(values, (HashMap<String, Object>)obj, name + "." + s);
+                iterateFields(values, (HashMap<String, Object>) obj, name + "." + s);
             else
                 values.put((name + "." + s).substring(1), obj);
         }
     }
 
-    /** Removes the field value.
+    /**
+     * Removes the field value.
+     *
      * @param field the field name
      * @return <CODE>true</CODE> if the field was found and removed,
      * <CODE>false</CODE> otherwise
@@ -164,11 +171,10 @@ public class FdfWriter {
             hist.add(s);
             if (tk.hasMoreTokens()) {
                 if (obj instanceof HashMap)
-                    map = (HashMap<String, Object>)obj;
+                    map = (HashMap<String, Object>) obj;
                 else
                     return false;
-            }
-            else {
+            } else {
                 if (obj instanceof HashMap)
                     return false;
                 else
@@ -176,8 +182,8 @@ public class FdfWriter {
             }
         }
         for (int k = hist.size() - 2; k >= 0; k -= 2) {
-            map = (HashMap<String, Object>)hist.get(k);
-            String s = (String)hist.get(k + 1);
+            map = (HashMap<String, Object>) hist.get(k);
+            String s = (String) hist.get(k + 1);
             map.remove(s);
             if (!map.isEmpty())
                 break;
@@ -185,8 +191,10 @@ public class FdfWriter {
         return true;
     }
 
-    /** Gets all the fields. The map is keyed by the fully qualified
+    /**
+     * Gets all the fields. The map is keyed by the fully qualified
      * field name and the values are <CODE>PdfObject</CODE>.
+     *
      * @return a map with all the fields
      */
     public HashMap<String, Object> getFields() {
@@ -195,7 +203,9 @@ public class FdfWriter {
         return values;
     }
 
-    /** Gets the field value.
+    /**
+     * Gets the field value.
+     *
      * @param field the field name
      * @return the field value or <CODE>null</CODE> if not found
      */
@@ -212,16 +222,15 @@ public class FdfWriter {
                 return null;
             if (tk.hasMoreTokens()) {
                 if (obj instanceof HashMap)
-                    map = (HashMap<String, Object>)obj;
+                    map = (HashMap<String, Object>) obj;
                 else
                     return null;
-            }
-            else {
+            } else {
                 if (obj instanceof HashMap)
                     return null;
                 else {
-                    if (((PdfObject)obj).isString())
-                        return ((PdfString)obj).toUnicodeString();
+                    if (((PdfObject) obj).isString())
+                        return ((PdfString) obj).toUnicodeString();
                     else
                         return PdfName.decodeName(obj.toString());
                 }
@@ -229,7 +238,9 @@ public class FdfWriter {
         }
     }
 
-    /** Sets the field value as a name.
+    /**
+     * Sets the field value as a name.
+     *
      * @param field the fully qualified field name
      * @param value the value
      * @return <CODE>true</CODE> if the value was inserted,
@@ -240,7 +251,9 @@ public class FdfWriter {
         return setField(field, new PdfName(value));
     }
 
-    /** Sets the field value as a string.
+    /**
+     * Sets the field value as a string.
+     *
      * @param field the fully qualified field name
      * @param value the value
      * @return <CODE>true</CODE> if the value was inserted,
@@ -256,15 +269,16 @@ public class FdfWriter {
      * For example, this method allows setting a form submit button action using {@link PdfAction#createSubmitForm(String, Object[], int)}.
      * This method creates an <CODE>A</CODE> entry for the specified field in the underlying FDF file.
      * Method contributed by Philippe Laflamme (plaflamme)
-     * @param field the fully qualified field name
+     *
+     * @param field  the fully qualified field name
      * @param action the field's action
      * @return <CODE>true</CODE> if the value was inserted,
      * <CODE>false</CODE> if the name is incompatible with
      * an existing field
-     * @since	2.1.5
+     * @since 2.1.5
      */
     public boolean setFieldAsAction(String field, PdfAction action) {
-    	return setField(field, action);
+        return setField(field, action);
     }
 
     public boolean setFieldAsTemplate(String field, PdfTemplate template) {
@@ -316,12 +330,14 @@ public class FdfWriter {
         return PdfTemplate.createTemplate(wrt, width, height);
     }
 
-    /** Sets all the fields from this <CODE>FdfReader</CODE>
+    /**
+     * Sets all the fields from this <CODE>FdfReader</CODE>
+     *
      * @param fdf the <CODE>FdfReader</CODE>
      */
     public void setFields(FdfReader fdf) {
         HashMap<String, PdfDictionary> map = fdf.getFields();
-        for (Map.Entry<String, PdfDictionary> entry: map.entrySet()) {
+        for (Map.Entry<String, PdfDictionary> entry : map.entrySet()) {
             String key = entry.getKey();
             PdfDictionary dic = entry.getValue();
             PdfObject v = dic.get(PdfName.V);
@@ -330,23 +346,27 @@ public class FdfWriter {
             }
             v = dic.get(PdfName.A); // (plaflamme)
             if (v != null) {
-            	setField(key, v);
+                setField(key, v);
             }
         }
     }
 
-    /** Sets all the fields from this <CODE>PdfReader</CODE>
+    /**
+     * Sets all the fields from this <CODE>PdfReader</CODE>
+     *
      * @param pdf the <CODE>PdfReader</CODE>
      */
     public void setFields(PdfReader pdf) {
         setFields(pdf.getAcroFields());
     }
 
-    /** Sets all the fields from this <CODE>AcroFields</CODE>
+    /**
+     * Sets all the fields from this <CODE>AcroFields</CODE>
+     *
      * @param af the <CODE>AcroFields</CODE>
      */
     public void setFields(AcroFields af) {
-        for (Map.Entry<String, Item> entry: af.getFields().entrySet()) {
+        for (Map.Entry<String, Item> entry : af.getFields().entrySet()) {
             String fn = entry.getKey();
             AcroFields.Item item = entry.getValue();
             PdfDictionary dic = item.getMerged(0);
@@ -360,16 +380,19 @@ public class FdfWriter {
         }
     }
 
-    /** Gets the PDF file name associated with the FDF.
+    /**
+     * Gets the PDF file name associated with the FDF.
+     *
      * @return the PDF file name associated with the FDF
      */
     public String getFile() {
         return this.file;
     }
 
-    /** Sets the PDF file name associated with the FDF.
-     * @param file the PDF file name associated with the FDF
+    /**
+     * Sets the PDF file name associated with the FDF.
      *
+     * @param file the PDF file name associated with the FDF
      */
     public void setFile(String file) {
         this.file = file;
@@ -387,7 +410,7 @@ public class FdfWriter {
 
         void write() throws IOException {
             for (PdfReaderInstance element : readerInstances.values()) {
-                currentPdfReaderInstance= element;
+                currentPdfReaderInstance = element;
                 currentPdfReaderInstance.writeAllPages();
             }
 
@@ -412,21 +435,21 @@ public class FdfWriter {
         @SuppressWarnings("unchecked")
         PdfArray calculate(HashMap<String, Object> map) throws IOException {
             PdfArray ar = new PdfArray();
-            for (Map.Entry<String, Object> entry: map.entrySet()) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
                 String key = entry.getKey();
                 Object v = entry.getValue();
                 PdfDictionary dic = new PdfDictionary();
                 dic.put(PdfName.T, new PdfString(key, PdfObject.TEXT_UNICODE));
                 if (v instanceof HashMap) {
-                    dic.put(PdfName.KIDS, calculate((HashMap<String, Object>)v));
-                } else if(v instanceof PdfAction) {	// (plaflamme)
-                   	dic.put(PdfName.A, (PdfAction)v);
+                    dic.put(PdfName.KIDS, calculate((HashMap<String, Object>) v));
+                } else if (v instanceof PdfAction) {    // (plaflamme)
+                    dic.put(PdfName.A, (PdfAction) v);
                 } else if (v instanceof PdfAnnotation) {
-                    dic.put(PdfName.AA, (PdfAnnotation)v);
-                } else if (v instanceof PdfDictionary && ((PdfDictionary)v).size() == 1 && ((PdfDictionary)v).contains(PdfName.N)) {
-                    dic.put(PdfName.AP, (PdfDictionary)v);
+                    dic.put(PdfName.AA, (PdfAnnotation) v);
+                } else if (v instanceof PdfDictionary && ((PdfDictionary) v).size() == 1 && ((PdfDictionary) v).contains(PdfName.N)) {
+                    dic.put(PdfName.AP, (PdfDictionary) v);
                 } else {
-                    dic.put(PdfName.V, (PdfObject)v);
+                    dic.put(PdfName.V, (PdfObject) v);
                 }
                 ar.add(dic);
             }
@@ -434,8 +457,9 @@ public class FdfWriter {
         }
     }
 
-	protected Counter COUNTER = CounterFactory.getCounter(FdfWriter.class);
-	protected Counter getCounter() {
-		return COUNTER;
-	}
+    protected Counter COUNTER = CounterFactory.getCounter(FdfWriter.class);
+
+    protected Counter getCounter() {
+        return COUNTER;
+    }
 }

@@ -49,24 +49,25 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class HebrewProcessor implements LanguageProcessor {
     protected int runDirection = PdfWriter.RUN_DIRECTION_RTL;
 
-	public HebrewProcessor() {
-	}
+    public HebrewProcessor() {
+    }
 
-	public HebrewProcessor(int runDirection) {
-		this.runDirection = runDirection;
-	}
+    public HebrewProcessor(int runDirection) {
+        this.runDirection = runDirection;
+    }
 
-	public String process(String s) {
-		return BidiLine.processLTR(s, runDirection, 0);
-	}
+    public String process(String s) {
+        return BidiLine.processLTR(s, runDirection, 0);
+    }
 
-	/**
-	 * Hebrew is written from right to left.
-	 * @return true
-	 * @see com.itextpdf.text.pdf.languages.LanguageProcessor#isRTL()
-	 */
-	public boolean isRTL() {
-		return true;
-	}
+    /**
+     * Hebrew is written from right to left.
+     *
+     * @return true
+     * @see com.itextpdf.text.pdf.languages.LanguageProcessor#isRTL()
+     */
+    public boolean isRTL() {
+        return true;
+    }
 
 }

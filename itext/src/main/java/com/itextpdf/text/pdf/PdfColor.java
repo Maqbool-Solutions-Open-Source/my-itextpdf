@@ -48,27 +48,27 @@ import com.itextpdf.text.BaseColor;
 /**
  * A <CODE>PdfColor</CODE> defines a BaseColor (it's a <CODE>PdfArray</CODE> containing 3 values).
  *
- * @see		PdfDictionary
+ * @see PdfDictionary
  */
 
 class PdfColor extends PdfArray {
-    
+
     // constructors
-    
-/**
- * Constructs a new <CODE>PdfColor</CODE>.
- *
- * @param		red			a value between 0 and 255
- * @param		green		a value between 0 and 255
- * @param		blue		a value between 0 and 255
- */
-    
+
+    /**
+     * Constructs a new <CODE>PdfColor</CODE>.
+     *
+     * @param red   a value between 0 and 255
+     * @param green a value between 0 and 255
+     * @param blue  a value between 0 and 255
+     */
+
     PdfColor(int red, int green, int blue) {
-        super(new PdfNumber((double)(red & 0xFF) / 0xFF));
-        add(new PdfNumber((double)(green & 0xFF) / 0xFF));
-        add(new PdfNumber((double)(blue & 0xFF) / 0xFF));
+        super(new PdfNumber((double) (red & 0xFF) / 0xFF));
+        add(new PdfNumber((double) (green & 0xFF) / 0xFF));
+        add(new PdfNumber((double) (blue & 0xFF) / 0xFF));
     }
-    
+
     PdfColor(BaseColor color) {
         this(color.getRed(), color.getGreen(), color.getBlue());
     }

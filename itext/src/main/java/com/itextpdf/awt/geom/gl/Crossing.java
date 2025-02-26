@@ -32,17 +32,17 @@ public class Crossing {
      * Allowable tolerance for bounds comparison
      */
     static final double DELTA = 1E-5;
-    
+
     /**
      * If roots have distance less then <code>ROOT_DELTA</code> they are double
      */
     static final double ROOT_DELTA = 1E-10;
-    
+
     /**
      * Rectangle cross segment
      */
     public static final int CROSSING = 255;
-    
+
     /**
      * Unknown crossing result
      */
@@ -50,6 +50,7 @@ public class Crossing {
 
     /**
      * Solves quadratic equation
+     *
      * @param eqn - the coefficients of the equation
      * @param res - the roots of the equation
      * @return a number of roots
@@ -71,10 +72,10 @@ public class Crossing {
                 return 0;
             }
             d = Math.sqrt(d);
-            res[rc++] = (- b + d) / (a * 2.0);
+            res[rc++] = (-b + d) / (a * 2.0);
             // d != 0.0
             if (d != 0.0) {
-                res[rc++] = (- b - d) / (a * 2.0);
+                res[rc++] = (-b - d) / (a * 2.0);
             }
         }
         return fixRoots(res, rc);
@@ -82,6 +83,7 @@ public class Crossing {
 
     /**
      * Solves cubic equation
+     *
      * @param eqn - the coefficients of the equation
      * @param res - the roots of the equation
      * @return a number of roots
@@ -100,7 +102,7 @@ public class Crossing {
         double R = (2.0 * a * a * a - 9.0 * a * b + 27.0 * c) / 54.0;
         double Q3 = Q * Q * Q;
         double R2 = R * R;
-        double n = - a / 3.0;
+        double n = -a / 3.0;
 
         if (R2 < Q3) {
             double t = Math.acos(R / Math.sqrt(Q3)) / 3.0;
@@ -124,7 +126,7 @@ public class Crossing {
 //              if (R2 == Q3) {
                 double delta = R2 - Q3;
                 if (-ROOT_DELTA < delta && delta < ROOT_DELTA) {
-                    res[rc++] = - (A + B) / 2.0 + n;
+                    res[rc++] = -(A + B) / 2.0 + n;
                 }
             }
 
@@ -133,16 +135,18 @@ public class Crossing {
     }
 
     /**
-     * Excludes double roots. Roots are double if they lies enough close with each other. 
-     * @param res - the roots 
-     * @param rc - the roots count
+     * Excludes double roots. Roots are double if they lies enough close with each other.
+     *
+     * @param res - the roots
+     * @param rc  - the roots count
      * @return new roots count
      */
     static int fixRoots(double res[], int rc) {
         int tc = 0;
-        for(int i = 0; i < rc; i++) {
-            out: {
-                for(int j = i + 1; j < rc; j++) {
+        for (int i = 0; i < rc; i++) {
+            out:
+            {
+                for (int j = i + 1; j < rc; j++) {
                     if (isZero(res[i] - res[j])) {
                         break out;
                     }
@@ -222,16 +226,16 @@ public class Crossing {
         int solveExtrem(double res[]) {
             int rc = 0;
             if (Ax != 0.0) {
-                res[rc++] = - Bx / (Ax + Ax);
+                res[rc++] = -Bx / (Ax + Ax);
             }
             if (Ay != 0.0) {
-                res[rc++] = - By / (Ay + Ay);
+                res[rc++] = -By / (Ay + Ay);
             }
             return rc;
         }
 
         int addBound(double bound[], int bc, double res[], int rc, double minX, double maxX, boolean changeId, int id) {
-            for(int i = 0; i < rc; i++) {
+            for (int i = 0; i < rc; i++) {
                 double t = res[i];
                 if (t > -DELTA && t < 1 + DELTA) {
                     double rx = t * (t * Ax + Bx);
@@ -341,7 +345,7 @@ public class Crossing {
         }
 
         int addBound(double bound[], int bc, double res[], int rc, double minX, double maxX, boolean changeId, int id) {
-            for(int i = 0; i < rc; i++) {
+            for (int i = 0; i < rc; i++) {
                 double t = res[i];
                 if (t > -DELTA && t < 1 + DELTA) {
                     double rx = t * (t * (t * Ax + Bx) + Cx);
@@ -368,10 +372,9 @@ public class Crossing {
 
         // LEFT/RIGHT/UP/EMPTY
         if ((x < x1 && x < x2) ||
-            (x > x1 && x > x2) ||
-            (y > y1 && y > y2) ||
-            (x1 == x2))
-        {
+                (x > x1 && x > x2) ||
+                (y > y1 && y > y2) ||
+                (x1 == x2)) {
             return 0;
         }
 
@@ -387,12 +390,12 @@ public class Crossing {
 
         // START
         if (x == x1) {
-        	return x1 < x2 ? 0 : -1;        
+            return x1 < x2 ? 0 : -1;
         }
-        
+
         // END
         if (x == x2) {
-        	return x1 < x2 ? 1 : 0;        
+            return x1 < x2 ? 1 : 0;
         }
 
         // INSIDE-DOWN
@@ -406,10 +409,9 @@ public class Crossing {
 
         // LEFT/RIGHT/UP/EMPTY
         if ((x < x1 && x < cx && x < x2) ||
-            (x > x1 && x > cx && x > x2) ||
-            (y > y1 && y > cy && y > y2) ||
-            (x1 == cx && cx == x2))
-        {
+                (x > x1 && x > cx && x > x2) ||
+                (y > y1 && y > cy && y > y2) ||
+                (x1 == cx && cx == x2)) {
             return 0;
         }
 
@@ -438,10 +440,9 @@ public class Crossing {
 
         // LEFT/RIGHT/UP/EMPTY
         if ((x < x1 && x < cx1 && x < cx2 && x < x2) ||
-            (x > x1 && x > cx1 && x > cx2 && x > x2) ||
-            (y > y1 && y > cy1 && y > cy2 && y > y2) ||
-            (x1 == cx1 && cx1 == cx2 && cx2 == x2))
-        {
+                (x > x1 && x > cx1 && x > cx2 && x > x2) ||
+                (y > y1 && y > cy1 && y > cy2 && y > y2) ||
+                (x1 == cx1 && cx1 == cx2 && cx2 == x2)) {
             return 0;
         }
 
@@ -473,34 +474,34 @@ public class Crossing {
 
         while (!p.isDone()) {
             switch (p.currentSegment(coords)) {
-            case PathIterator.SEG_MOVETO:
-                if (cx != mx || cy != my) {
-                    cross += crossLine(cx, cy, mx, my, x, y);
-                }
-                mx = cx = coords[0];
-                my = cy = coords[1];
-                break;
-            case PathIterator.SEG_LINETO:
-                cross += crossLine(cx, cy, cx = coords[0], cy = coords[1], x, y);
-                break;
-            case PathIterator.SEG_QUADTO:
-                cross += crossQuad(cx, cy, coords[0], coords[1], cx = coords[2], cy = coords[3], x, y);
-                break;
-            case PathIterator.SEG_CUBICTO:
-                cross += crossCubic(cx, cy, coords[0], coords[1], coords[2], coords[3], cx = coords[4], cy = coords[5], x, y);
-                break;
-            case PathIterator.SEG_CLOSE:
-                if (cy != my || cx != mx) {
-                    cross += crossLine(cx, cy, cx = mx, cy = my, x, y);
-                }
-                break;
+                case PathIterator.SEG_MOVETO:
+                    if (cx != mx || cy != my) {
+                        cross += crossLine(cx, cy, mx, my, x, y);
+                    }
+                    mx = cx = coords[0];
+                    my = cy = coords[1];
+                    break;
+                case PathIterator.SEG_LINETO:
+                    cross += crossLine(cx, cy, cx = coords[0], cy = coords[1], x, y);
+                    break;
+                case PathIterator.SEG_QUADTO:
+                    cross += crossQuad(cx, cy, coords[0], coords[1], cx = coords[2], cy = coords[3], x, y);
+                    break;
+                case PathIterator.SEG_CUBICTO:
+                    cross += crossCubic(cx, cy, coords[0], coords[1], coords[2], coords[3], cx = coords[4], cy = coords[5], x, y);
+                    break;
+                case PathIterator.SEG_CLOSE:
+                    if (cy != my || cx != mx) {
+                        cross += crossLine(cx, cy, cx = mx, cy = my, x, y);
+                    }
+                    break;
             }
-            
+
             // checks if the point (x,y) is the vertex of shape with PathIterator p           
             if (x == cx && y == cy) {
-            	cross = 0;
-            	cy = my;
-            	break;
+                cross = 0;
+                cy = my;
+                break;
             }
             p.next();
         }
@@ -531,9 +532,9 @@ public class Crossing {
      * Sort bound array
      */
     static void sortBound(double bound[], int bc) {
-        for(int i = 0; i < bc - 4; i += 4) {
+        for (int i = 0; i < bc - 4; i += 4) {
             int k = i;
-            for(int j = i + 4; j < bc; j += 4) {
+            for (int j = i + 4; j < bc; j += 4) {
                 if (bound[k] > bound[j]) {
                     k = j;
                 }
@@ -554,9 +555,9 @@ public class Crossing {
             }
         }
     }
-    
+
     /**
-     * Returns are bounds intersect or not intersect rectangle 
+     * Returns are bounds intersect or not intersect rectangle
      */
     static int crossBound(double bound[], int bc, double py1, double py2) {
 
@@ -568,7 +569,7 @@ public class Crossing {
         // Check Y coordinate
         int up = 0;
         int down = 0;
-        for(int i = 2; i < bc; i += 4) {
+        for (int i = 2; i < bc; i += 4) {
             if (bound[i] < py1) {
                 up++;
                 continue;
@@ -589,7 +590,7 @@ public class Crossing {
             // bc >= 2
             sortBound(bound, bc);
             boolean sign = bound[2] > py2;
-            for(int i = 6; i < bc; i += 4) {
+            for (int i = 6; i < bc; i += 4) {
                 boolean sign2 = bound[i] > py2;
                 if (sign != sign2 && bound[i + 1] != bound[i - 3]) {
                     return CROSSING;
@@ -607,9 +608,8 @@ public class Crossing {
 
         // LEFT/RIGHT/UP
         if ((rx2 < x1 && rx2 < x2) ||
-            (rx1 > x1 && rx1 > x2) ||
-            (ry1 > y1 && ry1 > y2))
-        {
+                (rx1 > x1 && rx1 > x2) ||
+                (ry1 > y1 && ry1 > y2)) {
             return 0;
         }
 
@@ -676,9 +676,8 @@ public class Crossing {
 
         // LEFT/RIGHT/UP ------------------------------------------------------
         if ((rx2 < x1 && rx2 < cx && rx2 < x2) ||
-            (rx1 > x1 && rx1 > cx && rx1 > x2) ||
-            (ry1 > y1 && ry1 > cy && ry1 > y2))
-        {
+                (rx1 > x1 && rx1 > cx && rx1 > x2) ||
+                (ry1 > y1 && ry1 > cy && ry1 > y2)) {
             return 0;
         }
 
@@ -747,9 +746,8 @@ public class Crossing {
 
         // LEFT/RIGHT/UP
         if ((rx2 < x1 && rx2 < cx1 && rx2 < cx2 && rx2 < x2) ||
-            (rx1 > x1 && rx1 > cx1 && rx1 > cx2 && rx1 > x2) ||
-            (ry1 > y1 && ry1 > cy1 && ry1 > cy2 && ry1 > y2))
-        {
+                (rx1 > x1 && rx1 > cx1 && rx1 > cx2 && rx1 > x2) ||
+                (ry1 > y1 && ry1 > cy1 && ry1 > cy2 && ry1 > y2)) {
             return 0;
         }
 
@@ -833,29 +831,29 @@ public class Crossing {
         while (!p.isDone()) {
             count = 0;
             switch (p.currentSegment(coords)) {
-            case PathIterator.SEG_MOVETO:
-                if (cx != mx || cy != my) {
-                    count = intersectLine(cx, cy, mx, my, rx1, ry1, rx2, ry2);
-                }
-                mx = cx = coords[0];
-                my = cy = coords[1];
-                break;
-            case PathIterator.SEG_LINETO:
-                count = intersectLine(cx, cy, cx = coords[0], cy = coords[1], rx1, ry1, rx2, ry2);
-                break;
-            case PathIterator.SEG_QUADTO:
-                count = intersectQuad(cx, cy, coords[0], coords[1], cx = coords[2], cy = coords[3], rx1, ry1, rx2, ry2);
-                break;
-            case PathIterator.SEG_CUBICTO:
-                count = intersectCubic(cx, cy, coords[0], coords[1], coords[2], coords[3], cx = coords[4], cy = coords[5], rx1, ry1, rx2, ry2);
-                break;
-            case PathIterator.SEG_CLOSE:
-                if (cy != my || cx != mx) {
-                    count = intersectLine(cx, cy, mx, my, rx1, ry1, rx2, ry2);
-                }
-                cx = mx;
-                cy = my;
-                break;
+                case PathIterator.SEG_MOVETO:
+                    if (cx != mx || cy != my) {
+                        count = intersectLine(cx, cy, mx, my, rx1, ry1, rx2, ry2);
+                    }
+                    mx = cx = coords[0];
+                    my = cy = coords[1];
+                    break;
+                case PathIterator.SEG_LINETO:
+                    count = intersectLine(cx, cy, cx = coords[0], cy = coords[1], rx1, ry1, rx2, ry2);
+                    break;
+                case PathIterator.SEG_QUADTO:
+                    count = intersectQuad(cx, cy, coords[0], coords[1], cx = coords[2], cy = coords[3], rx1, ry1, rx2, ry2);
+                    break;
+                case PathIterator.SEG_CUBICTO:
+                    count = intersectCubic(cx, cy, coords[0], coords[1], coords[2], coords[3], cx = coords[4], cy = coords[5], rx1, ry1, rx2, ry2);
+                    break;
+                case PathIterator.SEG_CLOSE:
+                    if (cy != my || cx != mx) {
+                        count = intersectLine(cx, cy, mx, my, rx1, ry1, rx2, ry2);
+                    }
+                    cx = mx;
+                    cy = my;
+                    break;
             }
             if (count == CROSSING) {
                 return CROSSING;

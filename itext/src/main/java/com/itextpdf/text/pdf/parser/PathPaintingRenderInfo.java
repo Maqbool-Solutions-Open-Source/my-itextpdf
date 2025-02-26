@@ -57,7 +57,7 @@ public class PathPaintingRenderInfo {
      * adds 1 each time a path segment crosses the ray from left to right and subtracts 1 each time a
      * segment crosses from right to left. After counting all the crossings, if the result is 0, the
      * point is outside the path; otherwise, it is inside.
-     *
+     * <p>
      * For more details see PDF spec.
      */
     public static final int NONZERO_WINDING_RULE = 1;
@@ -66,7 +66,7 @@ public class PathPaintingRenderInfo {
      * The even-odd rule determines whether a point is inside a path by drawing a ray from that point in
      * any direction and simply counting the number of path segments that cross the ray, regardless of
      * direction. If this number is odd, the point is inside; if even, the point is outside.
-     *
+     * <p>
      * For more details see PDF spec.
      */
     public static final int EVEN_ODD_RULE = 2;
@@ -106,7 +106,7 @@ public class PathPaintingRenderInfo {
     /**
      * If the operation is {@link #NO_OP} then the rule is ignored,
      * otherwise {@link #NONZERO_WINDING_RULE} is used by default.
-     *
+     * <p>
      * See {@link #PathPaintingRenderInfo(int, int, GraphicsState)}
      */
     public PathPaintingRenderInfo(int operation, GraphicsState gs) {

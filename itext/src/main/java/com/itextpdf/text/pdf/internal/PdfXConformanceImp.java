@@ -81,46 +81,52 @@ public class PdfXConformanceImp implements PdfXConformance {
         this.pdfxConformance = pdfxConformance;
     }
 
-	/**
-	 * @see com.itextpdf.text.pdf.interfaces.PdfXConformance#getPDFXConformance()
-	 */
-	public int getPDFXConformance() {
-		return pdfxConformance;
-	}
+    /**
+     * @see com.itextpdf.text.pdf.interfaces.PdfXConformance#getPDFXConformance()
+     */
+    public int getPDFXConformance() {
+        return pdfxConformance;
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.interfaces.PdfIsoConformance#isPdfIso()
-	 */
+    /**
+     * @see com.itextpdf.text.pdf.interfaces.PdfIsoConformance#isPdfIso()
+     */
     public boolean isPdfIso() {
         return isPdfX();
     }
 
     /**
      * Checks if the PDF/X Conformance is necessary.
+     *
      * @return true if the PDF has to be in conformance with any of the PDF/X specifications
      */
     public boolean isPdfX() {
-    	return pdfxConformance != PdfWriter.PDFXNONE;
-    }
-    /**
-     * Checks if the PDF has to be in conformance with PDF/X-1a:2001
-     * @return true of the PDF has to be in conformance with PDF/X-1a:2001
-     */
-    public boolean isPdfX1A2001() {
-    	return pdfxConformance == PdfWriter.PDFX1A2001;
-    }
-    /**
-     * Checks if the PDF has to be in conformance with PDF/X-3:2002
-     * @return true of the PDF has to be in conformance with PDF/X-3:2002
-     */
-    public boolean isPdfX32002() {
-    	return pdfxConformance == PdfWriter.PDFX32002;
+        return pdfxConformance != PdfWriter.PDFXNONE;
     }
 
     /**
-	 * Business logic that checks if a certain object is in conformance with PDF/X.
-     * @param key		the type of PDF ISO conformance that has to be checked
-     * @param obj1		the object that is checked for conformance
+     * Checks if the PDF has to be in conformance with PDF/X-1a:2001
+     *
+     * @return true of the PDF has to be in conformance with PDF/X-1a:2001
+     */
+    public boolean isPdfX1A2001() {
+        return pdfxConformance == PdfWriter.PDFX1A2001;
+    }
+
+    /**
+     * Checks if the PDF has to be in conformance with PDF/X-3:2002
+     *
+     * @return true of the PDF has to be in conformance with PDF/X-3:2002
+     */
+    public boolean isPdfX32002() {
+        return pdfxConformance == PdfWriter.PDFX32002;
+    }
+
+    /**
+     * Business logic that checks if a certain object is in conformance with PDF/X.
+     *
+     * @param key  the type of PDF ISO conformance that has to be checked
+     * @param obj1 the object that is checked for conformance
      */
     public void checkPdfIsoConformance(int key, Object obj1) {
         if (writer == null || !writer.isPdfX())
@@ -131,7 +137,7 @@ public class PdfXConformanceImp implements PdfXConformance {
                 switch (conf) {
                     case PdfWriter.PDFX1A2001:
                         if (obj1 instanceof ExtendedColor) {
-                            ExtendedColor ec = (ExtendedColor)obj1;
+                            ExtendedColor ec = (ExtendedColor) obj1;
                             switch (ec.getType()) {
                                 case ExtendedColor.TYPE_CMYK:
                                 case ExtendedColor.TYPE_GRAY:
@@ -139,20 +145,19 @@ public class PdfXConformanceImp implements PdfXConformance {
                                 case ExtendedColor.TYPE_RGB:
                                     throw new PdfXConformanceException(MessageLocalization.getComposedMessage("colorspace.rgb.is.not.allowed"));
                                 case ExtendedColor.TYPE_SEPARATION:
-                                    SpotColor sc = (SpotColor)ec;
+                                    SpotColor sc = (SpotColor) ec;
                                     checkPdfIsoConformance(PdfIsoKeys.PDFISOKEY_COLOR, sc.getPdfSpotColor().getAlternativeCS());
                                     break;
                                 case ExtendedColor.TYPE_SHADING:
-                                    ShadingColor xc = (ShadingColor)ec;
+                                    ShadingColor xc = (ShadingColor) ec;
                                     checkPdfIsoConformance(PdfIsoKeys.PDFISOKEY_COLOR, xc.getPdfShadingPattern().getShading().getColorSpace());
                                     break;
                                 case ExtendedColor.TYPE_PATTERN:
-                                    PatternColor pc = (PatternColor)ec;
+                                    PatternColor pc = (PatternColor) ec;
                                     checkPdfIsoConformance(PdfIsoKeys.PDFISOKEY_COLOR, pc.getPainter().getDefaultColor());
                                     break;
                             }
-                        }
-                        else if (obj1 instanceof BaseColor)
+                        } else if (obj1 instanceof BaseColor)
                             throw new PdfXConformanceException(MessageLocalization.getComposedMessage("colorspace.rgb.is.not.allowed"));
                         break;
                 }
@@ -164,11 +169,11 @@ public class PdfXConformanceImp implements PdfXConformance {
                     throw new PdfXConformanceException(MessageLocalization.getComposedMessage("colorspace.rgb.is.not.allowed"));
                 break;
             case PdfIsoKeys.PDFISOKEY_FONT:
-                if (!((BaseFont)obj1).isEmbedded())
-                    throw new PdfXConformanceException(MessageLocalization.getComposedMessage("all.the.fonts.must.be.embedded.this.one.isn.t.1", ((BaseFont)obj1).getPostscriptFontName()));
+                if (!((BaseFont) obj1).isEmbedded())
+                    throw new PdfXConformanceException(MessageLocalization.getComposedMessage("all.the.fonts.must.be.embedded.this.one.isn.t.1", ((BaseFont) obj1).getPostscriptFontName()));
                 break;
             case PdfIsoKeys.PDFISOKEY_IMAGE:
-                PdfImage image = (PdfImage)obj1;
+                PdfImage image = (PdfImage) obj1;
                 if (image.get(PdfName.SMASK) != null)
                     throw new PdfXConformanceException(MessageLocalization.getComposedMessage("the.smask.key.is.not.allowed.in.images"));
                 switch (conf) {
@@ -179,29 +184,28 @@ public class PdfXConformanceImp implements PdfXConformance {
                         if (cs.isName()) {
                             if (PdfName.DEVICERGB.equals(cs))
                                 throw new PdfXConformanceException(MessageLocalization.getComposedMessage("colorspace.rgb.is.not.allowed"));
-                        }
-                        else if (cs.isArray()) {
-                            if (PdfName.CALRGB.equals(((PdfArray)cs).getPdfObject(0)))
+                        } else if (cs.isArray()) {
+                            if (PdfName.CALRGB.equals(((PdfArray) cs).getPdfObject(0)))
                                 throw new PdfXConformanceException(MessageLocalization.getComposedMessage("colorspace.calrgb.is.not.allowed"));
                         }
                         break;
                 }
                 break;
             case PdfIsoKeys.PDFISOKEY_GSTATE:
-                PdfDictionary gs = (PdfDictionary)obj1;
+                PdfDictionary gs = (PdfDictionary) obj1;
                 // The example PdfXPdfA threw a NullPointerException because gs was null
                 if (gs == null)
-                	break;
+                    break;
                 PdfObject obj = gs.get(PdfName.BM);
                 if (obj != null && !PdfGState.BM_NORMAL.equals(obj) && !PdfGState.BM_COMPATIBLE.equals(obj))
                     throw new PdfXConformanceException(MessageLocalization.getComposedMessage("blend.mode.1.not.allowed", obj.toString()));
                 obj = gs.get(PdfName.CA);
                 double v = 0.0;
-                if (obj != null && (v = ((PdfNumber)obj).doubleValue()) != 1.0)
+                if (obj != null && (v = ((PdfNumber) obj).doubleValue()) != 1.0)
                     throw new PdfXConformanceException(MessageLocalization.getComposedMessage("transparency.is.not.allowed.ca.eq.1", String.valueOf(v)));
                 obj = gs.get(PdfName.ca);
                 v = 0.0;
-                if (obj != null && (v = ((PdfNumber)obj).doubleValue()) != 1.0)
+                if (obj != null && (v = ((PdfNumber) obj).doubleValue()) != 1.0)
                     throw new PdfXConformanceException(MessageLocalization.getComposedMessage("transparency.is.not.allowed.ca.eq.1", String.valueOf(v)));
                 break;
             case PdfIsoKeys.PDFISOKEY_LAYER:

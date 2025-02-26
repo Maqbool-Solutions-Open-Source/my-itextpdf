@@ -49,12 +49,12 @@ import java.util.ArrayList;
 
 /**
  * A <CODE>Chapter</CODE> is a special <CODE>Section</CODE>.
- * <P>
+ * <p>
  * A chapter number has to be created using a <CODE>Paragraph</CODE> as title
  * and an <CODE>int</CODE> as chapter number. The chapter number is shown by
  * default. If you don't want to see the chapter number, you have to set the
  * numberdepth to <VAR>0</VAR>.
- * <P>
+ * <p>
  * Example:
  * <BLOCKQUOTE><PRE>
  * Paragraph title2 = new Paragraph("This is Chapter 2", FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLDITALIC, new Color(0, 0, 255)));
@@ -72,11 +72,12 @@ import java.util.ArrayList;
 public class Chapter extends Section {
 
     // constant
-	private static final long serialVersionUID = 1791000695779357361L;
+    private static final long serialVersionUID = 1791000695779357361L;
 
-	/**
-	 * Constructs a new <CODE>Chapter</CODE>.
-	 * @param	number		the Chapter number
+    /**
+     * Constructs a new <CODE>Chapter</CODE>.
+     *
+     * @param number the Chapter number
      */
     public Chapter(int number) {
         super(null, 1);
@@ -85,11 +86,11 @@ public class Chapter extends Section {
         triggerNewPage = true;
     }
 
-	/**
-	 * Constructs a new <CODE>Chapter</CODE>.
-	 *
-	 * @param	title		the Chapter title (as a <CODE>Paragraph</CODE>)
-	 * @param	number		the Chapter number
+    /**
+     * Constructs a new <CODE>Chapter</CODE>.
+     *
+     * @param title  the Chapter title (as a <CODE>Paragraph</CODE>)
+     * @param number the Chapter number
      */
 
     public Chapter(Paragraph title, int number) {
@@ -102,8 +103,8 @@ public class Chapter extends Section {
     /**
      * Constructs a new <CODE>Chapter</CODE>.
      *
-     * @param	title		the Chapter title (as a <CODE>String</CODE>)
-     * @param	number		the Chapter number
+     * @param title  the Chapter title (as a <CODE>String</CODE>)
+     * @param number the Chapter number
      */
     public Chapter(String title, int number) {
         this(new Paragraph(title), number);
@@ -114,20 +115,20 @@ public class Chapter extends Section {
     /**
      * Gets the type of the text element.
      *
-     * @return	a type
+     * @return a type
      */
     @Override
     public int type() {
         return Element.CHAPTER;
     }
 
-	/**
-	 * @see com.itextpdf.text.Element#isNestable()
-	 * @since	iText 2.0.8
-	 */
-	@Override
+    /**
+     * @see com.itextpdf.text.Element#isNestable()
+     * @since iText 2.0.8
+     */
+    @Override
     public boolean isNestable() {
-		return false;
-	}
+        return false;
+    }
 
 }

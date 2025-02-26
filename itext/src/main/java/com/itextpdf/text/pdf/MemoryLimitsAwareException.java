@@ -51,6 +51,7 @@ public class MemoryLimitsAwareException extends RuntimeException {
     public static final String DuringDecompressionSingleStreamOccupiedMoreMemoryThanAllowed = "During decompression a single stream occupied more memory than allowed. Please either check your pdf or increase the allowed multiple decompressed pdf streams maximum size value by setting the appropriate parameter of ReaderProperties's MemoryLimitsAwareHandler.";
     public static final String DuringDecompressionSingleStreamOccupiedMoreThanMaxIntegerValue = "During decompression a single stream occupied more than a maximum integer value. Please check your pdf.";
     public static final String UnknownPdfException = "Unknown PdfException.";
+
     /**
      * Creates a new instance of MemoryLimitsAwareException.
      *

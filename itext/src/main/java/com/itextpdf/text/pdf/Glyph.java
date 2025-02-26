@@ -44,26 +44,25 @@
 package com.itextpdf.text.pdf;
 
 /**
- *  
  * @author <a href="mailto:paawak@gmail.com">Palash Ray</a>
  */
 public class Glyph {
-    
+
     /**
      * The <i>code</i> or <i>id</i> by which this is represented in the Font File
      */
     public final int code;
-    
+
     /**
      * The normalized width of this Glyph.
      */
     public final int width;
-    
+
     /**
      * The Unicode text represented by this Glyph
      */
     public final String chars;
-    
+
     public Glyph(int code, int width, String chars) {
         this.code = code;
         this.width = width;
@@ -102,10 +101,9 @@ public class Glyph {
     }
 
 
-
     @Override
     public String toString() {
         return Glyph.class.getSimpleName() + " [id=" + code + ", width=" + width + ", chars=" + chars + "]";
     }
-    
+
 }

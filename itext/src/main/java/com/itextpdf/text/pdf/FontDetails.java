@@ -57,7 +57,7 @@ import java.util.*;
  * Each font in the document will have an instance of this class
  * where the characters used will be represented.
  *
- * @author  Paulo Soares
+ * @author Paulo Soares
  */
 class FontDetails {
 
@@ -112,9 +112,10 @@ class FontDetails {
      * Each font used in a document has an instance of this class.
      * This class stores the characters used in the document and other
      * specifics unique to the current working document.
-     * @param fontName the font name
+     *
+     * @param fontName          the font name
      * @param indirectReference the indirect reference to the font
-     * @param baseFont the <CODE>BaseFont</CODE>
+     * @param baseFont          the <CODE>BaseFont</CODE>
      */
     FontDetails(PdfName fontName, PdfIndirectReference indirectReference, BaseFont baseFont) {
         this.fontName = fontName;
@@ -128,11 +129,11 @@ class FontDetails {
                 break;
             case BaseFont.FONT_TYPE_CJK:
                 cjkTag = new IntHashtable();
-                cjkFont = (CJKFont)baseFont;
+                cjkFont = (CJKFont) baseFont;
                 break;
             case BaseFont.FONT_TYPE_TTUNI:
                 longTag = new HashMap<Integer, int[]>();
-                ttu = (TrueTypeFontUnicode)baseFont;
+                ttu = (TrueTypeFontUnicode) baseFont;
                 symbolic = baseFont.isFontSpecific();
                 break;
         }
@@ -140,6 +141,7 @@ class FontDetails {
 
     /**
      * Gets the indirect reference to this font.
+     *
      * @return the indirect reference to this font
      */
     PdfIndirectReference getIndirectReference() {
@@ -148,6 +150,7 @@ class FontDetails {
 
     /**
      * Gets the font name as it appears in the document body.
+     *
      * @return the font name
      */
     PdfName getFontName() {
@@ -156,6 +159,7 @@ class FontDetails {
 
     /**
      * Gets the <CODE>BaseFont</CODE> of this font.
+     *
      * @return the <CODE>BaseFont</CODE> of this font
      */
     BaseFont getBaseFont() {
@@ -180,16 +184,16 @@ class FontDetails {
                     longTag.put(gl, new int[]{gid, width, vchar});
             }
             return new Object[]{gids.getBytes(CJKFont.CJK_ENCODING), sb.toString(), Integer.valueOf(totalWidth)};
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
-    
+
     /**
      * Converts the text into bytes to be placed in the document.
      * The conversion is done according to the font and the encoding and the characters
      * used are stored.
+     *
      * @param text the text to convert
      * @return the conversion
      */
@@ -212,15 +216,13 @@ class FontDetails {
                     for (int k = 0; k < len; ++k) {
                         cjkTag.put(text.charAt(k), 0);
                     }
-                }
-                else {
+                } else {
                     for (int k = 0; k < len; ++k) {
                         int val;
                         if (Utilities.isSurrogatePair(text, k)) {
                             val = Utilities.convertToUtf32(text, k);
                             k++;
-                        }
-                        else {
+                        } else {
                             val = text.charAt(k);
                         }
                         cjkTag.put(cjkFont.getCidCode(val), 0);
@@ -247,34 +249,32 @@ class FontDetails {
                             if (metrics == null)
                                 continue;
                             longTag.put(Integer.valueOf(metrics[0]), new int[]{metrics[0], metrics[1], ttu.getUnicodeDifferences(b[k] & 0xff)});
-                            glyph[i++] = (char)metrics[0];
+                            glyph[i++] = (char) metrics[0];
                         }
                     } else if (canApplyGlyphSubstitution()) {
-                    	return convertToBytesAfterGlyphSubstitution(text);
+                        return convertToBytesAfterGlyphSubstitution(text);
                     } else {
-                    	for (int k = 0; k < len; ++k) {
-                    		int val;
-                    		if (Utilities.isSurrogatePair(text, k)) {
-                    			val = Utilities.convertToUtf32(text, k);
-                    			k++;
-                    		}
-                    		else {
-                    			val = text.charAt(k);
-                    		}
-                    		metrics = ttu.getMetricsTT(val);
-                    		if (metrics == null)
-                    			continue;
-                    		int m0 = metrics[0];
-                    		Integer gl = Integer.valueOf(m0);
-                    		if (!longTag.containsKey(gl))
-                    			longTag.put(gl, new int[]{m0, metrics[1], val});
-                    		glyph[i++] = (char)m0;
-                    	}
+                        for (int k = 0; k < len; ++k) {
+                            int val;
+                            if (Utilities.isSurrogatePair(text, k)) {
+                                val = Utilities.convertToUtf32(text, k);
+                                k++;
+                            } else {
+                                val = text.charAt(k);
+                            }
+                            metrics = ttu.getMetricsTT(val);
+                            if (metrics == null)
+                                continue;
+                            int m0 = metrics[0];
+                            Integer gl = Integer.valueOf(m0);
+                            if (!longTag.containsKey(gl))
+                                longTag.put(gl, new int[]{m0, metrics[1], val});
+                            glyph[i++] = (char) m0;
+                        }
                     }
                     glyph = Utilities.copyOfRange(glyph, 0, i);
                     b = StringUtils.convertCharsToBytes(glyph);
-                }
-                catch (UnsupportedEncodingException e) {
+                } catch (UnsupportedEncodingException e) {
                     throw new ExceptionConverter(e);
                 }
                 break;
@@ -282,36 +282,36 @@ class FontDetails {
         }
         return b;
     }
-    
+
     private boolean canApplyGlyphSubstitution() {
-    	return (fontType == BaseFont.FONT_TYPE_TTUNI) && (ttu.getGlyphSubstitutionMap() != null);
+        return (fontType == BaseFont.FONT_TYPE_TTUNI) && (ttu.getGlyphSubstitutionMap() != null);
     }
-    
-    private byte[] convertToBytesAfterGlyphSubstitution(final String text) throws UnsupportedEncodingException { 
-    	
-    	if (!canApplyGlyphSubstitution()) {
-    		throw new IllegalArgumentException("Make sure the font type if TTF Unicode and a valid GlyphSubstitutionTable exists!"); 
-    	}
-    	
-    	 Map<String, Glyph> glyphSubstitutionMap = ttu.getGlyphSubstitutionMap();
-    	
+
+    private byte[] convertToBytesAfterGlyphSubstitution(final String text) throws UnsupportedEncodingException {
+
+        if (!canApplyGlyphSubstitution()) {
+            throw new IllegalArgumentException("Make sure the font type if TTF Unicode and a valid GlyphSubstitutionTable exists!");
+        }
+
+        Map<String, Glyph> glyphSubstitutionMap = ttu.getGlyphSubstitutionMap();
+
         // generate a regex from the characters to be substituted
-        
+
         // for Indic languages: push back the CompositeCharacters with smaller length
         Set<String> compositeCharacters = new TreeSet<String>(new IndicCompositeCharacterComparator());
         compositeCharacters.addAll(glyphSubstitutionMap.keySet());
-        
+
         // convert the text to a list of Glyph, also take care of the substitution
         ArrayBasedStringTokenizer tokenizer = new ArrayBasedStringTokenizer(compositeCharacters.toArray(new String[0]));
         String[] tokens = tokenizer.tokenize(text);
-        
+
         List<Glyph> glyphList = new ArrayList<Glyph>(50);
-        
+
         for (String token : tokens) {
-            
+
             // first check whether this is in the substitution map
             Glyph subsGlyph = glyphSubstitutionMap.get(token);
-            
+
             if (subsGlyph != null) {
                 glyphList.add(subsGlyph);
             } else {
@@ -320,52 +320,53 @@ class FontDetails {
                     int[] metrics = ttu.getMetricsTT(c);
                     int glyphCode = metrics[0];
                     int glyphWidth = metrics[1];
-                    glyphList.add(new Glyph(glyphCode, glyphWidth, String.valueOf(c))); 
+                    glyphList.add(new Glyph(glyphCode, glyphWidth, String.valueOf(c)));
                 }
             }
-            
+
         }
-        
+
         GlyphRepositioner glyphRepositioner = getGlyphRepositioner();
-        
+
         if (glyphRepositioner != null) {
-        	glyphRepositioner.repositionGlyphs(glyphList);
+            glyphRepositioner.repositionGlyphs(glyphList);
         }
-        
+
         char[] charEncodedGlyphCodes = new char[glyphList.size()];
-        
+
         // process each Glyph thus obtained
         for (int i = 0; i < glyphList.size(); i++) {
-            Glyph glyph = glyphList.get(i); 
+            Glyph glyph = glyphList.get(i);
             charEncodedGlyphCodes[i] = (char) glyph.code;
             Integer glyphCode = Integer.valueOf(glyph.code);
-            
+
             if (!longTag.containsKey(glyphCode)) {
                 // FIXME: this is buggy as the 3rd arg. should be a String as a Glyph can represent more than 1 char
-                longTag.put(glyphCode, new int[]{glyph.code,  glyph.width, glyph.chars.charAt(0)}); 
+                longTag.put(glyphCode, new int[]{glyph.code, glyph.width, glyph.chars.charAt(0)});
             }
         }
-        
+
         return new String(charEncodedGlyphCodes).getBytes(CJKFont.CJK_ENCODING);
     }
-    
+
     private GlyphRepositioner getGlyphRepositioner() {
-    	Language language = ttu.getSupportedLanguage();
-    	
-    	if (language == null) {
-    		throw new IllegalArgumentException("The supported language field cannot be null in " + ttu.getClass().getName()); 
-    	}
-    	
-    	switch (language) {
-		case BENGALI:
-			return new BanglaGlyphRepositioner(Collections.unmodifiableMap(ttu.cmap31), ttu.getGlyphSubstitutionMap());
-		default:
-			return null;
-		}
+        Language language = ttu.getSupportedLanguage();
+
+        if (language == null) {
+            throw new IllegalArgumentException("The supported language field cannot be null in " + ttu.getClass().getName());
+        }
+
+        switch (language) {
+            case BENGALI:
+                return new BanglaGlyphRepositioner(Collections.unmodifiableMap(ttu.cmap31), ttu.getGlyphSubstitutionMap());
+            default:
+                return null;
+        }
     }
-    
+
     /**
      * Writes the font definition to the document.
+     *
      * @param writer the <CODE>PdfWriter</CODE> of this document
      */
     public void writeFont(PdfWriter writer) {
@@ -400,15 +401,15 @@ class FontDetails {
                     baseFont.writeFont(writer, indirectReference, new Object[]{longTag, Boolean.valueOf(subset)});
                     break;
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
-    
+
     /**
      * Indicates if all the glyphs and widths for that particular
      * encoding should be included in the document.
+     *
      * @return <CODE>false</CODE> to include all the glyphs and widths.
      */
     public boolean isSubset() {
@@ -419,10 +420,11 @@ class FontDetails {
      * Indicates if all the glyphs and widths for that particular
      * encoding should be included in the document. Set to <CODE>false</CODE>
      * to include all.
+     *
      * @param subset new value of property subset
      */
     public void setSubset(boolean subset) {
         this.subset = subset;
     }
-   
+
 }

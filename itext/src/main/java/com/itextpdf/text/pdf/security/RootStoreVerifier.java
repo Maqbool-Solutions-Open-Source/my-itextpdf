@@ -60,74 +60,73 @@ import com.itextpdf.text.log.LoggerFactory;
  * containing trusted anchors.
  */
 public class RootStoreVerifier extends CertificateVerifier {
-	
-	/** The Logger instance */
-	protected final static Logger LOGGER = LoggerFactory.getLogger(RootStoreVerifier.class);
 
-	/** A key store against which certificates can be verified. */
-	protected KeyStore rootStore = null;
+    /**
+     * The Logger instance
+     */
+    protected final static Logger LOGGER = LoggerFactory.getLogger(RootStoreVerifier.class);
 
-	/**
-	 * Creates a RootStoreVerifier in a chain of verifiers.
-	 * 
-	 * @param verifier
-	 *            the next verifier in the chain
-	 */
-	public RootStoreVerifier(CertificateVerifier verifier) {
-		super(verifier);
-	}
+    /**
+     * A key store against which certificates can be verified.
+     */
+    protected KeyStore rootStore = null;
 
-	/**
-	 * Sets the Key Store against which a certificate can be checked.
-	 * 
-	 * @param keyStore
-	 *            a root store
-	 */
-	public void setRootStore(KeyStore keyStore) {
-		this.rootStore = keyStore;
-	}
+    /**
+     * Creates a RootStoreVerifier in a chain of verifiers.
+     *
+     * @param verifier the next verifier in the chain
+     */
+    public RootStoreVerifier(CertificateVerifier verifier) {
+        super(verifier);
+    }
 
-	/**
-	 * Verifies a single certificate against a key store (if present).
-	 * 
-	 * @param signCert
-	 *            the certificate to verify
-	 * @param issuerCert
-	 *            the issuer certificate
-	 * @param signDate
-	 *            the date the certificate needs to be valid
-	 * @return a list of <code>VerificationOK</code> objects.
-	 * The list will be empty if the certificate couldn't be verified.
-	 */
-	public List<VerificationOK> verify(X509Certificate signCert, X509Certificate issuerCert,
-			Date signDate) throws GeneralSecurityException, IOException {
-		LOGGER.info("Root store verification: " + signCert.getSubjectDN().getName());
-		// verify using the CertificateVerifier if root store is missing
-		if (rootStore == null)
-			return super.verify(signCert, issuerCert, signDate);
-		try {
-			List<VerificationOK> result = new ArrayList<VerificationOK>();
-			// loop over the trusted anchors in the root store
-			for (Enumeration<String> aliases = rootStore.aliases(); aliases.hasMoreElements();) {
-				String alias = aliases.nextElement();
-				try {
-					if (!rootStore.isCertificateEntry(alias))
-						continue;
-					X509Certificate anchor = (X509Certificate) rootStore
-							.getCertificate(alias);
-					signCert.verify(anchor.getPublicKey());
-					LOGGER.info("Certificate verified against root store");
-					result.add(new VerificationOK(signCert, this.getClass(), "Certificate verified against root store."));
-					result.addAll(super.verify(signCert, issuerCert, signDate));
-					return result;
-				} catch (GeneralSecurityException e) {
-					continue;
-				}
-			}
-			result.addAll(super.verify(signCert, issuerCert, signDate));
-			return result;
-		} catch (GeneralSecurityException e) {
-			return super.verify(signCert, issuerCert, signDate);
-		}
-	}
+    /**
+     * Sets the Key Store against which a certificate can be checked.
+     *
+     * @param keyStore a root store
+     */
+    public void setRootStore(KeyStore keyStore) {
+        this.rootStore = keyStore;
+    }
+
+    /**
+     * Verifies a single certificate against a key store (if present).
+     *
+     * @param signCert   the certificate to verify
+     * @param issuerCert the issuer certificate
+     * @param signDate   the date the certificate needs to be valid
+     * @return a list of <code>VerificationOK</code> objects.
+     * The list will be empty if the certificate couldn't be verified.
+     */
+    public List<VerificationOK> verify(X509Certificate signCert, X509Certificate issuerCert,
+                                       Date signDate) throws GeneralSecurityException, IOException {
+        LOGGER.info("Root store verification: " + signCert.getSubjectDN().getName());
+        // verify using the CertificateVerifier if root store is missing
+        if (rootStore == null)
+            return super.verify(signCert, issuerCert, signDate);
+        try {
+            List<VerificationOK> result = new ArrayList<VerificationOK>();
+            // loop over the trusted anchors in the root store
+            for (Enumeration<String> aliases = rootStore.aliases(); aliases.hasMoreElements(); ) {
+                String alias = aliases.nextElement();
+                try {
+                    if (!rootStore.isCertificateEntry(alias))
+                        continue;
+                    X509Certificate anchor = (X509Certificate) rootStore
+                            .getCertificate(alias);
+                    signCert.verify(anchor.getPublicKey());
+                    LOGGER.info("Certificate verified against root store");
+                    result.add(new VerificationOK(signCert, this.getClass(), "Certificate verified against root store."));
+                    result.addAll(super.verify(signCert, issuerCert, signDate));
+                    return result;
+                } catch (GeneralSecurityException e) {
+                    continue;
+                }
+            }
+            result.addAll(super.verify(signCert, issuerCert, signDate));
+            return result;
+        } catch (GeneralSecurityException e) {
+            return super.verify(signCert, issuerCert, signDate);
+        }
+    }
 }

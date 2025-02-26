@@ -114,8 +114,7 @@ public class SequenceList {
                 if (state == DIGIT) {
                     number = Integer.parseInt(other = buf.toString());
                     return NUMBER;
-                }
-                else if (state == OTHER) {
+                } else if (state == OTHER) {
                     other = buf.toString().toLowerCase();
                     return TEXT;
                 }
@@ -163,8 +162,7 @@ public class SequenceList {
         if (other.equals("odd") || other.equals("o")) {
             odd = true;
             even = false;
-        }
-        else if (other.equals("even") || other.equals("e")) {
+        } else if (other.equals("even") || other.equals("e")) {
             odd = false;
             even = true;
         }
@@ -195,8 +193,7 @@ public class SequenceList {
                             if (type == NUMBER) {
                                 low = number;
                                 state = DIGIT;
-                            }
-                            else
+                            } else
                                 otherProc();
                             break;
                     }
@@ -242,7 +239,8 @@ public class SequenceList {
 
     /**
      * Generates a list of numbers from a string.
-     * @param ranges the comma separated ranges
+     *
+     * @param ranges    the comma separated ranges
      * @param maxNumber the maximum number in the range
      * @return a list with the numbers as <CODE>Integer</CODE>
      */
@@ -269,7 +267,7 @@ public class SequenceList {
                     parse.low = parse.high;
                     parse.high = t;
                 }
-                for (ListIterator<Integer> it = list.listIterator(); it.hasNext();) {
+                for (ListIterator<Integer> it = list.listIterator(); it.hasNext(); ) {
                     int n = it.next().intValue();
                     if (parse.even && (n & 1) == 1)
                         continue;
@@ -278,8 +276,7 @@ public class SequenceList {
                     if (n >= parse.low && n <= parse.high)
                         it.remove();
                 }
-            }
-            else {
+            } else {
                 if (parse.low > parse.high) {
                     inc = -1;
                     if (parse.odd || parse.even) {
@@ -291,8 +288,7 @@ public class SequenceList {
                     }
                     for (int k = parse.low; k >= parse.high; k += inc)
                         list.add(Integer.valueOf(k));
-                }
-                else {
+                } else {
                     if (parse.odd || parse.even) {
                         ++inc;
                         if (parse.odd)

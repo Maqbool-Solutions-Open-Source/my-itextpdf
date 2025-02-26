@@ -48,6 +48,7 @@ import com.itextpdf.text.error_messages.MessageLocalization;
 public class DeviceNColor extends ExtendedColor {
     PdfDeviceNColor pdfDeviceNColor;
     float[] tints;
+
     public DeviceNColor(PdfDeviceNColor pdfDeviceNColor, float[] tints) {
         super(TYPE_DEVICEN);
         if (pdfDeviceNColor.getSpotColors().length != tints.length)
@@ -63,6 +64,7 @@ public class DeviceNColor extends ExtendedColor {
     public float[] getTints() {
         return tints;
     }
+
     public boolean equals(Object obj) {
         if (obj instanceof DeviceNColor && ((DeviceNColor) obj).tints.length == tints.length) {
             int i = 0;

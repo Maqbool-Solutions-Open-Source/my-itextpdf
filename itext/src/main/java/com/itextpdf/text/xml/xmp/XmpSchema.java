@@ -54,96 +54,103 @@ import com.itextpdf.text.xml.XMLUtil;
 @Deprecated
 public abstract class XmpSchema extends Properties {
 
-	private static final long serialVersionUID = -176374295948945272L;
+    private static final long serialVersionUID = -176374295948945272L;
 
-	/** the namesspace */
-	protected String xmlns;
+    /**
+     * the namesspace
+     */
+    protected String xmlns;
 
-	/** Constructs an XMP schema.
-	 * @param xmlns
-	 */
-	public XmpSchema(String xmlns) {
-		super();
-		this.xmlns = xmlns;
-	}
-	/**
-	 * The String representation of the contents.
-	 * @return a String representation.
-	 */
-	@Override
+    /**
+     * Constructs an XMP schema.
+     *
+     * @param xmlns
+     */
+    public XmpSchema(String xmlns) {
+        super();
+        this.xmlns = xmlns;
+    }
+
+    /**
+     * The String representation of the contents.
+     *
+     * @return a String representation.
+     */
+    @Override
     public String toString() {
-		StringBuffer buf = new StringBuffer();
-		for (Enumeration<?> e = this.propertyNames(); e.hasMoreElements(); ) {
-			process(buf, e.nextElement());
-		}
-		return buf.toString();
-	}
-	/**
-	 * Processes a property
-	 * @param buf
-	 * @param p
-	 */
-	protected void process(StringBuffer buf, Object p) {
-		buf.append('<');
-		buf.append(p);
-		buf.append('>');
-		buf.append(this.get(p));
-		buf.append("</");
-		buf.append(p);
-		buf.append('>');
-	}
-	/**
-	 * @return Returns the xmlns.
-	 */
-	public String getXmlns() {
-		return xmlns;
-	}
+        StringBuffer buf = new StringBuffer();
+        for (Enumeration<?> e = this.propertyNames(); e.hasMoreElements(); ) {
+            process(buf, e.nextElement());
+        }
+        return buf.toString();
+    }
 
-	/**
-	 * @param key
-	 * @param value
-	 * @return the previous property (null if there wasn't one)
-	 */
-	public Object addProperty(String key, String value) {
-		return this.setProperty(key, value);
-	}
+    /**
+     * Processes a property
+     *
+     * @param buf
+     * @param p
+     */
+    protected void process(StringBuffer buf, Object p) {
+        buf.append('<');
+        buf.append(p);
+        buf.append('>');
+        buf.append(this.get(p));
+        buf.append("</");
+        buf.append(p);
+        buf.append('>');
+    }
 
-	/**
-	 * @see java.util.Properties#setProperty(java.lang.String, java.lang.String)
-	 */
-	@Override
+    /**
+     * @return Returns the xmlns.
+     */
+    public String getXmlns() {
+        return xmlns;
+    }
+
+    /**
+     * @param key
+     * @param value
+     * @return the previous property (null if there wasn't one)
+     */
+    public Object addProperty(String key, String value) {
+        return this.setProperty(key, value);
+    }
+
+    /**
+     * @see java.util.Properties#setProperty(java.lang.String, java.lang.String)
+     */
+    @Override
     public Object setProperty(String key, String value) {
-		return super.setProperty(key, XMLUtil.escapeXML(value, false));
-	}
+        return super.setProperty(key, XMLUtil.escapeXML(value, false));
+    }
 
-	/**
-	 * @see java.util.Properties#setProperty(java.lang.String, java.lang.String)
-	 *
-	 * @param key
-	 * @param value
-	 * @return the previous property (null if there wasn't one)
-	 */
-	public Object setProperty(String key, XmpArray value) {
-		return super.setProperty(key, value.toString());
-	}
+    /**
+     * @param key
+     * @param value
+     * @return the previous property (null if there wasn't one)
+     * @see java.util.Properties#setProperty(java.lang.String, java.lang.String)
+     */
+    public Object setProperty(String key, XmpArray value) {
+        return super.setProperty(key, value.toString());
+    }
 
-	/**
-	 * @see java.util.Properties#setProperty(java.lang.String, java.lang.String)
-	 *
-	 * @param key
-	 * @param value
-	 * @return the previous property (null if there wasn't one)
-	 */
-	public Object setProperty(String key, LangAlt value) {
-		return super.setProperty(key, value.toString());
-	 }
+    /**
+     * @param key
+     * @param value
+     * @return the previous property (null if there wasn't one)
+     * @see java.util.Properties#setProperty(java.lang.String, java.lang.String)
+     */
+    public Object setProperty(String key, LangAlt value) {
+        return super.setProperty(key, value.toString());
+    }
 
-	/**
-	 * @param content
-	 * @return an escaped string
-	 * @deprecated use XMLUtil.escapeXml(String s, boolean onlyASCII) instead.
-	 */
-	public static String escape(String content) {
-		return XMLUtil.escapeXML(content, false);
-	}
+    /**
+     * @param content
+     * @return an escaped string
+     * @deprecated use XMLUtil.escapeXml(String s, boolean onlyASCII) instead.
+     */
+    public static String escape(String content) {
+        return XMLUtil.escapeXML(content, false);
+    }
 }

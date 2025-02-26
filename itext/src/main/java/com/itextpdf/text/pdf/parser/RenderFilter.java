@@ -46,6 +46,7 @@ package com.itextpdf.text.pdf.parser;
 
 /**
  * Interface for defining filters for use with {@link FilteredRenderListener}
+ *
  * @since 5.0.1
  */
 public abstract class RenderFilter {
@@ -54,16 +55,15 @@ public abstract class RenderFilter {
      * @param renderInfo
      * @return true if the text render operation should be performed
      */
-    public boolean allowText(TextRenderInfo renderInfo){
+    public boolean allowText(TextRenderInfo renderInfo) {
         return true;
     }
-    
+
     /**
-     * 
      * @param renderInfo
      * @return true if the image render operation should be performed
      */
-    public boolean allowImage(ImageRenderInfo renderInfo){
+    public boolean allowImage(ImageRenderInfo renderInfo) {
         return true;
     }
 

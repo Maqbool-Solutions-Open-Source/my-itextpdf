@@ -60,7 +60,7 @@ public class TtfUnicodeWriter {
     }
 
     public void writeFont(TrueTypeFontUnicode font, PdfIndirectReference ref, Object params[], byte[] rotbits) throws DocumentException, IOException {
-        HashMap<Integer, int[]> longTag = (HashMap<Integer, int[]>)params[0];
+        HashMap<Integer, int[]> longTag = (HashMap<Integer, int[]>) params[0];
         font.addRangeUni(longTag, true, font.subset);
         int[][] metrics = longTag.values().toArray(new int[0][]);
         Arrays.sort(metrics, font);
@@ -71,11 +71,11 @@ public class TtfUnicodeWriter {
         if (font.cff) {
             byte b[] = font.readCffFont();
             if (font.subset || font.subsetRanges != null) {
-                CFFFontSubset cff = new CFFFontSubset(new RandomAccessFileOrArray(b),longTag);
+                CFFFontSubset cff = new CFFFontSubset(new RandomAccessFileOrArray(b), longTag);
                 try {
                     b = cff.Process(cff.getNames()[0]);
-                //temporary fix for cff subset failure
-                } catch(Exception e) {
+                    //temporary fix for cff subset failure
+                } catch (Exception e) {
                     LoggerFactory.getLogger(TtfUnicodeWriter.class).error("Issue in CFF font subsetting." +
                             "Subsetting was disabled", e);
                     font.setSubset(false);
@@ -94,8 +94,7 @@ public class TtfUnicodeWriter {
                     TrueTypeFontSubSet sb = new TrueTypeFontSubSet(font.fileName, new RandomAccessFileOrArray(font.rf), new HashSet<Integer>(longTag.keySet()), font.directoryOffset, true, false);
                     b = sb.process();
                 }
-            }
-            else {
+            } else {
                 b = font.getFullFont();
             }
             int lengths[] = new int[]{b.length};

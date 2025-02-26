@@ -31,7 +31,6 @@ import java.util.Set;
 
 /**
  * RenderingHints
- *
  */
 public class RenderingHints implements Map<Object, Object>, Cloneable {
     public static final Key KEY_ALPHA_INTERPOLATION = new KeyImpl(1);
@@ -80,7 +79,7 @@ public class RenderingHints implements Map<Object, Object>, Cloneable {
     public static final Object VALUE_TEXT_ANTIALIAS_OFF = new KeyValue(KEY_TEXT_ANTIALIASING);
 
     private HashMap<Object, Object> map = new HashMap<Object, Object>();
-    
+
     public RenderingHints(Map<Key, ?> map) {
         super();
         if (map != null) {
@@ -98,7 +97,7 @@ public class RenderingHints implements Map<Object, Object>, Cloneable {
     }
 
     public Object put(Object key, Object value) {
-        if (!((Key)key).isCompatibleValue(value)) {
+        if (!((Key) key).isCompatibleValue(value)) {
             throw new IllegalArgumentException();
         }
 
@@ -127,7 +126,7 @@ public class RenderingHints implements Map<Object, Object>, Cloneable {
         } else {
             Set<?> entries = m.entrySet();
 
-            if (entries != null){
+            if (entries != null) {
                 Iterator<?> it = entries.iterator();
                 while (it.hasNext()) {
                     Map.Entry<?, ?> entry = (Map.Entry<?, ?>) it.next();
@@ -173,7 +172,7 @@ public class RenderingHints implements Map<Object, Object>, Cloneable {
             return false;
         }
 
-        Map<?, ?> m = (Map<?, ?>)o;
+        Map<?, ?> m = (Map<?, ?>) o;
         Set<?> keys = keySet();
         if (!keys.equals(m.keySet())) {
             return false;
@@ -181,10 +180,10 @@ public class RenderingHints implements Map<Object, Object>, Cloneable {
 
         Iterator<?> it = keys.iterator();
         while (it.hasNext()) {
-            Key key = (Key)it.next();
+            Key key = (Key) it.next();
             Object v1 = get(key);
             Object v2 = m.get(key);
-            if (!(v1==null?v2==null:v1.equals(v2))) {
+            if (!(v1 == null ? v2 == null : v1.equals(v2))) {
                 return false;
             }
         }
@@ -200,13 +199,13 @@ public class RenderingHints implements Map<Object, Object>, Cloneable {
     @Override
     public Object clone() {
         RenderingHints clone = new RenderingHints(null);
-        clone.map = (HashMap<Object, Object>)this.map.clone();
+        clone.map = (HashMap<Object, Object>) this.map.clone();
         return clone;
     }
 
     @Override
     public String toString() {
-        return "RenderingHints["+map.toString()+"]"; //$NON-NLS-1$ //$NON-NLS-2$
+        return "RenderingHints[" + map.toString() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -251,7 +250,7 @@ public class RenderingHints implements Map<Object, Object>, Cloneable {
                 return false;
             }
 
-            return ((KeyValue)val).key == this;
+            return ((KeyValue) val).key == this;
         }
     }
 

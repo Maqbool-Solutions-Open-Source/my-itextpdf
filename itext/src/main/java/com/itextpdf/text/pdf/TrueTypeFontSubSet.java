@@ -53,19 +53,20 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.ExceptionConverter;
 import com.itextpdf.text.error_messages.MessageLocalization;
 
-/** Subsets a True Type font by removing the unneeded glyphs from
+/**
+ * Subsets a True Type font by removing the unneeded glyphs from
  * the font.
  *
- * @author  Paulo Soares
+ * @author Paulo Soares
  */
 class TrueTypeFontSubSet {
     static final String tableNamesSimple[] = {"cvt ", "fpgm", "glyf", "head",
-        "hhea", "hmtx", "loca", "maxp", "prep"};
+            "hhea", "hmtx", "loca", "maxp", "prep"};
     static final String tableNamesCmap[] = {"cmap", "cvt ", "fpgm", "glyf", "head",
-        "hhea", "hmtx", "loca", "maxp", "prep"};
+            "hhea", "hmtx", "loca", "maxp", "prep"};
     static final String tableNamesExtra[] = {"OS/2", "cmap", "cvt ", "fpgm", "glyf", "head",
-        "hhea", "hmtx", "loca", "maxp", "name, prep"};
-    static final int entrySelectors[] = {0,0,1,1,2,2,2,2,3,3,3,3,3,3,3,3,4,4,4,4,4};
+            "hhea", "hmtx", "loca", "maxp", "name, prep"};
+    static final int entrySelectors[] = {0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4};
     static final int TABLE_CHECKSUM = 0;
     static final int TABLE_OFFSET = 1;
     static final int TABLE_LENGTH = 2;
@@ -78,16 +79,19 @@ class TrueTypeFontSubSet {
     static final int WE_HAVE_A_TWO_BY_TWO = 128;
 
 
-    /** Contains the location of the several tables. The key is the name of
+    /**
+     * Contains the location of the several tables. The key is the name of
      * the table and the value is an <CODE>int[3]</CODE> where position 0
      * is the checksum, position 1 is the offset from the start of the file
      * and position 2 is the length of the table.
      */
     protected HashMap<String, int[]> tableDirectory;
-    /** The file in use.
+    /**
+     * The file in use.
      */
     protected RandomAccessFileOrArray rf;
-    /** The file name.
+    /**
+     * The file name.
      */
     protected String fileName;
     protected boolean includeCmap;
@@ -106,11 +110,13 @@ class TrueTypeFontSubSet {
     protected int fontPtr;
     protected int directoryOffset;
 
-    /** Creates a new TrueTypeFontSubSet
+    /**
+     * Creates a new TrueTypeFontSubSet
+     *
      * @param directoryOffset The offset from the start of the file to the table directory
-     * @param fileName the file name of the font
-     * @param glyphsUsed the glyphs used
-     * @param includeCmap <CODE>true</CODE> if the table cmap is to be included in the generated font
+     * @param fileName        the file name of the font
+     * @param glyphsUsed      the glyphs used
+     * @param includeCmap     <CODE>true</CODE> if the table cmap is to be included in the generated font
      */
     TrueTypeFontSubSet(String fileName, RandomAccessFileOrArray rf, HashSet<Integer> glyphsUsed, int directoryOffset, boolean includeCmap, boolean includeExtras) {
         this.fileName = fileName;
@@ -122,10 +128,12 @@ class TrueTypeFontSubSet {
         glyphsInList = new ArrayList<Integer>(glyphsUsed);
     }
 
-    /** Does the actual work of subsetting the font.
-     * @throws IOException on error
-     * @throws DocumentException on error
+    /**
+     * Does the actual work of subsetting the font.
+     *
      * @return the subset font
+     * @throws IOException       on error
+     * @throws DocumentException on error
      */
     byte[] process() throws IOException, DocumentException {
         try {
@@ -137,12 +145,10 @@ class TrueTypeFontSubSet {
             locaTobytes();
             assembleFont();
             return outFont;
-        }
-        finally {
+        } finally {
             try {
                 rf.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // empty on purpose
             }
         }
@@ -193,12 +199,10 @@ class TrueTypeFontSubSet {
             if (name.equals("glyf")) {
                 writeFontInt(calculateChecksum(newGlyfTable));
                 len = glyfTableRealSize;
-            }
-            else if (name.equals("loca")) {
+            } else if (name.equals("loca")) {
                 writeFontInt(calculateChecksum(newLocaTableOut));
                 len = locaTableRealSize;
-            }
-            else {
+            } else {
                 writeFontInt(tableLocation[TABLE_CHECKSUM]);
                 len = tableLocation[TABLE_LENGTH];
             }
@@ -215,13 +219,11 @@ class TrueTypeFontSubSet {
                 System.arraycopy(newGlyfTable, 0, outFont, fontPtr, newGlyfTable.length);
                 fontPtr += newGlyfTable.length;
                 newGlyfTable = null;
-            }
-            else if (name.equals("loca")) {
+            } else if (name.equals("loca")) {
                 System.arraycopy(newLocaTableOut, 0, outFont, fontPtr, newLocaTableOut.length);
                 fontPtr += newLocaTableOut.length;
                 newLocaTableOut = null;
-            }
-            else {
+            } else {
                 rf.seek(tableLocation[TABLE_OFFSET]);
                 rf.readFully(outFont, fontPtr, tableLocation[TABLE_LENGTH]);
                 fontPtr += tableLocation[TABLE_LENGTH] + 3 & ~3;
@@ -263,8 +265,7 @@ class TrueTypeFontSubSet {
             locaTable = new int[entries];
             for (int k = 0; k < entries; ++k)
                 locaTable[k] = rf.readUnsignedShort() * 2;
-        }
-        else {
+        } else {
             int entries = tableLocation[TABLE_LENGTH] / 4;
             locaTable = new int[entries];
             for (int k = 0; k < entries; ++k)
@@ -347,7 +348,7 @@ class TrueTypeFontSubSet {
         if (numContours >= 0)
             return;
         rf.skipBytes(8);
-        for(;;) {
+        for (; ; ) {
             int flags = rf.readUnsignedShort();
             Integer cGlyph = Integer.valueOf(rf.readUnsignedShort());
             if (!glyphsUsed.contains(cGlyph)) {
@@ -371,8 +372,10 @@ class TrueTypeFontSubSet {
         }
     }
 
-    /** Reads a <CODE>String</CODE> from the font file as bytes using the Cp1252
-     *  encoding.
+    /**
+     * Reads a <CODE>String</CODE> from the font file as bytes using the Cp1252
+     * encoding.
+     *
      * @param length the length of bytes to read
      * @return the <CODE>String</CODE> read
      * @throws IOException the font file could not be read
@@ -382,22 +385,21 @@ class TrueTypeFontSubSet {
         rf.readFully(buf);
         try {
             return new String(buf, BaseFont.WINANSI);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
 
     protected void writeFontShort(int n) {
-        outFont[fontPtr++] = (byte)(n >> 8);
-        outFont[fontPtr++] = (byte)n;
+        outFont[fontPtr++] = (byte) (n >> 8);
+        outFont[fontPtr++] = (byte) n;
     }
 
     protected void writeFontInt(int n) {
-        outFont[fontPtr++] = (byte)(n >> 24);
-        outFont[fontPtr++] = (byte)(n >> 16);
-        outFont[fontPtr++] = (byte)(n >> 8);
-        outFont[fontPtr++] = (byte)n;
+        outFont[fontPtr++] = (byte) (n >> 24);
+        outFont[fontPtr++] = (byte) (n >> 16);
+        outFont[fontPtr++] = (byte) (n >> 8);
+        outFont[fontPtr++] = (byte) n;
     }
 
     protected void writeFontString(String s) {

@@ -49,15 +49,15 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * @author itextpdf.com
- *
  */
 public interface WriterOperation {
 
-	/**
-	 * Receive a writer and the document to do certain operations on them.
-	 * @param writer the PdfWriter
-	 * @param doc the document
-	 * @throws DocumentException
-	 */
-	void write(final PdfWriter writer, final Document doc) throws DocumentException;
+    /**
+     * Receive a writer and the document to do certain operations on them.
+     *
+     * @param writer the PdfWriter
+     * @param doc    the document
+     * @throws DocumentException
+     */
+    void write(final PdfWriter writer, final Document doc) throws DocumentException;
 }

@@ -222,10 +222,10 @@ public class Path {
         List<Integer> modifiedSubpathsIndices = new ArrayList<Integer>();
         int i = 0;
 
-            /* It could be replaced with "for" cycle, because IList in C# provides effective
-             * access by index. In Java List interface has at least one implementation (LinkedList)
-             * which is "bad" for access elements by index.
-             */
+        /* It could be replaced with "for" cycle, because IList in C# provides effective
+         * access by index. In Java List interface has at least one implementation (LinkedList)
+         * which is "bad" for access elements by index.
+         */
         for (Subpath subpath : subpaths) {
             if (subpath.isClosed()) {
                 subpath.setClosed(false);

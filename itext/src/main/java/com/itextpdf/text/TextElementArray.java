@@ -46,21 +46,21 @@ package com.itextpdf.text;
 /**
  * Interface for a text element to which other objects can be added.
  *
- * @see		Phrase
- * @see		Paragraph
- * @see		Section
- * @see		ListItem
- * @see		Chapter
- * @see		Anchor
+ * @see Phrase
+ * @see Paragraph
+ * @see Section
+ * @see ListItem
+ * @see Chapter
+ * @see Anchor
  */
 
 public interface TextElementArray extends Element {
 
-  /**
-   * Adds an element to the <CODE>TextElementArray</CODE>.
-   *
-   * @param	element			an element that has to be added
-   * @return	<CODE>true</CODE> if the addition succeeded; <CODE>false</CODE> otherwise
-   */
+    /**
+     * Adds an element to the <CODE>TextElementArray</CODE>.
+     *
+     * @param element an element that has to be added
+     * @return <CODE>true</CODE> if the addition succeeded; <CODE>false</CODE> otherwise
+     */
     public boolean add(Element element);
 }

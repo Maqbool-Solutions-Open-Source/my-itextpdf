@@ -54,12 +54,14 @@ import com.itextpdf.text.log.LoggerFactory;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
-/** Selects the appropriate fonts that contain the glyphs needed to
+/**
+ * Selects the appropriate fonts that contain the glyphs needed to
  * render text correctly. The fonts are checked in order until the
  * character is found.
  * <p>
  * The built in fonts "Symbol" and "ZapfDingbats", if used, have a special encoding
  * to allow the characters to be referred by Unicode.
+ *
  * @author Paulo Soares
  */
 public class FontSelector {
@@ -72,6 +74,7 @@ public class FontSelector {
 
     /**
      * Adds a <CODE>Font</CODE> to be searched for valid characters.
+     *
      * @param font the <CODE>Font</CODE>
      */
     public void addFont(Font font) {
@@ -91,6 +94,7 @@ public class FontSelector {
     /**
      * Process the text so that it will render with a combination of fonts
      * if needed.
+     *
      * @param text the text
      * @return a <CODE>Phrase</CODE> with one or more chunks
      */

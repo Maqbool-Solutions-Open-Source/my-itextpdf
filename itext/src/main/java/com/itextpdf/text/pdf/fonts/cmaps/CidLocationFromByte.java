@@ -50,7 +50,6 @@ import com.itextpdf.text.pdf.PRTokeniser;
 import com.itextpdf.text.pdf.RandomAccessFileOrArray;
 
 /**
- *
  * @author psoares
  */
 public class CidLocationFromByte implements CidLocation {
@@ -59,7 +58,7 @@ public class CidLocationFromByte implements CidLocation {
     public CidLocationFromByte(byte[] data) {
         this.data = data;
     }
-    
+
     public PRTokeniser getLocation(String location) throws IOException {
         return new PRTokeniser(new RandomAccessFileOrArray(new RandomAccessSourceFactory().createSource(data)));
     }

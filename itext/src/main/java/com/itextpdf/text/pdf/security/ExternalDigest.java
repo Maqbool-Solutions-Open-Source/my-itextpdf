@@ -47,7 +47,6 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 
 /**
- *
  * @author psoares
  */
 public interface ExternalDigest {

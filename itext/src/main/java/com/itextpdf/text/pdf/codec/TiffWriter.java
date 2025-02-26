@@ -46,12 +46,14 @@ package com.itextpdf.text.pdf.codec;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.util.TreeMap;
+
 /**
  * Exports images as TIFF.
+ *
  * @since 5.0.3
  */
 public class TiffWriter {
-    private TreeMap<Integer,FieldBase> ifd = new TreeMap<Integer,FieldBase>();
+    private TreeMap<Integer, FieldBase> ifd = new TreeMap<Integer, FieldBase>();
 
     public void addField(FieldBase field) {
         ifd.put(Integer.valueOf(field.getTag()), field);
@@ -85,6 +87,7 @@ public class TiffWriter {
 
     /**
      * Inner class class containing information about a field.
+     *
      * @since 5.0.3
      */
     public abstract static class FieldBase {
@@ -121,8 +124,7 @@ public class TiffWriter {
                 for (int k = data.length; k < 4; ++k) {
                     stream.write(0);
                 }
-            }
-            else {
+            } else {
                 writeLong(offset, stream);
             }
         }
@@ -138,14 +140,15 @@ public class TiffWriter {
 
     /**
      * Inner class containing info about a field.
+     *
      * @since 5.0.3
      */
     public static class FieldShort extends FieldBase {
         public FieldShort(int tag, int value) {
             super(tag, 3, 1);
             data = new byte[2];
-            data[0] = (byte)(value >> 8);
-            data[1] = (byte)value;
+            data[0] = (byte) (value >> 8);
+            data[1] = (byte) value;
         }
 
         public FieldShort(int tag, int[] values) {
@@ -153,24 +156,25 @@ public class TiffWriter {
             data = new byte[values.length * 2];
             int ptr = 0;
             for (int value : values) {
-                data[ptr++] = (byte)(value >> 8);
-                data[ptr++] = (byte)value;
+                data[ptr++] = (byte) (value >> 8);
+                data[ptr++] = (byte) value;
             }
         }
     }
 
     /**
      * Inner class containing info about a field.
+     *
      * @since 5.0.3
      */
     public static class FieldLong extends FieldBase {
         public FieldLong(int tag, int value) {
             super(tag, 4, 1);
             data = new byte[4];
-            data[0] = (byte)(value >> 24);
-            data[1] = (byte)(value >> 16);
-            data[2] = (byte)(value >> 8);
-            data[3] = (byte)value;
+            data[0] = (byte) (value >> 24);
+            data[1] = (byte) (value >> 16);
+            data[2] = (byte) (value >> 8);
+            data[3] = (byte) value;
         }
 
         public FieldLong(int tag, int[] values) {
@@ -178,16 +182,17 @@ public class TiffWriter {
             data = new byte[values.length * 4];
             int ptr = 0;
             for (int value : values) {
-                data[ptr++] = (byte)(value >> 24);
-                data[ptr++] = (byte)(value >> 16);
-                data[ptr++] = (byte)(value >> 8);
-                data[ptr++] = (byte)value;
+                data[ptr++] = (byte) (value >> 24);
+                data[ptr++] = (byte) (value >> 16);
+                data[ptr++] = (byte) (value >> 8);
+                data[ptr++] = (byte) value;
             }
         }
     }
 
     /**
      * Inner class containing info about a field.
+     *
      * @since 5.0.3
      */
     public static class FieldRational extends FieldBase {
@@ -200,20 +205,21 @@ public class TiffWriter {
             data = new byte[values.length * 8];
             int ptr = 0;
             for (int value[] : values) {
-                data[ptr++] = (byte)(value[0] >> 24);
-                data[ptr++] = (byte)(value[0] >> 16);
-                data[ptr++] = (byte)(value[0] >> 8);
-                data[ptr++] = (byte)value[0];
-                data[ptr++] = (byte)(value[1] >> 24);
-                data[ptr++] = (byte)(value[1] >> 16);
-                data[ptr++] = (byte)(value[1] >> 8);
-                data[ptr++] = (byte)value[1];
+                data[ptr++] = (byte) (value[0] >> 24);
+                data[ptr++] = (byte) (value[0] >> 16);
+                data[ptr++] = (byte) (value[0] >> 8);
+                data[ptr++] = (byte) value[0];
+                data[ptr++] = (byte) (value[1] >> 24);
+                data[ptr++] = (byte) (value[1] >> 16);
+                data[ptr++] = (byte) (value[1] >> 8);
+                data[ptr++] = (byte) value[1];
             }
         }
     }
 
     /**
      * Inner class containing info about a field.
+     *
      * @since 5.0.3
      */
     public static class FieldByte extends FieldBase {
@@ -225,6 +231,7 @@ public class TiffWriter {
 
     /**
      * Inner class containing info about a field.
+     *
      * @since 5.0.3
      */
     public static class FieldUndefined extends FieldBase {
@@ -236,6 +243,7 @@ public class TiffWriter {
 
     /**
      * Inner class containing info about a field.
+     *
      * @since 5.0.3
      */
     public static class FieldImage extends FieldBase {
@@ -247,6 +255,7 @@ public class TiffWriter {
 
     /**
      * Inner class containing info about an ASCII field.
+     *
      * @since 5.0.3
      */
     public static class FieldAscii extends FieldBase {

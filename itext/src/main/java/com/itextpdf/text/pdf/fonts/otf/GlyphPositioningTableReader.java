@@ -44,6 +44,7 @@
 package com.itextpdf.text.pdf.fonts.otf;
 
 import com.itextpdf.text.pdf.RandomAccessFileOrArray;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -52,238 +53,238 @@ import java.util.Set;
 
 /**
  * Not used at present, keeping for sometime future.
- * 
+ *
  * @author <a href="mailto:paawak@gmail.com">Palash Ray</a>
  */
 public class GlyphPositioningTableReader extends OpenTypeFontTableReader {
-    
+
     public GlyphPositioningTableReader(RandomAccessFileOrArray rf, int gposTableLocation) throws IOException {
         super(rf, gposTableLocation);
     }
-    
-    public void read() throws FontReadingException  {  
+
+    public void read() throws FontReadingException {
         startReadingTable();
     }
-    
+
     @Override
     protected void readSubTable(int lookupType, int subTableLocation) throws IOException {
-        
+
         if (lookupType == 1) {
             readLookUpType_1(subTableLocation);
         } else if (lookupType == 4) {
             readLookUpType_4(subTableLocation);
         } else if (lookupType == 8) {
-        	readLookUpType_8(subTableLocation);
+            readLookUpType_8(subTableLocation);
         } else {
-        	System.err.println("The lookupType " + lookupType + " is not yet supported by " + GlyphPositioningTableReader.class.getSimpleName());   
+            System.err.println("The lookupType " + lookupType + " is not yet supported by " + GlyphPositioningTableReader.class.getSimpleName());
         }
-        
+
     }
-    
+
     private void readLookUpType_1(int lookupTableLocation) throws IOException {
-    	rf.seek(lookupTableLocation);
-    	int posFormat = rf.readShort();
-    	
-    	if (posFormat == 1) {
-    		LOG.debug("Reading `Look Up Type 1, Format 1` ....");
+        rf.seek(lookupTableLocation);
+        int posFormat = rf.readShort();
+
+        if (posFormat == 1) {
+            LOG.debug("Reading `Look Up Type 1, Format 1` ....");
             int coverageOffset = rf.readShort();
             int valueFormat = rf.readShort();
 //            LOG.debug("valueFormat=" + valueFormat); 
-            
+
             //check if XPlacement should be read
-            if  ((valueFormat & 1) == 1) {
-            	int xPlacement = rf.readShort();
-            	LOG.debug("xPlacement=" + xPlacement); 
+            if ((valueFormat & 1) == 1) {
+                int xPlacement = rf.readShort();
+                LOG.debug("xPlacement=" + xPlacement);
             }
-            
-           //check if YPlacement should be read
-            if  ((valueFormat & 2) ==2) {
-            	int yPlacement = rf.readShort();
-            	LOG.debug("yPlacement=" + yPlacement); 
+
+            //check if YPlacement should be read
+            if ((valueFormat & 2) == 2) {
+                int yPlacement = rf.readShort();
+                LOG.debug("yPlacement=" + yPlacement);
             }
-            
+
             List<Integer> glyphCodes = readCoverageFormat(lookupTableLocation + coverageOffset);
-            
-            LOG.debug("glyphCodes=" + glyphCodes); 
-    	} else {
-    		System.err.println("The PosFormat " + posFormat + " for `LookupType 1` is not yet supported by " + GlyphPositioningTableReader.class.getSimpleName());
-    	}
-        
+
+            LOG.debug("glyphCodes=" + glyphCodes);
+        } else {
+            System.err.println("The PosFormat " + posFormat + " for `LookupType 1` is not yet supported by " + GlyphPositioningTableReader.class.getSimpleName());
+        }
+
     }
-    
+
     private void readLookUpType_4(int lookupTableLocation) throws IOException {
         rf.seek(lookupTableLocation);
-        
+
         int posFormat = rf.readShort();
-        
+
         if (posFormat == 1) {
-        	
-        	LOG.debug("Reading `Look Up Type 4, Format 1` ....");
-        	
+
+            LOG.debug("Reading `Look Up Type 4, Format 1` ....");
+
             int markCoverageOffset = rf.readShort();
             int baseCoverageOffset = rf.readShort();
             int classCount = rf.readShort();
             int markArrayOffset = rf.readShort();
             int baseArrayOffset = rf.readShort();
-            
+
             List<Integer> markCoverages = readCoverageFormat(lookupTableLocation + markCoverageOffset);
             LOG.debug("markCoverages=" + markCoverages);
-            
+
             List<Integer> baseCoverages = readCoverageFormat(lookupTableLocation + baseCoverageOffset);
             LOG.debug("baseCoverages=" + baseCoverages);
-            
+
             readMarkArrayTable(lookupTableLocation + markArrayOffset);
-            
+
             readBaseArrayTable(lookupTableLocation + baseArrayOffset, classCount);
         } else {
-        	System.err.println("The posFormat " + posFormat + " is not supported by " + GlyphPositioningTableReader.class.getSimpleName());
+            System.err.println("The posFormat " + posFormat + " is not supported by " + GlyphPositioningTableReader.class.getSimpleName());
         }
     }
-    
+
     private void readLookUpType_8(int lookupTableLocation) throws IOException {
         rf.seek(lookupTableLocation);
-        
+
         int posFormat = rf.readShort();
-        
+
         if (posFormat == 3) {
-        	LOG.debug("Reading `Look Up Type 8, Format 3` ....");
-        	readChainingContextPositioningFormat_3(lookupTableLocation);
+            LOG.debug("Reading `Look Up Type 8, Format 3` ....");
+            readChainingContextPositioningFormat_3(lookupTableLocation);
         } else {
-        	System.err.println("The posFormat " + posFormat + " for `Look Up Type 8` is not supported by " + GlyphPositioningTableReader.class.getSimpleName());
+            System.err.println("The posFormat " + posFormat + " for `Look Up Type 8` is not supported by " + GlyphPositioningTableReader.class.getSimpleName());
         }
     }
-    
+
     private void readChainingContextPositioningFormat_3(int lookupTableLocation) throws IOException {
         int backtrackGlyphCount = rf.readShort();
-        LOG.debug("backtrackGlyphCount=" + backtrackGlyphCount); 
-        List<Integer> backtrackGlyphOffsets =  new ArrayList<Integer>(backtrackGlyphCount);
-        
+        LOG.debug("backtrackGlyphCount=" + backtrackGlyphCount);
+        List<Integer> backtrackGlyphOffsets = new ArrayList<Integer>(backtrackGlyphCount);
+
         for (int i = 0; i < backtrackGlyphCount; i++) {
-        	int backtrackGlyphOffset = rf.readShort();
-        	backtrackGlyphOffsets.add(backtrackGlyphOffset);
+            int backtrackGlyphOffset = rf.readShort();
+            backtrackGlyphOffsets.add(backtrackGlyphOffset);
         }
-        
+
         int inputGlyphCount = rf.readShort();
-        LOG.debug("inputGlyphCount=" + inputGlyphCount); 
-        List<Integer>inputGlyphOffsets =  new ArrayList<Integer>(inputGlyphCount);
-        
+        LOG.debug("inputGlyphCount=" + inputGlyphCount);
+        List<Integer> inputGlyphOffsets = new ArrayList<Integer>(inputGlyphCount);
+
         for (int i = 0; i < inputGlyphCount; i++) {
-        	int inputGlyphOffset = rf.readShort();
-        	inputGlyphOffsets.add(inputGlyphOffset);
+            int inputGlyphOffset = rf.readShort();
+            inputGlyphOffsets.add(inputGlyphOffset);
         }
-        
+
         int lookaheadGlyphCount = rf.readShort();
-        LOG.debug("lookaheadGlyphCount=" + lookaheadGlyphCount); 
-        List<Integer>lookaheadGlyphOffsets =  new ArrayList<Integer>(lookaheadGlyphCount);
-        
+        LOG.debug("lookaheadGlyphCount=" + lookaheadGlyphCount);
+        List<Integer> lookaheadGlyphOffsets = new ArrayList<Integer>(lookaheadGlyphCount);
+
         for (int i = 0; i < lookaheadGlyphCount; i++) {
-        	int lookaheadGlyphOffset = rf.readShort();
-        	lookaheadGlyphOffsets.add(lookaheadGlyphOffset);
+            int lookaheadGlyphOffset = rf.readShort();
+            lookaheadGlyphOffsets.add(lookaheadGlyphOffset);
         }
-        
+
         int posCount = rf.readShort();
         LOG.debug("posCount=" + posCount);
-        
+
         List<PosLookupRecord> posLookupRecords = new ArrayList<PosLookupRecord>(posCount);
-        
+
         for (int i = 0; i < posCount; i++) {
-        	int sequenceIndex  = rf.readShort();
-        	int lookupListIndex  = rf.readShort();
-        	LOG.debug("sequenceIndex=" + sequenceIndex + ", lookupListIndex=" + lookupListIndex); 
-        	posLookupRecords.add(new PosLookupRecord(sequenceIndex, lookupListIndex));
+            int sequenceIndex = rf.readShort();
+            int lookupListIndex = rf.readShort();
+            LOG.debug("sequenceIndex=" + sequenceIndex + ", lookupListIndex=" + lookupListIndex);
+            posLookupRecords.add(new PosLookupRecord(sequenceIndex, lookupListIndex));
         }
-        
+
         for (int backtrackGlyphOffset : backtrackGlyphOffsets) {
-        	List<Integer> backtrackGlyphs = readCoverageFormat(lookupTableLocation + backtrackGlyphOffset);
-        	LOG.debug("backtrackGlyphs=" + backtrackGlyphs);
+            List<Integer> backtrackGlyphs = readCoverageFormat(lookupTableLocation + backtrackGlyphOffset);
+            LOG.debug("backtrackGlyphs=" + backtrackGlyphs);
         }
-        
+
         for (int inputGlyphOffset : inputGlyphOffsets) {
-        	List<Integer> inputGlyphs = readCoverageFormat(lookupTableLocation + inputGlyphOffset);
-        	LOG.debug("inputGlyphs=" + inputGlyphs);
+            List<Integer> inputGlyphs = readCoverageFormat(lookupTableLocation + inputGlyphOffset);
+            LOG.debug("inputGlyphs=" + inputGlyphs);
         }
-        
+
         for (int lookaheadGlyphOffset : lookaheadGlyphOffsets) {
-        	List<Integer> lookaheadGlyphs = readCoverageFormat(lookupTableLocation + lookaheadGlyphOffset);
-        	LOG.debug("lookaheadGlyphs=" + lookaheadGlyphs);
+            List<Integer> lookaheadGlyphs = readCoverageFormat(lookupTableLocation + lookaheadGlyphOffset);
+            LOG.debug("lookaheadGlyphs=" + lookaheadGlyphs);
         }
 
     }
-    
+
     private void readMarkArrayTable(int markArrayLocation) throws IOException {
-    	rf.seek(markArrayLocation);
-    	int markCount = rf.readShort();
-    	List<MarkRecord> markRecords = new ArrayList<GlyphPositioningTableReader.MarkRecord>();
-    	
-    	for (int i = 0; i < markCount; i++) {
-    		markRecords.add(readMarkRecord());
-    	}
-    	
-    	for (MarkRecord markRecord : markRecords) {
-    		readAnchorTable(markArrayLocation + markRecord.markAnchorOffset);
-    	}
+        rf.seek(markArrayLocation);
+        int markCount = rf.readShort();
+        List<MarkRecord> markRecords = new ArrayList<GlyphPositioningTableReader.MarkRecord>();
+
+        for (int i = 0; i < markCount; i++) {
+            markRecords.add(readMarkRecord());
+        }
+
+        for (MarkRecord markRecord : markRecords) {
+            readAnchorTable(markArrayLocation + markRecord.markAnchorOffset);
+        }
     }
-    
+
     private MarkRecord readMarkRecord() throws IOException {
-    	int markClass = rf.readShort();
-    	int markAnchorOffset = rf.readShort();
-    	return new MarkRecord(markClass, markAnchorOffset);
+        int markClass = rf.readShort();
+        int markAnchorOffset = rf.readShort();
+        return new MarkRecord(markClass, markAnchorOffset);
     }
-    
+
     private void readAnchorTable(int anchorTableLocation) throws IOException {
-    	rf.seek(anchorTableLocation);
-    	int anchorFormat = rf.readShort();
-    	
-    	if  (anchorFormat != 1) {
-    		System.err.println("The extra features of the AnchorFormat " + anchorFormat + " will not be used");
-    	}
-    	
-    	int x = rf.readShort();
-    	int y = rf.readShort();
-    	
+        rf.seek(anchorTableLocation);
+        int anchorFormat = rf.readShort();
+
+        if (anchorFormat != 1) {
+            System.err.println("The extra features of the AnchorFormat " + anchorFormat + " will not be used");
+        }
+
+        int x = rf.readShort();
+        int y = rf.readShort();
+
     }
-    
+
     private void readBaseArrayTable(int baseArrayTableLocation, int classCount) throws IOException {
-    	rf.seek(baseArrayTableLocation);
-    	int baseCount = rf.readShort();
-    	Set<Integer> baseAnchors = new HashSet<Integer>();
-    	
-    	for (int i = 0; i < baseCount; i++) {
-    		//read BaseRecord
-    		for (int k = 0; k < classCount; k++) {
-    			int baseAnchor = rf.readShort();
-    			baseAnchors.add(baseAnchor);
-    		}
-    	}
-    	
+        rf.seek(baseArrayTableLocation);
+        int baseCount = rf.readShort();
+        Set<Integer> baseAnchors = new HashSet<Integer>();
+
+        for (int i = 0; i < baseCount; i++) {
+            //read BaseRecord
+            for (int k = 0; k < classCount; k++) {
+                int baseAnchor = rf.readShort();
+                baseAnchors.add(baseAnchor);
+            }
+        }
+
 //    	LOG.debug(baseAnchors.size()); 
-    	
-    	for (int baseAnchor : baseAnchors) {
-    		readAnchorTable(baseArrayTableLocation + baseAnchor);
-    	}
-    	
+
+        for (int baseAnchor : baseAnchors) {
+            readAnchorTable(baseArrayTableLocation + baseAnchor);
+        }
+
     }
-    
+
     static class MarkRecord {
-    	final int markClass;
-    	final int markAnchorOffset;
-    	
-		public MarkRecord(int markClass, int markAnchorOffset) {
-			this.markClass = markClass;
-			this.markAnchorOffset = markAnchorOffset;
-		}
-		
+        final int markClass;
+        final int markAnchorOffset;
+
+        public MarkRecord(int markClass, int markAnchorOffset) {
+            this.markClass = markClass;
+            this.markAnchorOffset = markAnchorOffset;
+        }
+
     }
-    
+
     static class PosLookupRecord {
-    	final int sequenceIndex;
-    	final int lookupListIndex;
-    	
-		public PosLookupRecord(int sequenceIndex, int lookupListIndex) {
-			this.sequenceIndex = sequenceIndex;
-			this.lookupListIndex = lookupListIndex;
-		}
-		
+        final int sequenceIndex;
+        final int lookupListIndex;
+
+        public PosLookupRecord(int sequenceIndex, int lookupListIndex) {
+            this.sequenceIndex = sequenceIndex;
+            this.lookupListIndex = lookupListIndex;
+        }
+
     }
 
 }

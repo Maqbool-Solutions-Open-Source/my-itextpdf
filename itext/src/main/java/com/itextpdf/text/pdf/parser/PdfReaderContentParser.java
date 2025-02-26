@@ -55,52 +55,56 @@ import java.util.Map;
 /**
  * A utility class that makes it cleaner to process content from pages of a PdfReader
  * through a specified RenderListener.
+ *
  * @since 5.0.2
  */
 public class PdfReaderContentParser {
-    /** the reader this parser will process */
+    /**
+     * the reader this parser will process
+     */
     private final PdfReader reader;
-    
+
     public PdfReaderContentParser(PdfReader reader) {
         this.reader = reader;
     }
-    
+
     /**
      * Processes content from the specified page number using the specified listener.
      * Also allows registration of custom ContentOperators
-     * @param <E> the type of the renderListener - this makes it easy to chain calls
-     * @param pageNumber the page number to process
-     * @param renderListener the listener that will receive render callbacks
+     *
+     * @param <E>                        the type of the renderListener - this makes it easy to chain calls
+     * @param pageNumber                 the page number to process
+     * @param renderListener             the listener that will receive render callbacks
      * @param additionalContentOperators an optional map of custom ContentOperators for rendering instructions
      * @return the provided renderListener
      * @throws IOException if operations on the reader fail
      */
-    
-    public <E extends RenderListener> E processContent(int pageNumber, E renderListener, Map<String, ContentOperator> additionalContentOperators) throws IOException{
+
+    public <E extends RenderListener> E processContent(int pageNumber, E renderListener, Map<String, ContentOperator> additionalContentOperators) throws IOException {
         PdfDictionary pageDic = reader.getPageN(pageNumber);
         PdfDictionary resourcesDic = pageDic.getAsDict(PdfName.RESOURCES);
-        
+
         PdfContentStreamProcessor processor = new PdfContentStreamProcessor(renderListener);
-        for(Map.Entry<String, ContentOperator> entry : additionalContentOperators.entrySet()) {
+        for (Map.Entry<String, ContentOperator> entry : additionalContentOperators.entrySet()) {
             processor.registerContentOperator(entry.getKey(), entry.getValue());
         }
-        processor.processContent(ContentByteUtils.getContentBytesForPage(reader, pageNumber), resourcesDic);        
+        processor.processContent(ContentByteUtils.getContentBytesForPage(reader, pageNumber), resourcesDic);
         return renderListener;
 
     }
-    
+
     /**
      * Processes content from the specified page number using the specified listener
-     * @param <E> the type of the renderListener - this makes it easy to chain calls
-     * @param pageNumber the page number to process
+     *
+     * @param <E>            the type of the renderListener - this makes it easy to chain calls
+     * @param pageNumber     the page number to process
      * @param renderListener the listener that will receive render callbacks
      * @return the provided renderListener
      * @throws IOException if operations on the reader fail
-     *
      * @link PdfReaderContentParser#processContent(int, E, Map)
      * {@code map} defaults to null.
      */
-    public <E extends RenderListener> E processContent(int pageNumber, E renderListener) throws IOException{
+    public <E extends RenderListener> E processContent(int pageNumber, E renderListener) throws IOException {
         return processContent(pageNumber, renderListener, new HashMap<String, ContentOperator>());
     }
 }

@@ -43,46 +43,47 @@ package com.itextpdf.text.log;
 
 public class SysoCounter implements Counter {
 
-	/**
-	 * The name of the class for which the Counter was created
-	 * (or iText if no name is available)
-	 */
-	protected String name;
-	
-	/**
-	 * Empty SysoCounter constructor.
-	 */
-	public SysoCounter() {
-		name = "iText";
-	}
-	
-	/**
-	 * Constructs a SysoCounter for a specific class.
-	 * @param klass
-	 */
-	protected SysoCounter(Class<?> klass) {
-		name = klass.getName();
-	}
-	
-	/**
-	 * @see com.itextpdf.text.log.Counter#getCounter(java.lang.Class)
-	 */
-	public Counter getCounter(Class<?> klass) {
-		return new SysoCounter(klass);
-	}
+    /**
+     * The name of the class for which the Counter was created
+     * (or iText if no name is available)
+     */
+    protected String name;
 
-	/**
-	 * @see com.itextpdf.text.log.Counter#read(long)
-	 */
-	public void read(long l) {
-		System.out.println(String.format("[%s] %s bytes read", name, l));
-	}
+    /**
+     * Empty SysoCounter constructor.
+     */
+    public SysoCounter() {
+        name = "iText";
+    }
 
-	/**
-	 * @see com.itextpdf.text.log.Counter#written(long)
-	 */
-	public void written(long l) {
-		System.out.println(String.format("[%s] %s bytes written", name, l));
-	}
+    /**
+     * Constructs a SysoCounter for a specific class.
+     *
+     * @param klass
+     */
+    protected SysoCounter(Class<?> klass) {
+        name = klass.getName();
+    }
+
+    /**
+     * @see com.itextpdf.text.log.Counter#getCounter(java.lang.Class)
+     */
+    public Counter getCounter(Class<?> klass) {
+        return new SysoCounter(klass);
+    }
+
+    /**
+     * @see com.itextpdf.text.log.Counter#read(long)
+     */
+    public void read(long l) {
+        System.out.println(String.format("[%s] %s bytes read", name, l));
+    }
+
+    /**
+     * @see com.itextpdf.text.log.Counter#written(long)
+     */
+    public void written(long l) {
+        System.out.println(String.format("[%s] %s bytes written", name, l));
+    }
 
 }

@@ -85,18 +85,19 @@ public class PdfAnnotationsImp {
 
 
     public PdfAnnotationsImp(PdfWriter writer) {
-    	acroForm = new PdfAcroForm(writer);
+        acroForm = new PdfAcroForm(writer);
     }
 
     /**
      * Checks if the AcroForm is valid.
      */
     public boolean hasValidAcroForm() {
-    	return acroForm.isValid();
+        return acroForm.isValid();
     }
 
     /**
      * Gets the AcroForm object.
+     *
      * @return the PdfAcroform object of the PdfDocument
      */
     public PdfAcroForm getAcroForm() {
@@ -113,16 +114,15 @@ public class PdfAnnotationsImp {
 
     public void addAnnotation(PdfAnnotation annot) {
         if (annot.isForm()) {
-            PdfFormField field = (PdfFormField)annot;
+            PdfFormField field = (PdfFormField) annot;
             if (field.getParent() == null)
                 addFormFieldRaw(field);
-        }
-        else
+        } else
             annotations.add(annot);
     }
 
     public void addPlainAnnotation(PdfAnnotation annot) {
-    	annotations.add(annot);
+        annotations.add(annot);
     }
 
     void addFormFieldRaw(PdfFormField field) {
@@ -138,7 +138,7 @@ public class PdfAnnotationsImp {
     }
 
     public boolean hasUnusedAnnotations() {
-    	return !annotations.isEmpty();
+        return !annotations.isEmpty();
     }
 
     public void resetAnnotations() {
@@ -163,42 +163,41 @@ public class PdfAnnotationsImp {
                     if (templates != null)
                         acroForm.addFieldTemplates(templates);
                 }
-                PdfFormField field = (PdfFormField)dic;
+                PdfFormField field = (PdfFormField) dic;
                 if (field.getParent() == null)
                     acroForm.addDocumentField(field.getIndirectReference());
             }
             if (dic.isAnnotation()) {
                 array.add(dic.getIndirectReference());
                 if (!dic.isUsed()) {
-                	PdfArray tmp = dic.getAsArray(PdfName.RECT);
+                    PdfArray tmp = dic.getAsArray(PdfName.RECT);
                     PdfRectangle rect;
                     if (tmp.size() == 4) {
-                    	rect = new PdfRectangle(tmp.getAsNumber(0).floatValue(), tmp.getAsNumber(1).floatValue(), tmp.getAsNumber(2).floatValue(), tmp.getAsNumber(3).floatValue());
-                    }
-                    else {
-                    	rect = new PdfRectangle(tmp.getAsNumber(0).floatValue(), tmp.getAsNumber(1).floatValue());
+                        rect = new PdfRectangle(tmp.getAsNumber(0).floatValue(), tmp.getAsNumber(1).floatValue(), tmp.getAsNumber(2).floatValue(), tmp.getAsNumber(3).floatValue());
+                    } else {
+                        rect = new PdfRectangle(tmp.getAsNumber(0).floatValue(), tmp.getAsNumber(1).floatValue());
                     }
                     switch (rotation) {
                         case 90:
                             dic.put(PdfName.RECT, new PdfRectangle(
-                        	pageSize.getTop() - rect.bottom(),
-				rect.left(),
-				pageSize.getTop() - rect.top(),
-				rect.right()));
+                                    pageSize.getTop() - rect.bottom(),
+                                    rect.left(),
+                                    pageSize.getTop() - rect.top(),
+                                    rect.right()));
                             break;
                         case 180:
                             dic.put(PdfName.RECT, new PdfRectangle(
-                                pageSize.getRight() - rect.left(),
-				pageSize.getTop() - rect.bottom(),
-				pageSize.getRight() - rect.right(),
-				pageSize.getTop() - rect.top()));
+                                    pageSize.getRight() - rect.left(),
+                                    pageSize.getTop() - rect.bottom(),
+                                    pageSize.getRight() - rect.right(),
+                                    pageSize.getTop() - rect.top()));
                             break;
                         case 270:
                             dic.put(PdfName.RECT, new PdfRectangle(
-                        	rect.bottom(),
-				pageSize.getRight() - rect.left(),
-				rect.top(),
-				pageSize.getRight() - rect.right()));
+                                    rect.bottom(),
+                                    pageSize.getRight() - rect.left(),
+                                    rect.top(),
+                                    pageSize.getRight() - rect.right()));
                             break;
                     }
                 }
@@ -207,8 +206,7 @@ public class PdfAnnotationsImp {
                 dic.setUsed();
                 try {
                     writer.addToBody(dic, dic.getIndirectReference());
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     throw new ExceptionConverter(e);
                 }
             }
@@ -217,33 +215,33 @@ public class PdfAnnotationsImp {
     }
 
     public static PdfAnnotation convertAnnotation(PdfWriter writer, Annotation annot, Rectangle defaultRect) throws IOException {
-        switch(annot.annotationType()) {
-           case Annotation.URL_NET:
-               return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((URL) annot.attributes().get(Annotation.URL)), null);
-           case Annotation.URL_AS_STRING:
-               return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((String) annot.attributes().get(Annotation.FILE)), null);
-           case Annotation.FILE_DEST:
-               return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((String) annot.attributes().get(Annotation.FILE), (String) annot.attributes().get(Annotation.DESTINATION)), null);
-           case Annotation.SCREEN:
-               boolean sparams[] = (boolean[])annot.attributes().get(Annotation.PARAMETERS);
-               String fname = (String) annot.attributes().get(Annotation.FILE);
-               String mimetype = (String) annot.attributes().get(Annotation.MIMETYPE);
-               PdfFileSpecification fs;
-               if (sparams[0])
-                   fs = PdfFileSpecification.fileEmbedded(writer, fname, fname, null);
-               else
-                   fs = PdfFileSpecification.fileExtern(writer, fname);
-               PdfAnnotation ann = PdfAnnotation.createScreen(writer, new Rectangle(annot.llx(), annot.lly(), annot.urx(), annot.ury()),
-                       fname, fs, mimetype, sparams[1]);
-               return ann;
-           case Annotation.FILE_PAGE:
-               return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((String) annot.attributes().get(Annotation.FILE), ((Integer) annot.attributes().get(Annotation.PAGE)).intValue()), null);
-           case Annotation.NAMED_DEST:
-               return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction(((Integer) annot.attributes().get(Annotation.NAMED)).intValue()), null);
-           case Annotation.LAUNCH:
-               return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((String) annot.attributes().get(Annotation.APPLICATION),(String) annot.attributes().get(Annotation.PARAMETERS),(String) annot.attributes().get(Annotation.OPERATION),(String) annot.attributes().get(Annotation.DEFAULTDIR)), null);
-           default:
-        	   return writer.createAnnotation(defaultRect.getLeft(), defaultRect.getBottom(), defaultRect.getRight(), defaultRect.getTop(), new PdfString(annot.title(), PdfObject.TEXT_UNICODE), new PdfString(annot.content(), PdfObject.TEXT_UNICODE), null);
-       }
-   }
+        switch (annot.annotationType()) {
+            case Annotation.URL_NET:
+                return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((URL) annot.attributes().get(Annotation.URL)), null);
+            case Annotation.URL_AS_STRING:
+                return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((String) annot.attributes().get(Annotation.FILE)), null);
+            case Annotation.FILE_DEST:
+                return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((String) annot.attributes().get(Annotation.FILE), (String) annot.attributes().get(Annotation.DESTINATION)), null);
+            case Annotation.SCREEN:
+                boolean sparams[] = (boolean[]) annot.attributes().get(Annotation.PARAMETERS);
+                String fname = (String) annot.attributes().get(Annotation.FILE);
+                String mimetype = (String) annot.attributes().get(Annotation.MIMETYPE);
+                PdfFileSpecification fs;
+                if (sparams[0])
+                    fs = PdfFileSpecification.fileEmbedded(writer, fname, fname, null);
+                else
+                    fs = PdfFileSpecification.fileExtern(writer, fname);
+                PdfAnnotation ann = PdfAnnotation.createScreen(writer, new Rectangle(annot.llx(), annot.lly(), annot.urx(), annot.ury()),
+                        fname, fs, mimetype, sparams[1]);
+                return ann;
+            case Annotation.FILE_PAGE:
+                return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((String) annot.attributes().get(Annotation.FILE), ((Integer) annot.attributes().get(Annotation.PAGE)).intValue()), null);
+            case Annotation.NAMED_DEST:
+                return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction(((Integer) annot.attributes().get(Annotation.NAMED)).intValue()), null);
+            case Annotation.LAUNCH:
+                return writer.createAnnotation(annot.llx(), annot.lly(), annot.urx(), annot.ury(), new PdfAction((String) annot.attributes().get(Annotation.APPLICATION), (String) annot.attributes().get(Annotation.PARAMETERS), (String) annot.attributes().get(Annotation.OPERATION), (String) annot.attributes().get(Annotation.DEFAULTDIR)), null);
+            default:
+                return writer.createAnnotation(defaultRect.getLeft(), defaultRect.getBottom(), defaultRect.getRight(), defaultRect.getTop(), new PdfString(annot.title(), PdfObject.TEXT_UNICODE), new PdfString(annot.content(), PdfObject.TEXT_UNICODE), null);
+        }
+    }
 }

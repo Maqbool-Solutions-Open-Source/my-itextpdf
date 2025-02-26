@@ -58,32 +58,42 @@ import java.util.*;
  * to this class first and then create fonts in your code using one of the getFont method
  * without having to enter a path as parameter.
  *
- * @author  Bruno Lowagie
+ * @author Bruno Lowagie
  */
 
 public class FontFactoryImp implements FontProvider {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FontFactoryImp.class);
-/** This is a map of postscriptfontnames of True Type fonts and the path of their ttf- or ttc-file. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(FontFactoryImp.class);
+    /**
+     * This is a map of postscriptfontnames of True Type fonts and the path of their ttf- or ttc-file.
+     */
     private final Hashtable<String, String> trueTypeFonts = new Hashtable<String, String>();
 
     private static String[] TTFamilyOrder = {
-        "3", "1", "1033",
-        "3", "0", "1033",
-        "1", "0", "0",
-        "0", "3", "0"
+            "3", "1", "1033",
+            "3", "0", "1033",
+            "1", "0", "0",
+            "0", "3", "0"
     };
 
-/** This is a map of fontfamilies. */
+    /**
+     * This is a map of fontfamilies.
+     */
     private final Hashtable<String, ArrayList<String>> fontFamilies = new Hashtable<String, ArrayList<String>>();
 
-/** This is the default encoding to use. */
+    /**
+     * This is the default encoding to use.
+     */
     public String defaultEncoding = BaseFont.WINANSI;
 
-/** This is the default value of the <VAR>embedded</VAR> variable. */
+    /**
+     * This is the default value of the <VAR>embedded</VAR> variable.
+     */
     public boolean defaultEmbedding = BaseFont.NOT_EMBEDDED;
 
-/** Creates new FontFactory */
+    /**
+     * Creates new FontFactory
+     */
     public FontFactoryImp() {
         trueTypeFonts.put(FontFactory.COURIER.toLowerCase(), FontFactory.COURIER);
         trueTypeFonts.put(FontFactory.COURIER_BOLD.toLowerCase(), FontFactory.COURIER_BOLD);
@@ -131,12 +141,12 @@ public class FontFactoryImp implements FontProvider {
     /**
      * Constructs a <CODE>Font</CODE>-object.
      *
-     * @param	fontname    the name of the font
-     * @param	encoding    the encoding of the font
-     * @param       embedded    true if the font is to be embedded in the PDF
-     * @param	size	    the size of this font
-     * @param	style	    the style of this font
-     * @param	color	    the <CODE>BaseColor</CODE> of this font.
+     * @param embedded true if the font is to be embedded in the PDF
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @param size     the size of this font
+     * @param style    the style of this font
+     * @param color    the <CODE>BaseColor</CODE> of this font.
      * @return the Font constructed based on the parameters
      */
     public Font getFont(final String fontname, final String encoding, final boolean embedded, final float size, final int style, final BaseColor color) {
@@ -144,22 +154,21 @@ public class FontFactoryImp implements FontProvider {
     }
 
 
-
     /**
      * Constructs a <CODE>Font</CODE>-object.
      *
-     * @param	fontname    the name of the font
-     * @param	encoding    the encoding of the font
-     * @param       embedded    true if the font is to be embedded in the PDF
-     * @param	size	    the size of this font
-     * @param	style	    the style of this font
-     * @param	color	    the <CODE>BaseColor</CODE> of this font.
-     * @param	cached 		true if the font comes from the cache or is added to
-     * 				the cache if new, false if the font is always created new
+     * @param embedded true if the font is to be embedded in the PDF
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @param size     the size of this font
+     * @param style    the style of this font
+     * @param color    the <CODE>BaseColor</CODE> of this font.
+     * @param cached   true if the font comes from the cache or is added to
+     *                 the cache if new, false if the font is always created new
      * @return the Font constructed based on the parameters
      */
     public Font getFont(String fontname, final String encoding, final boolean embedded, final float size, int style, final BaseColor color, final boolean cached) {
-    	if (fontname == null) return new Font(FontFamily.UNDEFINED, size, style, color);
+        if (fontname == null) return new Font(FontFamily.UNDEFINED, size, style, color);
         String lowercasefontname = fontname.toLowerCase();
         ArrayList<String> tmp = fontFamilies.get(lowercasefontname);
         if (tmp != null) {
@@ -191,16 +200,13 @@ public class FontFactoryImp implements FontProvider {
                 // the font is not registered as truetype font
                 return new Font(FontFamily.UNDEFINED, size, style, color);
             }
-        }
-        catch(DocumentException de) {
+        } catch (DocumentException de) {
             // this shouldn't happen
             throw new ExceptionConverter(de);
-        }
-        catch(IOException ioe) {
+        } catch (IOException ioe) {
             // the font is registered as a true type font, but the path was wrong
             return new Font(FontFamily.UNDEFINED, size, style, color);
-        }
-        catch(NullPointerException npe) {
+        } catch (NullPointerException npe) {
             // null was entered as fontname and/or encoding
             return new Font(FontFamily.UNDEFINED, size, style, color);
         }
@@ -209,178 +215,178 @@ public class FontFactoryImp implements FontProvider {
 
     protected BaseFont getBaseFont(String fontname, final String encoding, final boolean embedded, final boolean cached) throws IOException, DocumentException {
         BaseFont basefont = null;
-            try {
-                // the font is a type 1 font or CJK font
-                basefont = BaseFont.createFont(fontname, encoding, embedded, cached, null, null, true);
-            } catch (DocumentException de) {
-            }
-            if (basefont == null) {
-                // the font is a true type font or an unknown font
-                fontname = trueTypeFonts.get(fontname.toLowerCase());
-                // the font is not registered as truetype font
-                if (fontname != null)
-                    basefont = BaseFont.createFont(fontname, encoding, embedded, cached, null, null);
-            }
+        try {
+            // the font is a type 1 font or CJK font
+            basefont = BaseFont.createFont(fontname, encoding, embedded, cached, null, null, true);
+        } catch (DocumentException de) {
+        }
+        if (basefont == null) {
+            // the font is a true type font or an unknown font
+            fontname = trueTypeFonts.get(fontname.toLowerCase());
+            // the font is not registered as truetype font
+            if (fontname != null)
+                basefont = BaseFont.createFont(fontname, encoding, embedded, cached, null, null);
+        }
 
         return basefont;
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	encoding    the encoding of the font
- * @param       embedded    true if the font is to be embedded in the PDF
- * @param	size	    the size of this font
- * @param	style	    the style of this font
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param embedded true if the font is to be embedded in the PDF
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @param size     the size of this font
+     * @param style    the style of this font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final String encoding, final boolean embedded, final float size, final int style) {
         return getFont(fontname, encoding, embedded, size, style, null);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	encoding    the encoding of the font
- * @param       embedded    true if the font is to be embedded in the PDF
- * @param	size	    the size of this font
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param embedded true if the font is to be embedded in the PDF
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @param size     the size of this font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final String encoding, final boolean embedded, final float size) {
         return getFont(fontname, encoding, embedded, size, Font.UNDEFINED, null);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	encoding    the encoding of the font
- * @param       embedded    true if the font is to be embedded in the PDF
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param embedded true if the font is to be embedded in the PDF
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final String encoding, final boolean embedded) {
         return getFont(fontname, encoding, embedded, Font.UNDEFINED, Font.UNDEFINED, null);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	encoding    the encoding of the font
- * @param	size	    the size of this font
- * @param	style	    the style of this font
- * @param	color	    the <CODE>BaseColor</CODE> of this font.
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @param size     the size of this font
+     * @param style    the style of this font
+     * @param color    the <CODE>BaseColor</CODE> of this font.
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final String encoding, final float size, final int style, final BaseColor color) {
         return getFont(fontname, encoding, defaultEmbedding, size, style, color);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	encoding    the encoding of the font
- * @param	size	    the size of this font
- * @param	style	    the style of this font
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @param size     the size of this font
+     * @param style    the style of this font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final String encoding, final float size, final int style) {
         return getFont(fontname, encoding, defaultEmbedding, size, style, null);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	encoding    the encoding of the font
- * @param	size	    the size of this font
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @param size     the size of this font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final String encoding, final float size) {
         return getFont(fontname, encoding, defaultEmbedding, size, Font.UNDEFINED, null);
     }
 
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	size	    the size of this font
- * @param	color	    the <CODE>BaseColor</CODE> of this font.
- * @return the Font constructed based on the parameters
- * @since 2.1.0
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @param size     the size of this font
+     * @param color    the <CODE>BaseColor</CODE> of this font.
+     * @return the Font constructed based on the parameters
+     * @since 2.1.0
+     */
 
     public Font getFont(final String fontname, final float size, final BaseColor color) {
         return getFont(fontname, defaultEncoding, defaultEmbedding, size, Font.UNDEFINED, color);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	encoding    the encoding of the font
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @param encoding the encoding of the font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final String encoding) {
         return getFont(fontname, encoding, defaultEmbedding, Font.UNDEFINED, Font.UNDEFINED, null);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	size	    the size of this font
- * @param	style	    the style of this font
- * @param	color	    the <CODE>BaseColor</CODE> of this font.
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @param size     the size of this font
+     * @param style    the style of this font
+     * @param color    the <CODE>BaseColor</CODE> of this font.
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final float size, final int style, final BaseColor color) {
         return getFont(fontname, defaultEncoding, defaultEmbedding, size, style, color);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	size	    the size of this font
- * @param	style	    the style of this font
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @param size     the size of this font
+     * @param style    the style of this font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final float size, final int style) {
         return getFont(fontname, defaultEncoding, defaultEmbedding, size, style, null);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @param	size	    the size of this font
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @param size     the size of this font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname, final float size) {
         return getFont(fontname, defaultEncoding, defaultEmbedding, size, Font.UNDEFINED, null);
     }
 
-/**
- * Constructs a <CODE>Font</CODE>-object.
- *
- * @param	fontname    the name of the font
- * @return the Font constructed based on the parameters
- */
+    /**
+     * Constructs a <CODE>Font</CODE>-object.
+     *
+     * @param fontname the name of the font
+     * @return the Font constructed based on the parameters
+     */
 
     public Font getFont(final String fontname) {
         return getFont(fontname, defaultEncoding, defaultEmbedding, Font.UNDEFINED, Font.UNDEFINED, null);
@@ -388,68 +394,69 @@ public class FontFactoryImp implements FontProvider {
 
     /**
      * Register a font by giving explicitly the font family and name.
+     *
      * @param familyName the font family
-     * @param fullName the font name
-     * @param path the font path
+     * @param fullName   the font name
+     * @param path       the font path
      */
     public void registerFamily(final String familyName, final String fullName, final String path) {
         if (path != null)
             trueTypeFonts.put(fullName, path);
         ArrayList<String> tmp;
         synchronized (fontFamilies) {
-          tmp = fontFamilies.get(familyName);
-          if (tmp == null) {
-              tmp = new ArrayList<String>();
-              fontFamilies.put(familyName, tmp);
-          }
+            tmp = fontFamilies.get(familyName);
+            if (tmp == null) {
+                tmp = new ArrayList<String>();
+                fontFamilies.put(familyName, tmp);
+            }
         }
         synchronized (tmp) {
-          if (!tmp.contains(fullName)) {
-              int fullNameLength = fullName.length();
-              boolean inserted = false;
-              for (int j = 0; j < tmp.size(); ++j) {
-                  if (tmp.get(j).length() >= fullNameLength) {
-                      tmp.add(j, fullName);
-                      inserted = true;
-                      break;
-                  }
-              }
-              if (!inserted) {
-                  tmp.add(fullName);
-                  String newFullName = fullName.toLowerCase();
-                  if (newFullName.endsWith("regular")) {
-                      //remove "regular" at the end of the font name
-                      newFullName = newFullName.substring(0, newFullName.length() - 7).trim();
-                      //insert this font name at the first position for higher priority
-                      tmp.add(0, fullName.substring(0, newFullName.length()));
-                  }
-              }
-          }
+            if (!tmp.contains(fullName)) {
+                int fullNameLength = fullName.length();
+                boolean inserted = false;
+                for (int j = 0; j < tmp.size(); ++j) {
+                    if (tmp.get(j).length() >= fullNameLength) {
+                        tmp.add(j, fullName);
+                        inserted = true;
+                        break;
+                    }
+                }
+                if (!inserted) {
+                    tmp.add(fullName);
+                    String newFullName = fullName.toLowerCase();
+                    if (newFullName.endsWith("regular")) {
+                        //remove "regular" at the end of the font name
+                        newFullName = newFullName.substring(0, newFullName.length() - 7).trim();
+                        //insert this font name at the first position for higher priority
+                        tmp.add(0, fullName.substring(0, newFullName.length()));
+                    }
+                }
+            }
         }
     }
 
-/**
- * Register a ttf- or a ttc-file.
- *
- * @param   path    the path to a ttf- or ttc-file
- */
+    /**
+     * Register a ttf- or a ttc-file.
+     *
+     * @param path the path to a ttf- or ttc-file
+     */
 
     public void register(final String path) {
         register(path, null);
     }
 
-/**
- * Register a font file and use an alias for the font contained in it.
- *
- * @param   path    the path to a font file
- * @param   alias   the alias you want to use for the font
- */
+    /**
+     * Register a font file and use an alias for the font contained in it.
+     *
+     * @param path  the path to a font file
+     * @param alias the alias you want to use for the font
+     */
 
     public void register(final String path, final String alias) {
         try {
             if (path.toLowerCase().endsWith(".ttf") || path.toLowerCase().endsWith(".otf") || path.toLowerCase().indexOf(".ttc,") > 0) {
                 Object allNames[] = BaseFont.getAllFontNames(path, BaseFont.WINANSI, null);
-                trueTypeFonts.put(((String)allNames[0]).toLowerCase(), path);
+                trueTypeFonts.put(((String) allNames[0]).toLowerCase(), path);
                 if (alias != null) {
                     String lcAlias = alias.toLowerCase();
                     trueTypeFonts.put(lcAlias, path);
@@ -459,7 +466,7 @@ public class FontFactoryImp implements FontProvider {
                     }
                 }
                 // register all the font names with all the locales
-                String[][] names = (String[][])allNames[2]; //full name
+                String[][] names = (String[][]) allNames[2]; //full name
                 for (String[] name : names) {
                     String lcName = name[3].toLowerCase();
                     trueTypeFonts.put(lcName, path);
@@ -470,7 +477,7 @@ public class FontFactoryImp implements FontProvider {
                 }
                 String fullName = null;
                 String familyName = null;
-                names = (String[][])allNames[1]; //family name
+                names = (String[][]) allNames[1]; //family name
                 for (int k = 0; k < TTFamilyOrder.length; k += 3) {
                     for (String[] name : names) {
                         if (TTFamilyOrder[k].equals(name[0]) && TTFamilyOrder[k + 1].equals(name[1]) && TTFamilyOrder[k + 2].equals(name[2])) {
@@ -482,7 +489,7 @@ public class FontFactoryImp implements FontProvider {
                 }
                 if (familyName != null) {
                     String lastName = "";
-                    names = (String[][])allNames[2]; //full name
+                    names = (String[][]) allNames[2]; //full name
                     for (String[] name : names) {
                         for (int k = 0; k < TTFamilyOrder.length; k += 3) {
                             if (TTFamilyOrder[k].equals(name[0]) && TTFamilyOrder[k + 1].equals(name[1]) && TTFamilyOrder[k + 2].equals(name[2])) {
@@ -496,16 +503,14 @@ public class FontFactoryImp implements FontProvider {
                         }
                     }
                 }
-            }
-            else if (path.toLowerCase().endsWith(".ttc")) {
+            } else if (path.toLowerCase().endsWith(".ttc")) {
                 if (alias != null)
                     LOGGER.error("You can't define an alias for a true type collection.");
                 String[] names = BaseFont.enumerateTTCNames(path);
                 for (int i = 0; i < names.length; i++) {
                     register(path + "," + i);
                 }
-            }
-            else if (path.toLowerCase().endsWith(".afm") || path.toLowerCase().endsWith(".pfm")) {
+            } else if (path.toLowerCase().endsWith(".afm") || path.toLowerCase().endsWith(".pfm")) {
                 BaseFont bf = BaseFont.createFont(path, BaseFont.CP1252, false);
                 String fullName = bf.getFullFontName()[0][3].toLowerCase();
                 String familyName = bf.getFamilyFontName()[0][3].toLowerCase();
@@ -515,14 +520,12 @@ public class FontFactoryImp implements FontProvider {
                 trueTypeFonts.put(fullName, path);
             }
             if (LOGGER.isLogging(Level.TRACE)) {
-        		LOGGER.trace(String.format("Registered %s", path));
-        	}
-        }
-        catch(DocumentException de) {
+                LOGGER.trace(String.format("Registered %s", path));
+            }
+        } catch (DocumentException de) {
             // this shouldn't happen
             throw new ExceptionConverter(de);
-        }
-        catch(IOException ioe) {
+        } catch (IOException ioe) {
             throw new ExceptionConverter(ioe);
         }
     }
@@ -540,7 +543,9 @@ public class FontFactoryImp implements FontProvider {
         return false;
     }
 
-    /** Register all the fonts in a directory.
+    /**
+     * Register all the fonts in a directory.
+     *
      * @param dir the directory
      * @return the number of fonts registered
      */
@@ -550,15 +555,16 @@ public class FontFactoryImp implements FontProvider {
 
     /**
      * Register all the fonts in a directory and possibly its subdirectories.
-     * @param dir the directory
+     *
+     * @param dir                the directory
      * @param scanSubdirectories recursively scan subdirectories if <code>true</true>
      * @return the number of fonts registered
      * @since 2.1.2
      */
     public int registerDirectory(final String dir, final boolean scanSubdirectories) {
-    	if (LOGGER.isLogging(Level.DEBUG)) {
-    		LOGGER.debug(String.format("Registering directory %s, looking for fonts", dir));
-    	}
+        if (LOGGER.isLogging(Level.DEBUG)) {
+            LOGGER.debug(String.format("Registering directory %s, looking for fonts", dir));
+        }
         int count = 0;
         try {
             File file = new File(dir);
@@ -589,20 +595,20 @@ public class FontFactoryImp implements FontProvider {
                             ++count;
                         }
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     //empty on purpose
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //empty on purpose
         }
         return count;
     }
 
-    /** Register fonts in some probable directories. It usually works in Windows,
+    /**
+     * Register fonts in some probable directories. It usually works in Windows,
      * Linux and Solaris.
+     *
      * @return the number of fonts registered
      */
     public int registerDirectories() {
@@ -615,7 +621,7 @@ public class FontFactoryImp implements FontProvider {
         }
         String fileseparator = System.getProperty("file.separator");
         if (windir != null && fileseparator != null) {
-        	count += registerDirectory(windir + fileseparator + "fonts");
+            count += registerDirectory(windir + fileseparator + "fonts");
         }
         count += registerDirectory("/usr/share/X11/fonts", true);
         count += registerDirectory("/usr/X/lib/X11/fonts", true);
@@ -627,30 +633,32 @@ public class FontFactoryImp implements FontProvider {
         return count;
     }
 
-/**
- * Gets a set of registered fontnames.
- * @return a set of registered fonts
- */
+    /**
+     * Gets a set of registered fontnames.
+     *
+     * @return a set of registered fonts
+     */
 
     public Set<String> getRegisteredFonts() {
         return trueTypeFonts.keySet();
     }
 
-/**
- * Gets a set of registered fontnames.
- * @return a set of registered font families
- */
+    /**
+     * Gets a set of registered fontnames.
+     *
+     * @return a set of registered font families
+     */
 
     public Set<String> getRegisteredFamilies() {
         return fontFamilies.keySet();
     }
 
-/**
- * Checks if a certain font is registered.
- *
- * @param   fontname    the name of the font that has to be checked.
- * @return  true if the font is found
- */
+    /**
+     * Checks if a certain font is registered.
+     *
+     * @param fontname the name of the font that has to be checked.
+     * @return true if the font is found
+     */
     public boolean isRegistered(final String fontname) {
         return trueTypeFonts.containsKey(fontname.toLowerCase());
     }

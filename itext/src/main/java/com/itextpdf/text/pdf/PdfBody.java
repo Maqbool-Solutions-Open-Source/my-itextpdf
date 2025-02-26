@@ -50,7 +50,7 @@ import com.itextpdf.text.Rectangle;
 
 import java.util.List;
 
-public class PdfBody extends Rectangle implements Element{
+public class PdfBody extends Rectangle implements Element {
 
     public PdfBody(Rectangle rectangle) {
         super(rectangle);

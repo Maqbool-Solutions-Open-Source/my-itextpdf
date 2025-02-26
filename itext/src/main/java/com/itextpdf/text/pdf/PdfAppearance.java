@@ -42,6 +42,7 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf;
+
 import java.util.HashMap;
 
 import com.itextpdf.text.Rectangle;
@@ -53,6 +54,7 @@ import com.itextpdf.text.Rectangle;
 public class PdfAppearance extends PdfTemplate {
 
     public static final HashMap<String, PdfName> stdFieldFontNames = new HashMap<String, PdfName>();
+
     static {
         stdFieldFontNames.put("Courier-BoldOblique", new PdfName("CoBO"));
         stdFieldFontNames.put("Courier-Bold", new PdfName("CoBo"));
@@ -82,7 +84,7 @@ public class PdfAppearance extends PdfTemplate {
     }
 
     /**
-     *Creates a <CODE>PdfAppearance</CODE>.
+     * Creates a <CODE>PdfAppearance</CODE>.
      */
 
     PdfAppearance() {
@@ -109,7 +111,7 @@ public class PdfAppearance extends PdfTemplate {
      * Creates a new appearance to be used with form fields.
      *
      * @param writer the PdfWriter to use
-     * @param width the bounding box width
+     * @param width  the bounding box width
      * @param height the bounding box height
      * @return the appearance created
      */
@@ -128,7 +130,7 @@ public class PdfAppearance extends PdfTemplate {
     /**
      * Set the font and the size for the subsequent text writing.
      *
-     * @param bf the font
+     * @param bf   the font
      * @param size the font size in points
      */
     @Override
@@ -136,9 +138,8 @@ public class PdfAppearance extends PdfTemplate {
         checkWriter();
         state.size = size;
         if (bf.getFontType() == BaseFont.FONT_TYPE_DOCUMENT) {
-            state.fontDetails = new FontDetails(null, ((DocumentFont)bf).getIndirectReference(), bf);
-        }
-        else
+            state.fontDetails = new FontDetails(null, ((DocumentFont) bf).getIndirectReference(), bf);
+        } else
             state.fontDetails = writer.addSimple(bf);
         PdfName psn = stdFieldFontNames.get(bf.getPostscriptFontName());
         if (psn == null) {

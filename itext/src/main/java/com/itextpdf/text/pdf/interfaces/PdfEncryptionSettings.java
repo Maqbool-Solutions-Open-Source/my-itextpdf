@@ -58,7 +58,7 @@ import com.itextpdf.text.DocumentException;
 
 public interface PdfEncryptionSettings {
 
-    
+
     /**
      * Sets the encryption options for this document. The userPassword and the
      * ownerPassword can be null or have zero length. In this case the ownerPassword
@@ -66,11 +66,12 @@ public interface PdfEncryptionSettings {
      * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
      * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
      * The permissions can be combined by ORing them.
-     * @param userPassword the user password. Can be null or empty
-     * @param ownerPassword the owner password. Can be null or empty
-     * @param permissions the user permissions
+     *
+     * @param userPassword   the user password. Can be null or empty
+     * @param ownerPassword  the owner password. Can be null or empty
+     * @param permissions    the user permissions
      * @param encryptionType the type of encryption. It can be one of STANDARD_ENCRYPTION_40, STANDARD_ENCRYPTION_128 or ENCRYPTION_AES128.
-     * Optionally DO_NOT_ENCRYPT_METADATA can be ored to output the metadata in cleartext
+     *                       Optionally DO_NOT_ENCRYPT_METADATA can be ored to output the metadata in cleartext
      * @throws DocumentException if the document is already open
      */
     public void setEncryption(byte userPassword[], byte ownerPassword[], int permissions, int encryptionType) throws DocumentException;
@@ -78,13 +79,14 @@ public interface PdfEncryptionSettings {
     /**
      * Sets the certificate encryption options for this document. An array of one or more public certificates
      * must be provided together with an array of the same size for the permissions for each certificate.
-     *  The open permissions for the document can be
-     *  AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
-     *  AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
-     *  The permissions can be combined by ORing them.
+     * The open permissions for the document can be
+     * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
+     * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
+     * The permissions can be combined by ORing them.
      * Optionally DO_NOT_ENCRYPT_METADATA can be ored to output the metadata in cleartext
-     * @param certs the public certificates to be used for the encryption
-     * @param permissions the user permissions for each of the certificates
+     *
+     * @param certs          the public certificates to be used for the encryption
+     * @param permissions    the user permissions for each of the certificates
      * @param encryptionType the type of encryption. It can be one of STANDARD_ENCRYPTION_40, STANDARD_ENCRYPTION_128 or ENCRYPTION_AES128.
      * @throws DocumentException if the document is already open
      */

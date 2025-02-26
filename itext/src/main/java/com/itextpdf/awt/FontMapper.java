@@ -59,8 +59,8 @@ public interface FontMapper {
     /**
      * Returns a BaseFont which can be used to represent the given AWT Font
      *
-     * @param	font		the font to be converted
-     * @return	a BaseFont which has similar properties to the provided Font
+     * @param font the font to be converted
+     * @return a BaseFont which has similar properties to the provided Font
      */
 
     public BaseFont awtToPdf(Font font);
@@ -68,9 +68,9 @@ public interface FontMapper {
     /**
      * Returns an AWT Font which can be used to represent the given BaseFont
      *
-     * @param	font		the font to be converted
-     * @param	size		the desired point size of the resulting font
-     * @return	a Font which has similar properties to the provided BaseFont
+     * @param font the font to be converted
+     * @param size the desired point size of the resulting font
+     * @return a Font which has similar properties to the provided BaseFont
      */
 
     public Font pdfToAwt(BaseFont font, int size);

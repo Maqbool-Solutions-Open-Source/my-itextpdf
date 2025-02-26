@@ -53,89 +53,119 @@ import java.util.TimeZone;
  * without a time has zeros for all the time fields. A time without a date has zeros for all date
  * fields (year, month, and day).
  */
-public interface XMPDateTime extends Comparable
-{
-	/** @return Returns the year, can be negative. */
-	int getYear();
-	
-	/** @param year Sets the year */
-	void setYear(int year);
+public interface XMPDateTime extends Comparable {
+    /**
+     * @return Returns the year, can be negative.
+     */
+    int getYear();
 
-	/** @return Returns The month in the range 1..12. */
-	int getMonth();
+    /**
+     * @param year Sets the year
+     */
+    void setYear(int year);
 
-	/** @param month Sets the month 1..12 */
-	void setMonth(int month);
-	
-	/** @return Returns the day of the month in the range 1..31. */
-	int getDay();
-	
-	/** @param day Sets the day 1..31 */
-	void setDay(int day);
+    /**
+     * @return Returns The month in the range 1..12.
+     */
+    int getMonth();
 
-	/** @return Returns hour - The hour in the range 0..23. */
-	int getHour();
+    /**
+     * @param month Sets the month 1..12
+     */
+    void setMonth(int month);
 
-	/** @param hour Sets the hour in the range 0..23. */
-	void setHour(int hour);
-	
-	/** @return Returns the minute in the range 0..59. */ 
-	int getMinute();
+    /**
+     * @return Returns the day of the month in the range 1..31.
+     */
+    int getDay();
 
-	/** @param minute Sets the minute in the range 0..59. */
-	void setMinute(int minute);
-	
-	/** @return Returns the second in the range 0..59. */
-	int getSecond();
+    /**
+     * @param day Sets the day 1..31
+     */
+    void setDay(int day);
 
-	/** @param second Sets the second in the range 0..59. */
-	void setSecond(int second);
-	
-	/**
-	 * @return Returns milli-, micro- and nano seconds.
-	 * 		   Nanoseconds within a second, often left as zero?
-	 */
-	int getNanoSecond();
+    /**
+     * @return Returns hour - The hour in the range 0..23.
+     */
+    int getHour();
 
-	/**
-	 * @param nanoSecond Sets the milli-, micro- and nano seconds.
-	 *		Granularity goes down to milli seconds. 		   
-	 */
-	void setNanoSecond(int nanoSecond);
-	
-	/** @return Returns the time zone. */
-	TimeZone getTimeZone();
+    /**
+     * @param hour Sets the hour in the range 0..23.
+     */
+    void setHour(int hour);
 
-	/** @param tz a time zone to set */
-	void setTimeZone(TimeZone tz);
-	
-	/**
-	 * This flag is set either by parsing or by setting year, month or day. 
-	 * @return Returns true if the XMPDateTime object has a date portion.
-	 */
-	boolean hasDate();
-	
-	/**
-	 * This flag is set either by parsing or by setting hours, minutes, seconds or milliseconds. 
-	 * @return Returns true if the XMPDateTime object has a time portion.
-	 */
-	boolean hasTime();
-	
-	/**
-	 * This flag is set either by parsing or by setting hours, minutes, seconds or milliseconds. 
-	 * @return Returns true if the XMPDateTime object has a defined timezone.
-	 */
-	boolean hasTimeZone();
-	
-	/** 
-	 * @return Returns a <code>Calendar</code> (only with milli second precision). <br>
-	 *  		<em>Note:</em> the dates before Oct 15th 1585 (which normally fall into validity of 
-	 *  		the Julian calendar) are also rendered internally as Gregorian dates. 
-	 */
-	Calendar getCalendar();
-	
-	/**
-	 * @return Returns the ISO 8601 string representation of the date and time.
-	 */
-	String getISO8601String();
+    /**
+     * @return Returns the minute in the range 0..59.
+     */
+    int getMinute();
+
+    /**
+     * @param minute Sets the minute in the range 0..59.
+     */
+    void setMinute(int minute);
+
+    /**
+     * @return Returns the second in the range 0..59.
+     */
+    int getSecond();
+
+    /**
+     * @param second Sets the second in the range 0..59.
+     */
+    void setSecond(int second);
+
+    /**
+     * @return Returns milli-, micro- and nano seconds.
+     * Nanoseconds within a second, often left as zero?
+     */
+    int getNanoSecond();
+
+    /**
+     * @param nanoSecond Sets the milli-, micro- and nano seconds.
+     *                   Granularity goes down to milli seconds.
+     */
+    void setNanoSecond(int nanoSecond);
+
+    /**
+     * @return Returns the time zone.
+     */
+    TimeZone getTimeZone();
+
+    /**
+     * @param tz a time zone to set
+     */
+    void setTimeZone(TimeZone tz);
+
+    /**
+     * This flag is set either by parsing or by setting year, month or day.
+     *
+     * @return Returns true if the XMPDateTime object has a date portion.
+     */
+    boolean hasDate();
+
+    /**
+     * This flag is set either by parsing or by setting hours, minutes, seconds or milliseconds.
+     *
+     * @return Returns true if the XMPDateTime object has a time portion.
+     */
+    boolean hasTime();
+
+    /**
+     * This flag is set either by parsing or by setting hours, minutes, seconds or milliseconds.
+     *
+     * @return Returns true if the XMPDateTime object has a defined timezone.
+     */
+    boolean hasTimeZone();
+
+    /**
+     * @return Returns a <code>Calendar</code> (only with milli second precision). <br>
+     * <em>Note:</em> the dates before Oct 15th 1585 (which normally fall into validity of
+     * the Julian calendar) are also rendered internally as Gregorian dates.
+     */
+    Calendar getCalendar();
+
+    /**
+     * @return Returns the ISO 8601 string representation of the date and time.
+     */
+    String getISO8601String();
 }

@@ -86,7 +86,9 @@ public class MetaState {
     public float scalingY;
 
 
-    /** Creates new MetaState */
+    /**
+     * Creates new MetaState
+     */
     public MetaState() {
         savedStates = new Stack<MetaState>();
         MetaObjects = new ArrayList<MetaObject>();
@@ -138,20 +140,18 @@ public class MetaState {
         int style;
         switch (obj.getType()) {
             case MetaObject.META_BRUSH:
-                currentBrush = (MetaBrush)obj;
+                currentBrush = (MetaBrush) obj;
                 style = currentBrush.getStyle();
                 if (style == MetaBrush.BS_SOLID) {
                     BaseColor color = currentBrush.getColor();
                     cb.setColorFill(color);
-                }
-                else if (style == MetaBrush.BS_HATCHED) {
+                } else if (style == MetaBrush.BS_HATCHED) {
                     BaseColor color = currentBackgroundColor;
                     cb.setColorFill(color);
                 }
                 break;
-            case MetaObject.META_PEN:
-            {
-                currentPen = (MetaPen)obj;
+            case MetaObject.META_PEN: {
+                currentPen = (MetaPen) obj;
                 style = currentPen.getStyle();
                 if (style != MetaPen.PS_NULL) {
                     BaseColor color = currentPen.getColor();
@@ -177,9 +177,8 @@ public class MetaState {
                 }
                 break;
             }
-            case MetaObject.META_FONT:
-            {
-                currentFont = (MetaFont)obj;
+            case MetaObject.META_FONT: {
+                currentFont = (MetaFont) obj;
                 break;
             }
         }
@@ -218,11 +217,11 @@ public class MetaState {
     }
 
     public float transformX(int x) {
-        return ((float)x - offsetWx) * scalingX / extentWx;
+        return ((float) x - offsetWx) * scalingX / extentWx;
     }
 
     public float transformY(int y) {
-        return (1f - ((float)y - offsetWy) / extentWy) * scalingY;
+        return (1f - ((float) y - offsetWy) / extentWy) * scalingY;
     }
 
     public void setScalingX(float scalingX) {
@@ -251,7 +250,7 @@ public class MetaState {
 
     public float transformAngle(float angle) {
         float ta = scalingY < 0 ? -angle : angle;
-        return (float)(scalingX < 0 ? Math.PI - ta : ta);
+        return (float) (scalingX < 0 ? Math.PI - ta : ta);
     }
 
     public void setCurrentPoint(Point p) {
@@ -274,70 +273,90 @@ public class MetaState {
         return currentFont;
     }
 
-    /** Getter for property currentBackgroundColor.
+    /**
+     * Getter for property currentBackgroundColor.
+     *
      * @return Value of property currentBackgroundColor.
      */
     public BaseColor getCurrentBackgroundColor() {
         return currentBackgroundColor;
     }
 
-    /** Setter for property currentBackgroundColor.
+    /**
+     * Setter for property currentBackgroundColor.
+     *
      * @param currentBackgroundColor New value of property currentBackgroundColor.
      */
     public void setCurrentBackgroundColor(BaseColor currentBackgroundColor) {
         this.currentBackgroundColor = currentBackgroundColor;
     }
 
-    /** Getter for property currentTextColor.
+    /**
+     * Getter for property currentTextColor.
+     *
      * @return Value of property currentTextColor.
      */
     public BaseColor getCurrentTextColor() {
         return currentTextColor;
     }
 
-    /** Setter for property currentTextColor.
+    /**
+     * Setter for property currentTextColor.
+     *
      * @param currentTextColor New value of property currentTextColor.
      */
     public void setCurrentTextColor(BaseColor currentTextColor) {
         this.currentTextColor = currentTextColor;
     }
 
-    /** Getter for property backgroundMode.
+    /**
+     * Getter for property backgroundMode.
+     *
      * @return Value of property backgroundMode.
      */
     public int getBackgroundMode() {
         return backgroundMode;
     }
 
-    /** Setter for property backgroundMode.
+    /**
+     * Setter for property backgroundMode.
+     *
      * @param backgroundMode New value of property backgroundMode.
      */
     public void setBackgroundMode(int backgroundMode) {
         this.backgroundMode = backgroundMode;
     }
 
-    /** Getter for property textAlign.
+    /**
+     * Getter for property textAlign.
+     *
      * @return Value of property textAlign.
      */
     public int getTextAlign() {
         return textAlign;
     }
 
-    /** Setter for property textAlign.
+    /**
+     * Setter for property textAlign.
+     *
      * @param textAlign New value of property textAlign.
      */
     public void setTextAlign(int textAlign) {
         this.textAlign = textAlign;
     }
 
-    /** Getter for property polyFillMode.
+    /**
+     * Getter for property polyFillMode.
+     *
      * @return Value of property polyFillMode.
      */
     public int getPolyFillMode() {
         return polyFillMode;
     }
 
-    /** Setter for property polyFillMode.
+    /**
+     * Setter for property polyFillMode.
+     *
      * @param polyFillMode New value of property polyFillMode.
      */
     public void setPolyFillMode(int polyFillMode) {

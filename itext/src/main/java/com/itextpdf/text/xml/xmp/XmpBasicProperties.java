@@ -50,23 +50,41 @@ import com.itextpdf.xmp.XMPUtils;
 import com.itextpdf.xmp.options.PropertyOptions;
 
 public class XmpBasicProperties {
-    /** An unordered array specifying properties that were edited outside the authoring application. Each item should contain a single namespace and XPath separated by one ASCII space (U+0020). */
+    /**
+     * An unordered array specifying properties that were edited outside the authoring application. Each item should contain a single namespace and XPath separated by one ASCII space (U+0020).
+     */
     public static final String ADVISORY = "Advisory";
-    /** The base URL for relative URLs in the document content. If this document contains Internet links, and those links are relative, they are relative to this base URL. This property provides a standard way for embedded relative URLs to be interpreted by tools. Web authoring tools should set the value based on their notion of where URLs will be interpreted. */
+    /**
+     * The base URL for relative URLs in the document content. If this document contains Internet links, and those links are relative, they are relative to this base URL. This property provides a standard way for embedded relative URLs to be interpreted by tools. Web authoring tools should set the value based on their notion of where URLs will be interpreted.
+     */
     public static final String BASEURL = "BaseURL";
-    /** The date and time the resource was originally created. */
+    /**
+     * The date and time the resource was originally created.
+     */
     public static final String CREATEDATE = "CreateDate";
-    /** The name of the first known tool used to create the resource. If history is present in the metadata, this value should be equivalent to that of xmpMM:History's softwareAgent property. */
+    /**
+     * The name of the first known tool used to create the resource. If history is present in the metadata, this value should be equivalent to that of xmpMM:History's softwareAgent property.
+     */
     public static final String CREATORTOOL = "CreatorTool";
-    /** An unordered array of text strings that unambiguously identify the resource within a given context. */
+    /**
+     * An unordered array of text strings that unambiguously identify the resource within a given context.
+     */
     public static final String IDENTIFIER = "Identifier";
-    /** The date and time that any metadata for this resource was last changed. */
+    /**
+     * The date and time that any metadata for this resource was last changed.
+     */
     public static final String METADATADATE = "MetadataDate";
-    /** The date and time the resource was last modified. */
+    /**
+     * The date and time the resource was last modified.
+     */
     public static final String MODIFYDATE = "ModifyDate";
-    /** A short informal name for the resource. */
+    /**
+     * A short informal name for the resource.
+     */
     public static final String NICKNAME = "Nickname";
-    /** An alternative array of thumbnail images for a file, which can differ in characteristics such as size or image encoding. */
+    /**
+     * An alternative array of thumbnail images for a file, which can differ in characteristics such as size or image encoding.
+     */
     public static final String THUMBNAILS = "Thumbnails";
 
     /**
@@ -109,7 +127,8 @@ public class XmpBasicProperties {
         xmpMeta.setProperty(XMPConst.NS_XMP, METADATADATE, date);
     }
 
-    /** Sets the identifier.
+    /**
+     * Sets the identifier.
      *
      * @param xmpMeta
      * @param id
@@ -121,7 +140,8 @@ public class XmpBasicProperties {
         }
     }
 
-    /** Adds the nickname.
+    /**
+     * Adds the nickname.
      *
      * @param xmpMeta
      * @param name

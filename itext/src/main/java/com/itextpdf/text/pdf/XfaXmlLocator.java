@@ -92,6 +92,7 @@ public class XfaXmlLocator implements XmlLocator {
 
     /**
      * Save document as single XML stream in AcroForm.
+     *
      * @param document signed document
      * @throws IOException
      * @throws DocumentException
@@ -113,7 +114,8 @@ public class XfaXmlLocator implements XmlLocator {
             }
             try {
                 tf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            } catch (Exception exc) {}
+            } catch (Exception exc) {
+            }
 
             Transformer trans = tf.newTransformer();
 

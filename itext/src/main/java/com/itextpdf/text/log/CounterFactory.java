@@ -47,44 +47,56 @@ package com.itextpdf.text.log;
  * <code>CounterFactory.getInstance().setCounter(new SysoCounter());</code>
  * SysoCounter is just an example of a Counter implementation.
  * It writes info about files being read and written to the System.out.
- * 
+ * <p>
  * This functionality can be used to create metrics in a SaaS context.
  */
 public class CounterFactory {
 
-	/** The singleton instance. */
-	private static CounterFactory myself;
-	static {
-		myself = new CounterFactory();
-	}
-	
-	/** The current counter implementation. */
-	private Counter counter = new DefaultCounter();
+    /**
+     * The singleton instance.
+     */
+    private static CounterFactory myself;
 
-	/** The empty constructor. */
-	private CounterFactory() {}
-	
-	/** Returns the singleton instance of the factory. */
-	public static CounterFactory getInstance() {
-		return myself;
-	}
-	
-	/** Returns a counter factory. */
-	public static Counter getCounter(Class<?> klass) {
-		return myself.counter.getCounter(klass);
-	}
-	
-	/**
-	 * Getter for the counter.
-	 */
-	public Counter getCounter() {
-		return counter;
-	}
-	
-	/**
-	 * Setter for the counter.
-	 */
-	public void setCounter(Counter counter) {
-		this.counter = counter;
-	}
+    static {
+        myself = new CounterFactory();
+    }
+
+    /**
+     * The current counter implementation.
+     */
+    private Counter counter = new DefaultCounter();
+
+    /**
+     * The empty constructor.
+     */
+    private CounterFactory() {
+    }
+
+    /**
+     * Returns the singleton instance of the factory.
+     */
+    public static CounterFactory getInstance() {
+        return myself;
+    }
+
+    /**
+     * Returns a counter factory.
+     */
+    public static Counter getCounter(Class<?> klass) {
+        return myself.counter.getCounter(klass);
+    }
+
+    /**
+     * Getter for the counter.
+     */
+    public Counter getCounter() {
+        return counter;
+    }
+
+    /**
+     * Setter for the counter.
+     */
+    public void setCounter(Counter counter) {
+        this.counter = counter;
+    }
 }

@@ -93,7 +93,7 @@ public class MemoryLimitsAwareHandler {
     /**
      * Sets the maximum allowed size which can be occupied by a single decompressed pdf stream.
      * This value correlates with maximum heap size. This value should not exceed limit of the heap size.
-     *
+     * <p>
      * iText will throw an exception if during decompression a pdf stream with two or more filters of identical type
      * occupies more memory than allowed.
      *
@@ -118,7 +118,7 @@ public class MemoryLimitsAwareHandler {
      * Sets the maximum allowed size which can be occupied by all decompressed pdf streams.
      * This value can be limited by the maximum expected PDF file size when it's completely decompressed.
      * Setting this value correlates with the maximum processing time spent on document reading
-     *
+     * <p>
      * iText will throw an exception if during decompression pdf streams with two or more filters of identical type
      * occupy more memory than allowed.
      *

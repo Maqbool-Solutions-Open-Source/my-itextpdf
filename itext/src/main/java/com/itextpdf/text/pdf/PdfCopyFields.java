@@ -58,16 +58,18 @@ import com.itextpdf.text.pdf.interfaces.PdfViewerPreferences;
  * Concatenates PDF documents including form fields. The rules for the form field
  * concatenation are the same as in Acrobat. All the documents are kept in memory unlike
  * PdfCopy.
- * @author  Paulo Soares
+ *
+ * @author Paulo Soares
  */
 @Deprecated
 public class PdfCopyFields
-	implements PdfViewerPreferences, PdfEncryptionSettings {
+        implements PdfViewerPreferences, PdfEncryptionSettings {
 
     private PdfCopyFieldsImp fc;
 
     /**
      * Creates a new instance.
+     *
      * @param os the output stream
      * @throws DocumentException on error
      */
@@ -77,7 +79,8 @@ public class PdfCopyFields
 
     /**
      * Creates a new instance.
-     * @param os the output stream
+     *
+     * @param os         the output stream
      * @param pdfVersion the pdf version the output will have
      * @throws DocumentException on error
      */
@@ -87,6 +90,7 @@ public class PdfCopyFields
 
     /**
      * Concatenates a PDF document.
+     *
      * @param reader the PDF document
      * @throws DocumentException on error
      */
@@ -98,7 +102,8 @@ public class PdfCopyFields
      * Concatenates a PDF document selecting the pages to keep. The pages are described as a
      * <CODE>List</CODE> of <CODE>Integer</CODE>. The page ordering can be changed but
      * no page repetitions are allowed.
-     * @param reader the PDF document
+     *
+     * @param reader      the PDF document
      * @param pagesToKeep the pages to keep
      * @throws DocumentException on error
      */
@@ -110,6 +115,7 @@ public class PdfCopyFields
      * Concatenates a PDF document selecting the pages to keep. The pages are described as
      * ranges. The page ordering can be changed but
      * no page repetitions are allowed.
+     *
      * @param reader the PDF document
      * @param ranges the comma separated ranges as described in {@link SequenceList}
      * @throws DocumentException on error
@@ -118,33 +124,36 @@ public class PdfCopyFields
         fc.addDocument(reader, SequenceList.expand(ranges, reader.getNumberOfPages()));
     }
 
-    /** Sets the encryption options for this document. The userPassword and the
-     *  ownerPassword can be null or have zero length. In this case the ownerPassword
-     *  is replaced by a random string. The open permissions for the document can be
-     *  AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
-     *  AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
-     *  The permissions can be combined by ORing them.
-     * @param userPassword the user password. Can be null or empty
-     * @param ownerPassword the owner password. Can be null or empty
-     * @param permissions the user permissions
+    /**
+     * Sets the encryption options for this document. The userPassword and the
+     * ownerPassword can be null or have zero length. In this case the ownerPassword
+     * is replaced by a random string. The open permissions for the document can be
+     * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
+     * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
+     * The permissions can be combined by ORing them.
+     *
+     * @param userPassword    the user password. Can be null or empty
+     * @param ownerPassword   the owner password. Can be null or empty
+     * @param permissions     the user permissions
      * @param strength128Bits <code>true</code> for 128 bit key length, <code>false</code> for 40 bit key length
      * @throws DocumentException if the document is already open
      */
     public void setEncryption(byte userPassword[], byte ownerPassword[], int permissions, boolean strength128Bits) throws DocumentException {
-    	fc.setEncryption(userPassword, ownerPassword, permissions, strength128Bits ? PdfWriter.STANDARD_ENCRYPTION_128 : PdfWriter.STANDARD_ENCRYPTION_40);
+        fc.setEncryption(userPassword, ownerPassword, permissions, strength128Bits ? PdfWriter.STANDARD_ENCRYPTION_128 : PdfWriter.STANDARD_ENCRYPTION_40);
     }
 
     /**
      * Sets the encryption options for this document. The userPassword and the
-     *  ownerPassword can be null or have zero length. In this case the ownerPassword
-     *  is replaced by a random string. The open permissions for the document can be
-     *  AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
-     *  AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
-     *  The permissions can be combined by ORing them.
-     * @param strength true for 128 bit key length. false for 40 bit key length
-     * @param userPassword the user password. Can be null or empty
+     * ownerPassword can be null or have zero length. In this case the ownerPassword
+     * is replaced by a random string. The open permissions for the document can be
+     * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
+     * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
+     * The permissions can be combined by ORing them.
+     *
+     * @param strength      true for 128 bit key length. false for 40 bit key length
+     * @param userPassword  the user password. Can be null or empty
      * @param ownerPassword the owner password. Can be null or empty
-     * @param permissions the user permissions
+     * @param permissions   the user permissions
      * @throws DocumentException if the document is already open
      */
     public void setEncryption(boolean strength, String userPassword, String ownerPassword, int permissions) throws DocumentException {
@@ -168,6 +177,7 @@ public class PdfCopyFields
 
     /**
      * Adds JavaScript to the global document
+     *
      * @param js the JavaScript
      */
     public void addJavaScript(String js) {
@@ -177,13 +187,16 @@ public class PdfCopyFields
     /**
      * Sets the bookmarks. The list structure is defined in
      * <CODE>SimpleBookmark#</CODE>.
+     *
      * @param outlines the bookmarks or <CODE>null</CODE> to remove any
      */
     public void setOutlines(List<HashMap<String, Object>> outlines) {
         fc.setOutlines(outlines);
     }
 
-    /** Gets the underlying PdfWriter.
+    /**
+     * Gets the underlying PdfWriter.
+     *
      * @return the underlying PdfWriter
      */
     public PdfWriter getWriter() {
@@ -192,6 +205,7 @@ public class PdfCopyFields
 
     /**
      * Gets the 1.5 compression status.
+     *
      * @return <code>true</code> if the 1.5 compression is on
      */
     public boolean isFullCompression() {
@@ -206,31 +220,31 @@ public class PdfCopyFields
         fc.setFullCompression();
     }
 
-	/**
-	 * @see com.itextpdf.text.pdf.interfaces.PdfEncryptionSettings#setEncryption(byte[], byte[], int, int)
-	 */
-	public void setEncryption(byte[] userPassword, byte[] ownerPassword, int permissions, int encryptionType) throws DocumentException {
-		fc.setEncryption(userPassword, ownerPassword, permissions, encryptionType);
-	}
+    /**
+     * @see com.itextpdf.text.pdf.interfaces.PdfEncryptionSettings#setEncryption(byte[], byte[], int, int)
+     */
+    public void setEncryption(byte[] userPassword, byte[] ownerPassword, int permissions, int encryptionType) throws DocumentException {
+        fc.setEncryption(userPassword, ownerPassword, permissions, encryptionType);
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.interfaces.PdfViewerPreferences#addViewerPreference(com.itextpdf.text.pdf.PdfName, com.itextpdf.text.pdf.PdfObject)
-	 */
-	public void addViewerPreference(PdfName key, PdfObject value) {
-		fc.addViewerPreference(key, value);
-	}
+    /**
+     * @see com.itextpdf.text.pdf.interfaces.PdfViewerPreferences#addViewerPreference(com.itextpdf.text.pdf.PdfName, com.itextpdf.text.pdf.PdfObject)
+     */
+    public void addViewerPreference(PdfName key, PdfObject value) {
+        fc.addViewerPreference(key, value);
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.interfaces.PdfViewerPreferences#setViewerPreferences(int)
-	 */
-	public void setViewerPreferences(int preferences) {
-		fc.setViewerPreferences(preferences);
-	}
+    /**
+     * @see com.itextpdf.text.pdf.interfaces.PdfViewerPreferences#setViewerPreferences(int)
+     */
+    public void setViewerPreferences(int preferences) {
+        fc.setViewerPreferences(preferences);
+    }
 
-	/**
-	 * @see com.itextpdf.text.pdf.interfaces.PdfEncryptionSettings#setEncryption(java.security.cert.Certificate[], int[], int)
-	 */
-	public void setEncryption(Certificate[] certs, int[] permissions, int encryptionType) throws DocumentException {
-		fc.setEncryption(certs, permissions, encryptionType);
-	}
+    /**
+     * @see com.itextpdf.text.pdf.interfaces.PdfEncryptionSettings#setEncryption(java.security.cert.Certificate[], int[], int)
+     */
+    public void setEncryption(Certificate[] certs, int[] permissions, int encryptionType) throws DocumentException {
+        fc.setEncryption(certs, permissions, encryptionType);
+    }
 }

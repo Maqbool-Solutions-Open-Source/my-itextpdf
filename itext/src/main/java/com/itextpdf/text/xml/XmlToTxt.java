@@ -56,64 +56,65 @@ import com.itextpdf.text.xml.simpleparser.SimpleXMLParser;
  */
 public class XmlToTxt implements SimpleXMLDocHandler {
 
-	/**
-	 * Buffer that stores all content that is encountered.
-	 */
-	protected StringBuffer buf;
+    /**
+     * Buffer that stores all content that is encountered.
+     */
+    protected StringBuffer buf;
 
-	/**
-	 * Static method that parses an XML InputStream.
-	 * @param is	the XML input that needs to be parsed
-	 * @return	a String obtained by removing all tags from the XML
-	 */
-	public static String parse(InputStream is) throws IOException {
-		XmlToTxt handler = new XmlToTxt();
-		SimpleXMLParser.parse(handler, null, new InputStreamReader(is), true);
-		return handler.toString();
-	}
-	
-	/**
-	 * Creates an instance of XML to TXT.
-	 */
-	protected XmlToTxt() {
-		buf = new StringBuffer();
-	}
-	
-	/**
-	 * @return	the String after parsing.
-	 */
-	public String toString() {
-		return buf.toString();
-	}
-	
-	/**
-	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#startElement(java.lang.String, java.util.Map)
-	 */
-	public void startElement(String tag, Map<String, String> h) {
-	}
+    /**
+     * Static method that parses an XML InputStream.
+     *
+     * @param is the XML input that needs to be parsed
+     * @return a String obtained by removing all tags from the XML
+     */
+    public static String parse(InputStream is) throws IOException {
+        XmlToTxt handler = new XmlToTxt();
+        SimpleXMLParser.parse(handler, null, new InputStreamReader(is), true);
+        return handler.toString();
+    }
 
-	/**
-	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#endElement(java.lang.String)
-	 */
-	public void endElement(String tag) {
-	}
+    /**
+     * Creates an instance of XML to TXT.
+     */
+    protected XmlToTxt() {
+        buf = new StringBuffer();
+    }
 
-	/**
-	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#startDocument()
-	 */
-	public void startDocument() {
-	}
+    /**
+     * @return the String after parsing.
+     */
+    public String toString() {
+        return buf.toString();
+    }
 
-	/**
-	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#endDocument()
-	 */
-	public void endDocument() {
-	}
+    /**
+     * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#startElement(java.lang.String, java.util.Map)
+     */
+    public void startElement(String tag, Map<String, String> h) {
+    }
 
-	/**
-	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#text(java.lang.String)
-	 */
-	public void text(String str) {
-		buf.append(str);
-	}
+    /**
+     * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#endElement(java.lang.String)
+     */
+    public void endElement(String tag) {
+    }
+
+    /**
+     * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#startDocument()
+     */
+    public void startDocument() {
+    }
+
+    /**
+     * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#endDocument()
+     */
+    public void endDocument() {
+    }
+
+    /**
+     * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#text(java.lang.String)
+     */
+    public void text(String str) {
+        buf.append(str);
+    }
 }

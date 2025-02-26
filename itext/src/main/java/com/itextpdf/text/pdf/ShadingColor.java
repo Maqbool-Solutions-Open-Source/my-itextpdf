@@ -43,17 +43,19 @@
  */
 package com.itextpdf.text.pdf;
 
-/** Implements a shading pattern as a <code>Color</code>.
+/**
+ * Implements a shading pattern as a <code>Color</code>.
  *
  * @author Paulo Soares
  */
 public class ShadingColor extends ExtendedColor {
 
     private static final long serialVersionUID = 4817929454941328671L;
-	PdfShadingPattern shadingPattern;
+    PdfShadingPattern shadingPattern;
 
     /**
      * Creates a shading color.
+     *
      * @param shadingPattern
      */
     public ShadingColor(PdfShadingPattern shadingPattern) {
@@ -63,18 +65,19 @@ public class ShadingColor extends ExtendedColor {
 
     /**
      * Gets the shading pattern.
+     *
      * @return a shading pattern.
      */
     public PdfShadingPattern getPdfShadingPattern() {
         return shadingPattern;
     }
-    
+
     public boolean equals(Object obj) {
-        return obj instanceof ShadingColor && (((ShadingColor)obj).shadingPattern).equals(this.shadingPattern);
+        return obj instanceof ShadingColor && (((ShadingColor) obj).shadingPattern).equals(this.shadingPattern);
     }
-    
+
     public int hashCode() {
         return shadingPattern.hashCode();
     }
-    
+
 }

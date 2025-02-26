@@ -46,56 +46,64 @@ package com.itextpdf.text.log;
  * {@link LoggerFactory#setLogger(Logger)}.
  *
  * @author redlab_b
- *
  */
 public interface Logger {
 
-	/**
-	 * @param klass
-	 * @return the logger for the given klass
-	 */
-	Logger getLogger(Class<?> klass);
+    /**
+     * @param klass
+     * @return the logger for the given klass
+     */
+    Logger getLogger(Class<?> klass);
 
-	Logger getLogger(String name);
-	/**
-	 * @param level
-	 * @return true if there should be logged for the given level
-	 */
-	boolean isLogging(Level level);
-	/**
-	 * Log a warning message.
-	 * @param message
-	 */
-	void warn(final String message);
+    Logger getLogger(String name);
 
-	/**
-	 * Log a trace message.
-	 * @param message
-	 */
-	void trace(final String message);
+    /**
+     * @param level
+     * @return true if there should be logged for the given level
+     */
+    boolean isLogging(Level level);
 
-	/**
-	 * Log a debug message.
-	 * @param message
-	 */
-	void debug(final String message);
+    /**
+     * Log a warning message.
+     *
+     * @param message
+     */
+    void warn(final String message);
 
-	/**
-	 * Log an info message.
-	 * @param message
-	 */
-	void info(final String message);
-	/**
-	 * Log an error message.
-	 * @param message
-	 */
-	void error(final String message);
+    /**
+     * Log a trace message.
+     *
+     * @param message
+     */
+    void trace(final String message);
 
-	/**
-	 * Log an error message and exception.
-	 * @param message
-	 * @param e
-	 */
-	void error(final String message, Exception e);
+    /**
+     * Log a debug message.
+     *
+     * @param message
+     */
+    void debug(final String message);
+
+    /**
+     * Log an info message.
+     *
+     * @param message
+     */
+    void info(final String message);
+
+    /**
+     * Log an error message.
+     *
+     * @param message
+     */
+    void error(final String message);
+
+    /**
+     * Log an error message and exception.
+     *
+     * @param message
+     * @param e
+     */
+    void error(final String message, Exception e);
 
 }

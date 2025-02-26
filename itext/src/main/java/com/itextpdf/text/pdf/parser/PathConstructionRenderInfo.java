@@ -119,8 +119,8 @@ public class PathConstructionRenderInfo {
 
     /**
      * @return {@link java.util.List} containing data of a new segment (E.g. x, y, w, h for rectangle;
-     *         x, y for line etc.) if the specified operation relates to adding the segment to the
-     *         current path, <CODE>null</CODE> otherwise.
+     * x, y for line etc.) if the specified operation relates to adding the segment to the
+     * current path, <CODE>null</CODE> otherwise.
      */
     public List<Float> getSegmentData() {
         return segmentData;

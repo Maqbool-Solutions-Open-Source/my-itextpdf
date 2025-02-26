@@ -1,19 +1,19 @@
 /**
  * Copyright (c) 2005, www.fontbox.org
  * All rights reserved.
- *
+ * <p>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * <p>
  * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ * this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
  * 3. Neither the name of fontbox; nor the names of its
- *    contributors may be used to endorse or promote products derived from this
- *    software without specific prior written permission.
- *
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ * <p>
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -24,9 +24,8 @@
  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * <p>
  * http://www.fontbox.org
- *
  */
 package com.itextpdf.text.pdf.fonts.cmaps;
 
@@ -34,6 +33,7 @@ import com.itextpdf.text.ExceptionConverter;
 import com.itextpdf.text.Utilities;
 import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfString;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +44,7 @@ import com.itextpdf.text.error_messages.MessageLocalization;
  * This class represents a CMap file.
  *
  * @author Ben Litchfield (ben@benlitchfield.com)
- * @since	2.1.4
+ * @since 2.1.4
  */
 public class CMapToUnicode extends AbstractCMap {
 
@@ -79,10 +79,9 @@ public class CMapToUnicode extends AbstractCMap {
     /**
      * This will perform a lookup into the map.
      *
-     * @param code The code used to lookup.
+     * @param code   The code used to lookup.
      * @param offset The offset into the byte array.
      * @param length The length of the data we are getting.
-     *
      * @return The string that matches the lookup.
      */
     public String lookup(byte[] code, int offset, int length) {
@@ -141,7 +140,7 @@ public class CMapToUnicode extends AbstractCMap {
     void addChar(int cid, String uni) {
         doubleByteMappings.put(Integer.valueOf(cid), uni);
     }
-    
+
     @Override
     void addChar(PdfString mark, PdfObject code) {
         try {
@@ -157,12 +156,11 @@ public class CMapToUnicode extends AbstractCMap {
             } else {
                 throw new IOException(MessageLocalization.getComposedMessage("mapping.code.should.be.1.or.two.bytes.and.not.1", src.length));
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ExceptionConverter(ex);
         }
     }
-    
+
     private String createStringFromBytes(byte[] bytes) throws IOException {
         String retval = null;
         if (bytes.length == 1) {

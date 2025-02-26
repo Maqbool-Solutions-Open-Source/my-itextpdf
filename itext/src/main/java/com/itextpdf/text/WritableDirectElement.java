@@ -57,67 +57,66 @@ import com.itextpdf.text.pdf.draw.VerticalPositionMark;
  * the writing. Much like a {@link VerticalPositionMark} but little different.
  *
  * @author itextpdf.com
- *
  */
 public abstract class WritableDirectElement implements Element, WriterOperation {
 
-	public static final int DIRECT_ELEMENT_TYPE_UNKNOWN = 0;
-	public static final int DIRECT_ELEMENT_TYPE_HEADER = 1;
+    public static final int DIRECT_ELEMENT_TYPE_UNKNOWN = 0;
+    public static final int DIRECT_ELEMENT_TYPE_HEADER = 1;
 
-	protected int directElementType = DIRECT_ELEMENT_TYPE_UNKNOWN;
+    protected int directElementType = DIRECT_ELEMENT_TYPE_UNKNOWN;
 
-	public WritableDirectElement() {
+    public WritableDirectElement() {
 
-	}
+    }
 
-	public WritableDirectElement(int directElementType) {
-		this.directElementType = directElementType;
-	}
+    public WritableDirectElement(int directElementType) {
+        this.directElementType = directElementType;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.itextpdf.text.Element#process(com.itextpdf.text.ElementListener)
-	 */
-	public boolean process(final ElementListener listener) {
-		throw new UnsupportedOperationException();
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.itextpdf.text.Element#process(com.itextpdf.text.ElementListener)
+     */
+    public boolean process(final ElementListener listener) {
+        throw new UnsupportedOperationException();
+    }
 
-	/**
-	 * @return {@link Element#WRITABLE_DIRECT}
-	 */
-	public int type() {
-		return Element.WRITABLE_DIRECT;
-	}
+    /**
+     * @return {@link Element#WRITABLE_DIRECT}
+     */
+    public int type() {
+        return Element.WRITABLE_DIRECT;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.itextpdf.text.Element#isContent()
-	 */
-	public boolean isContent() {
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.itextpdf.text.Element#isContent()
+     */
+    public boolean isContent() {
+        return false;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.itextpdf.text.Element#isNestable()
-	 */
-	public boolean isNestable() {
-		throw new UnsupportedOperationException();
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.itextpdf.text.Element#isNestable()
+     */
+    public boolean isNestable() {
+        throw new UnsupportedOperationException();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.itextpdf.text.Element#getChunks()
-	 */
-	public List<Chunk> getChunks() {
-		return new ArrayList<Chunk>(0);
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.itextpdf.text.Element#getChunks()
+     */
+    public List<Chunk> getChunks() {
+        return new ArrayList<Chunk>(0);
+    }
 
-	public int getDirectElementType() {
-		return directElementType;
-	}
+    public int getDirectElementType() {
+        return directElementType;
+    }
 }

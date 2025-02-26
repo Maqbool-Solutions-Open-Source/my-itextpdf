@@ -52,13 +52,13 @@ import com.itextpdf.text.error_messages.MessageLocalization;
 
 /**
  * <CODE>PdfPages</CODE> is the PDF Pages-object.
- * <P>
+ * <p>
  * The Pages of a document are accessible through a tree of nodes known as the Pages tree.
  * This tree defines the ordering of the pages in the document.<BR>
  * This object is described in the 'Portable Document Format Reference Manual version 1.3'
  * section 6.3 (page 71-73)
  *
- * @see		PdfPage
+ * @see PdfPage
  */
 
 public class PdfPages {
@@ -71,9 +71,9 @@ public class PdfPages {
 
     // constructors
 
-/**
- * Constructs a <CODE>PdfPages</CODE>-object.
- */
+    /**
+     * Constructs a <CODE>PdfPages</CODE>-object.
+     */
 
     PdfPages(PdfWriter writer) {
         this.writer = writer;
@@ -88,8 +88,7 @@ public class PdfPages {
             PdfIndirectReference current = writer.getCurrentPage();
             writer.addToBody(page, current);
             pages.add(current);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
@@ -100,8 +99,7 @@ public class PdfPages {
                 parents.add(writer.getPdfIndirectReference());
             pages.add(pageRef);
             return parents.get(parents.size() - 1);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
@@ -128,8 +126,7 @@ public class PdfPages {
                     thisLeaf = pages.size() % leaf;
                     if (thisLeaf == 0)
                         thisLeaf = leaf;
-                }
-                else
+                } else
                     count = stdCount;
                 PdfDictionary top = new PdfDictionary(PdfName.PAGES);
                 top.put(PdfName.COUNT, new PdfNumber(thisLeaf));

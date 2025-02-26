@@ -50,42 +50,46 @@ import com.itextpdf.text.ExceptionConverter;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.BaseColor;
 
-/** Implements the code interleaved 2 of 5. The text can include
+/**
+ * Implements the code interleaved 2 of 5. The text can include
  * non numeric characters that are printed but do not generate bars.
  * The default parameters are:
  * <pre>
- *x = 0.8f;
- *n = 2;
- *font = BaseFont.createFont("Helvetica", "winansi", false);
- *size = 8;
- *baseline = size;
- *barHeight = size * 3;
- *textAlignment = Element.ALIGN_CENTER;
- *generateChecksum = false;
- *checksumText = false;
+ * x = 0.8f;
+ * n = 2;
+ * font = BaseFont.createFont("Helvetica", "winansi", false);
+ * size = 8;
+ * baseline = size;
+ * barHeight = size * 3;
+ * textAlignment = Element.ALIGN_CENTER;
+ * generateChecksum = false;
+ * checksumText = false;
  * </pre>
  *
  * @author Paulo Soares
  */
-public class BarcodeInter25 extends Barcode{
+public class BarcodeInter25 extends Barcode {
 
-    /** The bars to generate the code.
-     */    
-	private static final byte BARS[][] =
-    {
-        {0,0,1,1,0},
-        {1,0,0,0,1},
-        {0,1,0,0,1},
-        {1,1,0,0,0},
-        {0,0,1,0,1},
-        {1,0,1,0,0},
-        {0,1,1,0,0},
-        {0,0,0,1,1},
-        {1,0,0,1,0},
-        {0,1,0,1,0}
-    };
+    /**
+     * The bars to generate the code.
+     */
+    private static final byte BARS[][] =
+            {
+                    {0, 0, 1, 1, 0},
+                    {1, 0, 0, 0, 1},
+                    {0, 1, 0, 0, 1},
+                    {1, 1, 0, 0, 0},
+                    {0, 0, 1, 0, 1},
+                    {1, 0, 1, 0, 0},
+                    {0, 1, 1, 0, 0},
+                    {0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0},
+                    {0, 1, 0, 1, 0}
+            };
 
-    /** Creates new BarcodeInter25 */
+    /**
+     * Creates new BarcodeInter25
+     */
     public BarcodeInter25() {
         try {
             x = 0.8f;
@@ -97,16 +101,17 @@ public class BarcodeInter25 extends Barcode{
             textAlignment = Element.ALIGN_CENTER;
             generateChecksum = false;
             checksumText = false;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
-    
-    /** Deletes all the non numeric characters from <CODE>text</CODE>.
+
+    /**
+     * Deletes all the non numeric characters from <CODE>text</CODE>.
+     *
      * @param text the text
      * @return a <CODE>String</CODE> with only numeric characters
-     */    
+     */
     public static String keepNumbers(String text) {
         StringBuffer sb = new StringBuffer();
         for (int k = 0; k < text.length(); ++k) {
@@ -116,11 +121,13 @@ public class BarcodeInter25 extends Barcode{
         }
         return sb.toString();
     }
-    
-    /** Calculates the checksum.
+
+    /**
+     * Calculates the checksum.
+     *
      * @param text the numeric text
      * @return the checksum
-     */    
+     */
     public static char getChecksum(String text) {
         int mul = 3;
         int total = 0;
@@ -129,13 +136,15 @@ public class BarcodeInter25 extends Barcode{
             total += mul * n;
             mul ^= 2;
         }
-        return (char)(((10 - (total % 10)) % 10) + '0');
+        return (char) (((10 - (total % 10)) % 10) + '0');
     }
 
-    /** Creates the bars for the barcode.
+    /**
+     * Creates the bars for the barcode.
+     *
      * @param text the text. It can contain non numeric characters
      * @return the barcode
-     */    
+     */
     public static byte[] getBarsInter25(String text) {
         text = keepNumbers(text);
         if ((text.length() & 1) != 0)
@@ -163,10 +172,12 @@ public class BarcodeInter25 extends Barcode{
         return bars;
     }
 
-    /** Gets the maximum area that the barcode and the text, if
+    /**
+     * Gets the maximum area that the barcode and the text, if
      * any, will occupy. The lower left corner is always (0, 0).
+     *
      * @return the size the barcode occupies.
-     */    
+     */
     public Rectangle getBarcodeSize() {
         float fontX = 0;
         float fontY = 0;
@@ -184,48 +195,50 @@ public class BarcodeInter25 extends Barcode{
         int len = fullCode.length();
         if (generateChecksum)
             ++len;
-        float fullWidth = len * (3 * x + 2 * x * n) + (6 + n ) * x;
+        float fullWidth = len * (3 * x + 2 * x * n) + (6 + n) * x;
         fullWidth = Math.max(fullWidth, fontX);
         float fullHeight = barHeight + fontY;
         return new Rectangle(fullWidth, fullHeight);
     }
-    
-    /** Places the barcode in a <CODE>PdfContentByte</CODE>. The
+
+    /**
+     * Places the barcode in a <CODE>PdfContentByte</CODE>. The
      * barcode is always placed at coordinates (0, 0). Use the
      * translation matrix to move it elsewhere.<p>
      * The bars and text are written in the following colors:<p>
      * <P><TABLE BORDER=1>
      * <TR>
-     *    <TH><P><CODE>barColor</CODE></TH>
-     *    <TH><P><CODE>textColor</CODE></TH>
-     *    <TH><P>Result</TH>
-     *    </TR>
+     * <TH><P><CODE>barColor</CODE></TH>
+     * <TH><P><CODE>textColor</CODE></TH>
+     * <TH><P>Result</TH>
+     * </TR>
      * <TR>
-     *    <TD><P><CODE>null</CODE></TD>
-     *    <TD><P><CODE>null</CODE></TD>
-     *    <TD><P>bars and text painted with current fill color</TD>
-     *    </TR>
+     * <TD><P><CODE>null</CODE></TD>
+     * <TD><P><CODE>null</CODE></TD>
+     * <TD><P>bars and text painted with current fill color</TD>
+     * </TR>
      * <TR>
-     *    <TD><P><CODE>barColor</CODE></TD>
-     *    <TD><P><CODE>null</CODE></TD>
-     *    <TD><P>bars and text painted with <CODE>barColor</CODE></TD>
-     *    </TR>
+     * <TD><P><CODE>barColor</CODE></TD>
+     * <TD><P><CODE>null</CODE></TD>
+     * <TD><P>bars and text painted with <CODE>barColor</CODE></TD>
+     * </TR>
      * <TR>
-     *    <TD><P><CODE>null</CODE></TD>
-     *    <TD><P><CODE>textColor</CODE></TD>
-     *    <TD><P>bars painted with current color<br>text painted with <CODE>textColor</CODE></TD>
-     *    </TR>
+     * <TD><P><CODE>null</CODE></TD>
+     * <TD><P><CODE>textColor</CODE></TD>
+     * <TD><P>bars painted with current color<br>text painted with <CODE>textColor</CODE></TD>
+     * </TR>
      * <TR>
-     *    <TD><P><CODE>barColor</CODE></TD>
-     *    <TD><P><CODE>textColor</CODE></TD>
-     *    <TD><P>bars painted with <CODE>barColor</CODE><br>text painted with <CODE>textColor</CODE></TD>
-     *    </TR>
+     * <TD><P><CODE>barColor</CODE></TD>
+     * <TD><P><CODE>textColor</CODE></TD>
+     * <TD><P>bars painted with <CODE>barColor</CODE><br>text painted with <CODE>textColor</CODE></TD>
+     * </TR>
      * </TABLE>
-     * @param cb the <CODE>PdfContentByte</CODE> where the barcode will be placed
-     * @param barColor the color of the bars. It can be <CODE>null</CODE>
+     *
+     * @param cb        the <CODE>PdfContentByte</CODE> where the barcode will be placed
+     * @param barColor  the color of the bars. It can be <CODE>null</CODE>
      * @param textColor the color of the text. It can be <CODE>null</CODE>
      * @return the dimensions the barcode occupies
-     */    
+     */
     public Rectangle placeBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor) {
         String fullCode = code;
         float fontX = 0;
@@ -238,7 +251,7 @@ public class BarcodeInter25 extends Barcode{
         if (generateChecksum)
             bCode += getChecksum(bCode);
         int len = bCode.length();
-        float fullWidth = len * (3 * x + 2 * x * n) + (6 + n ) * x;
+        float fullWidth = len * (3 * x + 2 * x * n) + (6 + n) * x;
         float barStartX = 0;
         float textStartX = 0;
         switch (textAlignment) {
@@ -289,16 +302,18 @@ public class BarcodeInter25 extends Barcode{
             cb.endText();
         }
         return getBarcodeSize();
-    }   
+    }
 
     // AWT related methods (remove this if you port to Android / GAE)
-    
-    /** Creates a <CODE>java.awt.Image</CODE>. This image only
+
+    /**
+     * Creates a <CODE>java.awt.Image</CODE>. This image only
      * contains the bars without any text.
+     *
      * @param foreground the color of the bars
      * @param background the color of the background
      * @return the image
-     */    
+     */
     public java.awt.Image createAwtImage(java.awt.Color foreground, java.awt.Color background) {
         int f = foreground.getRGB();
         int g = background.getRGB();
@@ -308,12 +323,12 @@ public class BarcodeInter25 extends Barcode{
         if (generateChecksum)
             bCode += getChecksum(bCode);
         int len = bCode.length();
-        int nn = (int)n;
-        int fullWidth = len * (3 + 2 * nn) + (6 + nn );
+        int nn = (int) n;
+        int fullWidth = len * (3 + 2 * nn) + (6 + nn);
         byte bars[] = getBarsInter25(bCode);
         boolean print = true;
         int ptr = 0;
-        int height = (int)barHeight;
+        int height = (int) barHeight;
         int pix[] = new int[fullWidth * height];
         for (int k = 0; k < bars.length; ++k) {
             int w = (bars[k] == 0 ? 1 : nn);
@@ -325,10 +340,10 @@ public class BarcodeInter25 extends Barcode{
                 pix[ptr++] = c;
         }
         for (int k = fullWidth; k < pix.length; k += fullWidth) {
-            System.arraycopy(pix, 0, pix, k, fullWidth); 
+            System.arraycopy(pix, 0, pix, k, fullWidth);
         }
         java.awt.Image img = canvas.createImage(new java.awt.image.MemoryImageSource(fullWidth, height, pix, 0, fullWidth));
-        
+
         return img;
-    }    
+    }
 }

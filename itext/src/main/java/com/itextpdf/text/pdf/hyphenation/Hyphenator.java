@@ -31,7 +31,9 @@ import java.util.Hashtable;
  */
 public class Hyphenator {
 
-    /** TODO: Don't use statics */
+    /**
+     * TODO: Don't use statics
+     */
     private static Hashtable<String, HyphenationTree> hyphenTrees = new Hashtable<String, HyphenationTree>();
 
     private HyphenationTree hyphenTree = null;
@@ -39,7 +41,9 @@ public class Hyphenator {
     private int pushCharCount = 2;
     private static final String defaultHyphLocation = "com/itextpdf/text/pdf/hyphenation/hyph/";
 
-    /** Holds value of property hyphenDir. */
+    /**
+     * Holds value of property hyphenDir.
+     */
     private static String hyphenDir = "";
 
     /**
@@ -61,13 +65,13 @@ public class Hyphenator {
      * @return the hyphenation tree
      */
     public static HyphenationTree getHyphenationTree(String lang,
-            String country) {
+                                                     String country) {
         String key = lang;
         // check whether the country code has been used
         if (country != null && !country.equals("none")) {
             key += "_" + country;
         }
-            // first try to find it in the cache
+        // first try to find it in the cache
         if (hyphenTrees.containsKey(key)) {
             return hyphenTrees.get(key);
         }
@@ -99,8 +103,7 @@ public class Hyphenator {
             HyphenationTree hTree = new HyphenationTree();
             hTree.loadSimplePatterns(stream);
             return hTree;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -127,8 +130,7 @@ public class Hyphenator {
             HyphenationTree hTree = new HyphenationTree();
             hTree.loadSimplePatterns(stream);
             return hTree;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -208,7 +210,7 @@ public class Hyphenator {
             return null;
         }
         return hyphenTree.hyphenate(word, offset, len, remainCharCount,
-                                    pushCharCount);
+                pushCharCount);
     }
 
     /**
@@ -222,14 +224,18 @@ public class Hyphenator {
         return hyphenTree.hyphenate(word, remainCharCount, pushCharCount);
     }
 
-    /** Getter for property hyphenDir.
+    /**
+     * Getter for property hyphenDir.
+     *
      * @return Value of property hyphenDir.
      */
     public static String getHyphenDir() {
         return hyphenDir;
     }
 
-    /** Setter for property hyphenDir.
+    /**
+     * Setter for property hyphenDir.
+     *
      * @param _hyphenDir New value of property hyphenDir.
      */
     public static void setHyphenDir(String _hyphenDir) {

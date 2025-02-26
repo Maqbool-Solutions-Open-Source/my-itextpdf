@@ -48,8 +48,10 @@ import java.util.ArrayList;
 
 import com.itextpdf.text.error_messages.MessageLocalization;
 import com.itextpdf.text.pdf.PRTokeniser.TokenType;
+
 /**
  * Parses the page or template content.
+ *
  * @author Paulo Soares
  */
 public class PdfContentParser {
@@ -65,6 +67,7 @@ public class PdfContentParser {
 
     /**
      * Creates a new instance of PdfContentParser
+     *
      * @param tokeniser the tokeniser with the content
      */
     public PdfContentParser(PRTokeniser tokeniser) {
@@ -75,8 +78,9 @@ public class PdfContentParser {
      * Parses a single command from the content. Each command is output as an array of arguments
      * having the command itself as the last element. The returned array will be empty if the
      * end of content was reached.
+     *
      * @param ls an <CODE>ArrayList</CODE> to use. It will be cleared before using. If it's
-     * <CODE>null</CODE> will create a new <CODE>ArrayList</CODE>
+     *           <CODE>null</CODE> will create a new <CODE>ArrayList</CODE>
      * @return the same <CODE>ArrayList</CODE> given as argument or a new one
      * @throws IOException on error
      */
@@ -96,6 +100,7 @@ public class PdfContentParser {
 
     /**
      * Gets the tokeniser.
+     *
      * @return the tokeniser.
      */
     public PRTokeniser getTokeniser() {
@@ -104,6 +109,7 @@ public class PdfContentParser {
 
     /**
      * Sets the tokeniser.
+     *
      * @param tokeniser the tokeniser
      */
     public void setTokeniser(PRTokeniser tokeniser) {
@@ -112,6 +118,7 @@ public class PdfContentParser {
 
     /**
      * Reads a dictionary. The tokeniser must be positioned past the "&lt;&lt;" token.
+     *
      * @return the dictionary
      * @throws IOException on error
      */
@@ -120,26 +127,27 @@ public class PdfContentParser {
         while (true) {
             if (!nextValidToken())
                 throw new IOException(MessageLocalization.getComposedMessage("unexpected.end.of.file"));
-                if (tokeniser.getTokenType() == TokenType.END_DIC)
-                    break;
-                if (tokeniser.getTokenType() == TokenType.OTHER && "def".equals(tokeniser.getStringValue()))
-                    continue;
-                if (tokeniser.getTokenType() != TokenType.NAME)
-                    throw new IOException(MessageLocalization.getComposedMessage("dictionary.key.1.is.not.a.name", tokeniser.getStringValue()));
-                PdfName name = new PdfName(tokeniser.getStringValue(), false);
-                PdfObject obj = readPRObject();
-                int type = obj.type();
-                if (-type == TokenType.END_DIC.ordinal())
-                    throw new IOException(MessageLocalization.getComposedMessage("unexpected.gt.gt"));
-                if (-type == TokenType.END_ARRAY.ordinal())
-                    throw new IOException(MessageLocalization.getComposedMessage("unexpected.close.bracket"));
-                dic.put(name, obj);
+            if (tokeniser.getTokenType() == TokenType.END_DIC)
+                break;
+            if (tokeniser.getTokenType() == TokenType.OTHER && "def".equals(tokeniser.getStringValue()))
+                continue;
+            if (tokeniser.getTokenType() != TokenType.NAME)
+                throw new IOException(MessageLocalization.getComposedMessage("dictionary.key.1.is.not.a.name", tokeniser.getStringValue()));
+            PdfName name = new PdfName(tokeniser.getStringValue(), false);
+            PdfObject obj = readPRObject();
+            int type = obj.type();
+            if (-type == TokenType.END_DIC.ordinal())
+                throw new IOException(MessageLocalization.getComposedMessage("unexpected.gt.gt"));
+            if (-type == TokenType.END_ARRAY.ordinal())
+                throw new IOException(MessageLocalization.getComposedMessage("unexpected.close.bracket"));
+            dic.put(name, obj);
         }
         return dic;
     }
 
     /**
      * Reads an array. The tokeniser must be positioned past the "[" token.
+     *
      * @return an array
      * @throws IOException on error
      */
@@ -159,6 +167,7 @@ public class PdfContentParser {
 
     /**
      * Reads a pdf object.
+     *
      * @return the pdf object
      * @throws IOException on error
      */
@@ -189,6 +198,7 @@ public class PdfContentParser {
 
     /**
      * Reads the next token skipping over the comments.
+     *
      * @return <CODE>true</CODE> if a token was read, <CODE>false</CODE> if the end of content was reached
      * @throws IOException on error
      */

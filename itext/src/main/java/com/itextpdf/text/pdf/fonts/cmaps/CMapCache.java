@@ -47,15 +47,14 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- *
  * @author psoares
  */
 public class CMapCache {
-    private static final HashMap<String,CMapUniCid> cacheUniCid = new HashMap<String,CMapUniCid>();
-    private static final HashMap<String,CMapCidUni> cacheCidUni = new HashMap<String,CMapCidUni>();
-    private static final HashMap<String,CMapCidByte> cacheCidByte = new HashMap<String,CMapCidByte>();
-    private static final HashMap<String,CMapByteCid> cacheByteCid = new HashMap<String,CMapByteCid>();
-    
+    private static final HashMap<String, CMapUniCid> cacheUniCid = new HashMap<String, CMapUniCid>();
+    private static final HashMap<String, CMapCidUni> cacheCidUni = new HashMap<String, CMapCidUni>();
+    private static final HashMap<String, CMapCidByte> cacheCidByte = new HashMap<String, CMapCidByte>();
+    private static final HashMap<String, CMapByteCid> cacheByteCid = new HashMap<String, CMapByteCid>();
+
     public static CMapUniCid getCachedCMapUniCid(String name) throws IOException {
         CMapUniCid cmap = null;
         synchronized (cacheUniCid) {
@@ -70,7 +69,7 @@ public class CMapCache {
         }
         return cmap;
     }
-    
+
     public static CMapCidUni getCachedCMapCidUni(String name) throws IOException {
         CMapCidUni cmap = null;
         synchronized (cacheCidUni) {
@@ -85,7 +84,7 @@ public class CMapCache {
         }
         return cmap;
     }
-    
+
     public static CMapCidByte getCachedCMapCidByte(String name) throws IOException {
         CMapCidByte cmap = null;
         synchronized (cacheCidByte) {
@@ -100,7 +99,7 @@ public class CMapCache {
         }
         return cmap;
     }
-    
+
     public static CMapByteCid getCachedCMapByteCid(String name) throws IOException {
         CMapByteCid cmap = null;
         synchronized (cacheByteCid) {

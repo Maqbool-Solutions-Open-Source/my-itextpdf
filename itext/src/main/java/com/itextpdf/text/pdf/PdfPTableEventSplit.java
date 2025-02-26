@@ -45,7 +45,7 @@ package com.itextpdf.text.pdf;
 
 /**
  * Signals that a table will continue in the next page.
- * 
+ *
  * @since 5.0.6
  */
 public interface PdfPTableEventSplit extends PdfPTableEvent {

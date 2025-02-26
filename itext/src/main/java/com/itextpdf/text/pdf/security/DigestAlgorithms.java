@@ -56,28 +56,44 @@ import java.util.HashMap;
  */
 public class DigestAlgorithms {
 
-	/** Algorithm available for signatures since PDF 1.3 */
-	public static final String SHA1 = "SHA-1";
+    /**
+     * Algorithm available for signatures since PDF 1.3
+     */
+    public static final String SHA1 = "SHA-1";
 
-	/** Algorithm available for signatures since PDF 1.6 */
-	public static final String SHA256 = "SHA-256";
+    /**
+     * Algorithm available for signatures since PDF 1.6
+     */
+    public static final String SHA256 = "SHA-256";
 
-	/** Algorithm available for signatures since PDF 1.7 */
-	public static final String SHA384 = "SHA-384";
+    /**
+     * Algorithm available for signatures since PDF 1.7
+     */
+    public static final String SHA384 = "SHA-384";
 
-	/** Algorithm available for signatures since PDF 1.7 */
-	public static final String SHA512 = "SHA-512";
+    /**
+     * Algorithm available for signatures since PDF 1.7
+     */
+    public static final String SHA512 = "SHA-512";
 
-	/** Algorithm available for signatures since PDF 1.7 */
-	public static final String RIPEMD160 = "RIPEMD160";
-	
-	/** Maps the digest IDs with the human-readable name of the digest algorithm. */
+    /**
+     * Algorithm available for signatures since PDF 1.7
+     */
+    public static final String RIPEMD160 = "RIPEMD160";
+
+    /**
+     * Maps the digest IDs with the human-readable name of the digest algorithm.
+     */
     private static final HashMap<String, String> digestNames = new HashMap<String, String>();
-	
-	/** Maps digest algorithm that are unknown by the JDKs MessageDigest object to a known one. */
+
+    /**
+     * Maps digest algorithm that are unknown by the JDKs MessageDigest object to a known one.
+     */
     private static final HashMap<String, String> fixNames = new HashMap<String, String>();
-    
-    /** Maps the name of a digest algorithm with its ID. */
+
+    /**
+     * Maps the name of a digest algorithm with its ID.
+     */
     private static final HashMap<String, String> allowedDigests = new HashMap<String, String>();
 
     static {
@@ -113,7 +129,7 @@ public class DigestAlgorithms {
         fixNames.put("SHA256", SHA256);
         fixNames.put("SHA384", SHA384);
         fixNames.put("SHA512", SHA512);
-        
+
         allowedDigests.put("MD2", "1.2.840.113549.2.2");
         allowedDigests.put("MD-2", "1.2.840.113549.2.2");
         allowedDigests.put("MD5", "1.2.840.113549.2.5");
@@ -138,45 +154,47 @@ public class DigestAlgorithms {
     }
 
     public static MessageDigest getMessageDigestFromOid(String digestOid, String provider)
-    	throws NoSuchAlgorithmException, NoSuchProviderException {
-    	return getMessageDigest(getDigest(digestOid), provider);
+            throws NoSuchAlgorithmException, NoSuchProviderException {
+        return getMessageDigest(getDigest(digestOid), provider);
     }
-    
+
     /**
      * Creates a MessageDigest object that can be used to create a hash.
-     * @param hashAlgorithm	the algorithm you want to use to create a hash
-     * @param provider	the provider you want to use to create the hash
-     * @return	a MessageDigest object
-     * @throws NoSuchAlgorithmException 
-     * @throws NoSuchProviderException 
+     *
+     * @param hashAlgorithm the algorithm you want to use to create a hash
+     * @param provider      the provider you want to use to create the hash
+     * @return a MessageDigest object
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
      * @throws GeneralSecurityException
      */
     public static MessageDigest getMessageDigest(String hashAlgorithm, String provider)
-    	throws NoSuchAlgorithmException, NoSuchProviderException {
+            throws NoSuchAlgorithmException, NoSuchProviderException {
         if (provider == null || provider.startsWith("SunPKCS11") || provider.startsWith("SunMSCAPI"))
             return MessageDigest.getInstance(DigestAlgorithms.normalizeDigestName(hashAlgorithm));
         else
             return MessageDigest.getInstance(hashAlgorithm, provider);
     }
-    
-    
+
+
     /**
-     * Creates a hash using a specific digest algorithm and a provider. 
-     * @param data	the message of which you want to create a hash
-     * @param hashAlgorithm	the algorithm used to create the hash
-     * @param provider	the provider used to create the hash
-     * @return	the hash
+     * Creates a hash using a specific digest algorithm and a provider.
+     *
+     * @param data          the message of which you want to create a hash
+     * @param hashAlgorithm the algorithm used to create the hash
+     * @param provider      the provider used to create the hash
+     * @return the hash
      * @throws GeneralSecurityException
      * @throws IOException
      */
     public static byte[] digest(InputStream data, String hashAlgorithm, String provider)
-    	throws GeneralSecurityException, IOException {
+            throws GeneralSecurityException, IOException {
         MessageDigest messageDigest = getMessageDigest(hashAlgorithm, provider);
         return digest(data, messageDigest);
     }
-    
+
     public static byte[] digest(InputStream data, MessageDigest messageDigest)
-    	throws GeneralSecurityException, IOException {
+            throws GeneralSecurityException, IOException {
         byte buf[] = new byte[8192];
         int n;
         while ((n = data.read(buf)) > 0) {
@@ -184,11 +202,12 @@ public class DigestAlgorithms {
         }
         return messageDigest.digest();
     }
-    
+
     /**
      * Gets the digest name for a certain id
-     * @param oid	an id (for instance "1.2.840.113549.2.5")
-     * @return	a digest name (for instance "MD5")
+     *
+     * @param oid an id (for instance "1.2.840.113549.2.5")
+     * @return a digest name (for instance "MD5")
      */
     public static String getDigest(String oid) {
         String ret = digestNames.get(oid);
@@ -197,18 +216,19 @@ public class DigestAlgorithms {
         else
             return ret;
     }
-    
+
     public static String normalizeDigestName(String algo) {
-    	if (fixNames.containsKey(algo))
-    		return fixNames.get(algo);
-    	return algo;
+        if (fixNames.containsKey(algo))
+            return fixNames.get(algo);
+        return algo;
     }
 
     /**
      * Returns the id of a digest algorithms that is allowed in PDF,
-     * or null if it isn't allowed. 
-     * @param name	the name of the digest algorithm
-     * @return	an oid
+     * or null if it isn't allowed.
+     *
+     * @param name the name of the digest algorithm
+     * @return an oid
      */
     public static String getAllowedDigests(String name) {
         return allowedDigests.get(name.toUpperCase());

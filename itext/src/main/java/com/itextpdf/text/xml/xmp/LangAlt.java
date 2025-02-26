@@ -51,53 +51,61 @@ import com.itextpdf.text.xml.XMLUtil;
 @Deprecated
 public class LangAlt extends Properties {
 
-	/** A serial version id. */
-	private static final long serialVersionUID = 4396971487200843099L;
+    /**
+     * A serial version id.
+     */
+    private static final long serialVersionUID = 4396971487200843099L;
 
-	/** Key for the default language. */
-	public static final String DEFAULT = "x-default";
+    /**
+     * Key for the default language.
+     */
+    public static final String DEFAULT = "x-default";
 
-	/** Creates a Properties object that stores languages for use in an XmpSchema */
-	public LangAlt(String defaultValue) {
-		super();
-		addLanguage(DEFAULT, defaultValue);
-	}
+    /**
+     * Creates a Properties object that stores languages for use in an XmpSchema
+     */
+    public LangAlt(String defaultValue) {
+        super();
+        addLanguage(DEFAULT, defaultValue);
+    }
 
-	/** Creates a Properties object that stores languages for use in an XmpSchema */
-	public LangAlt() {
-		super();
-	}
+    /**
+     * Creates a Properties object that stores languages for use in an XmpSchema
+     */
+    public LangAlt() {
+        super();
+    }
 
-	/**
-	 * Add a language.
-	 */
-	public void addLanguage(String language, String value) {
-		setProperty(language, XMLUtil.escapeXML(value, false));
-	}
+    /**
+     * Add a language.
+     */
+    public void addLanguage(String language, String value) {
+        setProperty(language, XMLUtil.escapeXML(value, false));
+    }
 
-	/**
-	 * Process a property.
-	 */
-	protected void process(StringBuffer buf, Object lang) {
-		buf.append("<rdf:li xml:lang=\"");
-		buf.append(lang);
-		buf.append("\" >");
-		buf.append(get(lang));
-		buf.append("</rdf:li>");
-	}
+    /**
+     * Process a property.
+     */
+    protected void process(StringBuffer buf, Object lang) {
+        buf.append("<rdf:li xml:lang=\"");
+        buf.append(lang);
+        buf.append("\" >");
+        buf.append(get(lang));
+        buf.append("</rdf:li>");
+    }
 
-	/**
-	 * Creates a String that can be used in an XmpSchema.
-	 */
-	@Override
+    /**
+     * Creates a String that can be used in an XmpSchema.
+     */
+    @Override
     public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("<rdf:Alt>");
-		for (Enumeration<?> e = this.propertyNames(); e.hasMoreElements();) {
-			process(sb, e.nextElement());
-		}
-		sb.append("</rdf:Alt>");
-		return sb.toString();
-	}
+        StringBuffer sb = new StringBuffer();
+        sb.append("<rdf:Alt>");
+        for (Enumeration<?> e = this.propertyNames(); e.hasMoreElements(); ) {
+            process(sb, e.nextElement());
+        }
+        sb.append("</rdf:Alt>");
+        return sb.toString();
+    }
 
 }

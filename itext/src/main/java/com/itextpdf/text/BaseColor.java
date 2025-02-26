@@ -46,7 +46,6 @@ package com.itextpdf.text;
 import com.itextpdf.text.error_messages.MessageLocalization;
 
 /**
- *
  * @author psoares
  */
 public class BaseColor {
@@ -68,9 +67,10 @@ public class BaseColor {
 
     /**
      * Construct a new BaseColor.
-     * @param red the value for the red gamma
+     *
+     * @param red   the value for the red gamma
      * @param green the value for the green gamma
-     * @param blue the value for the blue gamma
+     * @param blue  the value for the blue gamma
      * @param alpha the value for the alpha gamma
      */
     public BaseColor(final int red, final int green, final int blue, final int alpha) {
@@ -88,17 +88,19 @@ public class BaseColor {
 
     /**
      * Construct a BaseColor with float values.
+     *
      * @param red
      * @param green
      * @param blue
      * @param alpha
      */
     public BaseColor(final float red, final float green, final float blue, final float alpha) {
-        this((int)(red * 255 + .5), (int)(green * 255 + .5), (int)(blue * 255 + .5), (int)(alpha * 255 + .5));
+        this((int) (red * 255 + .5), (int) (green * 255 + .5), (int) (blue * 255 + .5), (int) (alpha * 255 + .5));
     }
 
     /**
      * Construct a BaseColor with float values.
+     *
      * @param red
      * @param green
      * @param blue
@@ -106,8 +108,10 @@ public class BaseColor {
     public BaseColor(final float red, final float green, final float blue) {
         this(red, green, blue, 1f);
     }
+
     /**
      * Construct a BaseColor by setting the combined value.
+     *
      * @param argb
      */
     public BaseColor(final int argb) {
@@ -120,29 +124,29 @@ public class BaseColor {
     public int getRGB() {
         return value;
     }
+
     /**
-     *
      * @return the value for red
      */
     public int getRed() {
         return (getRGB() >> 16) & 0xFF;
     }
+
     /**
-     *
      * @return the value for green
      */
     public int getGreen() {
         return (getRGB() >> 8) & 0xFF;
     }
+
     /**
-     *
      * @return the value for blue
      */
     public int getBlue() {
         return (getRGB() >> 0) & 0xFF;
     }
+
     /**
-     *
      * @return the value for the alpha channel
      */
     public int getAlpha() {
@@ -151,6 +155,7 @@ public class BaseColor {
 
     /**
      * Make this BaseColor brighter. Factor used is 0.7.
+     *
      * @return the new BaseColor
      */
     public BaseColor brighter() {
@@ -176,6 +181,7 @@ public class BaseColor {
 
     /**
      * Make this color darker. Factor used is 0.7
+     *
      * @return the new BaseColor
      */
     public BaseColor darker() {
@@ -213,6 +219,6 @@ public class BaseColor {
      */
     @Override
     public String toString() {
-        return "Color value["+Integer.toString(value, 16)+"]";
+        return "Color value[" + Integer.toString(value, 16) + "]";
     }
 }

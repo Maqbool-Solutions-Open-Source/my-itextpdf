@@ -31,6 +31,7 @@ public interface PatternConsumer {
      * A character class defines characters that are considered
      * equivalent for the purpose of hyphenation (e.g. "aA"). It
      * usually means to ignore case.
+     *
      * @param chargroup character group
      */
     void addClass(String chargroup);
@@ -46,9 +47,10 @@ public interface PatternConsumer {
 
     /**
      * Add hyphenation patterns.
+     *
      * @param pattern the pattern
-     * @param values interletter values expressed as a string of
-     * digit characters.
+     * @param values  interletter values expressed as a string of
+     *                digit characters.
      */
     void addPattern(String pattern, String values);
 

@@ -49,6 +49,7 @@ import java.util.HashMap;
 
 /**
  * Creates a number tree.
+ *
  * @author Paulo Soares
  */
 public class PdfNumberTree {
@@ -57,11 +58,12 @@ public class PdfNumberTree {
 
     /**
      * Creates a number tree.
-     * @param items the item of the number tree. The key is an <CODE>Integer</CODE>
-     * and the value is a <CODE>PdfObject</CODE>.
+     *
+     * @param items  the item of the number tree. The key is an <CODE>Integer</CODE>
+     *               and the value is a <CODE>PdfObject</CODE>.
      * @param writer the writer
-     * @throws IOException on error
      * @return the dictionary with the number tree.
+     * @throws IOException on error
      */
     public static <O extends PdfObject> PdfDictionary writeTree(HashMap<Integer, O> items, PdfWriter writer) throws IOException {
         if (items.isEmpty())
@@ -108,7 +110,7 @@ public class PdfNumberTree {
                 return dic;
             }
             skip *= leafSize;
-            int tt = (numbers.length + skip - 1 )/ skip;
+            int tt = (numbers.length + skip - 1) / skip;
             for (int k = 0; k < tt; ++k) {
                 int offset = k * leafSize;
                 int end = Math.min(offset + leafSize, top);
@@ -129,16 +131,15 @@ public class PdfNumberTree {
     }
 
     private static void iterateItems(PdfDictionary dic, HashMap<Integer, PdfObject> items) {
-        PdfArray nn = (PdfArray)PdfReader.getPdfObjectRelease(dic.get(PdfName.NUMS));
+        PdfArray nn = (PdfArray) PdfReader.getPdfObjectRelease(dic.get(PdfName.NUMS));
         if (nn != null) {
             for (int k = 0; k < nn.size(); ++k) {
-                PdfNumber s = (PdfNumber)PdfReader.getPdfObjectRelease(nn.getPdfObject(k++));
+                PdfNumber s = (PdfNumber) PdfReader.getPdfObjectRelease(nn.getPdfObject(k++));
                 items.put(Integer.valueOf(s.intValue()), nn.getPdfObject(k));
             }
-        }
-        else if ((nn = (PdfArray)PdfReader.getPdfObjectRelease(dic.get(PdfName.KIDS))) != null) {
+        } else if ((nn = (PdfArray) PdfReader.getPdfObjectRelease(dic.get(PdfName.KIDS))) != null) {
             for (int k = 0; k < nn.size(); ++k) {
-                PdfDictionary kid = (PdfDictionary)PdfReader.getPdfObjectRelease(nn.getPdfObject(k));
+                PdfDictionary kid = (PdfDictionary) PdfReader.getPdfObjectRelease(nn.getPdfObject(k));
                 iterateItems(kid, items);
             }
         }

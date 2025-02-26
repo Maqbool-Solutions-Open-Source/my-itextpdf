@@ -58,37 +58,37 @@ public class ICC_Profile {
 
     protected ICC_Profile() {
     }
-    
+
     public static ICC_Profile getInstance(byte[] data, int numComponents) {
         if (data.length < 128 || data[36] != 0x61 || data[37] != 0x63
                 || data[38] != 0x73 || data[39] != 0x70)
-                throw new IllegalArgumentException(MessageLocalization.getComposedMessage("invalid.icc.profile"));
+            throw new IllegalArgumentException(MessageLocalization.getComposedMessage("invalid.icc.profile"));
         try {
-        	ICC_Profile icc = new ICC_Profile();
-        	icc.data = data;
-        	Integer cs;
-        	cs = cstags.get(new String(data, 16, 4, "US-ASCII"));
-        	int nc = cs == null ? 0 : cs.intValue();
-        	icc.numComponents = nc;
-        	// invalid ICC
-        	if (nc != numComponents) {
-        		throw new IllegalArgumentException("ICC profile contains " + nc + " component(s), the image data contains " + numComponents + " component(s)");
-        	}
-        	return icc;
-    	} catch (UnsupportedEncodingException e) {
-			throw new ExceptionConverter(e);
-		}
+            ICC_Profile icc = new ICC_Profile();
+            icc.data = data;
+            Integer cs;
+            cs = cstags.get(new String(data, 16, 4, "US-ASCII"));
+            int nc = cs == null ? 0 : cs.intValue();
+            icc.numComponents = nc;
+            // invalid ICC
+            if (nc != numComponents) {
+                throw new IllegalArgumentException("ICC profile contains " + nc + " component(s), the image data contains " + numComponents + " component(s)");
+            }
+            return icc;
+        } catch (UnsupportedEncodingException e) {
+            throw new ExceptionConverter(e);
+        }
     }
 
     public static ICC_Profile getInstance(byte[] data) {
-    	try {
-	        Integer cs;
-			cs = cstags.get(new String(data, 16, 4, "US-ASCII"));
-	        int numComponents = cs == null ? 0 : cs.intValue();
-	        return getInstance(data, numComponents);
-		} catch (UnsupportedEncodingException e) {
-			throw new ExceptionConverter(e);
-		}
+        try {
+            Integer cs;
+            cs = cstags.get(new String(data, 16, 4, "US-ASCII"));
+            int numComponents = cs == null ? 0 : cs.intValue();
+            return getInstance(data, numComponents);
+        } catch (UnsupportedEncodingException e) {
+            throw new ExceptionConverter(e);
+        }
     }
 
     public static ICC_Profile getInstance(InputStream file) {
@@ -104,10 +104,10 @@ public class ICC_Profile {
                 ptr += n;
             }
             if (head[36] != 0x61 || head[37] != 0x63
-                || head[38] != 0x73 || head[39] != 0x70)
+                    || head[38] != 0x73 || head[39] != 0x70)
                 throw new IllegalArgumentException(MessageLocalization.getComposedMessage("invalid.icc.profile"));
             remain = (head[0] & 0xff) << 24 | (head[1] & 0xff) << 16
-                      | (head[2] & 0xff) <<  8 | head[3] & 0xff;
+                    | (head[2] & 0xff) << 8 | head[3] & 0xff;
             byte[] icc = new byte[remain];
             System.arraycopy(head, 0, icc, 0, head.length);
             remain -= head.length;
@@ -120,8 +120,7 @@ public class ICC_Profile {
                 ptr += n;
             }
             return getInstance(icc);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ExceptionConverter(ex);
         }
     }
@@ -132,12 +131,13 @@ public class ICC_Profile {
             fs = new FileInputStream(fname);
             ICC_Profile icc = getInstance(fs);
             return icc;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ExceptionConverter(ex);
-        }
-        finally {
-            try{fs.close();}catch(Exception x){}
+        } finally {
+            try {
+                fs.close();
+            } catch (Exception x) {
+            }
         }
     }
 

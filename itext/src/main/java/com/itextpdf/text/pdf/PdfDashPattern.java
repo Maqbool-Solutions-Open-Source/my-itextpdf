@@ -50,56 +50,62 @@ import java.io.OutputStream;
  * A <CODE>PdfDashPattern</CODE> defines a dash pattern as described in
  * the PDF Reference Manual version 1.3 p 325 (section 8.4.3).
  *
- * @see		PdfArray
+ * @see PdfArray
  */
 
 public class PdfDashPattern extends PdfArray {
-    
+
     // membervariables
-    
-/** This is the length of a dash. */
+
+    /**
+     * This is the length of a dash.
+     */
     private float dash = -1;
-    
-/** This is the length of a gap. */
+
+    /**
+     * This is the length of a gap.
+     */
     private float gap = -1;
-    
-/** This is the phase. */
+
+    /**
+     * This is the phase.
+     */
     private float phase = -1;
-    
+
     // constructors
-    
-/**
- * Constructs a new <CODE>PdfDashPattern</CODE>.
- */
-    
+
+    /**
+     * Constructs a new <CODE>PdfDashPattern</CODE>.
+     */
+
     public PdfDashPattern() {
         super();
     }
-    
-/**
- * Constructs a new <CODE>PdfDashPattern</CODE>.
- */
-    
+
+    /**
+     * Constructs a new <CODE>PdfDashPattern</CODE>.
+     */
+
     public PdfDashPattern(float dash) {
         super(new PdfNumber(dash));
         this.dash = dash;
     }
-    
-/**
- * Constructs a new <CODE>PdfDashPattern</CODE>.
- */
-    
+
+    /**
+     * Constructs a new <CODE>PdfDashPattern</CODE>.
+     */
+
     public PdfDashPattern(float dash, float gap) {
         super(new PdfNumber(dash));
         add(new PdfNumber(gap));
         this.dash = dash;
         this.gap = gap;
     }
-    
-/**
- * Constructs a new <CODE>PdfDashPattern</CODE>.
- */
-    
+
+    /**
+     * Constructs a new <CODE>PdfDashPattern</CODE>.
+     */
+
     public PdfDashPattern(float dash, float gap, float phase) {
         super(new PdfNumber(dash));
         add(new PdfNumber(gap));
@@ -107,15 +113,15 @@ public class PdfDashPattern extends PdfArray {
         this.gap = gap;
         this.phase = phase;
     }
-    
+
     public void add(float n) {
         add(new PdfNumber(n));
     }
-    
-/**
- * Returns the PDF representation of this <CODE>PdfArray</CODE>.
- */
-    
+
+    /**
+     * Returns the PDF representation of this <CODE>PdfArray</CODE>.
+     */
+
     public void toPdf(PdfWriter writer, OutputStream os) throws IOException {
         os.write('[');
 
@@ -127,7 +133,7 @@ public class PdfDashPattern extends PdfArray {
             }
         }
         os.write(']');
-        if (phase >=0) {
+        if (phase >= 0) {
             os.write(' ');
             new PdfNumber(phase).toPdf(writer, os);
         }

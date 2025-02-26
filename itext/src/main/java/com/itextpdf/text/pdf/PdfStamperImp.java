@@ -179,7 +179,7 @@ class PdfStamperImp extends PdfWriter {
             if (reader.isRebuilt())
                 throw new DocumentException(MessageLocalization.getComposedMessage("append.mode.requires.a.document.without.errors.even.if.recovery.was.possible"));
             pdf_version.setAppendmode(true);
-            if ( pdfVersion == 0 ) {
+            if (pdfVersion == 0) {
                 pdf_version.setPdfVersion(reader.getPdfVersion());
             } else {
                 pdf_version.setPdfVersion(pdfVersion);
@@ -988,17 +988,17 @@ class PdfStamperImp extends PdfWriter {
                             float bboxHeight = bbox.getAsNumber(3).floatValue() - bbox.getAsNumber(1).floatValue();
                             //Take field rotation into account
                             double fieldRotation = 0;
-                            if(merged.getAsDict(PdfName.MK) != null){
-                                if(merged.getAsDict(PdfName.MK).get(PdfName.R) != null){
+                            if (merged.getAsDict(PdfName.MK) != null) {
+                                if (merged.getAsDict(PdfName.MK).get(PdfName.R) != null) {
                                     fieldRotation = merged.getAsDict(PdfName.MK).getAsNumber(PdfName.R).floatValue();
                                 }
                             }
                             //Cast to radians
-                            fieldRotation = fieldRotation * Math.PI/180;
+                            fieldRotation = fieldRotation * Math.PI / 180;
                             //Clamp to [-2*Pi, 2*Pi]
-                            fieldRotation = fieldRotation%(2*Math.PI);
+                            fieldRotation = fieldRotation % (2 * Math.PI);
 
-                            if(fieldRotation%Math.PI != 0){
+                            if (fieldRotation % Math.PI != 0) {
                                 float temp = rectWidth;
                                 rectWidth = rectHeight;
                                 rectHeight = temp;
@@ -1085,8 +1085,8 @@ class PdfStamperImp extends PdfWriter {
                             tf = calculateTemplateTransformationMatrix(tf, fieldRotation, box);
                             cb.addTemplate(app, tf);
                         } else {
-                            if(objReal instanceof PdfDictionary && ((PdfDictionary)objReal).getAsArray(PdfName.BBOX) != null) {
-                                Rectangle bBox = PdfReader.getNormalizedRectangle((((PdfDictionary)objReal).getAsArray(PdfName.BBOX)));
+                            if (objReal instanceof PdfDictionary && ((PdfDictionary) objReal).getAsArray(PdfName.BBOX) != null) {
+                                Rectangle bBox = PdfReader.getNormalizedRectangle((((PdfDictionary) objReal).getAsArray(PdfName.BBOX)));
                                 cb.addTemplate(app, (box.getWidth() / bBox.getWidth()), 0, 0, (box.getHeight() / bBox.getHeight()), box.getLeft(), box.getBottom());
                             } else {
                                 cb.addTemplate(app, box.getLeft(), box.getBottom());
@@ -1200,10 +1200,10 @@ class PdfStamperImp extends PdfWriter {
         if (fieldRotation % (Math.PI / 2) == 0 && fieldRotation % (3 * Math.PI / 2) != 0 && fieldRotation != 0) {
             x += box.getWidth();
         }
-        if((fieldRotation%(3*Math.PI/2)==0 || fieldRotation%(Math.PI)==0) && fieldRotation != 0){
-            y+=box.getHeight();
+        if ((fieldRotation % (3 * Math.PI / 2) == 0 || fieldRotation % (Math.PI) == 0) && fieldRotation != 0) {
+            y += box.getHeight();
         }
-        templateTransform.translate(x,y);
+        templateTransform.translate(x, y);
         //Apply fieldrotation
         templateTransform.rotate(fieldRotation);
         return templateTransform;
@@ -1267,7 +1267,7 @@ class PdfStamperImp extends PdfWriter {
                 PdfDictionary annDic = (PdfDictionary) annoto;
                 final PdfObject subType = annDic.get(PdfName.SUBTYPE);
                 if (flattenFreeTextAnnotations) {
-                    if (! PdfName.FREETEXT.equals(subType)) {
+                    if (!PdfName.FREETEXT.equals(subType)) {
                         continue;
                     }
                 } else {
@@ -1297,22 +1297,22 @@ class PdfStamperImp extends PdfWriter {
                         ((PdfDictionary) objReal).put(PdfName.SUBTYPE, PdfName.FORM);
                         app = new PdfAppearance((PdfIndirectReference) obj);
                     } else {
-                        if (objReal != null ) {
+                        if (objReal != null) {
                             if (objReal.isDictionary()) {
                                 PdfName as_p = appDic.getAsName(PdfName.AS);
                                 if (as_p != null) {
-                                    PdfIndirectReference iref = (PdfIndirectReference) ( (PdfDictionary) objReal ).get(as_p);
+                                    PdfIndirectReference iref = (PdfIndirectReference) ((PdfDictionary) objReal).get(as_p);
                                     if (iref != null) {
                                         app = new PdfAppearance(iref);
                                         if (iref.isIndirect()) {
                                             objReal = PdfReader.getPdfObject(iref);
-                                            ( (PdfDictionary) objReal ).put(PdfName.SUBTYPE, PdfName.FORM);
+                                            ((PdfDictionary) objReal).put(PdfName.SUBTYPE, PdfName.FORM);
                                         }
                                     }
                                 }
                             }
                         } else {
-                            if ( PdfName.FREETEXT.equals(subType) ) {
+                            if (PdfName.FREETEXT.equals(subType)) {
                                 final PdfString defaultAppearancePdfString = annDic.getAsString(PdfName.DA);
                                 if (defaultAppearancePdfString != null) {
                                     final PdfString freeTextContent = annDic.getAsString(PdfName.CONTENTS);
@@ -1327,7 +1327,7 @@ class PdfStamperImp extends PdfWriter {
                                         PdfContentParser ps = new PdfContentParser(new PRTokeniser(new RandomAccessFileOrArray(source)));
                                         ArrayList<PdfObject> operands = new ArrayList<PdfObject>();
                                         while (ps.parse(operands).size() > 0) {
-                                            PdfLiteral operator = (PdfLiteral)operands.get(operands.size()-1);
+                                            PdfLiteral operator = (PdfLiteral) operands.get(operands.size() - 1);
                                             if (operator.toString().equals("Tf")) {
                                                 pdfFontName = (PdfName) operands.get(0);
                                                 String fontName = pdfFontName.toString().substring(1);
@@ -1376,10 +1376,10 @@ class PdfStamperImp extends PdfWriter {
                         Rectangle rect = PdfReader.getNormalizedRectangle(annDic.getAsArray(PdfName.RECT));
                         Rectangle bBox = null;
 
-                        if ( objDict != null ) {
+                        if (objDict != null) {
                             bBox = PdfReader.getNormalizedRectangle((objDict.getAsArray(PdfName.BBOX)));
                         } else {
-                            bBox = new Rectangle(0,0, rect.getWidth(), rect.getHeight());
+                            bBox = new Rectangle(0, 0, rect.getWidth(), rect.getHeight());
                             app.setBoundingBox(bBox);
                         }
 
@@ -1392,11 +1392,11 @@ class PdfStamperImp extends PdfWriter {
                             cb.addTemplate(app, (rect.getWidth() / transformBBox.getWidth()), 0, 0, (rect.getHeight() / transformBBox.getHeight()), rect.getLeft(), rect.getBottom());
                         } else {
                             //Correct for offset origins in the BBox, similar to how Adobe will flatten.
-                            float heightCorrection = - bBox.getBottom();
-                            float widthCorrection = - bBox.getLeft();
+                            float heightCorrection = -bBox.getBottom();
+                            float widthCorrection = -bBox.getLeft();
                             //Changed so that when the annotation has a difference scale than the xObject in the appearance dictionary, the image is consistent between
                             //the input and the flattened document.  When the annotation is rotated or skewed, it will still be flattened incorrectly.
-                            cb.addTemplate(app, (rect.getWidth() / bBox.getWidth()), 0, 0, (rect.getHeight() / bBox.getHeight()), rect.getLeft() + widthCorrection, rect.getBottom()+heightCorrection);
+                            cb.addTemplate(app, (rect.getWidth() / bBox.getWidth()), 0, 0, (rect.getHeight() / bBox.getHeight()), rect.getLeft() + widthCorrection, rect.getBottom() + heightCorrection);
                         }
                         cb.setLiteral("q ");
 
@@ -1414,10 +1414,10 @@ class PdfStamperImp extends PdfWriter {
     }
 
     /*
-    * The transformation BBOX between two coordinate systems can be
-    * represented by a 3-by-3 transformation matrix and create new BBOX based min(x,y) and
+     * The transformation BBOX between two coordinate systems can be
+     * represented by a 3-by-3 transformation matrix and create new BBOX based min(x,y) and
      * max(x,y) coordinate pairs
-    * */
+     * */
     private Rectangle transformBBoxByMatrix(Rectangle bBox, double[] matrix) {
         List xArr = new ArrayList();
         List yArr = new ArrayList();
@@ -1441,11 +1441,11 @@ class PdfStamperImp extends PdfWriter {
     }
 
     /*
-    *  transform point by algorithm
-    *  x′ = a*x + c×y + e
-    *  y' = b*x + d*y + f
-    *  [ a b c d e f ] transformation matrix values
-    * */
+     *  transform point by algorithm
+     *  x′ = a*x + c×y + e
+     *  y' = b*x + d*y + f
+     *  [ a b c d e f ] transformation matrix values
+     * */
     private Point transformPoint(double x, double y, double[] matrix) {
         Point point = new Point();
         point.x = matrix[0] * x + matrix[2] * y + matrix[4];

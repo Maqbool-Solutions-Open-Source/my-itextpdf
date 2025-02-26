@@ -57,6 +57,7 @@ public class XmlSignatureAppearance {
 
     /**
      * Constructs XmlSignatureAppearance object.
+     *
      * @param writer the writer to which the signature will be written.
      */
     XmlSignatureAppearance(PdfStamperImp writer) {
@@ -69,13 +70,19 @@ public class XmlSignatureAppearance {
     private XmlLocator xmlLocator;
     private XpathConstructor xpathConstructor;
 
-    /** Holds value of property xades:SigningTime. */
+    /**
+     * Holds value of property xades:SigningTime.
+     */
     private Calendar signDate;
 
-    /** Holds value of property xades:Description. */
+    /**
+     * Holds value of property xades:Description.
+     */
     private String description;
 
-    /** Holds value of property xades:MimeType. */
+    /**
+     * Holds value of property xades:MimeType.
+     */
     private String mimeType = "text/xml";
 
     public PdfStamperImp getWriter() {
@@ -93,6 +100,7 @@ public class XmlSignatureAppearance {
     /**
      * Sets the certificate used to provide the text in the appearance.
      * This certificate doesn't take part in the actual signing process.
+     *
      * @param signCertificate the certificate
      */
     public void setCertificate(Certificate signCertificate) {
@@ -121,6 +129,7 @@ public class XmlSignatureAppearance {
 
     /**
      * Gets the signature date.
+     *
      * @return the signature date
      */
     public java.util.Calendar getSignDate() {
@@ -131,6 +140,7 @@ public class XmlSignatureAppearance {
 
     /**
      * Sets the signature date.
+     *
      * @param signDate the signature date
      */
     public void setSignDate(java.util.Calendar signDate) {
@@ -139,6 +149,7 @@ public class XmlSignatureAppearance {
 
     /**
      * Helps to locate xml stream
+     *
      * @return XmlLocator, cannot be null.
      */
     public XmlLocator getXmlLocator() {
@@ -152,6 +163,7 @@ public class XmlSignatureAppearance {
 
     /**
      * Constructor for xpath expression in case signing only part of XML document.
+     *
      * @return XpathConstructor, can be null
      */
     public XpathConstructor getXpathConstructor() {
@@ -164,6 +176,7 @@ public class XmlSignatureAppearance {
 
     /**
      * Close PdfStamper
+     *
      * @throws IOException
      * @throws DocumentException
      */

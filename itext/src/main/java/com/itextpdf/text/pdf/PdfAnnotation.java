@@ -60,74 +60,137 @@ import java.util.Map;
 /**
  * A <CODE>PdfAnnotation</CODE> is a note that is associated with a page.
  *
- * @see		PdfDictionary
+ * @see PdfDictionary
  */
 
 public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
-    /** highlight attributename */
+    /**
+     * highlight attributename
+     */
     public static final PdfName HIGHLIGHT_NONE = PdfName.N;
-    /** highlight attributename */
+    /**
+     * highlight attributename
+     */
     public static final PdfName HIGHLIGHT_INVERT = PdfName.I;
-    /** highlight attributename */
+    /**
+     * highlight attributename
+     */
     public static final PdfName HIGHLIGHT_OUTLINE = PdfName.O;
-    /** highlight attributename */
+    /**
+     * highlight attributename
+     */
     public static final PdfName HIGHLIGHT_PUSH = PdfName.P;
-    /** highlight attributename */
+    /**
+     * highlight attributename
+     */
     public static final PdfName HIGHLIGHT_TOGGLE = PdfName.T;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_INVISIBLE = 1;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_HIDDEN = 2;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_PRINT = 4;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_NOZOOM = 8;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_NOROTATE = 16;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_NOVIEW = 32;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_READONLY = 64;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_LOCKED = 128;
-    /** flagvalue */
+    /**
+     * flagvalue
+     */
     public static final int FLAGS_TOGGLENOVIEW = 256;
-    /** flagvalue PDF 1.7*/
+    /**
+     * flagvalue PDF 1.7
+     */
     public static final int FLAGS_LOCKEDCONTENTS = 512;
-    /** appearance attributename */
+    /**
+     * appearance attributename
+     */
     public static final PdfName APPEARANCE_NORMAL = PdfName.N;
-    /** appearance attributename */
+    /**
+     * appearance attributename
+     */
     public static final PdfName APPEARANCE_ROLLOVER = PdfName.R;
-    /** appearance attributename */
+    /**
+     * appearance attributename
+     */
     public static final PdfName APPEARANCE_DOWN = PdfName.D;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_ENTER = PdfName.E;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_EXIT = PdfName.X;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_DOWN = PdfName.D;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_UP = PdfName.U;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_FOCUS = PdfName.FO;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_BLUR = PdfName.BL;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_JS_KEY = PdfName.K;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_JS_FORMAT = PdfName.F;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_JS_CHANGE = PdfName.V;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final PdfName AA_JS_OTHER_CHANGE = PdfName.C;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final int MARKUP_HIGHLIGHT = 0;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final int MARKUP_UNDERLINE = 1;
-    /** attributevalue */
+    /**
+     * attributevalue
+     */
     public static final int MARKUP_STRIKEOUT = 2;
     /**
      * attributevalue
+     *
      * @since 2.1.3
      */
     public static final int MARKUP_SQUIGGLY = 3;
@@ -135,17 +198,22 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
     protected PdfWriter writer;
     /**
      * Reference to this annotation.
-     * @since	2.1.6; was removed in 2.1.5, but restored in 2.1.6
+     *
+     * @since 2.1.6; was removed in 2.1.5, but restored in 2.1.6
      */
     protected PdfIndirectReference reference;
     protected HashSet<PdfTemplate> templates;
     protected boolean form = false;
     protected boolean annotation = true;
 
-    /** Holds value of property used. */
+    /**
+     * Holds value of property used.
+     */
     protected boolean used = false;
 
-    /** Holds value of property placeInPage. */
+    /**
+     * Holds value of property placeInPage.
+     */
     private int placeInPage = -1;
 
     protected PdfName role = null;
@@ -159,16 +227,17 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
             put(PdfName.RECT, new PdfRectangle(rect));
     }
 
-/**
- * Constructs a new <CODE>PdfAnnotation</CODE> of subtype text.
- * @param writer
- * @param llx
- * @param lly
- * @param urx
- * @param ury
- * @param title
- * @param content
- */
+    /**
+     * Constructs a new <CODE>PdfAnnotation</CODE> of subtype text.
+     *
+     * @param writer
+     * @param llx
+     * @param lly
+     * @param urx
+     * @param ury
+     * @param title
+     * @param content
+     */
 
     public PdfAnnotation(PdfWriter writer, float llx, float lly, float urx, float ury, PdfString title, PdfString content) {
         this.writer = writer;
@@ -178,15 +247,16 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
         put(PdfName.CONTENTS, content);
     }
 
-/**
- * Constructs a new <CODE>PdfAnnotation</CODE> of subtype link (Action).
- * @param writer
- * @param llx
- * @param lly
- * @param urx
- * @param ury
- * @param action
- */
+    /**
+     * Constructs a new <CODE>PdfAnnotation</CODE> of subtype link (Action).
+     *
+     * @param writer
+     * @param llx
+     * @param lly
+     * @param urx
+     * @param ury
+     * @param action
+     */
 
     public PdfAnnotation(PdfWriter writer, float llx, float lly, float urx, float ury, PdfAction action) {
         this.writer = writer;
@@ -199,6 +269,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Creates a screen PdfAnnotation
+     *
      * @param writer
      * @param rect
      * @param clipTitle
@@ -211,15 +282,14 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
     public static PdfAnnotation createScreen(PdfWriter writer, Rectangle rect, String clipTitle, PdfFileSpecification fs,
                                              String mimeType, boolean playOnDisplay) throws IOException {
         PdfAnnotation ann = writer.createAnnotation(rect, PdfName.SCREEN);
-        ann.put (PdfName.F, new PdfNumber(FLAGS_PRINT));
+        ann.put(PdfName.F, new PdfNumber(FLAGS_PRINT));
         ann.put(PdfName.TYPE, PdfName.ANNOT);
         ann.setPage();
         PdfIndirectReference ref = ann.getIndirectReference();
-        PdfAction action = PdfAction.rendition(clipTitle,fs,mimeType, ref);
+        PdfAction action = PdfAction.rendition(clipTitle, fs, mimeType, ref);
         PdfIndirectReference actionRef = writer.addToBody(action).getIndirectReference();
         // for play on display add trigger event
-        if (playOnDisplay)
-        {
+        if (playOnDisplay) {
             PdfDictionary aa = new PdfDictionary();
             aa.put(new PdfName("PV"), actionRef);
             ann.put(PdfName.AA, aa);
@@ -230,11 +300,12 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Returns an indirect reference to the annotation
+     *
      * @return the indirect reference
      */
     public PdfIndirectReference getIndirectReference() {
         if (reference == null) {
-        	reference = writer.getPdfIndirectReference();
+            reference = writer.getPdfIndirectReference();
         }
         return reference;
     }
@@ -264,6 +335,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Creates a link.
+     *
      * @param writer
      * @param rect
      * @param highlight
@@ -278,6 +350,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Creates an Annotation with an Action.
+     *
      * @param writer
      * @param rect
      * @param highlight
@@ -292,6 +365,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Creates an Annotation with an local destination.
+     *
      * @param writer
      * @param rect
      * @param highlight
@@ -306,6 +380,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Creates an Annotation with a PdfDestination.
+     *
      * @param writer
      * @param rect
      * @param highlight
@@ -324,6 +399,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Add some free text to the document.
+     *
      * @param writer
      * @param rect
      * @param contents
@@ -339,6 +415,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Adds a line to the document. Move over the line and a tooltip is shown.
+     *
      * @param writer
      * @param rect
      * @param contents
@@ -361,10 +438,11 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Adds a circle or a square that shows a tooltip when you pass over it.
+     *
      * @param writer
      * @param rect
      * @param contents The tooltip
-     * @param square true if you want a square, false if you want a circle
+     * @param square   true if you want a square, false if you want a circle
      * @return A PdfAnnotation
      */
     public static PdfAnnotation createSquareCircle(PdfWriter writer, Rectangle rect, String contents, boolean square) {
@@ -394,13 +472,14 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
         annot.put(PdfName.CONTENTS, new PdfString(contents, PdfObject.TEXT_UNICODE));
         PdfArray array = new PdfArray();
         for (int k = 0; k < quadPoints.length; ++k)
-        	array.add(new PdfNumber(quadPoints[k]));
+            array.add(new PdfNumber(quadPoints[k]));
         annot.put(PdfName.QUADPOINTS, array);
         return annot;
     }
 
     /**
      * Adds a Stamp to your document. Move over the stamp and a tooltip is shown
+     *
      * @param writer
      * @param rect
      * @param contents
@@ -429,23 +508,27 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
         return annot;
     }
 
-    /** Creates a file attachment annotation.
-     * @param writer the <CODE>PdfWriter</CODE>
-     * @param rect the dimensions in the page of the annotation
-     * @param contents the file description
-     * @param fileStore an array with the file. If it's <CODE>null</CODE>
-     * the file will be read from the disk
-     * @param file the path to the file. It will only be used if
-     * <CODE>fileStore</CODE> is not <CODE>null</CODE>
+    /**
+     * Creates a file attachment annotation.
+     *
+     * @param writer      the <CODE>PdfWriter</CODE>
+     * @param rect        the dimensions in the page of the annotation
+     * @param contents    the file description
+     * @param fileStore   an array with the file. If it's <CODE>null</CODE>
+     *                    the file will be read from the disk
+     * @param file        the path to the file. It will only be used if
+     *                    <CODE>fileStore</CODE> is not <CODE>null</CODE>
      * @param fileDisplay the actual file name stored in the pdf
-     * @throws IOException on error
      * @return the annotation
+     * @throws IOException on error
      */
     public static PdfAnnotation createFileAttachment(PdfWriter writer, Rectangle rect, String contents, byte fileStore[], String file, String fileDisplay) throws IOException {
         return createFileAttachment(writer, rect, contents, PdfFileSpecification.fileEmbedded(writer, file, fileDisplay, fileStore));
     }
 
-    /** Creates a file attachment annotation
+    /**
+     * Creates a file attachment annotation
+     *
      * @param writer
      * @param rect
      * @param contents
@@ -463,6 +546,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Adds a popup to your document.
+     *
      * @param writer
      * @param rect
      * @param contents
@@ -480,25 +564,26 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Creates a polygon or -line annotation
-     * @param writer the PdfWriter
-     * @param rect the annotation position
+     *
+     * @param writer   the PdfWriter
+     * @param rect     the annotation position
      * @param contents the textual content of the annotation
-     * @param polygon if true, the we're creating a polygon annotation, if false, a polyline
+     * @param polygon  if true, the we're creating a polygon annotation, if false, a polyline
      * @param vertices an array with the vertices of the polygon or -line
      * @since 5.0.2
      */
     public static PdfAnnotation createPolygonPolyline(
-        PdfWriter writer, Rectangle rect, String contents, boolean polygon, PdfArray vertices) {
-    	PdfAnnotation annot = null;
-    	if (polygon)
-    		annot = writer.createAnnotation(rect, PdfName.POLYGON);
-    	else
+            PdfWriter writer, Rectangle rect, String contents, boolean polygon, PdfArray vertices) {
+        PdfAnnotation annot = null;
+        if (polygon)
+            annot = writer.createAnnotation(rect, PdfName.POLYGON);
+        else
             annot = writer.createAnnotation(rect, PdfName.POLYLINE);
-    	annot.put(PdfName.CONTENTS, new PdfString(contents, PdfObject.TEXT_UNICODE));
-    	annot.put(PdfName.VERTICES, new PdfArray(vertices));
+        annot.put(PdfName.CONTENTS, new PdfString(contents, PdfObject.TEXT_UNICODE));
+        annot.put(PdfName.VERTICES, new PdfArray(vertices));
         return annot;
     }
-    
+
     public void setDefaultAppearanceString(PdfContentByte cb) {
         byte b[] = cb.getInternalBuffer().toByteArray();
         int len = b.length;
@@ -528,6 +613,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
      * Sets the annotation's highlighting mode. The values can be
      * <CODE>HIGHLIGHT_NONE</CODE>, <CODE>HIGHLIGHT_INVERT</CODE>,
      * <CODE>HIGHLIGHT_OUTLINE</CODE> and <CODE>HIGHLIGHT_PUSH</CODE>;
+     *
      * @param highlight the annotation's highlighting mode
      */
     public void setHighlighting(PdfName highlight) {
@@ -538,7 +624,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
     }
 
     public void setAppearance(PdfName ap, PdfTemplate template) {
-        PdfDictionary dic = (PdfDictionary)get(PdfName.AP);
+        PdfDictionary dic = (PdfDictionary) get(PdfName.AP);
         if (dic == null)
             dic = new PdfDictionary();
         dic.put(ap, template.getIndirectReference());
@@ -551,14 +637,14 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
     }
 
     public void setAppearance(PdfName ap, String state, PdfTemplate template) {
-        PdfDictionary dicAp = (PdfDictionary)get(PdfName.AP);
+        PdfDictionary dicAp = (PdfDictionary) get(PdfName.AP);
         if (dicAp == null)
             dicAp = new PdfDictionary();
 
         PdfDictionary dic;
         PdfObject obj = dicAp.get(ap);
         if (obj != null && obj.isDictionary())
-            dic = (PdfDictionary)obj;
+            dic = (PdfDictionary) obj;
         else
             dic = new PdfDictionary();
         dic.put(new PdfName(state), template.getIndirectReference());
@@ -604,21 +690,24 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
         PdfDictionary dic;
         PdfObject obj = get(PdfName.AA);
         if (obj != null && obj.isDictionary())
-            dic = (PdfDictionary)obj;
+            dic = (PdfDictionary) obj;
         else
             dic = new PdfDictionary();
         dic.put(key, action);
         put(PdfName.AA, dic);
     }
 
-    /** Getter for property used.
+    /**
+     * Getter for property used.
+     *
      * @return Value of property used.
      */
     public boolean isUsed() {
         return used;
     }
 
-    /** Setter for property used.
+    /**
+     * Setter for property used.
      */
     public void setUsed() {
         used = true;
@@ -628,14 +717,18 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
         return templates;
     }
 
-    /** Getter for property form.
+    /**
+     * Getter for property form.
+     *
      * @return Value of property form.
      */
     public boolean isForm() {
         return form;
     }
 
-    /** Getter for property annotation.
+    /**
+     * Getter for property annotation.
+     *
      * @return Value of property annotation.
      */
     public boolean isAnnotation() {
@@ -650,16 +743,20 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
         put(PdfName.P, writer.getCurrentPage());
     }
 
-    /** Getter for property placeInPage.
+    /**
+     * Getter for property placeInPage.
+     *
      * @return Value of property placeInPage.
      */
     public int getPlaceInPage() {
         return placeInPage;
     }
 
-    /** Places the annotation in a specified page that must be greater
+    /**
+     * Places the annotation in a specified page that must be greater
      * or equal to the current one. With <code>PdfStamper</code> the page
      * can be any. The first page is 1.
+     *
      * @param placeInPage New value of property placeInPage.
      */
     public void setPlaceInPage(int placeInPage) {
@@ -671,7 +768,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
     }
 
     PdfDictionary getMK() {
-        PdfDictionary mk = (PdfDictionary)get(PdfName.MK);
+        PdfDictionary mk = (PdfDictionary) get(PdfName.MK);
         if (mk == null) {
             mk = new PdfDictionary();
             put(PdfName.MK, mk);
@@ -688,11 +785,11 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
         int type = ExtendedColor.getType(color);
         switch (type) {
             case ExtendedColor.TYPE_GRAY: {
-                array.add(new PdfNumber(((GrayColor)color).getGray()));
+                array.add(new PdfNumber(((GrayColor) color).getGray()));
                 break;
             }
             case ExtendedColor.TYPE_CMYK: {
-                CMYKColor cmyk = (CMYKColor)color;
+                CMYKColor cmyk = (CMYKColor) color;
                 array.add(new PdfNumber(cmyk.getCyan()));
                 array.add(new PdfNumber(cmyk.getMagenta()));
                 array.add(new PdfNumber(cmyk.getYellow()));
@@ -771,6 +868,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
 
     /**
      * Sets the layer this annotation belongs to.
+     *
      * @param layer the layer this annotation belongs to
      */
     public void setLayer(PdfOCG layer) {
@@ -783,7 +881,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
      * all the annotations on a page (it has to be unique).
      */
     public void setName(String name) {
-    	put(PdfName.NM, new PdfString(name));
+        put(PdfName.NM, new PdfString(name));
     }
 
 
@@ -793,8 +891,7 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
             PdfRectangle rect;
             if (origRect.size() == 4) {
                 rect = new PdfRectangle(origRect.getAsNumber(0).floatValue(), origRect.getAsNumber(1).floatValue(), origRect.getAsNumber(2).floatValue(), origRect.getAsNumber(3).floatValue());
-            }
-            else {
+            } else {
                 rect = new PdfRectangle(origRect.getAsNumber(0).floatValue(), origRect.getAsNumber(1).floatValue());
             }
             put(PdfName.RECT, rect.transform(ctm));
@@ -849,30 +946,30 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
      * </pre>
      */
     public static class PdfImportedLink {
-    	float llx, lly, urx, ury;
-    	HashMap<PdfName, PdfObject> parameters = new HashMap<PdfName, PdfObject>();
-    	PdfArray destination = null;
-    	int newPage=0;
+        float llx, lly, urx, ury;
+        HashMap<PdfName, PdfObject> parameters = new HashMap<PdfName, PdfObject>();
+        PdfArray destination = null;
+        int newPage = 0;
         PdfArray rect;
 
-    	PdfImportedLink(PdfDictionary annotation) {
-    		parameters.putAll(annotation.hashMap);
-    		try {
-    			destination = (PdfArray) parameters.remove(PdfName.DEST);
-    		} catch (ClassCastException ex) {
-    			throw new IllegalArgumentException(MessageLocalization.getComposedMessage("you.have.to.consolidate.the.named.destinations.of.your.reader"));
-    		}
-    		if (destination != null) {
-    			destination = new PdfArray(destination);
-    		}
-        	PdfArray rc = (PdfArray) parameters.remove(PdfName.RECT);
-        	llx = rc.getAsNumber(0).floatValue();
-    		lly = rc.getAsNumber(1).floatValue();
-        	urx = rc.getAsNumber(2).floatValue();
-    		ury = rc.getAsNumber(3).floatValue();
+        PdfImportedLink(PdfDictionary annotation) {
+            parameters.putAll(annotation.hashMap);
+            try {
+                destination = (PdfArray) parameters.remove(PdfName.DEST);
+            } catch (ClassCastException ex) {
+                throw new IllegalArgumentException(MessageLocalization.getComposedMessage("you.have.to.consolidate.the.named.destinations.of.your.reader"));
+            }
+            if (destination != null) {
+                destination = new PdfArray(destination);
+            }
+            PdfArray rc = (PdfArray) parameters.remove(PdfName.RECT);
+            llx = rc.getAsNumber(0).floatValue();
+            lly = rc.getAsNumber(1).floatValue();
+            urx = rc.getAsNumber(2).floatValue();
+            ury = rc.getAsNumber(3).floatValue();
 
             rect = new PdfArray(rc);
-    	}
+        }
 
         public Map<PdfName, PdfObject> getParameters() {
             return new HashMap<PdfName, PdfObject>(parameters);
@@ -882,98 +979,101 @@ public class PdfAnnotation extends PdfDictionary implements IAccessibleElement {
             return new PdfArray(rect);
         }
 
-    	public boolean isInternal() {
-    		return destination != null;
-    	}
+        public boolean isInternal() {
+            return destination != null;
+        }
 
-    	public int getDestinationPage() {
-    		if (!isInternal()) return 0;
+        public int getDestinationPage() {
+            if (!isInternal()) return 0;
 
-    		// here destination is something like
-    		// [132 0 R, /XYZ, 29.3898, 731.864502, null]
-    		PdfIndirectReference ref = destination.getAsIndirectObject(0);
+            // here destination is something like
+            // [132 0 R, /XYZ, 29.3898, 731.864502, null]
+            PdfIndirectReference ref = destination.getAsIndirectObject(0);
 
-    		PRIndirectReference pr = (PRIndirectReference) ref;
-    		PdfReader r = pr.getReader();
-    		for (int i = 1; i <= r.getNumberOfPages(); i++) {
-    			PRIndirectReference pp = r.getPageOrigRef(i);
-    			if (pp.getGeneration() == pr.getGeneration() && pp.getNumber() == pr.getNumber()) return i;
-    		}
-    		throw new IllegalArgumentException(MessageLocalization.getComposedMessage("page.not.found"));
-    	}
+            PRIndirectReference pr = (PRIndirectReference) ref;
+            PdfReader r = pr.getReader();
+            for (int i = 1; i <= r.getNumberOfPages(); i++) {
+                PRIndirectReference pp = r.getPageOrigRef(i);
+                if (pp.getGeneration() == pr.getGeneration() && pp.getNumber() == pr.getNumber()) return i;
+            }
+            throw new IllegalArgumentException(MessageLocalization.getComposedMessage("page.not.found"));
+        }
 
-    	public void setDestinationPage(int newPage) {
-    		if (!isInternal()) throw new IllegalArgumentException(MessageLocalization.getComposedMessage("cannot.change.destination.of.external.link"));
-    		this.newPage=newPage;
-    	}
+        public void setDestinationPage(int newPage) {
+            if (!isInternal())
+                throw new IllegalArgumentException(MessageLocalization.getComposedMessage("cannot.change.destination.of.external.link"));
+            this.newPage = newPage;
+        }
 
-    	public void transformDestination(float a, float b, float c, float d, float e, float f) {
-    		if (!isInternal()) throw new IllegalArgumentException(MessageLocalization.getComposedMessage("cannot.change.destination.of.external.link"));
-    		if (destination.getAsName(1).equals(PdfName.XYZ)) {
-    			float x = destination.getAsNumber(2).floatValue();
-    			float y = destination.getAsNumber(3).floatValue();
-        		float xx = x * a + y * c + e;
-        		float yy = x * b + y * d + f;
-        		destination.set(2, new PdfNumber(xx));
-        		destination.set(3, new PdfNumber(yy));
-    		}
-    	}
+        public void transformDestination(float a, float b, float c, float d, float e, float f) {
+            if (!isInternal())
+                throw new IllegalArgumentException(MessageLocalization.getComposedMessage("cannot.change.destination.of.external.link"));
+            if (destination.getAsName(1).equals(PdfName.XYZ)) {
+                float x = destination.getAsNumber(2).floatValue();
+                float y = destination.getAsNumber(3).floatValue();
+                float xx = x * a + y * c + e;
+                float yy = x * b + y * d + f;
+                destination.set(2, new PdfNumber(xx));
+                destination.set(3, new PdfNumber(yy));
+            }
+        }
 
-    	public void transformRect(float a, float b, float c, float d, float e, float f) {
-    		float x = llx * a + lly * c + e;
-    		float y = llx * b + lly * d + f;
-    		llx = x;
-    		lly = y;
-    		x = urx * a + ury * c + e;
-    		y = urx * b + ury * d + f;
-    		urx = x;
-    		ury = y;
-    	}
+        public void transformRect(float a, float b, float c, float d, float e, float f) {
+            float x = llx * a + lly * c + e;
+            float y = llx * b + lly * d + f;
+            llx = x;
+            lly = y;
+            x = urx * a + ury * c + e;
+            y = urx * b + ury * d + f;
+            urx = x;
+            ury = y;
+        }
 
-    	public PdfAnnotation createAnnotation(PdfWriter writer) {
-    		PdfAnnotation annotation = writer.createAnnotation(new Rectangle(llx, lly, urx, ury), null);
-    		if (newPage != 0) {
-    	        PdfIndirectReference ref = writer.getPageReference(newPage);
-    	        destination.set(0, ref);
-    		}
-    		if (destination != null) annotation.put(PdfName.DEST, destination);
-    		annotation.hashMap.putAll(parameters);
-    		return annotation;
-    	}
+        public PdfAnnotation createAnnotation(PdfWriter writer) {
+            PdfAnnotation annotation = writer.createAnnotation(new Rectangle(llx, lly, urx, ury), null);
+            if (newPage != 0) {
+                PdfIndirectReference ref = writer.getPageReference(newPage);
+                destination.set(0, ref);
+            }
+            if (destination != null) annotation.put(PdfName.DEST, destination);
+            annotation.hashMap.putAll(parameters);
+            return annotation;
+        }
 
-    	/**
-    	 * Returns a String representation of the link.
-    	 * @return	a String representation of the imported link
-    	 * @since	2.1.6
-    	 */
-    	@Override
+        /**
+         * Returns a String representation of the link.
+         *
+         * @return a String representation of the imported link
+         * @since 2.1.6
+         */
+        @Override
         public String toString() {
-    		StringBuffer buf = new StringBuffer("Imported link: location [");
-    		buf.append(llx);
-    		buf.append(' ');
-    		buf.append(lly);
-    		buf.append(' ');
-    		buf.append(urx);
-    		buf.append(' ');
-    		buf.append(ury);
-    		buf.append("] destination ");
-    		buf.append(destination);
-    		buf.append(" parameters ");
-    		buf.append(parameters);
+            StringBuffer buf = new StringBuffer("Imported link: location [");
+            buf.append(llx);
+            buf.append(' ');
+            buf.append(lly);
+            buf.append(' ');
+            buf.append(urx);
+            buf.append(' ');
+            buf.append(ury);
+            buf.append("] destination ");
+            buf.append(destination);
+            buf.append(" parameters ");
+            buf.append(parameters);
             if (parameters != null) {
                 appendDictionary(buf, parameters);
             }
 
-    		return buf.toString();
-    	}
+            return buf.toString();
+        }
 
         private void appendDictionary(StringBuffer buf, HashMap<PdfName, PdfObject> dict) {
             buf.append(" <<");
-            for(Map.Entry<PdfName, PdfObject> entry : dict.entrySet()) {
+            for (Map.Entry<PdfName, PdfObject> entry : dict.entrySet()) {
                 buf.append(entry.getKey());
                 buf.append(":");
                 if (entry.getValue() instanceof PdfDictionary)
-                    appendDictionary(buf, ((PdfDictionary)entry.getValue()).hashMap);
+                    appendDictionary(buf, ((PdfDictionary) entry.getValue()).hashMap);
                 else
                     buf.append(entry.getValue());
                 buf.append(" ");

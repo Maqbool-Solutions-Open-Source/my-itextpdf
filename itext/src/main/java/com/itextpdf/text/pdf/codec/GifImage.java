@@ -54,8 +54,10 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 
-/** Reads gif images of all types. All the images in a gif are read in the constructors
+/**
+ * Reads gif images of all types. All the images in a gif are read in the constructors
  * and can be retrieved with other methods.
+ *
  * @author Paulo Soares
  */
 public class GifImage {
@@ -105,7 +107,9 @@ public class GifImage {
 
     protected ArrayList<GifFrame> frames = new ArrayList<GifFrame>();     // frames read from current file
 
-    /** Reads gif images from an URL.
+    /**
+     * Reads gif images from an URL.
+     *
      * @param url the URL
      * @throws IOException on error
      */
@@ -129,15 +133,16 @@ public class GifImage {
             baos.close();
 
             process(is);
-        }
-        finally {
+        } finally {
             if (is != null) {
                 is.close();
             }
         }
     }
 
-    /** Reads gif images from a file.
+    /**
+     * Reads gif images from a file.
+     *
      * @param file the file
      * @throws IOException on error
      */
@@ -145,7 +150,9 @@ public class GifImage {
         this(Utilities.toURL(file));
     }
 
-    /** Reads gif images from a byte array.
+    /**
+     * Reads gif images from a byte array.
+     *
      * @param data the byte array
      * @throws IOException on error
      */
@@ -155,15 +162,16 @@ public class GifImage {
         try {
             is = new ByteArrayInputStream(data);
             process(is);
-        }
-        finally {
+        } finally {
             if (is != null) {
                 is.close();
             }
         }
     }
 
-    /** Reads gif images from a stream. The stream is not closed.
+    /**
+     * Reads gif images from a stream. The stream is not closed.
+     *
      * @param is the stream
      * @throws IOException on error
      */
@@ -171,14 +179,18 @@ public class GifImage {
         process(is);
     }
 
-    /** Gets the number of frames the gif has.
+    /**
+     * Gets the number of frames the gif has.
+     *
      * @return the number of frames the gif has
      */
     public int getFrameCount() {
         return frames.size();
     }
 
-    /** Gets the image from a frame. The first frame is 1.
+    /**
+     * Gets the image from a frame. The first frame is 1.
+     *
      * @param frame the frame to get the image from
      * @return the image
      */
@@ -187,8 +199,10 @@ public class GifImage {
         return gf.image;
     }
 
-    /** Gets the [x,y] position of the frame in reference to the
+    /**
+     * Gets the [x,y] position of the frame in reference to the
      * logical screen.
+     *
      * @param frame the frame
      * @return the [x,y] position of the frame
      */
@@ -198,9 +212,11 @@ public class GifImage {
 
     }
 
-    /** Gets the logical screen. The images may be smaller and placed
+    /**
+     * Gets the logical screen. The images may be smaller and placed
      * in some position in this screen to playback some animation.
      * No image will be be bigger that this.
+     *
      * @return the logical screen dimensions as [x,y]
      */
     public int[] getLogicalScreen() {
@@ -221,7 +237,7 @@ public class GifImage {
     protected void readHeader() throws IOException {
         StringBuilder id = new StringBuilder("");
         for (int i = 0; i < 6; i++)
-            id.append((char)in.read());
+            id.append((char) in.read());
         if (!id.toString().startsWith("GIF8")) {
             throw new IOException(MessageLocalization.getComposedMessage("gif.signature.nor.found"));
         }
@@ -274,7 +290,7 @@ public class GifImage {
 
     protected byte[] readColorTable(int bpc) throws IOException {
         int ncolors = 1 << bpc;
-        int nbytes = 3*ncolors;
+        int nbytes = 3 * ncolors;
         bpc = newBpc(bpc);
         byte table[] = new byte[(1 << bpc) * 3];
         in.readFully(table, 0, nbytes);
@@ -351,8 +367,7 @@ public class GifImage {
         if (lctFlag) {
             m_curr_table = readColorTable((packed & 7) + 1);   // read table
             m_bpc = newBpc((packed & 7) + 1);
-        }
-        else {
+        } else {
             m_curr_table = m_global_table;
         }
         if (transparency && transIndex >= m_curr_table.length / 3)
@@ -382,8 +397,7 @@ public class GifImage {
             if (transparency) {
                 img.setTransparency(new int[]{transIndex, transIndex});
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
         img.setOriginalType(Image.ORIGINAL_GIF);
@@ -403,7 +417,7 @@ public class GifImage {
         int NullCode = -1;
         int npix = iw * ih;
         int available, clear, code_mask, code_size, end_of_information, in_code, old_code,
-        bits, code, count, i, datum, data_size, first, top, bi;
+                bits, code, count, i, datum, data_size, first, top, bi;
         boolean skipZero = false;
 
         if (prefix == null)
@@ -411,7 +425,7 @@ public class GifImage {
         if (suffix == null)
             suffix = new byte[MaxStackSize];
         if (pixelStack == null)
-            pixelStack = new byte[MaxStackSize+1];
+            pixelStack = new byte[MaxStackSize + 1];
 
         m_line_stride = (iw * m_bpc + 7) / 8;
         m_out = new byte[m_line_stride * ih];
@@ -539,8 +553,7 @@ public class GifImage {
                                     inc = 0;
                             }
                         } while (line >= ih);
-                    }
-                    else {
+                    } else {
                         line = ih - 1; // this shouldn't happen
                         inc = 0;
                     }
@@ -554,11 +567,10 @@ public class GifImage {
     protected void setPixel(int x, int y, int v) {
         if (m_bpc == 8) {
             int pos = x + iw * y;
-            m_out[pos] = (byte)v;
-        }
-        else {
+            m_out[pos] = (byte) v;
+        } else {
             int pos = m_line_stride * y + x / (8 / m_bpc);
-            int vout = v << 8 - m_bpc * (x % (8 / m_bpc))- m_bpc;
+            int vout = v << 8 - m_bpc * (x % (8 / m_bpc)) - m_bpc;
             m_out[pos] |= vout;
         }
     }

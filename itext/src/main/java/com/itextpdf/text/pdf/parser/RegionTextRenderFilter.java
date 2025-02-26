@@ -48,41 +48,47 @@ import com.itextpdf.text.Rectangle;
 
 /**
  * A {@link RenderFilter} that only allows text within a specified rectangular region
+ *
  * @since 5.0.1
  */
 public class RegionTextRenderFilter extends RenderFilter {
 
-    /** the region to allow text from */
+    /**
+     * the region to allow text from
+     */
     private final Rectangle2D filterRect;
-    
+
     /**
      * Constructs a filter
+     *
      * @param filterRect the rectangle to filter text against.  Note that this is a com.itextpdf.text.geom.Rectangle !
      */
     public RegionTextRenderFilter(Rectangle2D filterRect) {
         this.filterRect = filterRect;
     }
-    
+
     /**
      * Constructs a filter
+     *
      * @param filterRect the rectangle to filter text against.
      */
     public RegionTextRenderFilter(Rectangle filterRect) {
         this.filterRect = new com.itextpdf.awt.geom.Rectangle(filterRect);
-    } 
-    /** 
+    }
+
+    /**
      * @see com.itextpdf.text.pdf.parser.RenderFilter#allowText(com.itextpdf.text.pdf.parser.TextRenderInfo)
      */
-    public boolean allowText(TextRenderInfo renderInfo){
-    	LineSegment segment = renderInfo.getBaseline();
+    public boolean allowText(TextRenderInfo renderInfo) {
+        LineSegment segment = renderInfo.getBaseline();
         Vector startPoint = segment.getStartPoint();
         Vector endPoint = segment.getEndPoint();
-        
+
         float x1 = startPoint.get(Vector.I1);
         float y1 = startPoint.get(Vector.I2);
         float x2 = endPoint.get(Vector.I1);
         float y2 = endPoint.get(Vector.I2);
-        
+
         return filterRect.intersectsLine(x1, y1, x2, y2);
     }
 

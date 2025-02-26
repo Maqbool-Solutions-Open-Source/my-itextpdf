@@ -45,337 +45,449 @@ package com.itextpdf.text.html;
 
 /**
  * Static final values of supported HTML tags and attributes.
+ *
  * @since 5.0.6
  * @deprecated since 5.5.2
  */
 @Deprecated
 public class HtmlTags {
 
-	// tag names
-	
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String A = "a";
-	/** name of a tag */
-	public static final String B = "b";
-	/** name of a tag */
-	public static final String BODY = "body";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String BLOCKQUOTE = "blockquote";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String BR = "br";
-	/** name of a tag */
-	public static final String DIV = "div";
-	/** name of a tag */
-	public static final String EM = "em";
-	/** name of a tag */
-	public static final String FONT = "font";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String H1 = "h1";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String H2 = "h2";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String H3 = "h3";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String H4 = "h4";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String H5 = "h5";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String H6 = "h6";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String HR = "hr";
-	/** name of a tag */
-	public static final String I = "i";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String IMG = "img";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String LI = "li";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String OL = "ol";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String P = "p";
-	/** name of a tag */
-	public static final String PRE = "pre";
-	/** name of a tag */
-	public static final String S = "s";
-	/** name of a tag */
-	public static final String SPAN = "span";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String STRIKE = "strike";
-	/** name of a tag */
-	public static final String STRONG = "strong";
-	/** name of a tag */
-	public static final String SUB = "sub";
-	/** name of a tag */
-	public static final String SUP = "sup";
-	/** name of a tag */
-	public static final String TABLE = "table";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String TD = "td";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String TH = "th";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String TR = "tr";
-	/** name of a tag */
-	public static final String U = "u";
-	/**
-	 * name of a tag.
-	 * @since 5.0.6 (reorganized all constants)
-	 */
-	public static final String UL = "ul";
+    // tag names
 
-	// attributes (some are not real HTML attributes!)
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String A = "a";
+    /**
+     * name of a tag
+     */
+    public static final String B = "b";
+    /**
+     * name of a tag
+     */
+    public static final String BODY = "body";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String BLOCKQUOTE = "blockquote";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String BR = "br";
+    /**
+     * name of a tag
+     */
+    public static final String DIV = "div";
+    /**
+     * name of a tag
+     */
+    public static final String EM = "em";
+    /**
+     * name of a tag
+     */
+    public static final String FONT = "font";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String H1 = "h1";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String H2 = "h2";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String H3 = "h3";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String H4 = "h4";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String H5 = "h5";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String H6 = "h6";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String HR = "hr";
+    /**
+     * name of a tag
+     */
+    public static final String I = "i";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String IMG = "img";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String LI = "li";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String OL = "ol";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String P = "p";
+    /**
+     * name of a tag
+     */
+    public static final String PRE = "pre";
+    /**
+     * name of a tag
+     */
+    public static final String S = "s";
+    /**
+     * name of a tag
+     */
+    public static final String SPAN = "span";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String STRIKE = "strike";
+    /**
+     * name of a tag
+     */
+    public static final String STRONG = "strong";
+    /**
+     * name of a tag
+     */
+    public static final String SUB = "sub";
+    /**
+     * name of a tag
+     */
+    public static final String SUP = "sup";
+    /**
+     * name of a tag
+     */
+    public static final String TABLE = "table";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String TD = "td";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String TH = "th";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String TR = "tr";
+    /**
+     * name of a tag
+     */
+    public static final String U = "u";
+    /**
+     * name of a tag.
+     *
+     * @since 5.0.6 (reorganized all constants)
+     */
+    public static final String UL = "ul";
 
-	/** name of an attribute */
-	public static final String ALIGN = "align";
-	/**
-	 * name of an attribute
-	 * @since 5.0.6
-	 */
-	public static final String BGCOLOR = "bgcolor";
-	/**
-	 * name of an attribute
-	 * @since 5.0.6
-	 */
-	public static final String BORDER = "border";
-	/** name of an attribute */
-	public static final String CELLPADDING = "cellpadding";
-	/** name of an attribute */
-	public static final String COLSPAN = "colspan";
-	/**
-	 * name of an attribute
-	 * @since 5.0.6
-	 */
-	public static final String EXTRAPARASPACE = "extraparaspace";
-	/**
-	 * name of an attribute
-	 * @since 5.0.6
-	 */
-	public static final String ENCODING = "encoding";
-	/**
-	 * name of an attribute
-	 * @since 5.0.6
-	 */
-	public static final String FACE = "face";
-	/**
-	 * Name of an attribute.
-	 * @since 5.0.6
-	 */
-	public static final String HEIGHT = "height";
-	/**
-	 * Name of an attribute.
-	 * @since 5.0.6
-	 */
-	public static final String HREF = "href";
-	/**
-	 * Name of an attribute.
-	 * @since 5.0.6
-	 */
-	public static final String HYPHENATION = "hyphenation";
-	/**
-	 * Name of an attribute.
-	 * @since 5.0.6
-	 */
-	public static final String IMAGEPATH = "image_path";
-	/**
-	 * Name of an attribute.
-	 * @since 5.0.6
-	 */
-	public static final String INDENT = "indent";
-	/**
-	 * Name of an attribute.
-	 * @since 5.0.6
-	 */
-	public static final String LEADING = "leading";
-	/** name of an attribute */
-	public static final String ROWSPAN = "rowspan";
-	/** name of an attribute */
-	public static final String SIZE = "size";
-	/**
-	 * Name of an attribute.
-	 * @since 5.0.6
-	 */
-	public static final String SRC = "src";
-	/**
-	 * Name of an attribute.
-	 * @since 5.0.6
-	 */
-	public static final String VALIGN = "valign";
-	/** name of an attribute */
-	public static final String WIDTH = "width";
-	
-	// attribute values
+    // attributes (some are not real HTML attributes!)
 
-	/** the possible value of an alignment attribute */
-	public static final String ALIGN_LEFT = "left";
-	/** the possible value of an alignment attribute */
-	public static final String ALIGN_CENTER = "center";
-	/** the possible value of an alignment attribute */
-	public static final String ALIGN_RIGHT = "right";
-	/** 
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6
-	 */
-	public static final String ALIGN_JUSTIFY = "justify";
-	/** 
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6
-	 */
+    /**
+     * name of an attribute
+     */
+    public static final String ALIGN = "align";
+    /**
+     * name of an attribute
+     *
+     * @since 5.0.6
+     */
+    public static final String BGCOLOR = "bgcolor";
+    /**
+     * name of an attribute
+     *
+     * @since 5.0.6
+     */
+    public static final String BORDER = "border";
+    /**
+     * name of an attribute
+     */
+    public static final String CELLPADDING = "cellpadding";
+    /**
+     * name of an attribute
+     */
+    public static final String COLSPAN = "colspan";
+    /**
+     * name of an attribute
+     *
+     * @since 5.0.6
+     */
+    public static final String EXTRAPARASPACE = "extraparaspace";
+    /**
+     * name of an attribute
+     *
+     * @since 5.0.6
+     */
+    public static final String ENCODING = "encoding";
+    /**
+     * name of an attribute
+     *
+     * @since 5.0.6
+     */
+    public static final String FACE = "face";
+    /**
+     * Name of an attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String HEIGHT = "height";
+    /**
+     * Name of an attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String HREF = "href";
+    /**
+     * Name of an attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String HYPHENATION = "hyphenation";
+    /**
+     * Name of an attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String IMAGEPATH = "image_path";
+    /**
+     * Name of an attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String INDENT = "indent";
+    /**
+     * Name of an attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String LEADING = "leading";
+    /**
+     * name of an attribute
+     */
+    public static final String ROWSPAN = "rowspan";
+    /**
+     * name of an attribute
+     */
+    public static final String SIZE = "size";
+    /**
+     * Name of an attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String SRC = "src";
+    /**
+     * Name of an attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String VALIGN = "valign";
+    /**
+     * name of an attribute
+     */
+    public static final String WIDTH = "width";
+
+    // attribute values
+
+    /**
+     * the possible value of an alignment attribute
+     */
+    public static final String ALIGN_LEFT = "left";
+    /**
+     * the possible value of an alignment attribute
+     */
+    public static final String ALIGN_CENTER = "center";
+    /**
+     * the possible value of an alignment attribute
+     */
+    public static final String ALIGN_RIGHT = "right";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String ALIGN_JUSTIFY = "justify";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6
+     */
     public static final String ALIGN_JUSTIFIED_ALL = "JustifyAll";
-	/** the possible value of an alignment attribute */
-	public static final String ALIGN_TOP = "top";
-	/** the possible value of an alignment attribute */
-	public static final String ALIGN_MIDDLE = "middle";
-	/** the possible value of an alignment attribute */
-	public static final String ALIGN_BOTTOM = "bottom";
-	/** the possible value of an alignment attribute */
-	public static final String ALIGN_BASELINE = "baseline";
-	
-	// CSS
-	
-	/** This is used for inline css style information */
-	public static final String STYLE = "style";
-	/**
-	 * Attribute for specifying externally defined CSS class.
-	 * @since 5.0.6
-	 */
-	public static final String CLASS = "class";
-	/** the CSS tag for text color */
-	public static final String COLOR = "color";
-	/**
-	 * The CSS tag for the font size.
-	 * @since 5.0.6
-	 */
-	public static final String FONTFAMILY = "font-family";
-	/**
-	 * The CSS tag for the font size.
-	 * @since 5.0.6
-	 */
-	public static final String FONTSIZE = "font-size";
-	/**
-	 * The CSS tag for the font size.
-	 * @since 5.0.6
-	 */
-	public static final String FONTSTYLE = "font-style";
-	/**
-	 * The CSS tag for the font size.
-	 * @since 5.0.6
-	 */
-	public static final String FONTWEIGHT = "font-weight";
-	/**
-	 * The CSS tag for the font size.
-	 * @since 5.0.6
-	 */
-	public static final String LINEHEIGHT = "line-height";
-	/**
-	 * The CSS tag for the font size.
-	 * @since 5.0.6
-	 */
-	public static final String PADDINGLEFT = "padding-left";
-	/**
-	 * The CSS tag for the font size.
-	 * @since 5.0.6
-	 */
-	public static final String TEXTALIGN = "text-align";
-	/**
-	 * The CSS tag for the font size.
-	 * @since 5.0.6
-	 */
-	public static final String TEXTDECORATION = "text-decoration";
-	/** the CSS tag for text decorations */
-	public static final String VERTICALALIGN = "vertical-align";
-	/**
-	 * a CSS value for text decoration
-	 * @since 5.0.6
-	 */
-	public static final String BOLD = "bold";
-	/**
-	 * a CSS value for text decoration
-	 * @since 5.0.6
-	 */
-	public static final String ITALIC = "italic";
-	/**
-	 * a CSS value for text decoration
-	 * @since 5.0.6
-	 */
-	public static final String LINETHROUGH = "line-through";
-	/**
-	 * a CSS value for text decoration
-	 * @since 5.0.6
-	 */
-	public static final String NORMAL = "normal";
-	/**
-	 * a CSS value for text decoration
-	 * @since 5.0.6
-	 */
-	public static final String OBLIQUE = "oblique";
-	/**
-	 * a CSS value for text decoration
-	 * @since 5.0.6
-	 */
-	public static final String UNDERLINE = "underline";
+    /**
+     * the possible value of an alignment attribute
+     */
+    public static final String ALIGN_TOP = "top";
+    /**
+     * the possible value of an alignment attribute
+     */
+    public static final String ALIGN_MIDDLE = "middle";
+    /**
+     * the possible value of an alignment attribute
+     */
+    public static final String ALIGN_BOTTOM = "bottom";
+    /**
+     * the possible value of an alignment attribute
+     */
+    public static final String ALIGN_BASELINE = "baseline";
 
-	/**
-	 * A possible attribute.
-	 * @since 5.0.6
-	 */
-	public static final String AFTER = "after";
-	/**
-	 * A possible attribute.
-	 * @since 5.0.6
-	 */
-	public static final String BEFORE = "before";
+    // CSS
+
+    /**
+     * This is used for inline css style information
+     */
+    public static final String STYLE = "style";
+    /**
+     * Attribute for specifying externally defined CSS class.
+     *
+     * @since 5.0.6
+     */
+    public static final String CLASS = "class";
+    /**
+     * the CSS tag for text color
+     */
+    public static final String COLOR = "color";
+    /**
+     * The CSS tag for the font size.
+     *
+     * @since 5.0.6
+     */
+    public static final String FONTFAMILY = "font-family";
+    /**
+     * The CSS tag for the font size.
+     *
+     * @since 5.0.6
+     */
+    public static final String FONTSIZE = "font-size";
+    /**
+     * The CSS tag for the font size.
+     *
+     * @since 5.0.6
+     */
+    public static final String FONTSTYLE = "font-style";
+    /**
+     * The CSS tag for the font size.
+     *
+     * @since 5.0.6
+     */
+    public static final String FONTWEIGHT = "font-weight";
+    /**
+     * The CSS tag for the font size.
+     *
+     * @since 5.0.6
+     */
+    public static final String LINEHEIGHT = "line-height";
+    /**
+     * The CSS tag for the font size.
+     *
+     * @since 5.0.6
+     */
+    public static final String PADDINGLEFT = "padding-left";
+    /**
+     * The CSS tag for the font size.
+     *
+     * @since 5.0.6
+     */
+    public static final String TEXTALIGN = "text-align";
+    /**
+     * The CSS tag for the font size.
+     *
+     * @since 5.0.6
+     */
+    public static final String TEXTDECORATION = "text-decoration";
+    /**
+     * the CSS tag for text decorations
+     */
+    public static final String VERTICALALIGN = "vertical-align";
+    /**
+     * a CSS value for text decoration
+     *
+     * @since 5.0.6
+     */
+    public static final String BOLD = "bold";
+    /**
+     * a CSS value for text decoration
+     *
+     * @since 5.0.6
+     */
+    public static final String ITALIC = "italic";
+    /**
+     * a CSS value for text decoration
+     *
+     * @since 5.0.6
+     */
+    public static final String LINETHROUGH = "line-through";
+    /**
+     * a CSS value for text decoration
+     *
+     * @since 5.0.6
+     */
+    public static final String NORMAL = "normal";
+    /**
+     * a CSS value for text decoration
+     *
+     * @since 5.0.6
+     */
+    public static final String OBLIQUE = "oblique";
+    /**
+     * a CSS value for text decoration
+     *
+     * @since 5.0.6
+     */
+    public static final String UNDERLINE = "underline";
+
+    /**
+     * A possible attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String AFTER = "after";
+    /**
+     * A possible attribute.
+     *
+     * @since 5.0.6
+     */
+    public static final String BEFORE = "before";
 }

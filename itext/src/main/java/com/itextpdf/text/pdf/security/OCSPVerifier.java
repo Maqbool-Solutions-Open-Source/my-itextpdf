@@ -77,131 +77,139 @@ import com.itextpdf.text.log.LoggerFactory;
  * one or more OCSP responses.
  */
 public class OCSPVerifier extends RootStoreVerifier {
-	
-	/** The Logger instance */
-	protected final static Logger LOGGER = LoggerFactory.getLogger(OCSPVerifier.class);
+
+    /**
+     * The Logger instance
+     */
+    protected final static Logger LOGGER = LoggerFactory.getLogger(OCSPVerifier.class);
 
     protected final static String id_kp_OCSPSigning = "1.3.6.1.5.5.7.3.9";
-	
-	/** The list of OCSP responses. */
-	protected List<BasicOCSPResp> ocsps;
-	
-	/**
-	 * Creates an OCSPVerifier instance.
-	 * @param verifier	the next verifier in the chain
-	 * @param ocsps a list of OCSP responses
-	 */
-	public OCSPVerifier(CertificateVerifier verifier, List<BasicOCSPResp> ocsps) {
-		super(verifier);
-		this.ocsps = ocsps;
-	}
 
-	/**
-	 * Verifies if a a valid OCSP response is found for the certificate.
-	 * If this method returns false, it doesn't mean the certificate isn't valid.
-	 * It means we couldn't verify it against any OCSP response that was available.
-	 * @param signCert	the certificate that needs to be checked
-	 * @param issuerCert	its issuer
-	 * @return a list of <code>VerificationOK</code> objects.
-	 * The list will be empty if the certificate couldn't be verified.
-	 * @see com.itextpdf.text.pdf.security.RootStoreVerifier#verify(java.security.cert.X509Certificate, java.security.cert.X509Certificate, java.util.Date)
-	 */
-	public List<VerificationOK> verify(X509Certificate signCert,
-			X509Certificate issuerCert, Date signDate)
-			throws GeneralSecurityException, IOException {
-		List<VerificationOK> result = new ArrayList<VerificationOK>();
-		int validOCSPsFound = 0;
-		// first check in the list of OCSP responses that was provided
-		if (ocsps != null) {
+    /**
+     * The list of OCSP responses.
+     */
+    protected List<BasicOCSPResp> ocsps;
+
+    /**
+     * Creates an OCSPVerifier instance.
+     *
+     * @param verifier the next verifier in the chain
+     * @param ocsps    a list of OCSP responses
+     */
+    public OCSPVerifier(CertificateVerifier verifier, List<BasicOCSPResp> ocsps) {
+        super(verifier);
+        this.ocsps = ocsps;
+    }
+
+    /**
+     * Verifies if a a valid OCSP response is found for the certificate.
+     * If this method returns false, it doesn't mean the certificate isn't valid.
+     * It means we couldn't verify it against any OCSP response that was available.
+     *
+     * @param signCert   the certificate that needs to be checked
+     * @param issuerCert its issuer
+     * @return a list of <code>VerificationOK</code> objects.
+     * The list will be empty if the certificate couldn't be verified.
+     * @see com.itextpdf.text.pdf.security.RootStoreVerifier#verify(java.security.cert.X509Certificate, java.security.cert.X509Certificate, java.util.Date)
+     */
+    public List<VerificationOK> verify(X509Certificate signCert,
+                                       X509Certificate issuerCert, Date signDate)
+            throws GeneralSecurityException, IOException {
+        List<VerificationOK> result = new ArrayList<VerificationOK>();
+        int validOCSPsFound = 0;
+        // first check in the list of OCSP responses that was provided
+        if (ocsps != null) {
             for (BasicOCSPResp ocspResp : ocsps) {
                 if (verify(ocspResp, signCert, issuerCert, signDate))
                     validOCSPsFound++;
             }
         }
-		// then check online if allowed
-		boolean online = false;
-		if (onlineCheckingAllowed && validOCSPsFound == 0) {
-			if (verify(getOcspResponse(signCert, issuerCert), signCert, issuerCert, signDate)) {
-				validOCSPsFound++;
-				online = true;
-			}
-		}
-		// show how many valid OCSP responses were found
-		LOGGER.info("Valid OCSPs found: " + validOCSPsFound);
-		if (validOCSPsFound > 0)
-			result.add(new VerificationOK(signCert, this.getClass(), "Valid OCSPs Found: " + validOCSPsFound + (online ? " (online)" : "")));
-		if (verifier != null)
-			result.addAll(verifier.verify(signCert, issuerCert, signDate));
-		// verify using the previous verifier in the chain (if any)
-		return result;
-	}
-	
-	
-	/**
-	 * Verifies a certificate against a single OCSP response
-	 * @param ocspResp the OCSP response
-	 * @param signCert the certificate that needs to be checked
-	 * @param issuerCert the certificate of CA
-	 * @param signDate sign date
-	 * @return {@code true}, in case successful check, otherwise false.
-	 * @throws GeneralSecurityException
-	 * @throws IOException
-	 */
-	public boolean verify(BasicOCSPResp ocspResp, X509Certificate signCert, X509Certificate issuerCert, Date signDate) throws GeneralSecurityException, IOException {
-		if (ocspResp == null)
-			return false;
-		// Getting the responses
-		SingleResp[] resp = ocspResp.getResponses();
-		for (int i = 0; i < resp.length; i++) {
-			// check if the serial number corresponds
-			if (!signCert.getSerialNumber().equals(resp[i].getCertID().getSerialNumber())) {
-				continue;
-			}
-			// check if the issuer matches
-			try {
-				if (issuerCert == null) issuerCert = signCert;
-				if (!resp[i].getCertID().matchesIssuer(new X509CertificateHolder(issuerCert.getEncoded()), new BcDigestCalculatorProvider())) {
-					LOGGER.info("OCSP: Issuers doesn't match.");
-					continue;
-				}
-			} catch (OCSPException e) {
-				continue;
-			}
-			// check if the OCSP response was valid at the time of signing
-			Date nextUpdate = resp[i].getNextUpdate();
-			if (nextUpdate == null) {
-				nextUpdate = new Date(resp[i].getThisUpdate().getTime() + 180000l);
-				if (LOGGER.isLogging(Level.INFO)) {
-					LOGGER.info(String.format("No 'next update' for OCSP Response; assuming %s", nextUpdate));
-				}
-			}
-			if (signDate.after(nextUpdate)) {
-				if (LOGGER.isLogging(Level.INFO)) {
-					LOGGER.info(String.format("OCSP no longer valid: %s after %s", signDate, nextUpdate));
-				}
-				continue;
-			}
-			// check the status of the certificate
-			Object status = resp[i].getCertStatus();
-			if (status == CertificateStatus.GOOD) {
-				// check if the OCSP response was genuine
-				isValidResponse(ocspResp, issuerCert);
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Verifies if an OCSP response is genuine
- 	 * If it doesn't verify against the issuer certificate and response's certificates, it may verify
+        // then check online if allowed
+        boolean online = false;
+        if (onlineCheckingAllowed && validOCSPsFound == 0) {
+            if (verify(getOcspResponse(signCert, issuerCert), signCert, issuerCert, signDate)) {
+                validOCSPsFound++;
+                online = true;
+            }
+        }
+        // show how many valid OCSP responses were found
+        LOGGER.info("Valid OCSPs found: " + validOCSPsFound);
+        if (validOCSPsFound > 0)
+            result.add(new VerificationOK(signCert, this.getClass(), "Valid OCSPs Found: " + validOCSPsFound + (online ? " (online)" : "")));
+        if (verifier != null)
+            result.addAll(verifier.verify(signCert, issuerCert, signDate));
+        // verify using the previous verifier in the chain (if any)
+        return result;
+    }
+
+
+    /**
+     * Verifies a certificate against a single OCSP response
+     *
+     * @param ocspResp   the OCSP response
+     * @param signCert   the certificate that needs to be checked
+     * @param issuerCert the certificate of CA
+     * @param signDate   sign date
+     * @return {@code true}, in case successful check, otherwise false.
+     * @throws GeneralSecurityException
+     * @throws IOException
+     */
+    public boolean verify(BasicOCSPResp ocspResp, X509Certificate signCert, X509Certificate issuerCert, Date signDate) throws GeneralSecurityException, IOException {
+        if (ocspResp == null)
+            return false;
+        // Getting the responses
+        SingleResp[] resp = ocspResp.getResponses();
+        for (int i = 0; i < resp.length; i++) {
+            // check if the serial number corresponds
+            if (!signCert.getSerialNumber().equals(resp[i].getCertID().getSerialNumber())) {
+                continue;
+            }
+            // check if the issuer matches
+            try {
+                if (issuerCert == null) issuerCert = signCert;
+                if (!resp[i].getCertID().matchesIssuer(new X509CertificateHolder(issuerCert.getEncoded()), new BcDigestCalculatorProvider())) {
+                    LOGGER.info("OCSP: Issuers doesn't match.");
+                    continue;
+                }
+            } catch (OCSPException e) {
+                continue;
+            }
+            // check if the OCSP response was valid at the time of signing
+            Date nextUpdate = resp[i].getNextUpdate();
+            if (nextUpdate == null) {
+                nextUpdate = new Date(resp[i].getThisUpdate().getTime() + 180000l);
+                if (LOGGER.isLogging(Level.INFO)) {
+                    LOGGER.info(String.format("No 'next update' for OCSP Response; assuming %s", nextUpdate));
+                }
+            }
+            if (signDate.after(nextUpdate)) {
+                if (LOGGER.isLogging(Level.INFO)) {
+                    LOGGER.info(String.format("OCSP no longer valid: %s after %s", signDate, nextUpdate));
+                }
+                continue;
+            }
+            // check the status of the certificate
+            Object status = resp[i].getCertStatus();
+            if (status == CertificateStatus.GOOD) {
+                // check if the OCSP response was genuine
+                isValidResponse(ocspResp, issuerCert);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Verifies if an OCSP response is genuine
+     * If it doesn't verify against the issuer certificate and response's certificates, it may verify
      * using a trusted anchor or cert.
-     * @param ocspResp the OCSP response
-	 * @param issuerCert the issuer certificate
-	 * @throws GeneralSecurityException
-	 * @throws IOException
-	 */
-	public void isValidResponse(BasicOCSPResp ocspResp, X509Certificate issuerCert) throws GeneralSecurityException, IOException {
+     *
+     * @param ocspResp   the OCSP response
+     * @param issuerCert the issuer certificate
+     * @throws GeneralSecurityException
+     * @throws IOException
+     */
+    public void isValidResponse(BasicOCSPResp ocspResp, X509Certificate issuerCert) throws GeneralSecurityException, IOException {
         //OCSP response might be signed by the issuer certificate or
         //the Authorized OCSP responder certificate containing the id-kp-OCSPSigning extended key usage extension
         X509Certificate responderCert = null;
@@ -288,75 +296,78 @@ public class OCSPVerifier extends RootStoreVerifier {
                 CRLVerifier crlVerifier = new CRLVerifier(null, null);
                 crlVerifier.setRootStore(rootStore);
                 crlVerifier.setOnlineCheckingAllowed(onlineCheckingAllowed);
-                crlVerifier.verify((X509CRL)crl, responderCert, issuerCert, new Date());
+                crlVerifier.verify((X509CRL) crl, responderCert, issuerCert, new Date());
                 return;
             }
         }
 
         //check if lifetime of certificate is ok
         responderCert.checkValidity();
-	}
-	
-	/**
-	 * Verifies if the response is valid.
-	 * If it doesn't verify against the issuer certificate and response's certificates, it may verify
-	 * using a trusted anchor or cert.
+    }
+
+    /**
+     * Verifies if the response is valid.
+     * If it doesn't verify against the issuer certificate and response's certificates, it may verify
+     * using a trusted anchor or cert.
      * NOTE. Use {@code isValidResponse()} instead.
-	 * @param ocspResp	the response object
-	 * @param issuerCert the issuer certificate
-	 * @return	true if the response can be trusted
-	 */
+     *
+     * @param ocspResp   the response object
+     * @param issuerCert the issuer certificate
+     * @return true if the response can be trusted
+     */
     @Deprecated
-	public boolean verifyResponse(BasicOCSPResp ocspResp, X509Certificate issuerCert) {
+    public boolean verifyResponse(BasicOCSPResp ocspResp, X509Certificate issuerCert) {
         try {
             isValidResponse(ocspResp, issuerCert);
             return true;
         } catch (Exception e) {
             return false;
         }
-	}
-	
-	/**
-	 * Checks if an OCSP response is genuine
-	 * @param ocspResp	the OCSP response
-	 * @param responderCert	the responder certificate
-	 * @return	true if the OCSP response verifies against the responder certificate
-	 */
-	public boolean isSignatureValid(BasicOCSPResp ocspResp, Certificate responderCert) {
-		try {
-			ContentVerifierProvider verifierProvider = new JcaContentVerifierProviderBuilder()
-					.setProvider("BC").build(responderCert.getPublicKey());
-			return ocspResp.isSignatureValid(verifierProvider);
-		} catch (OperatorCreationException e) {
-			return false;
-		} catch (OCSPException e) {
-			return false;
-		}
-	}
-	
-	/**
-	 * Gets an OCSP response online and returns it if the status is GOOD
-	 * (without further checking).
-	 * @param signCert	the signing certificate
-	 * @param issuerCert	the issuer certificate
-	 * @return an OCSP response
-	 */
-	public BasicOCSPResp getOcspResponse(X509Certificate signCert, X509Certificate issuerCert) {
-		if (signCert == null && issuerCert == null) {
-			return null;
-		}
-		OcspClientBouncyCastle ocsp = new OcspClientBouncyCastle();
-		BasicOCSPResp ocspResp = ocsp.getBasicOCSPResp(signCert, issuerCert, null);
-		if (ocspResp == null) {
-			return null;
-		}
-		SingleResp[] resp = ocspResp.getResponses();
-		for (int i = 0; i < resp.length; i++) {
-			Object status = resp[i].getCertStatus();
-			if (status == CertificateStatus.GOOD) {
-				return ocspResp;
-			}
-		}
-		return null;
-	}
+    }
+
+    /**
+     * Checks if an OCSP response is genuine
+     *
+     * @param ocspResp      the OCSP response
+     * @param responderCert the responder certificate
+     * @return true if the OCSP response verifies against the responder certificate
+     */
+    public boolean isSignatureValid(BasicOCSPResp ocspResp, Certificate responderCert) {
+        try {
+            ContentVerifierProvider verifierProvider = new JcaContentVerifierProviderBuilder()
+                    .setProvider("BC").build(responderCert.getPublicKey());
+            return ocspResp.isSignatureValid(verifierProvider);
+        } catch (OperatorCreationException e) {
+            return false;
+        } catch (OCSPException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Gets an OCSP response online and returns it if the status is GOOD
+     * (without further checking).
+     *
+     * @param signCert   the signing certificate
+     * @param issuerCert the issuer certificate
+     * @return an OCSP response
+     */
+    public BasicOCSPResp getOcspResponse(X509Certificate signCert, X509Certificate issuerCert) {
+        if (signCert == null && issuerCert == null) {
+            return null;
+        }
+        OcspClientBouncyCastle ocsp = new OcspClientBouncyCastle();
+        BasicOCSPResp ocspResp = ocsp.getBasicOCSPResp(signCert, issuerCert, null);
+        if (ocspResp == null) {
+            return null;
+        }
+        SingleResp[] resp = ocspResp.getResponses();
+        for (int i = 0; i < resp.length; i++) {
+            Object status = resp[i].getCertStatus();
+            if (status == CertificateStatus.GOOD) {
+                return ocspResp;
+            }
+        }
+        return null;
+    }
 }

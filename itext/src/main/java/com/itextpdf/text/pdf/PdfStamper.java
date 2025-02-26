@@ -64,17 +64,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Applies extra content to the pages of a PDF document.
+/**
+ * Applies extra content to the pages of a PDF document.
  * This extra content can be all the objects allowed in PdfContentByte
  * including pages from other Pdfs. The original PDF will keep
  * all the interactive elements including bookmarks, links and form fields.
  * <p>
  * It is also possible to change the field values and to
  * flatten them. New fields can be added but not flattened.
+ *
  * @author Paulo Soares
  */
 public class PdfStamper
-	implements PdfViewerPreferences, PdfEncryptionSettings {
+        implements PdfViewerPreferences, PdfEncryptionSettings {
     /**
      * The writer
      */
@@ -85,14 +87,16 @@ public class PdfStamper
     protected XmlSignatureAppearance sigXmlApp;
     private LtvVerification verification;
 
-    /** Starts the process of adding extra content to an existing PDF
+    /**
+     * Starts the process of adding extra content to an existing PDF
      * document.
      * <p>
      * The reader will be closed when this PdfStamper is closed
+     *
      * @param reader the original document. It cannot be reused
-     * @param os the output stream
+     * @param os     the output stream
      * @throws DocumentException on error
-     * @throws IOException on error
+     * @throws IOException       on error
      */
     public PdfStamper(final PdfReader reader, final OutputStream os) throws DocumentException, IOException {
         stamper = new PdfStamperImp(reader, os, '\0', false);
@@ -103,12 +107,13 @@ public class PdfStamper
      * document.
      * <p>
      * The reader will be closed when this PdfStamper is closed
-     * @param reader the original document. It cannot be reused
-     * @param os the output stream
+     *
+     * @param reader     the original document. It cannot be reused
+     * @param os         the output stream
      * @param pdfVersion the new pdf version or '\0' to keep the same version as the original
-     * document
+     *                   document
      * @throws DocumentException on error
-     * @throws IOException on error
+     * @throws IOException       on error
      */
     public PdfStamper(final PdfReader reader, final OutputStream os, final char pdfVersion) throws DocumentException, IOException {
         stamper = new PdfStamperImp(reader, os, pdfVersion, false);
@@ -119,33 +124,36 @@ public class PdfStamper
      * document, possibly as a new revision.
      * <p>
      * The reader will be closed when this PdfStamper is closed
-     * @param reader the original document. It cannot be reused
-     * @param os the output stream
+     *
+     * @param reader     the original document. It cannot be reused
+     * @param os         the output stream
      * @param pdfVersion the new pdf version or '\0' to keep the same version as the original
-     * document
-     * @param append if <CODE>true</CODE> appends the document changes as a new revision. This is
-     * only useful for multiple signatures as nothing is gained in speed or memory
+     *                   document
+     * @param append     if <CODE>true</CODE> appends the document changes as a new revision. This is
+     *                   only useful for multiple signatures as nothing is gained in speed or memory
      * @throws DocumentException on error
-     * @throws IOException on error
+     * @throws IOException       on error
      */
     public PdfStamper(final PdfReader reader, final OutputStream os, final char pdfVersion, final boolean append) throws DocumentException, IOException {
         stamper = new PdfStamperImp(reader, os, pdfVersion, append);
     }
 
-    /** Gets the optional <CODE>String</CODE> map to add or change values in
+    /**
+     * Gets the optional <CODE>String</CODE> map to add or change values in
      * the info dictionary.
-     * @return the map or <CODE>null</CODE>
      *
+     * @return the map or <CODE>null</CODE>
      */
     public Map<String, String> getMoreInfo() {
         return this.moreInfo;
     }
 
-    /** An optional <CODE>String</CODE> map to add or change values in
+    /**
+     * An optional <CODE>String</CODE> map to add or change values in
      * the info dictionary. Entries with <CODE>null</CODE>
      * values delete the key in the original info dictionary
-     * @param moreInfo additional entries to the info dictionary
      *
+     * @param moreInfo additional entries to the info dictionary
      */
     public void setMoreInfo(final Map<String, String> moreInfo) {
         this.moreInfo = moreInfo;
@@ -155,7 +163,8 @@ public class PdfStamper
      * Replaces a page from this document with a page from other document. Only the content
      * is replaced not the fields and annotations. This method must be called before
      * getOverContent() or getUndercontent() are called for the same page.
-     * @param r the <CODE>PdfReader</CODE> from where the new page will be imported
+     *
+     * @param r            the <CODE>PdfReader</CODE> from where the new page will be imported
      * @param pageImported the page number of the imported page
      * @param pageReplaced the page to replace in this document
      * @since iText 2.1.1
@@ -168,8 +177,9 @@ public class PdfStamper
      * Inserts a blank page. All the pages above and including <CODE>pageNumber</CODE> will
      * be shifted up. If <CODE>pageNumber</CODE> is bigger than the total number of pages
      * the new page will be the last one.
+     *
      * @param pageNumber the page number position where the new page will be inserted
-     * @param mediabox the size of the new page
+     * @param mediabox   the size of the new page
      */
     public void insertPage(final int pageNumber, final Rectangle mediabox) {
         stamper.insertPage(pageNumber, mediabox);
@@ -177,6 +187,7 @@ public class PdfStamper
 
     /**
      * Gets the signing instance. The appearances and other parameters can the be set.
+     *
      * @return the signing instance
      */
     public PdfSignatureAppearance getSignatureAppearance() {
@@ -185,6 +196,7 @@ public class PdfStamper
 
     /**
      * Gets the xml signing instance. The appearances and other parameters can the be set.
+     *
      * @return the xml signing instance
      */
     public XmlSignatureAppearance getXmlSignatureAppearance() {
@@ -193,34 +205,33 @@ public class PdfStamper
 
     /**
      * Causes any pending changes to the direct under/over content (e.g. stamps) and page replacements to be applied to the output PDF.  References to the adjusted content
-     * are released. If very large numbers of pages are being modified, call this method periodically to write the changes to 
-     * the output PDF file and release the stamps from the heap. 
-     * 
+     * are released. If very large numbers of pages are being modified, call this method periodically to write the changes to
+     * the output PDF file and release the stamps from the heap.
+     * <p>
      * A few precautions about using this method:
-     * 
-     * 1) After using flush() method, over/under content objects should be updated via getOverContent() or getUnderContent() calls respectively in case you want to make any further stamps to the same page; 
-	 * 2) PdfReader, that is associated with PdfStamper which is flushed, must not be used for any other purposes. This is due to the fact that after flush some new references in PdfReader's inner structure appear, but you won't be able to get actual objects behind those references.
-	 * 
+     * <p>
+     * 1) After using flush() method, over/under content objects should be updated via getOverContent() or getUnderContent() calls respectively in case you want to make any further stamps to the same page;
+     * 2) PdfReader, that is associated with PdfStamper which is flushed, must not be used for any other purposes. This is due to the fact that after flush some new references in PdfReader's inner structure appear, but you won't be able to get actual objects behind those references.
      */
-    public void flush(){
-    	try{
-    		stamper.alterContents();
-    		stamper.pagesToContent.clear();
-    	} catch (IOException e){
-    		throw new ExceptionConverter(e);
-    	}
+    public void flush() {
+        try {
+            stamper.alterContents();
+            stamper.pagesToContent.clear();
+        } catch (IOException e) {
+            throw new ExceptionConverter(e);
+        }
     }
-    
-    
-    
+
+
     /**
      * Closes the document. No more content can be written after the
      * document is closed.
      * <p>
      * If closing a signed document with an external signature the closing must be done
      * in the <CODE>PdfSignatureAppearance</CODE> instance.
+     *
      * @throws DocumentException on error
-     * @throws IOException on error
+     * @throws IOException       on error
      */
     public void close() throws DocumentException, IOException {
         if (stamper.closed)
@@ -228,14 +239,15 @@ public class PdfStamper
         if (!hasSignature) {
             mergeVerification();
             stamper.close(moreInfo);
-        }
-        else {
+        } else {
             throw new DocumentException("Signature defined. Must be closed in PdfSignatureAppearance.");
         }
     }
 
-    /** Gets a <CODE>PdfContentByte</CODE> to write under the page of
+    /**
+     * Gets a <CODE>PdfContentByte</CODE> to write under the page of
      * the original document.
+     *
      * @param pageNum the page number where the extra content is written
      * @return a <CODE>PdfContentByte</CODE> to write under the page of
      * the original document
@@ -244,8 +256,10 @@ public class PdfStamper
         return stamper.getUnderContent(pageNum);
     }
 
-    /** Gets a <CODE>PdfContentByte</CODE> to write over the page of
+    /**
+     * Gets a <CODE>PdfContentByte</CODE> to write over the page of
      * the original document.
+     *
      * @param pageNum the page number where the extra content is written
      * @return a <CODE>PdfContentByte</CODE> to write over the page of
      * the original document
@@ -254,32 +268,38 @@ public class PdfStamper
         return stamper.getOverContent(pageNum);
     }
 
-    /** Checks if the content is automatically adjusted to compensate
+    /**
+     * Checks if the content is automatically adjusted to compensate
      * the original page rotation.
+     *
      * @return the auto-rotation status
      */
     public boolean isRotateContents() {
         return stamper.isRotateContents();
     }
 
-    /** Flags the content to be automatically adjusted to compensate
+    /**
+     * Flags the content to be automatically adjusted to compensate
      * the original page rotation. The default is <CODE>true</CODE>.
+     *
      * @param rotateContents <CODE>true</CODE> to set auto-rotation, <CODE>false</CODE>
-     * otherwise
+     *                       otherwise
      */
     public void setRotateContents(final boolean rotateContents) {
         stamper.setRotateContents(rotateContents);
     }
 
-    /** Sets the encryption options for this document. The userPassword and the
-     *  ownerPassword can be null or have zero length. In this case the ownerPassword
-     *  is replaced by a random string. The open permissions for the document can be
-     *  AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
-     *  AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
-     *  The permissions can be combined by ORing them.
-     * @param userPassword the user password. Can be null or empty
-     * @param ownerPassword the owner password. Can be null or empty
-     * @param permissions the user permissions
+    /**
+     * Sets the encryption options for this document. The userPassword and the
+     * ownerPassword can be null or have zero length. In this case the ownerPassword
+     * is replaced by a random string. The open permissions for the document can be
+     * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
+     * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
+     * The permissions can be combined by ORing them.
+     *
+     * @param userPassword    the user password. Can be null or empty
+     * @param ownerPassword   the owner password. Can be null or empty
+     * @param permissions     the user permissions
      * @param strength128Bits <code>true</code> for 128 bit key length, <code>false</code> for 40 bit key length
      * @throws DocumentException if anything was already written to the output
      */
@@ -291,17 +311,19 @@ public class PdfStamper
         stamper.setEncryption(userPassword, ownerPassword, permissions, strength128Bits ? PdfWriter.STANDARD_ENCRYPTION_128 : PdfWriter.STANDARD_ENCRYPTION_40);
     }
 
-    /** Sets the encryption options for this document. The userPassword and the
-     *  ownerPassword can be null or have zero length. In this case the ownerPassword
-     *  is replaced by a random string. The open permissions for the document can be
-     *  AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
-     *  AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
-     *  The permissions can be combined by ORing them.
-     * @param userPassword the user password. Can be null or empty
-     * @param ownerPassword the owner password. Can be null or empty
-     * @param permissions the user permissions
+    /**
+     * Sets the encryption options for this document. The userPassword and the
+     * ownerPassword can be null or have zero length. In this case the ownerPassword
+     * is replaced by a random string. The open permissions for the document can be
+     * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
+     * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
+     * The permissions can be combined by ORing them.
+     *
+     * @param userPassword   the user password. Can be null or empty
+     * @param ownerPassword  the owner password. Can be null or empty
+     * @param permissions    the user permissions
      * @param encryptionType the type of encryption. It can be one of STANDARD_ENCRYPTION_40, STANDARD_ENCRYPTION_128, ENCRYPTION_AES128 or ENCRYPTION_AES256.
-     * Optionally DO_NOT_ENCRYPT_METADATA can be ored to output the metadata in cleartext
+     *                       Optionally DO_NOT_ENCRYPT_METADATA can be ored to output the metadata in cleartext
      * @throws DocumentException if the document is already open
      */
     public void setEncryption(final byte userPassword[], final byte ownerPassword[], final int permissions, final int encryptionType) throws DocumentException {
@@ -314,15 +336,16 @@ public class PdfStamper
 
     /**
      * Sets the encryption options for this document. The userPassword and the
-     *  ownerPassword can be null or have zero length. In this case the ownerPassword
-     *  is replaced by a random string. The open permissions for the document can be
-     *  AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
-     *  AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
-     *  The permissions can be combined by ORing them.
-     * @param strength <code>true</code> for 128 bit key length, <code>false</code> for 40 bit key length
-     * @param userPassword the user password. Can be null or empty
+     * ownerPassword can be null or have zero length. In this case the ownerPassword
+     * is replaced by a random string. The open permissions for the document can be
+     * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
+     * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
+     * The permissions can be combined by ORing them.
+     *
+     * @param strength      <code>true</code> for 128 bit key length, <code>false</code> for 40 bit key length
+     * @param userPassword  the user password. Can be null or empty
      * @param ownerPassword the owner password. Can be null or empty
-     * @param permissions the user permissions
+     * @param permissions   the user permissions
      * @throws DocumentException if anything was already written to the output
      */
     public void setEncryption(final boolean strength, final String userPassword, final String ownerPassword, final int permissions) throws DocumentException {
@@ -331,16 +354,17 @@ public class PdfStamper
 
     /**
      * Sets the encryption options for this document. The userPassword and the
-     *  ownerPassword can be null or have zero length. In this case the ownerPassword
-     *  is replaced by a random string. The open permissions for the document can be
-     *  AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
-     *  AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
-     *  The permissions can be combined by ORing them.
+     * ownerPassword can be null or have zero length. In this case the ownerPassword
+     * is replaced by a random string. The open permissions for the document can be
+     * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
+     * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
+     * The permissions can be combined by ORing them.
+     *
      * @param encryptionType the type of encryption. It can be one of STANDARD_ENCRYPTION_40, STANDARD_ENCRYPTION_128 or ENCRYPTION_AES128.
-     * Optionally DO_NOT_ENCRYPT_METADATA can be ored to output the metadata in cleartext
-     * @param userPassword the user password. Can be null or empty
-     * @param ownerPassword the owner password. Can be null or empty
-     * @param permissions the user permissions
+     *                       Optionally DO_NOT_ENCRYPT_METADATA can be ored to output the metadata in cleartext
+     * @param userPassword   the user password. Can be null or empty
+     * @param ownerPassword  the owner password. Can be null or empty
+     * @param permissions    the user permissions
      * @throws DocumentException if anything was already written to the output
      */
     public void setEncryption(final int encryptionType, final String userPassword, final String ownerPassword, final int permissions) throws DocumentException {
@@ -350,27 +374,30 @@ public class PdfStamper
     /**
      * Sets the certificate encryption options for this document. An array of one or more public certificates
      * must be provided together with an array of the same size for the permissions for each certificate.
-     *  The open permissions for the document can be
-     *  AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
-     *  AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
-     *  The permissions can be combined by ORing them.
+     * The open permissions for the document can be
+     * AllowPrinting, AllowModifyContents, AllowCopy, AllowModifyAnnotations,
+     * AllowFillIn, AllowScreenReaders, AllowAssembly and AllowDegradedPrinting.
+     * The permissions can be combined by ORing them.
      * Optionally DO_NOT_ENCRYPT_METADATA can be ored to output the metadata in cleartext
-     * @param certs the public certificates to be used for the encryption
-     * @param permissions the user permissions for each of the certificates
+     *
+     * @param certs          the public certificates to be used for the encryption
+     * @param permissions    the user permissions for each of the certificates
      * @param encryptionType the type of encryption. It can be one of STANDARD_ENCRYPTION_40, STANDARD_ENCRYPTION_128, ENCRYPTION_AES128 or ENCRYPTION_AES256.
      * @throws DocumentException if the encryption was set too late
      */
-     public void setEncryption(final Certificate[] certs, final int[] permissions, final int encryptionType) throws DocumentException {
+    public void setEncryption(final Certificate[] certs, final int[] permissions, final int encryptionType) throws DocumentException {
         if (stamper.isAppend())
             throw new DocumentException(MessageLocalization.getComposedMessage("append.mode.does.not.support.changing.the.encryption.status"));
         if (stamper.isContentWritten())
             throw new DocumentException(MessageLocalization.getComposedMessage("content.was.already.written.to.the.output"));
         stamper.setEncryption(certs, permissions, encryptionType);
-     }
+    }
 
-    /** Gets a page from other PDF document. Note that calling this method more than
+    /**
+     * Gets a page from other PDF document. Note that calling this method more than
      * once with the same parameters will retrieve the same object.
-     * @param reader the PDF document where the page is
+     *
+     * @param reader     the PDF document where the page is
      * @param pageNumber the page number. The first page is 1
      * @return the template representing the imported page
      */
@@ -378,44 +405,54 @@ public class PdfStamper
         return stamper.getImportedPage(reader, pageNumber);
     }
 
-    /** Gets the underlying PdfWriter.
+    /**
+     * Gets the underlying PdfWriter.
+     *
      * @return the underlying PdfWriter
      */
     public PdfWriter getWriter() {
         return stamper;
     }
 
-    /** Gets the underlying PdfReader.
+    /**
+     * Gets the underlying PdfReader.
+     *
      * @return the underlying PdfReader
      */
     public PdfReader getReader() {
         return stamper.reader;
     }
 
-    /** Gets the <CODE>AcroFields</CODE> object that allows to get and set field values
+    /**
+     * Gets the <CODE>AcroFields</CODE> object that allows to get and set field values
      * and to merge FDF forms.
+     *
      * @return the <CODE>AcroFields</CODE> object
      */
     public AcroFields getAcroFields() {
         return stamper.getAcroFields();
     }
 
-    /** Determines if the fields are flattened on close. The fields added with
-     * {@link #addAnnotation(PdfAnnotation,int)} will never be flattened.
+    /**
+     * Determines if the fields are flattened on close. The fields added with
+     * {@link #addAnnotation(PdfAnnotation, int)} will never be flattened.
+     *
      * @param flat <CODE>true</CODE> to flatten the fields, <CODE>false</CODE>
-     * to keep the fields
+     *             to keep the fields
      */
     public void setFormFlattening(final boolean flat) {
         stamper.setFormFlattening(flat);
     }
 
-    /** Determines if the FreeText annotations are flattened on close.
+    /**
+     * Determines if the FreeText annotations are flattened on close.
+     *
      * @param flat <CODE>true</CODE> to flatten the FreeText annotations, <CODE>false</CODE>
-     * (the default) to keep the FreeText annotations as active content.
+     *             (the default) to keep the FreeText annotations as active content.
      */
     public void setFreeTextFlattening(final boolean flat) {
-    	stamper.setFreeTextFlattening(flat);
-	}
+        stamper.setFreeTextFlattening(flat);
+    }
 
     /**
      * Flatten annotations with an appearance stream on close().
@@ -429,8 +466,9 @@ public class PdfStamper
     /**
      * Adds an annotation of form field in a specific page. This page number
      * can be overridden with {@link PdfAnnotation#setPlaceInPage(int)}.
+     *
      * @param annot the annotation
-     * @param page the page
+     * @param page  the page
      */
     public void addAnnotation(final PdfAnnotation annot, final int page) {
         stamper.addAnnotation(annot, page);
@@ -438,14 +476,15 @@ public class PdfStamper
 
     /**
      * Adds an empty signature.
-     * @param name	the name of the signature
-     * @param page	the page number
-     * @param llx	lower left x coordinate of the signature's position
-     * @param lly	lower left y coordinate of the signature's position
-     * @param urx	upper right x coordinate of the signature's position
-     * @param ury	upper right y coordinate of the signature's position
-     * @return	a signature form field
-     * @since	2.1.4
+     *
+     * @param name the name of the signature
+     * @param page the page number
+     * @param llx  lower left x coordinate of the signature's position
+     * @param lly  lower left y coordinate of the signature's position
+     * @param urx  upper right x coordinate of the signature's position
+     * @param ury  upper right y coordinate of the signature's position
+     * @return a signature form field
+     * @since 2.1.4
      */
     public PdfFormField addSignature(final String name, final int page, final float llx, final float lly, final float urx, final float ury) {
         PdfAcroForm acroForm = stamper.getAcroForm();
@@ -458,6 +497,7 @@ public class PdfStamper
 
     /**
      * Adds the comments present in an FDF file.
+     *
      * @param fdf the FDF file
      * @throws IOException on error
      */
@@ -468,6 +508,7 @@ public class PdfStamper
     /**
      * Sets the bookmarks. The list structure is defined in
      * {@link SimpleBookmark}.
+     *
      * @param outlines the bookmarks or <CODE>null</CODE> to remove any
      */
     public void setOutlines(final List<HashMap<String, Object>> outlines) {
@@ -476,9 +517,10 @@ public class PdfStamper
 
     /**
      * Sets the thumbnail image for a page.
+     *
      * @param image the image
-     * @param page the page
-     * @throws PdfException on error
+     * @param page  the page
+     * @throws PdfException      on error
      * @throws DocumentException on error
      */
     public void setThumbnail(final Image image, final int page) throws PdfException, DocumentException {
@@ -492,6 +534,7 @@ public class PdfStamper
      * <p>
      * Calling <CODE>setFormFlattening(true)</CODE> is needed to have any kind of
      * flattening.
+     *
      * @param name the field name
      * @return <CODE>true</CODE> if the field exists, <CODE>false</CODE> otherwise
      */
@@ -499,29 +542,35 @@ public class PdfStamper
         return stamper.partialFormFlattening(name);
     }
 
-    /** Adds a JavaScript action at the document level. When the document
+    /**
+     * Adds a JavaScript action at the document level. When the document
      * opens all this JavaScript runs. The existing JavaScript will be replaced.
+     *
      * @param js the JavaScript code
      */
     public void addJavaScript(final String js) {
         stamper.addJavaScript(js, !PdfEncodings.isPdfDocEncoding(js));
     }
 
-    /** Adds a JavaScript action at the document level. When the document
+    /**
+     * Adds a JavaScript action at the document level. When the document
      * opens all this JavaScript runs. The existing JavaScript will be replaced.
+     *
      * @param name the name for the JavaScript snippet in the name tree
-     * @param js the JavaScript code
+     * @param js   the JavaScript code
      */
     public void addJavaScript(final String name, final String js) {
         stamper.addJavaScript(name, PdfAction.javaScript(js, stamper, !PdfEncodings.isPdfDocEncoding(js)));
     }
 
-    /** Adds a file attachment at the document level. Existing attachments will be kept.
+    /**
+     * Adds a file attachment at the document level. Existing attachments will be kept.
+     *
      * @param description the file description
-     * @param fileStore an array with the file. If it's <CODE>null</CODE>
-     * the file will be read from the disk
-     * @param file the path to the file. It will only be used if
-     * <CODE>fileStore</CODE> is not <CODE>null</CODE>
+     * @param fileStore   an array with the file. If it's <CODE>null</CODE>
+     *                    the file will be read from the disk
+     * @param file        the path to the file. It will only be used if
+     *                    <CODE>fileStore</CODE> is not <CODE>null</CODE>
      * @param fileDisplay the actual file name stored in the pdf
      * @throws IOException on error
      */
@@ -529,9 +578,11 @@ public class PdfStamper
         addFileAttachment(description, PdfFileSpecification.fileEmbedded(stamper, file, fileDisplay, fileStore));
     }
 
-    /** Adds a file attachment at the document level. Existing attachments will be kept.
+    /**
+     * Adds a file attachment at the document level. Existing attachments will be kept.
+     *
      * @param description the file description
-     * @param fs the file specification
+     * @param fs          the file specification
      * @throws IOException
      */
     public void addFileAttachment(final String description, final PdfFileSpecification fs) throws IOException {
@@ -549,24 +600,27 @@ public class PdfStamper
      * Pass this name as a parameter and your PDF will be
      * a portable collection with all the embedded and
      * attached files as entries.
+     *
      * @param initialView can be PdfName.D, PdfName.T or PdfName.H
      */
-    public void makePackage( final PdfName initialView ) {
-    	PdfCollection collection = new PdfCollection(0);
-    	collection.put(PdfName.VIEW, initialView);
-    	stamper.makePackage( collection );
+    public void makePackage(final PdfName initialView) {
+        PdfCollection collection = new PdfCollection(0);
+        collection.put(PdfName.VIEW, initialView);
+        stamper.makePackage(collection);
     }
 
     /**
      * Adds or replaces the Collection Dictionary in the Catalog.
-     * @param	collection	the new collection dictionary.
+     *
+     * @param collection the new collection dictionary.
      */
     public void makePackage(final PdfCollection collection) {
-    	stamper.makePackage(collection);
+        stamper.makePackage(collection);
     }
 
     /**
      * Sets the viewer preferences.
+     *
      * @param preferences the viewer preferences
      * @see PdfViewerPreferences#setViewerPreferences(int)
      */
@@ -574,18 +628,21 @@ public class PdfStamper
         stamper.setViewerPreferences(preferences);
     }
 
-    /** Adds a viewer preference
-     * @param key a key for a viewer preference
+    /**
+     * Adds a viewer preference
+     *
+     * @param key   a key for a viewer preference
      * @param value the value for the viewer preference
      * @see PdfViewerPreferences#addViewerPreference
      */
 
     public void addViewerPreference(final PdfName key, final PdfObject value) {
-    	stamper.addViewerPreference(key, value);
+        stamper.addViewerPreference(key, value);
     }
 
     /**
      * Sets the XMP metadata.
+     *
      * @param xmp
      * @see PdfWriter#setXmpMetadata(byte[])
      */
@@ -603,6 +660,7 @@ public class PdfStamper
 
     /**
      * Gets the 1.5 compression status.
+     *
      * @return <code>true</code> if the 1.5 compression is on
      */
     public boolean isFullCompression() {
@@ -623,10 +681,11 @@ public class PdfStamper
 
     /**
      * Sets the open and close page additional action.
+     *
      * @param actionType the action type. It can be <CODE>PdfWriter.PAGE_OPEN</CODE>
-     * or <CODE>PdfWriter.PAGE_CLOSE</CODE>
-     * @param action the action to perform
-     * @param page the page where the action will be applied. The first page is 1
+     *                   or <CODE>PdfWriter.PAGE_CLOSE</CODE>
+     * @param action     the action to perform
+     * @param page       the page where the action will be applied. The first page is 1
      * @throws PdfException if the action type is invalid
      */
     public void setPageAction(final PdfName actionType, final PdfAction action, final int page) throws PdfException {
@@ -635,8 +694,9 @@ public class PdfStamper
 
     /**
      * Sets the display duration for the page (for presentations)
-     * @param seconds   the number of seconds to display the page. A negative value removes the entry
-     * @param page the page where the duration will be applied. The first page is 1
+     *
+     * @param seconds the number of seconds to display the page. A negative value removes the entry
+     * @param page    the page where the duration will be applied. The first page is 1
      */
     public void setDuration(final int seconds, final int page) {
         stamper.setDuration(seconds, page);
@@ -644,8 +704,9 @@ public class PdfStamper
 
     /**
      * Sets the transition for the page
-     * @param transition   the transition object. A <code>null</code> removes the transition
-     * @param page the page where the transition will be applied. The first page is 1
+     *
+     * @param transition the transition object. A <code>null</code> removes the transition
+     * @param page       the page where the transition will be applied. The first page is 1
      */
     public void setTransition(final PdfTransition transition, final int page) {
         stamper.setTransition(transition, page);
@@ -676,19 +737,20 @@ public class PdfStamper
      * sap.setVisibleSignature(new Rectangle(100, 100, 200, 200), 1, null);
      * stp.close();
      * </pre>
-     * @param reader the original document
-     * @param os the output stream or <CODE>null</CODE> to keep the document in the temporary file
+     *
+     * @param reader     the original document
+     * @param os         the output stream or <CODE>null</CODE> to keep the document in the temporary file
      * @param pdfVersion the new pdf version or '\0' to keep the same version as the original
-     * document
-     * @param tempFile location of the temporary file. If it's a directory a temporary file will be created there.
-     *     If it's a file it will be used directly. The file will be deleted on exit unless <CODE>os</CODE> is null.
-     *     In that case the document can be retrieved directly from the temporary file. If it's <CODE>null</CODE>
-     *     no temporary file will be created and memory will be used
-     * @param append if <CODE>true</CODE> the signature and all the other content will be added as a
-     * new revision thus not invalidating existing signatures
+     *                   document
+     * @param tempFile   location of the temporary file. If it's a directory a temporary file will be created there.
+     *                   If it's a file it will be used directly. The file will be deleted on exit unless <CODE>os</CODE> is null.
+     *                   In that case the document can be retrieved directly from the temporary file. If it's <CODE>null</CODE>
+     *                   no temporary file will be created and memory will be used
+     * @param append     if <CODE>true</CODE> the signature and all the other content will be added as a
+     *                   new revision thus not invalidating existing signatures
      * @return a <CODE>PdfStamper</CODE>
      * @throws DocumentException on error
-     * @throws IOException on error
+     * @throws IOException       on error
      */
     public static PdfStamper createSignature(final PdfReader reader, final OutputStream os, final char pdfVersion, File tempFile, final boolean append) throws DocumentException, IOException {
         PdfStamper stp;
@@ -697,8 +759,7 @@ public class PdfStamper
             stp = new PdfStamper(reader, bout, pdfVersion, append);
             stp.sigApp = new PdfSignatureAppearance(stp.stamper);
             stp.sigApp.setSigout(bout);
-        }
-        else {
+        } else {
             if (tempFile.isDirectory())
                 tempFile = File.createTempFile("pdf", ".pdf", tempFile);
             FileOutputStream fout = new FileOutputStream(tempFile);
@@ -710,7 +771,7 @@ public class PdfStamper
         stp.sigApp.setStamper(stp);
         stp.hasSignature = true;
         PdfDictionary catalog = reader.getCatalog();
-        PdfDictionary acroForm = (PdfDictionary)PdfReader.getPdfObject(catalog.get(PdfName.ACROFORM), catalog);
+        PdfDictionary acroForm = (PdfDictionary) PdfReader.getPdfObject(catalog.get(PdfName.ACROFORM), catalog);
         if (acroForm != null) {
             acroForm.remove(PdfName.NEEDAPPEARANCES);
             stp.stamper.markUsed(acroForm);
@@ -743,13 +804,14 @@ public class PdfStamper
      * sap.setVisibleSignature(new Rectangle(100, 100, 200, 200), 1, null);
      * stp.close();
      * </pre>
-     * @param reader the original document
-     * @param os the output stream
+     *
+     * @param reader     the original document
+     * @param os         the output stream
      * @param pdfVersion the new pdf version or '\0' to keep the same version as the original
-     * document
-     * @throws DocumentException on error
-     * @throws IOException on error
+     *                   document
      * @return a <CODE>PdfStamper</CODE>
+     * @throws DocumentException on error
+     * @throws IOException       on error
      */
     public static PdfStamper createSignature(final PdfReader reader, final OutputStream os, final char pdfVersion) throws DocumentException, IOException {
         return createSignature(reader, os, pdfVersion, null, false);
@@ -778,17 +840,18 @@ public class PdfStamper
      * sap.setVisibleSignature(new Rectangle(100, 100, 200, 200), 1, null);
      * stp.close();
      * </pre>
-     * @param reader the original document
-     * @param os the output stream or <CODE>null</CODE> to keep the document in the temporary file
+     *
+     * @param reader     the original document
+     * @param os         the output stream or <CODE>null</CODE> to keep the document in the temporary file
      * @param pdfVersion the new pdf version or '\0' to keep the same version as the original
-     * document
-     * @param tempFile location of the temporary file. If it's a directory a temporary file will be created there.
-     *     If it's a file it will be used directly. The file will be deleted on exit unless <CODE>os</CODE> is null.
-     *     In that case the document can be retrieved directly from the temporary file. If it's <CODE>null</CODE>
-     *     no temporary file will be created and memory will be used
+     *                   document
+     * @param tempFile   location of the temporary file. If it's a directory a temporary file will be created there.
+     *                   If it's a file it will be used directly. The file will be deleted on exit unless <CODE>os</CODE> is null.
+     *                   In that case the document can be retrieved directly from the temporary file. If it's <CODE>null</CODE>
+     *                   no temporary file will be created and memory will be used
      * @return a <CODE>PdfStamper</CODE>
      * @throws DocumentException on error
-     * @throws IOException on error
+     * @throws IOException       on error
      */
     public static PdfStamper createSignature(final PdfReader reader, final OutputStream os, final char pdfVersion, final File tempFile) throws DocumentException, IOException {
         return createSignature(reader, os, pdfVersion, tempFile, false);
@@ -807,11 +870,12 @@ public class PdfStamper
     /**
      * Gets the PdfLayer objects in an existing document as a Map
      * with the names/titles of the layers as keys.
-     * @return	a Map with all the PdfLayers in the document (and the name/title of the layer as key)
-     * @since	2.1.2
+     *
+     * @return a Map with all the PdfLayers in the document (and the name/title of the layer as key)
+     * @since 2.1.2
      */
     public Map<String, PdfLayer> getPdfLayers() {
-    	return stamper.getPdfLayers();
+        return stamper.getPdfLayers();
     }
 
     /**
@@ -824,7 +888,7 @@ public class PdfStamper
     public void markUsed(PdfObject obj) {
         stamper.markUsed(obj);
     }
-    
+
     public LtvVerification getLtvVerification() {
         if (verification == null)
             verification = new LtvVerification(this);
@@ -834,7 +898,7 @@ public class PdfStamper
     public boolean addNamedDestination(final String name, final int page, final PdfDestination dest) throws IOException {
         HashMap<Object, PdfObject> namedDestinations = stamper.getNamedDestinations();
 
-        if (getReader().getNamedDestination().containsKey(name)){
+        if (getReader().getNamedDestination().containsKey(name)) {
             return false;
         }
         PdfDestination d = new PdfDestination(dest);
@@ -842,7 +906,7 @@ public class PdfStamper
         namedDestinations.put(name, new PdfArray(d));
         return true;
     }
-    
+
     void mergeVerification() throws IOException {
         if (verification == null)
             return;

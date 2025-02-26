@@ -46,64 +46,63 @@ package com.itextpdf.text.log;
  * statements. And returns false by default for {@link NoOpLogger#isLogging(Level)}
  *
  * @author redlab_b
- *
  */
 public final class NoOpLogger implements Logger {
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#getLogger(java.lang.Class)
-	 */
-	public Logger getLogger(final Class<?> name) {
-		return this;
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#getLogger(java.lang.Class)
+     */
+    public Logger getLogger(final Class<?> name) {
+        return this;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#warn(java.lang.String)
-	 */
-	public void warn(final String message) {
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#warn(java.lang.String)
+     */
+    public void warn(final String message) {
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#trace(java.lang.String)
-	 */
-	public void trace(final String message) {
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#trace(java.lang.String)
+     */
+    public void trace(final String message) {
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#debug(java.lang.String)
-	 */
-	public void debug(final String message) {
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#debug(java.lang.String)
+     */
+    public void debug(final String message) {
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#info(java.lang.String)
-	 */
-	public void info(final String message) {
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#info(java.lang.String)
+     */
+    public void info(final String message) {
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#error(java.lang.String, java.lang.Exception)
-	 */
-	public void error(final String message, final Exception e) {
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#error(java.lang.String, java.lang.Exception)
+     */
+    public void error(final String message, final Exception e) {
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#isLogging(com.itextpdf.text.log.Level)
-	 */
-	public boolean isLogging(final Level level) {
-		return false;
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#isLogging(com.itextpdf.text.log.Level)
+     */
+    public boolean isLogging(final Level level) {
+        return false;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#error(java.lang.String)
-	 */
-	public void error(final String message) {
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#error(java.lang.String)
+     */
+    public void error(final String message) {
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#getLogger(java.lang.String)
-	 */
-	public Logger getLogger(final String name) {
-		return this;
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#getLogger(java.lang.String)
+     */
+    public Logger getLogger(final String name) {
+        return this;
+    }
 }

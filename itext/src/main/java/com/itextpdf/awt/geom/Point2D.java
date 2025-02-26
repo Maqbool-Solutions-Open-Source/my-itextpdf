@@ -57,8 +57,8 @@ public abstract class Point2D implements Cloneable {
 
         @Override
         public void setLocation(double x, double y) {
-            this.x = (float)x;
-            this.y = (float)y;
+            this.x = (float) x;
+            this.y = (float) y;
         }
 
         @Override

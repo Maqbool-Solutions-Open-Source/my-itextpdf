@@ -84,14 +84,14 @@ public class LongRect {
 
     }
 
-    public LongRect( long l, long t, long r, long b ) {
+    public LongRect(long l, long t, long r, long b) {
         left = l;
         top = t;
         right = r;
         bottom = b;
     }
 
-    public LongRect( LongRect ir ) {
+    public LongRect(LongRect ir) {
         left = ir.left;
         top = ir.top;
         right = ir.right;

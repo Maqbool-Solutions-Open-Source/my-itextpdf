@@ -57,114 +57,131 @@ import java.security.MessageDigest;
 import java.security.cert.Certificate;
 
 /**
- * 
  * @author Paulo Soares
  * @author Kazuya Ujihara
  */
 public class PdfEncryption {
 
-	public static final int STANDARD_ENCRYPTION_40 = 2;
+    public static final int STANDARD_ENCRYPTION_40 = 2;
 
-	public static final int STANDARD_ENCRYPTION_128 = 3;
+    public static final int STANDARD_ENCRYPTION_128 = 3;
 
-	public static final int AES_128 = 4;
+    public static final int AES_128 = 4;
 
-	public static final int AES_256 = 5;
+    public static final int AES_256 = 5;
 
-	private static final byte[] pad = { (byte) 0x28, (byte) 0xBF, (byte) 0x4E,
-			(byte) 0x5E, (byte) 0x4E, (byte) 0x75, (byte) 0x8A, (byte) 0x41,
-			(byte) 0x64, (byte) 0x00, (byte) 0x4E, (byte) 0x56, (byte) 0xFF,
-			(byte) 0xFA, (byte) 0x01, (byte) 0x08, (byte) 0x2E, (byte) 0x2E,
-			(byte) 0x00, (byte) 0xB6, (byte) 0xD0, (byte) 0x68, (byte) 0x3E,
-			(byte) 0x80, (byte) 0x2F, (byte) 0x0C, (byte) 0xA9, (byte) 0xFE,
-			(byte) 0x64, (byte) 0x53, (byte) 0x69, (byte) 0x7A };
+    private static final byte[] pad = {(byte) 0x28, (byte) 0xBF, (byte) 0x4E,
+            (byte) 0x5E, (byte) 0x4E, (byte) 0x75, (byte) 0x8A, (byte) 0x41,
+            (byte) 0x64, (byte) 0x00, (byte) 0x4E, (byte) 0x56, (byte) 0xFF,
+            (byte) 0xFA, (byte) 0x01, (byte) 0x08, (byte) 0x2E, (byte) 0x2E,
+            (byte) 0x00, (byte) 0xB6, (byte) 0xD0, (byte) 0x68, (byte) 0x3E,
+            (byte) 0x80, (byte) 0x2F, (byte) 0x0C, (byte) 0xA9, (byte) 0xFE,
+            (byte) 0x64, (byte) 0x53, (byte) 0x69, (byte) 0x7A};
 
-	private static final byte[] salt = { (byte) 0x73, (byte) 0x41, (byte) 0x6c,
-			(byte) 0x54 };
+    private static final byte[] salt = {(byte) 0x73, (byte) 0x41, (byte) 0x6c,
+            (byte) 0x54};
 
-	private static final byte[] metadataPad = { (byte) 255, (byte) 255,
-			(byte) 255, (byte) 255 };
+    private static final byte[] metadataPad = {(byte) 255, (byte) 255,
+            (byte) 255, (byte) 255};
 
-	/** The encryption key for a particular object/generation */
-	byte key[];
+    /**
+     * The encryption key for a particular object/generation
+     */
+    byte key[];
 
-	/** The encryption key length for a particular object/generation */
-	int keySize;
+    /**
+     * The encryption key length for a particular object/generation
+     */
+    int keySize;
 
-	/** The global encryption key */
-	byte mkey[] = new byte[0];
+    /**
+     * The global encryption key
+     */
+    byte mkey[] = new byte[0];
 
-	/** The encryption key for the owner */
-	byte ownerKey[] = new byte[32];
+    /**
+     * The encryption key for the owner
+     */
+    byte ownerKey[] = new byte[32];
 
-	/** The encryption key for the user */
-	byte userKey[] = new byte[32];
+    /**
+     * The encryption key for the user
+     */
+    byte userKey[] = new byte[32];
 
     byte[] oeKey;
     byte[] ueKey;
     byte[] perms;
 
-	long permissions;
+    long permissions;
 
-	byte documentID[];
+    byte documentID[];
 
-	private int revision;
+    private int revision;
 
-    /** The generic key length. It may be 40 or 128. */
+    /**
+     * The generic key length. It may be 40 or 128.
+     */
     private int keyLength;
 
 
-
-    /** The public key security handler for certificate encryption */
+    /**
+     * The public key security handler for certificate encryption
+     */
     protected PdfPublicKeySecurityHandler publicKeyHandler = null;
 
-	/** Work area to prepare the object/generation bytes */
-	byte extra[] = new byte[5];
+    /**
+     * Work area to prepare the object/generation bytes
+     */
+    byte extra[] = new byte[5];
 
-	/** The message digest algorithm MD5 */
-	MessageDigest md5;
+    /**
+     * The message digest algorithm MD5
+     */
+    MessageDigest md5;
 
-	private ARCFOUREncryption arcfour = new ARCFOUREncryption();
+    private ARCFOUREncryption arcfour = new ARCFOUREncryption();
 
-	private boolean encryptMetadata;
+    private boolean encryptMetadata;
 
     static long seq = System.currentTimeMillis();
-	
-	/**
-	 * Indicates if the encryption is only necessary for embedded files.
-	 * @since 2.1.3
-	 */
-	private boolean embeddedFilesOnly;
 
-	private int cryptoMode;
+    /**
+     * Indicates if the encryption is only necessary for embedded files.
+     *
+     * @since 2.1.3
+     */
+    private boolean embeddedFilesOnly;
 
-	public PdfEncryption() {
-		try {
-			md5 = MessageDigest.getInstance("MD5");
-		} catch (Exception e) {
-			throw new ExceptionConverter(e);
-		}
-		publicKeyHandler = new PdfPublicKeySecurityHandler();
-	}
+    private int cryptoMode;
 
-	public PdfEncryption(PdfEncryption enc) {
-		this();
+    public PdfEncryption() {
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            throw new ExceptionConverter(e);
+        }
+        publicKeyHandler = new PdfPublicKeySecurityHandler();
+    }
+
+    public PdfEncryption(PdfEncryption enc) {
+        this();
         if (enc.key != null)
             key = (byte[]) enc.key.clone();
         keySize = enc.keySize;
-		mkey = (byte[]) enc.mkey.clone();
-		ownerKey = (byte[]) enc.ownerKey.clone();
-		userKey = (byte[]) enc.userKey.clone();
-		permissions = enc.permissions;
-		if (enc.documentID != null)
-			documentID = (byte[]) enc.documentID.clone();
-		revision = enc.revision;
-		keyLength = enc.keyLength;
-		encryptMetadata = enc.encryptMetadata;
-		embeddedFilesOnly = enc.embeddedFilesOnly;
-		publicKeyHandler = enc.publicKeyHandler;
+        mkey = (byte[]) enc.mkey.clone();
+        ownerKey = (byte[]) enc.ownerKey.clone();
+        userKey = (byte[]) enc.userKey.clone();
+        permissions = enc.permissions;
+        if (enc.documentID != null)
+            documentID = (byte[]) enc.documentID.clone();
+        revision = enc.revision;
+        keyLength = enc.keyLength;
+        encryptMetadata = enc.encryptMetadata;
+        embeddedFilesOnly = enc.embeddedFilesOnly;
+        publicKeyHandler = enc.publicKeyHandler;
 
-		if (enc.ueKey != null) {
+        if (enc.ueKey != null) {
             ueKey = enc.ueKey.clone();
         }
         if (enc.oeKey != null) {
@@ -173,83 +190,86 @@ public class PdfEncryption {
         if (enc.perms != null) {
             perms = enc.perms.clone();
         }
-	}
+    }
 
-	public void setCryptoMode(int mode, int kl) {
-		cryptoMode = mode;
-		encryptMetadata = (mode & PdfWriter.DO_NOT_ENCRYPT_METADATA) != PdfWriter.DO_NOT_ENCRYPT_METADATA;
-		embeddedFilesOnly = (mode & PdfWriter.EMBEDDED_FILES_ONLY) == PdfWriter.EMBEDDED_FILES_ONLY;
-		mode &= PdfWriter.ENCRYPTION_MASK;
-		switch (mode) {
-		case PdfWriter.STANDARD_ENCRYPTION_40:
-			encryptMetadata = true;
-			embeddedFilesOnly = false;
-			keyLength = 40;
-			revision = STANDARD_ENCRYPTION_40;
-			break;
-		case PdfWriter.STANDARD_ENCRYPTION_128:
-			embeddedFilesOnly = false;
-			if (kl > 0)
-				keyLength = kl;
-			else
-				keyLength = 128;
-			revision = STANDARD_ENCRYPTION_128;
-			break;
-		case PdfWriter.ENCRYPTION_AES_128:
-			keyLength = 128;
-			revision = AES_128;
-			break;
-		case PdfWriter.ENCRYPTION_AES_256:
-			keyLength = 256;
-            keySize = 32;
-			revision = AES_256;
-			break;
-		default:
-			throw new IllegalArgumentException(MessageLocalization.getComposedMessage("no.valid.encryption.mode"));
-		}
-	}
+    public void setCryptoMode(int mode, int kl) {
+        cryptoMode = mode;
+        encryptMetadata = (mode & PdfWriter.DO_NOT_ENCRYPT_METADATA) != PdfWriter.DO_NOT_ENCRYPT_METADATA;
+        embeddedFilesOnly = (mode & PdfWriter.EMBEDDED_FILES_ONLY) == PdfWriter.EMBEDDED_FILES_ONLY;
+        mode &= PdfWriter.ENCRYPTION_MASK;
+        switch (mode) {
+            case PdfWriter.STANDARD_ENCRYPTION_40:
+                encryptMetadata = true;
+                embeddedFilesOnly = false;
+                keyLength = 40;
+                revision = STANDARD_ENCRYPTION_40;
+                break;
+            case PdfWriter.STANDARD_ENCRYPTION_128:
+                embeddedFilesOnly = false;
+                if (kl > 0)
+                    keyLength = kl;
+                else
+                    keyLength = 128;
+                revision = STANDARD_ENCRYPTION_128;
+                break;
+            case PdfWriter.ENCRYPTION_AES_128:
+                keyLength = 128;
+                revision = AES_128;
+                break;
+            case PdfWriter.ENCRYPTION_AES_256:
+                keyLength = 256;
+                keySize = 32;
+                revision = AES_256;
+                break;
+            default:
+                throw new IllegalArgumentException(MessageLocalization.getComposedMessage("no.valid.encryption.mode"));
+        }
+    }
 
-	public int getCryptoMode() {
-		return cryptoMode;
-	}
+    public int getCryptoMode() {
+        return cryptoMode;
+    }
 
-	public boolean isMetadataEncrypted() {
-		return encryptMetadata;
-	}
+    public boolean isMetadataEncrypted() {
+        return encryptMetadata;
+    }
 
     public long getPermissions() {
         return permissions;
     }
 
-	/**
-	 * Indicates if only the embedded files have to be encrypted.
-	 * @return	if true only the embedded files will be encrypted
-	 * @since	2.1.3
-	 */
-	public boolean isEmbeddedFilesOnly() {
-		return embeddedFilesOnly;
-	}
+    /**
+     * Indicates if only the embedded files have to be encrypted.
+     *
+     * @return if true only the embedded files will be encrypted
+     * @since 2.1.3
+     */
+    public boolean isEmbeddedFilesOnly() {
+        return embeddedFilesOnly;
+    }
 
-	/**
-	 */
-	private byte[] padPassword(byte userPassword[]) {
-		byte userPad[] = new byte[32];
-		if (userPassword == null) {
-			System.arraycopy(pad, 0, userPad, 0, 32);
-		} else {
-			System.arraycopy(userPassword, 0, userPad, 0, Math.min(
-					userPassword.length, 32));
-			if (userPassword.length < 32)
-				System.arraycopy(pad, 0, userPad, userPassword.length,
-						32 - userPassword.length);
-		}
+    /**
+     *
+     */
+    private byte[] padPassword(byte userPassword[]) {
+        byte userPad[] = new byte[32];
+        if (userPassword == null) {
+            System.arraycopy(pad, 0, userPad, 0, 32);
+        } else {
+            System.arraycopy(userPassword, 0, userPad, 0, Math.min(
+                    userPassword.length, 32));
+            if (userPassword.length < 32)
+                System.arraycopy(pad, 0, userPad, userPassword.length,
+                        32 - userPassword.length);
+        }
 
-		return userPad;
-	}
+        return userPad;
+    }
 
-	/**
-	 */
-	private byte[] computeOwnerKey(byte userPad[], byte ownerPad[]) {
+    /**
+     *
+     */
+    private byte[] computeOwnerKey(byte userPad[], byte ownerPad[]) {
         byte ownerKey[] = new byte[32];
         byte digest[] = md5.digest(ownerPad);
         if (revision == STANDARD_ENCRYPTION_128 || revision == AES_128) {
@@ -271,81 +291,79 @@ public class PdfEncryption {
             arcfour.encryptARCFOUR(userPad, ownerKey);
         }
         return ownerKey;
-	}
+    }
 
-	/**
-	 * 
-	 * ownerKey, documentID must be setup
-	 */
-	private void setupGlobalEncryptionKey(byte[] documentID, byte userPad[],
-			byte ownerKey[], long permissions) {
-		this.documentID = documentID;
-		this.ownerKey = ownerKey;
-		this.permissions = permissions;
-		// use variable keylength
-		mkey = new byte[keyLength / 8];
+    /**
+     * ownerKey, documentID must be setup
+     */
+    private void setupGlobalEncryptionKey(byte[] documentID, byte userPad[],
+                                          byte ownerKey[], long permissions) {
+        this.documentID = documentID;
+        this.ownerKey = ownerKey;
+        this.permissions = permissions;
+        // use variable keylength
+        mkey = new byte[keyLength / 8];
 
-		// fixed by ujihara in order to follow PDF reference
-		md5.reset();
-		md5.update(userPad);
-		md5.update(ownerKey);
+        // fixed by ujihara in order to follow PDF reference
+        md5.reset();
+        md5.update(userPad);
+        md5.update(ownerKey);
 
-		byte ext[] = new byte[4];
-		ext[0] = (byte) permissions;
-		ext[1] = (byte) (permissions >> 8);
-		ext[2] = (byte) (permissions >> 16);
-		ext[3] = (byte) (permissions >> 24);
-		md5.update(ext, 0, 4);
-		if (documentID != null)
-			md5.update(documentID);
-		if (!encryptMetadata)
-			md5.update(metadataPad);
+        byte ext[] = new byte[4];
+        ext[0] = (byte) permissions;
+        ext[1] = (byte) (permissions >> 8);
+        ext[2] = (byte) (permissions >> 16);
+        ext[3] = (byte) (permissions >> 24);
+        md5.update(ext, 0, 4);
+        if (documentID != null)
+            md5.update(documentID);
+        if (!encryptMetadata)
+            md5.update(metadataPad);
 
-		byte digest[] = new byte[mkey.length];
-		System.arraycopy(md5.digest(), 0, digest, 0, mkey.length);
+        byte digest[] = new byte[mkey.length];
+        System.arraycopy(md5.digest(), 0, digest, 0, mkey.length);
 
-		// only use the really needed bits as input for the hash
-		if (revision == STANDARD_ENCRYPTION_128 || revision == AES_128) {
-			for (int k = 0; k < 50; ++k)
-				System.arraycopy(md5.digest(digest), 0, digest, 0, mkey.length);
-		}
+        // only use the really needed bits as input for the hash
+        if (revision == STANDARD_ENCRYPTION_128 || revision == AES_128) {
+            for (int k = 0; k < 50; ++k)
+                System.arraycopy(md5.digest(digest), 0, digest, 0, mkey.length);
+        }
 
-		System.arraycopy(digest, 0, mkey, 0, mkey.length);
-	}
+        System.arraycopy(digest, 0, mkey, 0, mkey.length);
+    }
 
-	/**
-	 * 
-	 * mkey must be setup
-	 */
-	// use the revision to choose the setup method
-	private void setupUserKey() {
-		if (revision == STANDARD_ENCRYPTION_128 || revision == AES_128) {
-			md5.update(pad);
-			byte digest[] = md5.digest(documentID);
-			System.arraycopy(digest, 0, userKey, 0, 16);
-			for (int k = 16; k < 32; ++k)
-				userKey[k] = 0;
-			for (int i = 0; i < 20; ++i) {
-				for (int j = 0; j < mkey.length; ++j)
-					digest[j] = (byte) (mkey[j] ^ i);
-				arcfour.prepareARCFOURKey(digest, 0, mkey.length);
-				arcfour.encryptARCFOUR(userKey, 0, 16);
-			}
-		} else {
-			arcfour.prepareARCFOURKey(mkey);
-			arcfour.encryptARCFOUR(pad, userKey);
-		}
-	}
+    /**
+     * mkey must be setup
+     */
+    // use the revision to choose the setup method
+    private void setupUserKey() {
+        if (revision == STANDARD_ENCRYPTION_128 || revision == AES_128) {
+            md5.update(pad);
+            byte digest[] = md5.digest(documentID);
+            System.arraycopy(digest, 0, userKey, 0, 16);
+            for (int k = 16; k < 32; ++k)
+                userKey[k] = 0;
+            for (int i = 0; i < 20; ++i) {
+                for (int j = 0; j < mkey.length; ++j)
+                    digest[j] = (byte) (mkey[j] ^ i);
+                arcfour.prepareARCFOURKey(digest, 0, mkey.length);
+                arcfour.encryptARCFOUR(userKey, 0, 16);
+            }
+        } else {
+            arcfour.prepareARCFOURKey(mkey);
+            arcfour.encryptARCFOUR(pad, userKey);
+        }
+    }
 
-	// gets keylength and revision and uses revision to choose the initial values
-	// for permissions
-	public void setupAllKeys(byte userPassword[], byte ownerPassword[],
-			int permissions) {
-		if (ownerPassword == null || ownerPassword.length == 0)
-			ownerPassword = md5.digest(createDocumentId());
-		permissions |= (revision == STANDARD_ENCRYPTION_128 || revision == AES_128 || revision == AES_256) ? 0xfffff0c0
-				: 0xffffffc0;
-		permissions &= 0xfffffffc;
+    // gets keylength and revision and uses revision to choose the initial values
+    // for permissions
+    public void setupAllKeys(byte userPassword[], byte ownerPassword[],
+                             int permissions) {
+        if (ownerPassword == null || ownerPassword.length == 0)
+            ownerPassword = md5.digest(createDocumentId());
+        permissions |= (revision == STANDARD_ENCRYPTION_128 || revision == AES_128 || revision == AES_256) ? 0xfffff0c0
+                : 0xffffffc0;
+        permissions &= 0xfffffffc;
         this.permissions = permissions;
         if (revision == AES_256) {
             try {
@@ -386,26 +404,24 @@ public class PdfEncryption {
                 oeKey = ac.processBlock(key, 0, key.length);
                 // Algorithm 3.10
                 byte[] permsp = IVGenerator.getIV(16);
-                permsp[0] = (byte)permissions;
-                permsp[1] = (byte)(permissions >> 8);
-                permsp[2] = (byte)(permissions >> 16);
-                permsp[3] = (byte)(permissions >> 24);
-                permsp[4] = (byte)(255);
-                permsp[5] = (byte)(255);
-                permsp[6] = (byte)(255);
-                permsp[7] = (byte)(255);
-                permsp[8] = encryptMetadata ? (byte)'T' : (byte)'F';
-                permsp[9] = (byte)'a';
-                permsp[10] = (byte)'d';
-                permsp[11] = (byte)'b';
+                permsp[0] = (byte) permissions;
+                permsp[1] = (byte) (permissions >> 8);
+                permsp[2] = (byte) (permissions >> 16);
+                permsp[3] = (byte) (permissions >> 24);
+                permsp[4] = (byte) (255);
+                permsp[5] = (byte) (255);
+                permsp[6] = (byte) (255);
+                permsp[7] = (byte) (255);
+                permsp[8] = encryptMetadata ? (byte) 'T' : (byte) 'F';
+                permsp[9] = (byte) 'a';
+                permsp[10] = (byte) 'd';
+                permsp[11] = (byte) 'b';
                 ac = new AESCipherCBCnoPad(true, key);
                 perms = ac.processBlock(permsp, 0, permsp.length);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 throw new ExceptionConverter(ex);
             }
-        }
-        else {
+        } else {
             // PDF reference 3.5.2 Standard Security Handler, Algorithm 3.3-1
             // If there is no owner password, use the user password instead.
             byte userPad[] = padPassword(userPassword);
@@ -415,7 +431,7 @@ public class PdfEncryption {
             documentID = createDocumentId();
             setupByUserPad(this.documentID, userPad, this.ownerKey, permissions);
         }
-	}
+    }
 
     private static final int VALIDATION_SALT_OFFSET = 32;
     private static final int KEY_SALT_OFFSET = 40;
@@ -435,7 +451,7 @@ public class PdfEncryption {
 
             this.oeKey = oeValue;
             this.ueKey = ueValue;
-			this.perms = perms;
+            this.perms = perms;
 
             this.ownerKey = oValue;
             this.userKey = uValue;
@@ -456,8 +472,7 @@ public class PdfEncryption {
                 hash = md.digest();
                 AESCipherCBCnoPad ac = new AESCipherCBCnoPad(false, hash);
                 key = ac.processBlock(oeValue, 0, oeValue.length);
-            }
-            else {
+            } else {
                 md.update(password, 0, Math.min(password.length, 127));
                 md.update(uValue, VALIDATION_SALT_OFFSET, SALT_LENGHT);
                 hash = md.digest();
@@ -472,17 +487,15 @@ public class PdfEncryption {
             }
             AESCipherCBCnoPad ac = new AESCipherCBCnoPad(false, key);
             byte[] decPerms = ac.processBlock(perms, 0, perms.length);
-            if (decPerms[9] != (byte)'a' || decPerms[10] != (byte)'d' || decPerms[11] != (byte)'b')
+            if (decPerms[9] != (byte) 'a' || decPerms[10] != (byte) 'd' || decPerms[11] != (byte) 'b')
                 throw new BadPasswordException(MessageLocalization.getComposedMessage("bad.user.password"));
             permissions = (decPerms[0] & 0xff) | ((decPerms[1] & 0xff) << 8)
                     | ((decPerms[2] & 0xff) << 16) | ((decPerms[2] & 0xff) << 24);
-            encryptMetadata = decPerms[8] == (byte)'T';
+            encryptMetadata = decPerms[8] == (byte) 'T';
             return isOwnerPass;
-        }
-        catch (BadPasswordException ex) {
+        } catch (BadPasswordException ex) {
             throw ex;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ExceptionConverter(ex);
         }
     }
@@ -496,316 +509,311 @@ public class PdfEncryption {
         return true;
     }
 
-	public static byte[] createDocumentId() {
-		MessageDigest md5;
-		try {
-			md5 = MessageDigest.getInstance("MD5");
-		} catch (Exception e) {
-			throw new ExceptionConverter(e);
-		}
-		long time = System.currentTimeMillis();
-		long mem = Runtime.getRuntime().freeMemory();
-		String s = time + "+" + mem + "+" + (seq++);
-		return md5.digest(s.getBytes());
-	}
+    public static byte[] createDocumentId() {
+        MessageDigest md5;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            throw new ExceptionConverter(e);
+        }
+        long time = System.currentTimeMillis();
+        long mem = Runtime.getRuntime().freeMemory();
+        String s = time + "+" + mem + "+" + (seq++);
+        return md5.digest(s.getBytes());
+    }
 
-	/**
-	 */
-	public void setupByUserPassword(byte[] documentID, byte userPassword[],
-			byte ownerKey[], long permissions) {
-		setupByUserPad(documentID, padPassword(userPassword), ownerKey,
-				permissions);
-	}
+    /**
+     *
+     */
+    public void setupByUserPassword(byte[] documentID, byte userPassword[],
+                                    byte ownerKey[], long permissions) {
+        setupByUserPad(documentID, padPassword(userPassword), ownerKey,
+                permissions);
+    }
 
-	/**
-	 */
-	private void setupByUserPad(byte[] documentID, byte userPad[],
-			byte ownerKey[], long permissions) {
-		setupGlobalEncryptionKey(documentID, userPad, ownerKey, permissions);
-		setupUserKey();
-	}
+    /**
+     *
+     */
+    private void setupByUserPad(byte[] documentID, byte userPad[],
+                                byte ownerKey[], long permissions) {
+        setupGlobalEncryptionKey(documentID, userPad, ownerKey, permissions);
+        setupUserKey();
+    }
 
-	/**
-	 */
-	public void setupByOwnerPassword(byte[] documentID, byte ownerPassword[],
-			byte userKey[], byte ownerKey[], long permissions) {
-		setupByOwnerPad(documentID, padPassword(ownerPassword), userKey,
-				ownerKey, permissions);
-	}
+    /**
+     *
+     */
+    public void setupByOwnerPassword(byte[] documentID, byte ownerPassword[],
+                                     byte userKey[], byte ownerKey[], long permissions) {
+        setupByOwnerPad(documentID, padPassword(ownerPassword), userKey,
+                ownerKey, permissions);
+    }
 
-	private void setupByOwnerPad(byte[] documentID, byte ownerPad[],
-			byte userKey[], byte ownerKey[], long permissions) {
-		byte userPad[] = computeOwnerKey(ownerKey, ownerPad); // userPad will
-																// be set in
-																// this.ownerKey
-		setupGlobalEncryptionKey(documentID, userPad, ownerKey, permissions); // step
-																				// 3
-		setupUserKey();
-	}
+    private void setupByOwnerPad(byte[] documentID, byte ownerPad[],
+                                 byte userKey[], byte ownerKey[], long permissions) {
+        byte userPad[] = computeOwnerKey(ownerKey, ownerPad); // userPad will
+        // be set in
+        // this.ownerKey
+        setupGlobalEncryptionKey(documentID, userPad, ownerKey, permissions); // step
+        // 3
+        setupUserKey();
+    }
 
-	public void setKey(byte[] key) {
+    public void setKey(byte[] key) {
         this.key = key;
     }
-    
-    public void setupByEncryptionKey(byte[] key, int keylength) {
-		mkey = new byte[keylength / 8];
-		System.arraycopy(key, 0, mkey, 0, mkey.length);
-	}
 
-	public void setHashKey(int number, int generation) {
+    public void setupByEncryptionKey(byte[] key, int keylength) {
+        mkey = new byte[keylength / 8];
+        System.arraycopy(key, 0, mkey, 0, mkey.length);
+    }
+
+    public void setHashKey(int number, int generation) {
         if (revision == AES_256)
             return;
-		md5.reset(); // added by ujihara
-		extra[0] = (byte) number;
-		extra[1] = (byte) (number >> 8);
-		extra[2] = (byte) (number >> 16);
-		extra[3] = (byte) generation;
-		extra[4] = (byte) (generation >> 8);
-		md5.update(mkey);
-		md5.update(extra);
-		if (revision == AES_128)
-			md5.update(salt);
-		key = md5.digest();
-		keySize = mkey.length + 5;
-		if (keySize > 16)
-			keySize = 16;
-	}
+        md5.reset(); // added by ujihara
+        extra[0] = (byte) number;
+        extra[1] = (byte) (number >> 8);
+        extra[2] = (byte) (number >> 16);
+        extra[3] = (byte) generation;
+        extra[4] = (byte) (generation >> 8);
+        md5.update(mkey);
+        md5.update(extra);
+        if (revision == AES_128)
+            md5.update(salt);
+        key = md5.digest();
+        keySize = mkey.length + 5;
+        if (keySize > 16)
+            keySize = 16;
+    }
 
-	public static PdfObject createInfoId(byte id[], boolean modified) throws IOException {
-		ByteBuffer buf = new ByteBuffer(90);
-		if (id.length == 0)
-			id = createDocumentId();
-		buf.append('[').append('<');
-		for (int k = 0; k < id.length; ++k)
-			buf.appendHex(id[k]);
-		buf.append('>').append('<');
-		if (modified)
-			id = createDocumentId();
-		for (int k = 0; k < id.length; ++k)
-			buf.appendHex(id[k]);
-		buf.append('>').append(']');
-		buf.close();
-		return new PdfLiteral(buf.toByteArray());
-	}
+    public static PdfObject createInfoId(byte id[], boolean modified) throws IOException {
+        ByteBuffer buf = new ByteBuffer(90);
+        if (id.length == 0)
+            id = createDocumentId();
+        buf.append('[').append('<');
+        for (int k = 0; k < id.length; ++k)
+            buf.appendHex(id[k]);
+        buf.append('>').append('<');
+        if (modified)
+            id = createDocumentId();
+        for (int k = 0; k < id.length; ++k)
+            buf.appendHex(id[k]);
+        buf.append('>').append(']');
+        buf.close();
+        return new PdfLiteral(buf.toByteArray());
+    }
 
-	public PdfDictionary getEncryptionDictionary() {
-		PdfDictionary dic = new PdfDictionary();
-        
-		if (publicKeyHandler.getRecipientsSize() > 0) {
-			PdfArray recipients = null;
+    public PdfDictionary getEncryptionDictionary() {
+        PdfDictionary dic = new PdfDictionary();
 
-			dic.put(PdfName.FILTER, PdfName.PUBSEC);
-			dic.put(PdfName.R, new PdfNumber(revision));
+        if (publicKeyHandler.getRecipientsSize() > 0) {
+            PdfArray recipients = null;
 
-			try {
-				recipients = publicKeyHandler.getEncodedRecipients();
-			} catch (Exception f) {
-				throw new ExceptionConverter(f);
-			}
+            dic.put(PdfName.FILTER, PdfName.PUBSEC);
+            dic.put(PdfName.R, new PdfNumber(revision));
 
-			if (revision == STANDARD_ENCRYPTION_40) {
-				dic.put(PdfName.V, new PdfNumber(1));
-				dic.put(PdfName.SUBFILTER, PdfName.ADBE_PKCS7_S4);
-				dic.put(PdfName.RECIPIENTS, recipients);
-			} else if (revision == STANDARD_ENCRYPTION_128 && encryptMetadata) {
-				dic.put(PdfName.V, new PdfNumber(2));
-				dic.put(PdfName.LENGTH, new PdfNumber(128));
-				dic.put(PdfName.SUBFILTER, PdfName.ADBE_PKCS7_S4);
-				dic.put(PdfName.RECIPIENTS, recipients);
-			} else {
+            try {
+                recipients = publicKeyHandler.getEncodedRecipients();
+            } catch (Exception f) {
+                throw new ExceptionConverter(f);
+            }
+
+            if (revision == STANDARD_ENCRYPTION_40) {
+                dic.put(PdfName.V, new PdfNumber(1));
+                dic.put(PdfName.SUBFILTER, PdfName.ADBE_PKCS7_S4);
+                dic.put(PdfName.RECIPIENTS, recipients);
+            } else if (revision == STANDARD_ENCRYPTION_128 && encryptMetadata) {
+                dic.put(PdfName.V, new PdfNumber(2));
+                dic.put(PdfName.LENGTH, new PdfNumber(128));
+                dic.put(PdfName.SUBFILTER, PdfName.ADBE_PKCS7_S4);
+                dic.put(PdfName.RECIPIENTS, recipients);
+            } else {
                 if (revision == AES_256) {
                     dic.put(PdfName.R, new PdfNumber(AES_256));
                     dic.put(PdfName.V, new PdfNumber(5));
-                }
-                else {
+                } else {
                     dic.put(PdfName.R, new PdfNumber(AES_128));
                     dic.put(PdfName.V, new PdfNumber(4));
                 }
-				dic.put(PdfName.SUBFILTER, PdfName.ADBE_PKCS7_S5);
+                dic.put(PdfName.SUBFILTER, PdfName.ADBE_PKCS7_S5);
 
-				PdfDictionary stdcf = new PdfDictionary();
-				stdcf.put(PdfName.RECIPIENTS, recipients);
-				if (!encryptMetadata)
-					stdcf.put(PdfName.ENCRYPTMETADATA, PdfBoolean.PDFFALSE);
-				if (revision == AES_128) {
-					stdcf.put(PdfName.CFM, PdfName.AESV2);
-					stdcf.put(PdfName.LENGTH, new PdfNumber(128));
-                }
-                else if (revision == AES_256) {
-					stdcf.put(PdfName.CFM, PdfName.AESV3);
+                PdfDictionary stdcf = new PdfDictionary();
+                stdcf.put(PdfName.RECIPIENTS, recipients);
+                if (!encryptMetadata)
+                    stdcf.put(PdfName.ENCRYPTMETADATA, PdfBoolean.PDFFALSE);
+                if (revision == AES_128) {
+                    stdcf.put(PdfName.CFM, PdfName.AESV2);
+                    stdcf.put(PdfName.LENGTH, new PdfNumber(128));
+                } else if (revision == AES_256) {
+                    stdcf.put(PdfName.CFM, PdfName.AESV3);
                     stdcf.put(PdfName.LENGTH, new PdfNumber(256));
-                }
-				else
-					stdcf.put(PdfName.CFM, PdfName.V2);
-				PdfDictionary cf = new PdfDictionary();
-				cf.put(PdfName.DEFAULTCRYPTFILTER, stdcf);
-				dic.put(PdfName.CF, cf);
+                } else
+                    stdcf.put(PdfName.CFM, PdfName.V2);
+                PdfDictionary cf = new PdfDictionary();
+                cf.put(PdfName.DEFAULTCRYPTFILTER, stdcf);
+                dic.put(PdfName.CF, cf);
                 if (embeddedFilesOnly) {
-					dic.put(PdfName.EFF, PdfName.DEFAULTCRYPTFILTER);
-					dic.put(PdfName.STRF, PdfName.IDENTITY);
-					dic.put(PdfName.STMF, PdfName.IDENTITY);
-				}
-				else {
-					dic.put(PdfName.STRF, PdfName.DEFAULTCRYPTFILTER);
-					dic.put(PdfName.STMF, PdfName.DEFAULTCRYPTFILTER);
-				}
-			}
+                    dic.put(PdfName.EFF, PdfName.DEFAULTCRYPTFILTER);
+                    dic.put(PdfName.STRF, PdfName.IDENTITY);
+                    dic.put(PdfName.STMF, PdfName.IDENTITY);
+                } else {
+                    dic.put(PdfName.STRF, PdfName.DEFAULTCRYPTFILTER);
+                    dic.put(PdfName.STMF, PdfName.DEFAULTCRYPTFILTER);
+                }
+            }
 
-			MessageDigest md = null;
-			byte[] encodedRecipient = null;
+            MessageDigest md = null;
+            byte[] encodedRecipient = null;
 
-			try {
+            try {
                 if (revision == AES_256)
-				    md = MessageDigest.getInstance("SHA-256");
+                    md = MessageDigest.getInstance("SHA-256");
                 else
-				    md = MessageDigest.getInstance("SHA-1");
-				md.update(publicKeyHandler.getSeed());
-				for (int i = 0; i < publicKeyHandler.getRecipientsSize(); i++) {
-					encodedRecipient = publicKeyHandler.getEncodedRecipient(i);
-					md.update(encodedRecipient);
-				}
-				if (!encryptMetadata)
-					md.update(new byte[] { (byte) 255, (byte) 255, (byte) 255,
-							(byte) 255 });
-			} catch (Exception f) {
-				throw new ExceptionConverter(f);
-			}
+                    md = MessageDigest.getInstance("SHA-1");
+                md.update(publicKeyHandler.getSeed());
+                for (int i = 0; i < publicKeyHandler.getRecipientsSize(); i++) {
+                    encodedRecipient = publicKeyHandler.getEncodedRecipient(i);
+                    md.update(encodedRecipient);
+                }
+                if (!encryptMetadata)
+                    md.update(new byte[]{(byte) 255, (byte) 255, (byte) 255,
+                            (byte) 255});
+            } catch (Exception f) {
+                throw new ExceptionConverter(f);
+            }
 
-			byte[] mdResult = md.digest();
+            byte[] mdResult = md.digest();
 
             if (revision == AES_256)
                 key = mdResult;
             else
                 setupByEncryptionKey(mdResult, keyLength);
-		} else {
-			dic.put(PdfName.FILTER, PdfName.STANDARD);
-			dic.put(PdfName.O, new PdfLiteral(StringUtils
-					.escapeString(ownerKey)));
-			dic.put(PdfName.U, new PdfLiteral(StringUtils
-					.escapeString(userKey)));
-			dic.put(PdfName.P, new PdfNumber(permissions));
-			dic.put(PdfName.R, new PdfNumber(revision));
+        } else {
+            dic.put(PdfName.FILTER, PdfName.STANDARD);
+            dic.put(PdfName.O, new PdfLiteral(StringUtils
+                    .escapeString(ownerKey)));
+            dic.put(PdfName.U, new PdfLiteral(StringUtils
+                    .escapeString(userKey)));
+            dic.put(PdfName.P, new PdfNumber(permissions));
+            dic.put(PdfName.R, new PdfNumber(revision));
 
-			if (revision == STANDARD_ENCRYPTION_40) {
-				dic.put(PdfName.V, new PdfNumber(1));
-			} else if (revision == STANDARD_ENCRYPTION_128 && encryptMetadata) {
-				dic.put(PdfName.V, new PdfNumber(2));
-				dic.put(PdfName.LENGTH, new PdfNumber(128));
+            if (revision == STANDARD_ENCRYPTION_40) {
+                dic.put(PdfName.V, new PdfNumber(1));
+            } else if (revision == STANDARD_ENCRYPTION_128 && encryptMetadata) {
+                dic.put(PdfName.V, new PdfNumber(2));
+                dic.put(PdfName.LENGTH, new PdfNumber(128));
 
-			}
-            else if (revision == AES_256) {
-				if (!encryptMetadata)
-					dic.put(PdfName.ENCRYPTMETADATA, PdfBoolean.PDFFALSE);
+            } else if (revision == AES_256) {
+                if (!encryptMetadata)
+                    dic.put(PdfName.ENCRYPTMETADATA, PdfBoolean.PDFFALSE);
                 dic.put(PdfName.OE, new PdfLiteral(StringUtils
                         .escapeString(oeKey)));
                 dic.put(PdfName.UE, new PdfLiteral(StringUtils
                         .escapeString(ueKey)));
                 dic.put(PdfName.PERMS, new PdfLiteral(StringUtils
                         .escapeString(perms)));
-				dic.put(PdfName.V, new PdfNumber(revision));
-				dic.put(PdfName.LENGTH, new PdfNumber(256));
-				PdfDictionary stdcf = new PdfDictionary();
-				stdcf.put(PdfName.LENGTH, new PdfNumber(32));
-				if (embeddedFilesOnly) {
-					stdcf.put(PdfName.AUTHEVENT, PdfName.EFOPEN);
-					dic.put(PdfName.EFF, PdfName.STDCF);
-					dic.put(PdfName.STRF, PdfName.IDENTITY);
-					dic.put(PdfName.STMF, PdfName.IDENTITY);
-				}
-				else {
-					stdcf.put(PdfName.AUTHEVENT, PdfName.DOCOPEN);
-					dic.put(PdfName.STRF, PdfName.STDCF);
-					dic.put(PdfName.STMF, PdfName.STDCF);
-				}
-				stdcf.put(PdfName.CFM, PdfName.AESV3);
-				PdfDictionary cf = new PdfDictionary();
-				cf.put(PdfName.STDCF, stdcf);
-				dic.put(PdfName.CF, cf);
+                dic.put(PdfName.V, new PdfNumber(revision));
+                dic.put(PdfName.LENGTH, new PdfNumber(256));
+                PdfDictionary stdcf = new PdfDictionary();
+                stdcf.put(PdfName.LENGTH, new PdfNumber(32));
+                if (embeddedFilesOnly) {
+                    stdcf.put(PdfName.AUTHEVENT, PdfName.EFOPEN);
+                    dic.put(PdfName.EFF, PdfName.STDCF);
+                    dic.put(PdfName.STRF, PdfName.IDENTITY);
+                    dic.put(PdfName.STMF, PdfName.IDENTITY);
+                } else {
+                    stdcf.put(PdfName.AUTHEVENT, PdfName.DOCOPEN);
+                    dic.put(PdfName.STRF, PdfName.STDCF);
+                    dic.put(PdfName.STMF, PdfName.STDCF);
+                }
+                stdcf.put(PdfName.CFM, PdfName.AESV3);
+                PdfDictionary cf = new PdfDictionary();
+                cf.put(PdfName.STDCF, stdcf);
+                dic.put(PdfName.CF, cf);
+            } else {
+                if (!encryptMetadata)
+                    dic.put(PdfName.ENCRYPTMETADATA, PdfBoolean.PDFFALSE);
+                dic.put(PdfName.R, new PdfNumber(AES_128));
+                dic.put(PdfName.V, new PdfNumber(4));
+                dic.put(PdfName.LENGTH, new PdfNumber(128));
+                PdfDictionary stdcf = new PdfDictionary();
+                stdcf.put(PdfName.LENGTH, new PdfNumber(16));
+                if (embeddedFilesOnly) {
+                    stdcf.put(PdfName.AUTHEVENT, PdfName.EFOPEN);
+                    dic.put(PdfName.EFF, PdfName.STDCF);
+                    dic.put(PdfName.STRF, PdfName.IDENTITY);
+                    dic.put(PdfName.STMF, PdfName.IDENTITY);
+                } else {
+                    stdcf.put(PdfName.AUTHEVENT, PdfName.DOCOPEN);
+                    dic.put(PdfName.STRF, PdfName.STDCF);
+                    dic.put(PdfName.STMF, PdfName.STDCF);
+                }
+                if (revision == AES_128)
+                    stdcf.put(PdfName.CFM, PdfName.AESV2);
+                else
+                    stdcf.put(PdfName.CFM, PdfName.V2);
+                PdfDictionary cf = new PdfDictionary();
+                cf.put(PdfName.STDCF, stdcf);
+                dic.put(PdfName.CF, cf);
             }
-            else {
-				if (!encryptMetadata)
-					dic.put(PdfName.ENCRYPTMETADATA, PdfBoolean.PDFFALSE);
-				dic.put(PdfName.R, new PdfNumber(AES_128));
-				dic.put(PdfName.V, new PdfNumber(4));
-				dic.put(PdfName.LENGTH, new PdfNumber(128));
-				PdfDictionary stdcf = new PdfDictionary();
-				stdcf.put(PdfName.LENGTH, new PdfNumber(16));
-				if (embeddedFilesOnly) {
-					stdcf.put(PdfName.AUTHEVENT, PdfName.EFOPEN);
-					dic.put(PdfName.EFF, PdfName.STDCF);
-					dic.put(PdfName.STRF, PdfName.IDENTITY);
-					dic.put(PdfName.STMF, PdfName.IDENTITY);
-				}
-				else {
-					stdcf.put(PdfName.AUTHEVENT, PdfName.DOCOPEN);
-					dic.put(PdfName.STRF, PdfName.STDCF);
-					dic.put(PdfName.STMF, PdfName.STDCF);
-				}
-				if (revision == AES_128)
-					stdcf.put(PdfName.CFM, PdfName.AESV2);
-				else
-					stdcf.put(PdfName.CFM, PdfName.V2);
-				PdfDictionary cf = new PdfDictionary();
-				cf.put(PdfName.STDCF, stdcf);
-				dic.put(PdfName.CF, cf);
-			}
-		}
+        }
 
-		return dic;
-	}
+        return dic;
+    }
 
-	public PdfObject getFileID(boolean modified) throws IOException {
-		return createInfoId(documentID, modified);
-	}
+    public PdfObject getFileID(boolean modified) throws IOException {
+        return createInfoId(documentID, modified);
+    }
 
-	public OutputStreamEncryption getEncryptionStream(OutputStream os) {
-		return new OutputStreamEncryption(os, key, 0, keySize, revision);
-	}
+    public OutputStreamEncryption getEncryptionStream(OutputStream os) {
+        return new OutputStreamEncryption(os, key, 0, keySize, revision);
+    }
 
-	public int calculateStreamSize(int n) {
-		if (revision == AES_128 || revision == AES_256)
-			return (n & 0x7ffffff0) + 32;
-		else
-			return n;
-	}
+    public int calculateStreamSize(int n) {
+        if (revision == AES_128 || revision == AES_256)
+            return (n & 0x7ffffff0) + 32;
+        else
+            return n;
+    }
 
-	public byte[] encryptByteArray(byte[] b) {
-		try {
-			ByteArrayOutputStream ba = new ByteArrayOutputStream();
-			OutputStreamEncryption os2 = getEncryptionStream(ba);
-			os2.write(b);
-			os2.finish();
-			return ba.toByteArray();
-		} catch (IOException ex) {
-			throw new ExceptionConverter(ex);
-		}
-	}
+    public byte[] encryptByteArray(byte[] b) {
+        try {
+            ByteArrayOutputStream ba = new ByteArrayOutputStream();
+            OutputStreamEncryption os2 = getEncryptionStream(ba);
+            os2.write(b);
+            os2.finish();
+            return ba.toByteArray();
+        } catch (IOException ex) {
+            throw new ExceptionConverter(ex);
+        }
+    }
 
-	public StandardDecryption getDecryptor() {
-		return new StandardDecryption(key, 0, keySize, revision);
-	}
+    public StandardDecryption getDecryptor() {
+        return new StandardDecryption(key, 0, keySize, revision);
+    }
 
-	public byte[] decryptByteArray(byte[] b) {
-		try {
-			ByteArrayOutputStream ba = new ByteArrayOutputStream();
-			StandardDecryption dec = getDecryptor();
-			byte[] b2 = dec.update(b, 0, b.length);
-			if (b2 != null)
-				ba.write(b2);
-			b2 = dec.finish();
-			if (b2 != null)
-				ba.write(b2);
-			return ba.toByteArray();
-		} catch (IOException ex) {
-			throw new ExceptionConverter(ex);
-		}
-	}
+    public byte[] decryptByteArray(byte[] b) {
+        try {
+            ByteArrayOutputStream ba = new ByteArrayOutputStream();
+            StandardDecryption dec = getDecryptor();
+            byte[] b2 = dec.update(b, 0, b.length);
+            if (b2 != null)
+                ba.write(b2);
+            b2 = dec.finish();
+            if (b2 != null)
+                ba.write(b2);
+            return ba.toByteArray();
+        } catch (IOException ex) {
+            throw new ExceptionConverter(ex);
+        }
+    }
 
-	public void addRecipient(Certificate cert, int permission) {
-		documentID = createDocumentId();
-		publicKeyHandler.addRecipient(new PdfPublicKeyRecipient(cert,
-				permission));
-	}
+    public void addRecipient(Certificate cert, int permission) {
+        documentID = createDocumentId();
+        publicKeyHandler.addRecipient(new PdfPublicKeyRecipient(cert,
+                permission));
+    }
 
     /**
      * Computes user password if standard encryption handler is used with Standard40, Standard128 or AES128 algorithm (Revision 2 - 4).
@@ -813,7 +821,7 @@ public class PdfEncryption {
      * @param ownerPassword owner password of the encrypted document.
      * @return user password, or null if revision 5 (AES256) or greater of standard encryption handler was used.
      */
-	public byte[] computeUserPassword(byte[] ownerPassword) {
+    public byte[] computeUserPassword(byte[] ownerPassword) {
         byte[] userPad = null;
         if (publicKeyHandler.getRecipientsSize() == 0 &&
                 STANDARD_ENCRYPTION_40 <= revision && revision <= AES_128) {
@@ -832,6 +840,6 @@ public class PdfEncryption {
                 return userPassword;
             }
         }
-		return userPad;
-	}
+        return userPad;
+    }
 }

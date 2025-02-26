@@ -57,10 +57,10 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
     public Rectangle(Rectangle r) {
         setBounds(r.x, r.y, r.width, r.height);
     }
-    
+
     public Rectangle(com.itextpdf.text.Rectangle r) {
-    	r.normalize();
-    	setBounds(r.getLeft(), r.getBottom(), r.getWidth(), r.getHeight());
+        r.normalize();
+        setBounds(r.getLeft(), r.getBottom(), r.getWidth(), r.getHeight());
     }
 
     public Rectangle(Dimension d) {
@@ -97,8 +97,9 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
     }
 
     public void setSize(int mx, int my) {
-    	setSize((double)mx, (double)my);
+        setSize((double) mx, (double) my);
     }
+
     public void setSize(double width, double height) {
         this.width = width;
         this.height = height;
@@ -113,8 +114,9 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
     }
 
     public void setLocation(int mx, int my) {
-    	setLocation((double)mx, (double)my);
+        setLocation((double) mx, (double) my);
     }
+
     public void setLocation(double x, double y) {
         this.x = x;
         this.y = y;
@@ -126,10 +128,10 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
 
     @Override
     public void setRect(double x, double y, double width, double height) {
-        int x1 = (int)Math.floor(x);
-        int y1 = (int)Math.floor(y);
-        int x2 = (int)Math.ceil(x + width);
-        int y2 = (int)Math.ceil(y + height);
+        int x1 = (int) Math.floor(x);
+        int y1 = (int) Math.floor(y);
+        int x2 = (int) Math.ceil(x + width);
+        int y2 = (int) Math.ceil(y + height);
         setBounds(x1, y1, x2 - x1, y2 - y1);
     }
 
@@ -144,8 +146,9 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
     }
 
     public void setBounds(int x, int y, int width, int height) {
-        setBounds((double)x, (double)y, (double)width, (double)height);
+        setBounds((double) x, (double) y, (double) width, (double) height);
     }
+
     public void setBounds(double x, double y, double width, double height) {
         this.x = x;
         this.y = y;
@@ -158,8 +161,9 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
     }
 
     public void grow(int mx, int my) {
-    	translate((double)mx, (double)my);
+        translate((double) mx, (double) my);
     }
+
     public void grow(double dx, double dy) {
         x -= dx;
         y -= dy;
@@ -168,16 +172,18 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
     }
 
     public void translate(int mx, int my) {
-    	translate((double)mx, (double)my);
+        translate((double) mx, (double) my);
     }
+
     public void translate(double mx, double my) {
         x += mx;
         y += my;
     }
 
     public void add(int px, int py) {
-    	add((double)px, (double)py);
+        add((double) px, (double) py);
     }
+
     public void add(double px, double py) {
         double x1 = Math.min(x, px);
         double x2 = Math.max(x + width, px);
@@ -199,8 +205,9 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
     }
 
     public boolean contains(int px, int py) {
-        return contains((double)px, (double)py);
+        return contains((double) px, (double) py);
     }
+
     public boolean contains(double px, double py) {
         if (isEmpty()) {
             return false;
@@ -257,23 +264,19 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
 
         if (width <= 0) {
             code |= OUT_LEFT | OUT_RIGHT;
-        } else
-            if (px < x) {
-                code |= OUT_LEFT;
-            } else
-                if (px > x + width) {
-                    code |= OUT_RIGHT;
-                }
+        } else if (px < x) {
+            code |= OUT_LEFT;
+        } else if (px > x + width) {
+            code |= OUT_RIGHT;
+        }
 
         if (height <= 0) {
             code |= OUT_TOP | OUT_BOTTOM;
-        } else
-            if (py < y) {
-                code |= OUT_TOP;
-            } else
-                if (py > y + height) {
-                    code |= OUT_BOTTOM;
-                }
+        } else if (py < y) {
+            code |= OUT_TOP;
+        } else if (py > y + height) {
+            code |= OUT_BOTTOM;
+        }
 
         return code;
     }
@@ -281,7 +284,7 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
     @Override
     public Rectangle2D createUnion(Rectangle2D r) {
         if (r instanceof Rectangle) {
-            return union((Rectangle)r);
+            return union((Rectangle) r);
         }
         Rectangle2D dst = new Rectangle2D.Double();
         Rectangle2D.union(this, r, dst);
@@ -300,7 +303,7 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
             return true;
         }
         if (obj instanceof Rectangle) {
-            Rectangle r = (Rectangle)obj;
+            Rectangle r = (Rectangle) obj;
             return r.x == x && r.y == y && r.width == width && r.height == height;
         }
         return false;
@@ -311,7 +314,7 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable {
         // The output format based on 1.5 release behaviour. It could be obtained in the following way
         // System.out.println(new Rectangle().toString())
         return getClass().getName() + "[x=" + x + ",y=" + y + //$NON-NLS-1$ //$NON-NLS-2$
-            ",width=" + width + ",height=" + height + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                ",width=" + width + ",height=" + height + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }

@@ -47,15 +47,15 @@ import java.util.ArrayList;
 
 /**
  * <CODE>PdfTextArray</CODE> defines an array with displacements and <CODE>PdfString</CODE>-objects.
- * <P>
+ * <p>
  * A <CODE>TextArray</CODE> is used with the operator <VAR>TJ</VAR> in <CODE>PdfText</CODE>.
  * The first object in this array has to be a <CODE>PdfString</CODE>;
  * see reference manual version 1.3 section 8.7.5, pages 346-347.
- *       OR
+ * OR
  * see reference manual version 1.6 section 5.3.2, pages 378-379.
  */
 
-public class PdfTextArray{
+public class PdfTextArray {
     ArrayList<Object> arrayList = new ArrayList<Object>();
 
     // To emit a more efficient array, we consolidate
@@ -77,7 +77,7 @@ public class PdfTextArray{
     /**
      * Adds a <CODE>PdfNumber</CODE> to the <CODE>PdfArray</CODE>.
      *
-     * @param  number   displacement of the string
+     * @param number displacement of the string
      */
     public void add(PdfNumber number) {
         add((float) number.doubleValue());

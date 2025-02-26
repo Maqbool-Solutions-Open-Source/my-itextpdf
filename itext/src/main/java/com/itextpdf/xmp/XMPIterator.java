@@ -77,27 +77,26 @@ import java.util.Iterator;
  * The default is to return the full xmp path.
  * <li>OMIT_QUALIFIERS - Do not visit the qualifiers.
  * <li>INCLUDE_ALIASES - Adds known alias properties to the properties in the iteration.
- * 		<em>Note:</em> Not supported in Java XMPCore! 
+ * 		<em>Note:</em> Not supported in Java XMPCore!
  * </ul>
  * <p>
  * <code>next()</code> returns <code>XMPPropertyInfo</code>-objects and throws
  * a <code>NoSuchElementException</code> if there are no more properties to
  * return.
- * 
+ *
  * @since 25.01.2006
  */
-public interface XMPIterator extends Iterator
-{
-	/**
-	 * Skip the subtree below the current node when <code>next()</code> is
-	 * called.
-	 */
-	void skipSubtree();
+public interface XMPIterator extends Iterator {
+    /**
+     * Skip the subtree below the current node when <code>next()</code> is
+     * called.
+     */
+    void skipSubtree();
 
 
-	/**
-	 * Skip the subtree below and remaining siblings of the current node when
-	 * <code>next()</code> is called.
-	 */
-	void skipSiblings();
+    /**
+     * Skip the subtree below and remaining siblings of the current node when
+     * <code>next()</code> is called.
+     */
+    void skipSiblings();
 }

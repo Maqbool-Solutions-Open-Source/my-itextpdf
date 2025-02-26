@@ -43,10 +43,10 @@ package com.itextpdf.text.log;
 
 /**
  * The different log levels.
- * @author redlab_b
  *
+ * @author redlab_b
  */
 public enum Level {
 
-	ERROR, WARN, INFO, DEBUG, TRACE;
+    ERROR, WARN, INFO, DEBUG, TRACE;
 }

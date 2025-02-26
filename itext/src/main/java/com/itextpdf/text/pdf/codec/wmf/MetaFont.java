@@ -42,7 +42,9 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf.codec.wmf;
+
 import com.itextpdf.text.Document;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -53,10 +55,10 @@ import com.itextpdf.text.pdf.BaseFont;
 
 public class MetaFont extends MetaObject {
     static final String fontNames[] = {
-        "Courier", "Courier-Bold", "Courier-Oblique", "Courier-BoldOblique",
-        "Helvetica", "Helvetica-Bold", "Helvetica-Oblique", "Helvetica-BoldOblique",
-        "Times-Roman", "Times-Bold", "Times-Italic", "Times-BoldItalic",
-        "Symbol", "ZapfDingbats"};
+            "Courier", "Courier-Bold", "Courier-Oblique", "Courier-BoldOblique",
+            "Helvetica", "Helvetica-Bold", "Helvetica-Oblique", "Helvetica-BoldOblique",
+            "Times-Roman", "Times-Bold", "Times-Italic", "Times-BoldItalic",
+            "Symbol", "ZapfDingbats"};
 
     static final int MARKER_BOLD = 1;
     static final int MARKER_ITALIC = 2;
@@ -74,7 +76,7 @@ public class MetaFont extends MetaObject {
     static final int FF_MODERN = 3;
     static final int FF_SCRIPT = 4;
     static final int FF_DECORATIVE = 5;
-    static final int BOLDTHRESHOLD = 600;    
+    static final int BOLDTHRESHOLD = 600;
     static final int nameSize = 32;
     static final int ETO_OPAQUE = 2;
     static final int ETO_CLIPPED = 4;
@@ -97,7 +99,7 @@ public class MetaFont extends MetaObject {
     public void init(InputMeta in) throws IOException {
         height = Math.abs(in.readShort());
         in.skip(2);
-        angle = (float)(in.readShort() / 1800.0 * Math.PI);
+        angle = (float) (in.readShort() / 1800.0 * Math.PI);
         in.skip(2);
         bold = (in.readShort() >= BOLDTHRESHOLD ? MARKER_BOLD : 0);
         italic = (in.readByte() != 0 ? MARKER_ITALIC : 0);
@@ -113,17 +115,16 @@ public class MetaFont extends MetaObject {
             if (c == 0) {
                 break;
             }
-            name[k] = (byte)c;
+            name[k] = (byte) c;
         }
         try {
             faceName = new String(name, 0, k, "Cp1252");
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             faceName = new String(name, 0, k);
         }
         faceName = faceName.toLowerCase();
     }
-    
+
     public BaseFont getFont() {
         if (font != null)
             return font;
@@ -133,24 +134,19 @@ public class MetaFont extends MetaObject {
             return font;
         String fontName;
         if (faceName.indexOf("courier") != -1 || faceName.indexOf("terminal") != -1
-            || faceName.indexOf("fixedsys") != -1) {
+                || faceName.indexOf("fixedsys") != -1) {
             fontName = fontNames[MARKER_COURIER + italic + bold];
-        }
-        else if (faceName.indexOf("ms sans serif") != -1 || faceName.indexOf("arial") != -1
-            || faceName.indexOf("system") != -1) {
+        } else if (faceName.indexOf("ms sans serif") != -1 || faceName.indexOf("arial") != -1
+                || faceName.indexOf("system") != -1) {
             fontName = fontNames[MARKER_HELVETICA + italic + bold];
-        }
-        else if (faceName.indexOf("arial black") != -1) {
+        } else if (faceName.indexOf("arial black") != -1) {
             fontName = fontNames[MARKER_HELVETICA + italic + MARKER_BOLD];
-        }
-        else if (faceName.indexOf("times") != -1 || faceName.indexOf("ms serif") != -1
-            || faceName.indexOf("roman") != -1) {
+        } else if (faceName.indexOf("times") != -1 || faceName.indexOf("ms serif") != -1
+                || faceName.indexOf("roman") != -1) {
             fontName = fontNames[MARKER_TIMES + italic + bold];
-        }
-        else if (faceName.indexOf("symbol") != -1) {
+        } else if (faceName.indexOf("symbol") != -1) {
             fontName = fontNames[MARKER_SYMBOL];
-        }
-        else {
+        } else {
             int pitch = pitchAndFamily & 3;
             int family = (pitchAndFamily >> 4) & 7;
             switch (family) {
@@ -165,8 +161,7 @@ public class MetaFont extends MetaObject {
                 case FF_DECORATIVE:
                     fontName = fontNames[MARKER_HELVETICA + italic + bold];
                     break;
-                default:
-                {
+                default: {
                     switch (pitch) {
                         case FIXED_PITCH:
                             fontName = fontNames[MARKER_COURIER + italic + bold];
@@ -180,26 +175,25 @@ public class MetaFont extends MetaObject {
         }
         try {
             font = BaseFont.createFont(fontName, "Cp1252", false);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
-        
+
         return font;
     }
-    
+
     public float getAngle() {
         return angle;
     }
-    
+
     public boolean isUnderline() {
         return underline;
     }
-    
+
     public boolean isStrikeout() {
         return strikeout;
     }
-    
+
     public float getFontSize(MetaState state) {
         return Math.abs(state.transformY(height) - state.transformY(0)) * Document.wmfFontCorrection;
     }

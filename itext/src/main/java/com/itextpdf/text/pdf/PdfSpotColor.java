@@ -49,27 +49,31 @@ import com.itextpdf.text.error_messages.MessageLocalization;
 /**
  * A <CODE>PdfSpotColor</CODE> defines a ColorSpace
  *
- * @see		PdfDictionary
+ * @see PdfDictionary
  */
 
 public class PdfSpotColor implements ICachedColorSpace, IPdfSpecialColorSpace {
-    
-/**	The color name */
+
+    /**
+     * The color name
+     */
     public PdfName name;
-    
-/** The alternative color space */
+
+    /**
+     * The alternative color space
+     */
     public BaseColor altcs;
     // constructors
 
     public ColorDetails altColorDetails;
-    
+
     /**
      * Constructs a new <CODE>PdfSpotColor</CODE>.
      *
-     * @param		name		a String value
-     * @param		altcs		an alternative colorspace value
+     * @param name  a String value
+     * @param altcs an alternative colorspace value
      */
-    
+
     public PdfSpotColor(String name, BaseColor altcs) {
         this.name = new PdfName(name);
         this.altcs = altcs;
@@ -77,13 +81,14 @@ public class PdfSpotColor implements ICachedColorSpace, IPdfSpecialColorSpace {
 
     public ColorDetails[] getColorantDetails(PdfWriter writer) {
         if (altColorDetails == null && this.altcs instanceof ExtendedColor && ((ExtendedColor) this.altcs).getType() == ExtendedColor.TYPE_LAB) {
-            altColorDetails = writer.addSimple(((LabColor)altcs).getLabColorSpace());
+            altColorDetails = writer.addSimple(((LabColor) altcs).getLabColorSpace());
         }
-        return new ColorDetails[] {altColorDetails};
+        return new ColorDetails[]{altColorDetails};
     }
-    
+
     /**
      * Gets the alternative ColorSpace.
+     *
      * @return a BaseColor
      */
     public BaseColor getAlternativeCS() {
@@ -105,20 +110,20 @@ public class PdfSpotColor implements ICachedColorSpace, IPdfSpecialColorSpace {
         array.add(name);
         PdfFunction func = null;
         if (altcs instanceof ExtendedColor) {
-            int type = ((ExtendedColor)altcs).type;
+            int type = ((ExtendedColor) altcs).type;
             switch (type) {
                 case ExtendedColor.TYPE_GRAY:
                     array.add(PdfName.DEVICEGRAY);
-                    func = PdfFunction.type2(writer, new float[]{0, 1}, null, new float[]{1}, new float[]{((GrayColor)altcs).getGray()}, 1);
+                    func = PdfFunction.type2(writer, new float[]{0, 1}, null, new float[]{1}, new float[]{((GrayColor) altcs).getGray()}, 1);
                     break;
                 case ExtendedColor.TYPE_CMYK:
                     array.add(PdfName.DEVICECMYK);
-                    CMYKColor cmyk = (CMYKColor)altcs;
+                    CMYKColor cmyk = (CMYKColor) altcs;
                     func = PdfFunction.type2(writer, new float[]{0, 1}, null, new float[]{0, 0, 0, 0},
-                        new float[]{cmyk.getCyan(), cmyk.getMagenta(), cmyk.getYellow(), cmyk.getBlack()}, 1);
+                            new float[]{cmyk.getCyan(), cmyk.getMagenta(), cmyk.getYellow(), cmyk.getBlack()}, 1);
                     break;
                 case ExtendedColor.TYPE_LAB:
-                    LabColor lab = (LabColor)altcs;
+                    LabColor lab = (LabColor) altcs;
                     if (altColorDetails != null)
                         array.add(altColorDetails.getIndirectReference());
                     else
@@ -129,11 +134,10 @@ public class PdfSpotColor implements ICachedColorSpace, IPdfSpecialColorSpace {
                 default:
                     throw new RuntimeException(MessageLocalization.getComposedMessage("only.rgb.gray.and.cmyk.are.supported.as.alternative.color.spaces"));
             }
-        }
-        else {
+        } else {
             array.add(PdfName.DEVICERGB);
             func = PdfFunction.type2(writer, new float[]{0, 1}, null, new float[]{1, 1, 1},
-                new float[]{(float)altcs.getRed() / 255, (float)altcs.getGreen() / 255, (float)altcs.getBlue() / 255}, 1);
+                    new float[]{(float) altcs.getRed() / 255, (float) altcs.getGreen() / 255, (float) altcs.getBlue() / 255}, 1);
         }
         array.add(func.getReference());
         return array;

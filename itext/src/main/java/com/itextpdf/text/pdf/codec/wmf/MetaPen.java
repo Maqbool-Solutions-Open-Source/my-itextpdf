@@ -42,7 +42,9 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf.codec.wmf;
+
 import com.itextpdf.text.BaseColor;
+
 import java.io.IOException;
 
 public class MetaPen extends MetaObject {
@@ -69,15 +71,15 @@ public class MetaPen extends MetaObject {
         in.readWord();
         color = in.readColor();
     }
-    
+
     public int getStyle() {
         return style;
     }
-    
+
     public int getPenWidth() {
         return penWidth;
     }
-    
+
     public BaseColor getColor() {
         return color;
     }

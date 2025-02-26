@@ -53,27 +53,37 @@ import com.itextpdf.text.pdf.PdfContentByte;
  * Element that draws a solid line from left to right.
  * Can be added directly to a document or column.
  * Can also be used to create a separator chunk.
- * @author	Paulo Soares
- * @since	2.1.2
+ *
+ * @author Paulo Soares
+ * @since 2.1.2
  */
 public class LineSeparator extends VerticalPositionMark {
-	
-    /** The thickness of the line. */
+
+    /**
+     * The thickness of the line.
+     */
     protected float lineWidth = 1;
-    /** The width of the line as a percentage of the available page width. */
+    /**
+     * The width of the line as a percentage of the available page width.
+     */
     protected float percentage = 100;
-    /** The color of the line. */
+    /**
+     * The color of the line.
+     */
     protected BaseColor lineColor;
-    /** The alignment of the line. */
+    /**
+     * The alignment of the line.
+     */
     protected int alignment = Element.ALIGN_BOTTOM;
-    
+
     /**
      * Creates a new instance of the LineSeparator class.
-     * @param lineWidth		the thickness of the line
-     * @param percentage	the width of the line as a percentage of the available page width
-     * @param lineColor			the color of the line
-     * @param align			the alignment
-     * @param offset		the offset of the line relative to the current baseline (negative = under the baseline)
+     *
+     * @param lineWidth  the thickness of the line
+     * @param percentage the width of the line as a percentage of the available page width
+     * @param lineColor  the color of the line
+     * @param align      the alignment
+     * @param offset     the offset of the line relative to the current baseline (negative = under the baseline)
      */
     public LineSeparator(float lineWidth, float percentage, BaseColor lineColor, int align, float offset) {
         this.lineWidth = lineWidth;
@@ -85,7 +95,8 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Creates a new instance of the LineSeparator class.
-     * @param font			the font
+     *
+     * @param font the font
      */
     public LineSeparator(Font font) {
         this.lineWidth = PdfChunk.UNDERLINE_THICKNESS * font.getSize();
@@ -112,13 +123,14 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Draws a horizontal line.
-     * @param canvas	the canvas to draw on
-     * @param leftX		the left x coordinate
-     * @param rightX	the right x coordindate
-     * @param y			the y coordinate
+     *
+     * @param canvas the canvas to draw on
+     * @param leftX  the left x coordinate
+     * @param rightX the right x coordindate
+     * @param y      the y coordinate
      */
     public void drawLine(PdfContentByte canvas, float leftX, float rightX, float y) {
-    	float w;
+        float w;
         if (getPercentage() < 0)
             w = -getPercentage();
         else
@@ -142,10 +154,11 @@ public class LineSeparator extends VerticalPositionMark {
         canvas.lineTo(s + w + leftX, y + offset);
         canvas.stroke();
     }
-    
+
     /**
      * Getter for the line width.
-     * @return	the thickness of the line that will be drawn.
+     *
+     * @return the thickness of the line that will be drawn.
      */
     public float getLineWidth() {
         return lineWidth;
@@ -153,7 +166,8 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Setter for the line width.
-     * @param lineWidth	the thickness of the line that will be drawn.
+     *
+     * @param lineWidth the thickness of the line that will be drawn.
      */
     public void setLineWidth(float lineWidth) {
         this.lineWidth = lineWidth;
@@ -161,7 +175,8 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Setter for the width as a percentage of the available width.
-     * @return	a width percentage
+     *
+     * @return a width percentage
      */
     public float getPercentage() {
         return percentage;
@@ -169,7 +184,8 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Setter for the width as a percentage of the available width.
-     * @param percentage	a width percentage
+     *
+     * @param percentage a width percentage
      */
     public void setPercentage(float percentage) {
         this.percentage = percentage;
@@ -177,7 +193,8 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Getter for the color of the line that will be drawn.
-     * @return	a color
+     *
+     * @return a color
      */
     public BaseColor getLineColor() {
         return lineColor;
@@ -185,7 +202,8 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Setter for the color of the line that will be drawn.
-     * @param color	a color
+     *
+     * @param color a color
      */
     public void setLineColor(BaseColor color) {
         this.lineColor = color;
@@ -193,7 +211,8 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Getter for the alignment of the line.
-     * @return	an alignment value
+     *
+     * @return an alignment value
      */
     public int getAlignment() {
         return alignment;
@@ -201,7 +220,8 @@ public class LineSeparator extends VerticalPositionMark {
 
     /**
      * Setter for the alignment of the line.
-     * @param align	an alignment value
+     *
+     * @param align an alignment value
      */
     public void setAlignment(int align) {
         this.alignment = align;

@@ -50,19 +50,22 @@ import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
  * Creates an AES Cipher with CBC and no padding.
+ *
  * @author Paulo Soares
  */
 public class AESCipherCBCnoPad {
     private BlockCipher cbc;
-    
-    /** Creates a new instance of AESCipher */
+
+    /**
+     * Creates a new instance of AESCipher
+     */
     public AESCipherCBCnoPad(boolean forEncryption, byte[] key) {
         BlockCipher aes = new AESFastEngine();
         cbc = new CBCBlockCipher(aes);
         KeyParameter kp = new KeyParameter(key);
         cbc.init(forEncryption, kp);
     }
-    
+
     public byte[] processBlock(byte[] inp, int inpOff, int inpLen) {
         if ((inpLen % cbc.getBlockSize()) != 0)
             throw new IllegalArgumentException("Not multiple of block: " + inpLen);

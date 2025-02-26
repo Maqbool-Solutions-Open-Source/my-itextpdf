@@ -56,6 +56,7 @@ public interface IAccessibleElement {
 
     /**
      * Get the attribute of accessible element (everything in <code>A</code> dictionary + <code>Lang</code>, <code>Alt</code>, <code>ActualText</code>, <code>E</code>).
+     *
      * @param key
      * @return
      */
@@ -63,6 +64,7 @@ public interface IAccessibleElement {
 
     /**
      * Set the attribute of accessible element (everything in <code>A</code> dictionary + <code>Lang</code>, <code>Alt</code>, <code>ActualText</code>, <code>E</code>).
+     *
      * @param key
      * @param value
      */
@@ -70,12 +72,14 @@ public interface IAccessibleElement {
 
     /**
      * Gets all the properties of accessible element.
+     *
      * @return
      */
     HashMap<PdfName, PdfObject> getAccessibleAttributes();
 
     /**
      * Gets the role of the accessible element.
+     *
      * @return
      */
     PdfName getRole();
@@ -84,6 +88,7 @@ public interface IAccessibleElement {
      * Sets the role of the accessiblee element.
      * Set role to <code>null</code> if you don't want to tag this element.
      * Note that all child elements won't also be tagged.
+     *
      * @param role
      */
     void setRole(final PdfName role);

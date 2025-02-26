@@ -110,21 +110,19 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
 
         @Override
         public void setCurve(double x1, double y1, double ctrlx1, double ctrly1,
-                double ctrlx2, double ctrly2, double x2, double y2)
-        {
-            this.x1 = (float)x1;
-            this.y1 = (float)y1;
-            this.ctrlx1 = (float)ctrlx1;
-            this.ctrly1 = (float)ctrly1;
-            this.ctrlx2 = (float)ctrlx2;
-            this.ctrly2 = (float)ctrly2;
-            this.x2 = (float)x2;
-            this.y2 = (float)y2;
+                             double ctrlx2, double ctrly2, double x2, double y2) {
+            this.x1 = (float) x1;
+            this.y1 = (float) y1;
+            this.ctrlx1 = (float) ctrlx1;
+            this.ctrly1 = (float) ctrly1;
+            this.ctrlx2 = (float) ctrlx2;
+            this.ctrly2 = (float) ctrly2;
+            this.x2 = (float) x2;
+            this.y2 = (float) y2;
         }
 
         public void setCurve(float x1, float y1, float ctrlx1, float ctrly1,
-                float ctrlx2, float ctrly2, float x2, float y2)
-        {
+                             float ctrlx2, float ctrly2, float x2, float y2) {
             this.x1 = x1;
             this.y1 = y1;
             this.ctrlx1 = ctrlx1;
@@ -159,7 +157,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
         }
 
         public Double(double x1, double y1, double ctrlx1, double ctrly1,
-                double ctrlx2, double ctrly2, double x2, double y2) {
+                      double ctrlx2, double ctrly2, double x2, double y2) {
             setCurve(x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
         }
 
@@ -225,8 +223,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
 
         @Override
         public void setCurve(double x1, double y1, double ctrlx1, double ctrly1,
-                double ctrlx2, double ctrly2, double x2, double y2)
-        {
+                             double ctrlx2, double ctrly2, double x2, double y2) {
             this.x1 = x1;
             this.y1 = y1;
             this.ctrlx1 = ctrlx1;
@@ -247,7 +244,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
     }
 
     /*
-     * CubicCurve2D path iterator 
+     * CubicCurve2D path iterator
      */
     class Iterator implements PathIterator {
 
@@ -255,12 +252,12 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
          * The source CubicCurve2D object
          */
         CubicCurve2D c;
-        
+
         /**
          * The path iterator transformation
          */
         AffineTransform t;
-        
+
         /**
          * The current segmenet index
          */
@@ -268,7 +265,8 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
 
         /**
          * Constructs a new CubicCurve2D.Iterator for given line and transformation
-         * @param c - the source CubicCurve2D object
+         *
+         * @param c  - the source CubicCurve2D object
          * @param at - the AffineTransform object to apply rectangle path
          */
         Iterator(CubicCurve2D c, AffineTransform t) {
@@ -323,17 +321,17 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
             int count;
             if (index == 0) {
                 type = SEG_MOVETO;
-                coords[0] = (float)c.getX1();
-                coords[1] = (float)c.getY1();
+                coords[0] = (float) c.getX1();
+                coords[1] = (float) c.getY1();
                 count = 1;
             } else {
                 type = SEG_CUBICTO;
-                coords[0] = (float)c.getCtrlX1();
-                coords[1] = (float)c.getCtrlY1();
-                coords[2] = (float)c.getCtrlX2();
-                coords[3] = (float)c.getCtrlY2();
-                coords[4] = (float)c.getX2();
-                coords[5] = (float)c.getY2();
+                coords[0] = (float) c.getCtrlX1();
+                coords[1] = (float) c.getCtrlY1();
+                coords[2] = (float) c.getCtrlX2();
+                coords[3] = (float) c.getCtrlY2();
+                coords[4] = (float) c.getX2();
+                coords[5] = (float) c.getY2();
                 count = 3;
             }
             if (t != null) {
@@ -372,7 +370,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
     public abstract Point2D getP2();
 
     public abstract void setCurve(double x1, double y1, double ctrlx1, double ctrly1,
-            double ctrlx2, double ctrly2, double x2, double y2);
+                                  double ctrlx2, double ctrly2, double x2, double y2);
 
     public void setCurve(Point2D p1, Point2D cp1, Point2D cp2, Point2D p2) {
         setCurve(
@@ -415,8 +413,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
     }
 
     public static double getFlatnessSq(double x1, double y1, double ctrlx1, double ctrly1,
-            double ctrlx2, double ctrly2, double x2, double y2)
-    {
+                                       double ctrlx2, double ctrly2, double x2, double y2) {
         return Math.max(
                 Line2D.ptSegDistSq(x1, y1, x2, y2, ctrlx1, ctrly1),
                 Line2D.ptSegDistSq(x1, y1, x2, y2, ctrlx2, ctrly2));
@@ -439,8 +436,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
     }
 
     public static double getFlatness(double x1, double y1, double ctrlx1, double ctrly1,
-            double ctrlx2, double ctrly2, double x2, double y2)
-    {
+                                     double ctrlx2, double ctrly2, double x2, double y2) {
         return Math.sqrt(getFlatnessSq(x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2));
     }
 

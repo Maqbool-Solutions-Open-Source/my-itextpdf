@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ import java.io.Serializable;
 public class CharVector implements Cloneable, Serializable {
 
     private static final long serialVersionUID = -4875768298308363544L;
-	/**
+    /**
      * Capacity increment size
      */
     private static final int DEFAULT_BLOCK_SIZE = 2048;
@@ -81,7 +81,7 @@ public class CharVector implements Cloneable, Serializable {
     }
 
     public Object clone() {
-        CharVector cv = new CharVector((char[])array.clone(), blockSize);
+        CharVector cv = new CharVector((char[]) array.clone(), blockSize);
         cv.n = this.n;
         return cv;
     }

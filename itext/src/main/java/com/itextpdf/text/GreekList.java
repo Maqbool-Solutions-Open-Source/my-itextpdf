@@ -46,7 +46,6 @@ package com.itextpdf.text;
 import com.itextpdf.text.factories.GreekAlphabetFactory;
 
 /**
- *
  * A special-version of <CODE>LIST</CODE> which use greek-letters.
  *
  * @see com.itextpdf.text.List
@@ -56,77 +55,79 @@ public class GreekList extends List {
 
 // constructors
 
-	/**
-	 * Initialization
-	 */
-	public GreekList() {
-		super(true);
-		setGreekFont();
-	}
-	/**
-	 * Initialization
-	 *
-	 * @param symbolIndent	indent
-	 */
-	public GreekList(int symbolIndent) {
-		super(true, symbolIndent);
-		setGreekFont();
-	}
+    /**
+     * Initialization
+     */
+    public GreekList() {
+        super(true);
+        setGreekFont();
+    }
 
-	/**
-	 * Initialization
-	 * @param	greeklower		greek-char in lowercase
-	 * @param 	symbolIndent	indent
-	 */
-	public GreekList(boolean greeklower, int symbolIndent) {
-		super(true, symbolIndent);
-		lowercase = greeklower;
-		setGreekFont();
-	}
+    /**
+     * Initialization
+     *
+     * @param symbolIndent indent
+     */
+    public GreekList(int symbolIndent) {
+        super(true, symbolIndent);
+        setGreekFont();
+    }
+
+    /**
+     * Initialization
+     *
+     * @param symbolIndent indent
+     * @param greeklower   greek-char in lowercase
+     */
+    public GreekList(boolean greeklower, int symbolIndent) {
+        super(true, symbolIndent);
+        lowercase = greeklower;
+        setGreekFont();
+    }
 
 // helper method
 
-	/**
-	 * change the font to SYMBOL
-	 */
-	protected void setGreekFont() {
-		float fontsize = symbol.getFont().getSize();
-		symbol.setFont(FontFactory.getFont(FontFactory.SYMBOL, fontsize, Font.NORMAL));
-	}
+    /**
+     * change the font to SYMBOL
+     */
+    protected void setGreekFont() {
+        float fontsize = symbol.getFont().getSize();
+        symbol.setFont(FontFactory.getFont(FontFactory.SYMBOL, fontsize, Font.NORMAL));
+    }
 
 // overridden method
 
-	/**
-	 * Adds an <CODE>Element</CODE> to the <CODE>List</CODE>.
-	 *
-	 * @param	o	the object to add.
-	 * @return true if adding the object succeeded
-	 */
-	@Override
-        public boolean add(Element o) {
-		if (o instanceof ListItem) {
-			ListItem item = (ListItem) o;
-			Chunk chunk = new Chunk(preSymbol, symbol.getFont());
+    /**
+     * Adds an <CODE>Element</CODE> to the <CODE>List</CODE>.
+     *
+     * @param o the object to add.
+     * @return true if adding the object succeeded
+     */
+    @Override
+    public boolean add(Element o) {
+        if (o instanceof ListItem) {
+            ListItem item = (ListItem) o;
+            Chunk chunk = new Chunk(preSymbol, symbol.getFont());
             chunk.setAttributes(symbol.getAttributes());
-			chunk.append(GreekAlphabetFactory.getString(first + list.size(), lowercase));
-			chunk.append(postSymbol);
-			item.setListSymbol(chunk);
-			item.setIndentationLeft(symbolIndent, autoindent);
-			item.setIndentationRight(0);
-			list.add(item);
-		} else if (o instanceof List) {
-			List nested = (List) o;
-			nested.setIndentationLeft(nested.getIndentationLeft() + symbolIndent);
-			first--;
-			return list.add(nested);
-		}
-		return false;
-	}
+            chunk.append(GreekAlphabetFactory.getString(first + list.size(), lowercase));
+            chunk.append(postSymbol);
+            item.setListSymbol(chunk);
+            item.setIndentationLeft(symbolIndent, autoindent);
+            item.setIndentationRight(0);
+            list.add(item);
+        } else if (o instanceof List) {
+            List nested = (List) o;
+            nested.setIndentationLeft(nested.getIndentationLeft() + symbolIndent);
+            first--;
+            return list.add(nested);
+        }
+        return false;
+    }
 
-	@Override
-	public List cloneShallow() {
-		GreekList clone = new GreekList();
-		populateProperties(clone);
-		return clone;
-	}
+    @Override
+    public List cloneShallow() {
+        GreekList clone = new GreekList();
+        populateProperties(clone);
+        return clone;
+    }
 }

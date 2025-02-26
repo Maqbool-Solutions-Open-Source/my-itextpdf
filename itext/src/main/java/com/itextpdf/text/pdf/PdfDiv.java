@@ -56,14 +56,24 @@ import java.util.List;
  * A special element to put a collection of elements at an absolute position.
  */
 public class PdfDiv implements Element, Spaceable, IAccessibleElement {
-    public enum FloatType {NONE, LEFT, RIGHT};
+    public enum FloatType {NONE, LEFT, RIGHT}
 
-    public enum PositionType {STATIC, ABSOLUTE, FIXED, RELATIVE};
+    ;
 
-    public enum DisplayType {NONE, BLOCK, INLINE, INLINE_BLOCK, INLINE_TABLE, LIST_ITEM, RUN_IN, TABLE, TABLE_CAPTION, TABLE_CELL, TABLE_COLUMN_GROUP, TABLE_COLUMN, TABLE_FOOTER_GROUP,
-    TABLE_HEADER_GROUP, TABLE_ROW, TABLE_ROW_GROUP};
+    public enum PositionType {STATIC, ABSOLUTE, FIXED, RELATIVE}
 
-    public enum BorderTopStyle {DOTTED, DASHED, SOLID, DOUBLE, GROOVE, RIDGE, INSET, OUTSET};
+    ;
+
+    public enum DisplayType {
+        NONE, BLOCK, INLINE, INLINE_BLOCK, INLINE_TABLE, LIST_ITEM, RUN_IN, TABLE, TABLE_CAPTION, TABLE_CELL, TABLE_COLUMN_GROUP, TABLE_COLUMN, TABLE_FOOTER_GROUP,
+        TABLE_HEADER_GROUP, TABLE_ROW, TABLE_ROW_GROUP
+    }
+
+    ;
+
+    public enum BorderTopStyle {DOTTED, DASHED, SOLID, DOUBLE, GROOVE, RIDGE, INSET, OUTSET}
+
+    ;
 
     private ArrayList<Element> content;
 
@@ -140,6 +150,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
      * IMPROTANT NOTE: be careful with this method because it would return correct result
      * only in case if {@link PdfDiv#layout(PdfContentByte, boolean, boolean, float, float, float, float)}
      * was already called.
+     *
      * @return the actual height the div would require to layout it's content
      */
 
@@ -151,6 +162,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
      * IMPROTANT NOTE: be careful with this method because it would return correct result
      * only in case if {@link PdfDiv#layout(PdfContentByte, boolean, boolean, float, float, float, float)}
      * was already called.
+     *
      * @return the actual width the div would require to layout it's content
      */
     public float getActualWidth() {
@@ -251,7 +263,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
     /**
      * Gets all the chunks in this element.
      *
-     * @return	an <CODE>ArrayList</CODE>
+     * @return an <CODE>ArrayList</CODE>
      */
     public List<Chunk> getChunks() {
         return new ArrayList<Chunk>();
@@ -260,40 +272,39 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
     /**
      * Gets the type of the text element.
      *
-     * @return	a type
+     * @return a type
      */
     public int type() {
         return Element.DIV;
     }
 
-	/**
-	 * @see com.itextpdf.text.Element#isContent()
-	 * @since	iText 2.0.8
-	 */
-	public boolean isContent() {
-		return true;
-	}
+    /**
+     * @see com.itextpdf.text.Element#isContent()
+     * @since iText 2.0.8
+     */
+    public boolean isContent() {
+        return true;
+    }
 
-	/**
-	 * @see com.itextpdf.text.Element#isNestable()
-	 * @since	iText 2.0.8
-	 */
-	public boolean isNestable() {
-		return true;
-	}
+    /**
+     * @see com.itextpdf.text.Element#isNestable()
+     * @since iText 2.0.8
+     */
+    public boolean isNestable() {
+        return true;
+    }
 
     /**
      * Processes the element by adding it (or the different parts) to an
      * <CODE>ElementListener</CODE>.
      *
-     * @param	listener	an <CODE>ElementListener</CODE>
-     * @return	<CODE>true</CODE> if the element was processed successfully
+     * @param listener an <CODE>ElementListener</CODE>
+     * @return <CODE>true</CODE> if the element was processed successfully
      */
     public boolean process(final ElementListener listener) {
         try {
             return listener.add(this);
-        }
-        catch(DocumentException de) {
+        } catch (DocumentException de) {
             return false;
         }
     }
@@ -301,7 +312,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
     /**
      * Sets the spacing before this table.
      *
-     * @param	spacing		the new spacing
+     * @param spacing the new spacing
      */
     public void setSpacingBefore(final float spacing) {
         this.spacingBefore = spacing;
@@ -310,7 +321,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
     /**
      * Sets the spacing after this table.
      *
-     * @param	spacing		the new spacing
+     * @param spacing the new spacing
      */
     public void setSpacingAfter(final float spacing) {
         this.spacingAfter = spacing;
@@ -319,7 +330,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
     /**
      * Gets the spacing before this table.
      *
-     * @return	the spacing
+     * @return the spacing
      */
     public float getSpacingBefore() {
         return spacingBefore;
@@ -328,7 +339,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
     /**
      * Gets the spacing after this table.
      *
-     * @return	the spacing
+     * @return the spacing
      */
     public float getSpacingAfter() {
         return spacingAfter;
@@ -347,7 +358,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
     /**
      * Sets the alignment of this paragraph.
      *
-     * @param	textAlignment		the new alignment
+     * @param textAlignment the new alignment
      */
     public void setTextAlignment(int textAlignment) {
         this.textAlignment = textAlignment;
@@ -489,8 +500,8 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
             rightX = leftX + contentWidth;
         } else if (percentageWidth == null) {
             if (this.floatType == FloatType.NONE && (this.display == null ||
-                this.display == DisplayType.BLOCK || this.display == DisplayType.LIST_ITEM ||
-                this.display == DisplayType.RUN_IN)){
+                    this.display == DisplayType.BLOCK || this.display == DisplayType.LIST_ITEM ||
+                    this.display == DisplayType.RUN_IN)) {
                 contentWidth = rightX - leftX;
             }
         }
@@ -533,7 +544,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
         }
 
         if (!simulate) {
-            if ((backgroundColor != null || backgroundImage != null) && getActualWidth() > 0  && getActualHeight() > 0) {
+            if ((backgroundColor != null || backgroundImage != null) && getActualWidth() > 0 && getActualHeight() > 0) {
                 float backgroundWidth = getActualWidth();
                 float backgroundHeight = getActualHeight();
                 if (width != null) {
@@ -544,7 +555,7 @@ public class PdfDiv implements Element, Spaceable, IAccessibleElement {
                     backgroundHeight = height > 0 ? height : 0;
                 }
                 if (backgroundWidth > 0 && backgroundHeight > 0) {
-                    Rectangle background = new Rectangle(leftX, maxY - backgroundHeight, backgroundWidth+leftX, maxY);
+                    Rectangle background = new Rectangle(leftX, maxY - backgroundHeight, backgroundWidth + leftX, maxY);
                     if (backgroundColor != null) {
                         background.setBackgroundColor(backgroundColor);
                         PdfArtifact artifact = new PdfArtifact();

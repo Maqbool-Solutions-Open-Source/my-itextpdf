@@ -73,12 +73,12 @@ public class IndexEvents extends PdfPageEventHelper {
      * All the text that is passed to this event, gets registered in the indexentry.
      *
      * @see com.itextpdf.text.pdf.PdfPageEventHelper#onGenericTag(
-     *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document,
-     *      com.itextpdf.text.Rectangle, java.lang.String)
+     *com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document,
+     * com.itextpdf.text.Rectangle, java.lang.String)
      */
     @Override
     public void onGenericTag(PdfWriter writer, Document document,
-            Rectangle rect, String text) {
+                             Rectangle rect, String text) {
         indextag.put(text, Integer.valueOf(writer.getPageNumber()));
     }
 
@@ -96,14 +96,14 @@ public class IndexEvents extends PdfPageEventHelper {
     /**
      * Create an index entry.
      *
-     * @param text  The text for the Chunk.
-     * @param in1   The first level.
-     * @param in2   The second level.
-     * @param in3   The third level.
+     * @param text The text for the Chunk.
+     * @param in1  The first level.
+     * @param in2  The second level.
+     * @param in3  The third level.
      * @return Returns the Chunk.
      */
     public Chunk create(final String text, final String in1, final String in2,
-            final String in3) {
+                        final String in3) {
 
         Chunk chunk = new Chunk(text);
         String tag = "idx_" + indexcounter++;
@@ -117,8 +117,8 @@ public class IndexEvents extends PdfPageEventHelper {
     /**
      * Create an index entry.
      *
-     * @param text  The text for the Chunk.
-     * @param in1   The first level.
+     * @param text The text for the Chunk.
+     * @param in1  The first level.
      * @return Returns the Chunk.
      */
     public Chunk create(final String text, final String in1) {
@@ -128,9 +128,9 @@ public class IndexEvents extends PdfPageEventHelper {
     /**
      * Create an index entry.
      *
-     * @param text  The text for the Chunk.
-     * @param in1   The first level.
-     * @param in2   The second level.
+     * @param text The text for the Chunk.
+     * @param in1  The first level.
+     * @param in2  The second level.
      * @return Returns the Chunk.
      */
     public Chunk create(final String text, final String in1, final String in2) {
@@ -140,13 +140,13 @@ public class IndexEvents extends PdfPageEventHelper {
     /**
      * Create an index entry.
      *
-     * @param text  The text.
-     * @param in1   The first level.
-     * @param in2   The second level.
-     * @param in3   The third level.
+     * @param text The text.
+     * @param in1  The first level.
+     * @param in2  The second level.
+     * @param in3  The third level.
      */
     public void create(final Chunk text, final String in1, final String in2,
-            final String in3) {
+                       final String in3) {
 
         String tag = "idx_" + indexcounter++;
         text.setGenericTag(tag);
@@ -158,8 +158,8 @@ public class IndexEvents extends PdfPageEventHelper {
     /**
      * Create an index entry.
      *
-     * @param text  The text.
-     * @param in1   The first level.
+     * @param text The text.
+     * @param in1  The first level.
      */
     public void create(final Chunk text, final String in1) {
         create(text, in1, "", "");
@@ -168,9 +168,9 @@ public class IndexEvents extends PdfPageEventHelper {
     /**
      * Create an index entry.
      *
-     * @param text  The text.
-     * @param in1   The first level.
-     * @param in2   The second level.
+     * @param text The text.
+     * @param in1  The first level.
+     * @param in2  The second level.
      */
     public void create(final Chunk text, final String in1, final String in2) {
         create(text, in1, in2, "");
@@ -204,6 +204,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
     /**
      * Set the comparator.
+     *
      * @param aComparator The comparator to set.
      */
     public void setComparator(Comparator<Entry> aComparator) {
@@ -212,6 +213,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
     /**
      * Returns the sorted list with the entries and the collected page numbers.
+     *
      * @return Returns the sorted list with the entries and the collected page numbers.
      */
     public List<Entry> getSortedEntries() {
@@ -238,6 +240,7 @@ public class IndexEvents extends PdfPageEventHelper {
     }
 
     // --------------------------------------------------------------------
+
     /**
      * Class for an index entry.
      * <p>
@@ -279,13 +282,14 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Create a new object.
-         * @param aIn1   The first level.
-         * @param aIn2   The second level.
-         * @param aIn3   The third level.
-         * @param aTag   The tag.
+         *
+         * @param aIn1 The first level.
+         * @param aIn2 The second level.
+         * @param aIn3 The third level.
+         * @param aTag The tag.
          */
         public Entry(final String aIn1, final String aIn2, final String aIn3,
-                final String aTag) {
+                     final String aTag) {
             in1 = aIn1;
             in2 = aIn2;
             in3 = aIn3;
@@ -294,6 +298,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Returns the in1.
+         *
          * @return Returns the in1.
          */
         public String getIn1() {
@@ -302,6 +307,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Returns the in2.
+         *
          * @return Returns the in2.
          */
         public String getIn2() {
@@ -310,6 +316,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Returns the in3.
+         *
          * @return Returns the in3.
          */
         public String getIn3() {
@@ -318,6 +325,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Returns the tag.
+         *
          * @return Returns the tag.
          */
         public String getTag() {
@@ -326,6 +334,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Returns the pagenumber for this entry.
+         *
          * @return Returns the pagenumber for this entry.
          */
         public int getPageNumber() {
@@ -339,7 +348,8 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Add a pagenumber.
-         * @param number    The page number.
+         *
+         * @param number The page number.
          * @param tag
          */
         public void addPageNumberAndTag(final int number, final String tag) {
@@ -349,6 +359,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Returns the key for the map-entry.
+         *
          * @return Returns the key for the map-entry.
          */
         public String getKey() {
@@ -357,6 +368,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Returns the pagenumbers.
+         *
          * @return Returns the pagenumbers.
          */
         public List<Integer> getPagenumbers() {
@@ -365,6 +377,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * Returns the tags.
+         *
          * @return Returns the tags.
          */
         public List<String> getTags() {
@@ -373,6 +386,7 @@ public class IndexEvents extends PdfPageEventHelper {
 
         /**
          * print the entry (only for test)
+         *
          * @return the toString implementation of the entry
          */
         @Override

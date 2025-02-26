@@ -65,7 +65,7 @@ public class Dimension extends Dimension2D implements Serializable {
             return true;
         }
         if (obj instanceof Dimension) {
-            Dimension d = (Dimension)obj;
+            Dimension d = (Dimension) obj;
             return (d.width == width && d.height == height);
         }
         return false;
@@ -89,7 +89,7 @@ public class Dimension extends Dimension2D implements Serializable {
 
     @Override
     public void setSize(double width, double height) {
-        setSize((int)Math.ceil(width), (int)Math.ceil(height));
+        setSize((int) Math.ceil(width), (int) Math.ceil(height));
     }
 
     public Dimension getSize() {

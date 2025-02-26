@@ -64,9 +64,9 @@ public class PolyNode {
     protected final List<PolyNode> childs = new ArrayList<PolyNode>();
     private boolean isOpen;
 
-    public void addChild( PolyNode child ) {
+    public void addChild(PolyNode child) {
         final int cnt = childs.size();
-        childs.add( child );
+        childs.add(child);
         child.parent = this;
         child.index = cnt;
     }
@@ -76,7 +76,7 @@ public class PolyNode {
     }
 
     public List<PolyNode> getChilds() {
-        return Collections.unmodifiableList( childs );
+        return Collections.unmodifiableList(childs);
     }
 
     public List<LongPoint> getContour() {
@@ -93,9 +93,8 @@ public class PolyNode {
 
     public PolyNode getNext() {
         if (!childs.isEmpty()) {
-            return childs.get( 0 );
-        }
-        else {
+            return childs.get(0);
+        } else {
             return getNextSiblingUp();
         }
     }
@@ -103,12 +102,10 @@ public class PolyNode {
     private PolyNode getNextSiblingUp() {
         if (parent == null) {
             return null;
-        }
-        else if (index == parent.childs.size() - 1) {
+        } else if (index == parent.childs.size() - 1) {
             return parent.getNextSiblingUp();
-        }
-        else {
-            return parent.childs.get( index + 1 );
+        } else {
+            return parent.childs.get(index + 1);
         }
     }
 
@@ -138,19 +135,19 @@ public class PolyNode {
         return isOpen;
     }
 
-    public void setEndType( EndType value ) {
+    public void setEndType(EndType value) {
         endType = value;
     }
 
-    public void setJoinType( JoinType value ) {
+    public void setJoinType(JoinType value) {
         joinType = value;
     }
 
-    public void setOpen( boolean isOpen ) {
+    public void setOpen(boolean isOpen) {
         this.isOpen = isOpen;
     }
 
-    public void setParent( PolyNode n ) {
+    public void setParent(PolyNode n) {
         parent = n;
 
     }

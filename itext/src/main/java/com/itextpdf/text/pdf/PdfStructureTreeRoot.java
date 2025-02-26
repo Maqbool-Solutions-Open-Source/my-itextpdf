@@ -52,6 +52,7 @@ import java.util.Map;
 
 /**
  * The structure tree root corresponds to the highest hierarchy level in a tagged PDF.
+ *
  * @author Paulo Soares
  */
 public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructureElement {
@@ -59,7 +60,7 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
     private HashMap<Integer, PdfObject> parentTree = new HashMap<Integer, PdfObject>();
     private PdfIndirectReference reference;
     private PdfDictionary classMap = null;
-    protected HashMap<PdfName,PdfObject> classes = null;
+    protected HashMap<PdfName, PdfObject> classes = null;
     private HashMap<Integer, PdfIndirectReference> numTree = null;
     private HashMap<String, PdfObject> idTreeMap;
 
@@ -68,7 +69,9 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
      */
     private PdfWriter writer;
 
-    /** Creates a new instance of PdfStructureTreeRoot */
+    /**
+     * Creates a new instance of PdfStructureTreeRoot
+     */
     PdfStructureTreeRoot(PdfWriter writer) {
         super(PdfName.STRUCTTREEROOT);
         this.writer = writer;
@@ -78,13 +81,13 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
     private void createNumTree() throws IOException {
         if (numTree != null) return;
         numTree = new HashMap<Integer, PdfIndirectReference>();
-        for (Integer i: parentTree.keySet()) {
+        for (Integer i : parentTree.keySet()) {
             PdfObject obj = parentTree.get(i);
             if (obj.isArray()) {
-                PdfArray ar = (PdfArray)obj;
+                PdfArray ar = (PdfArray) obj;
                 numTree.put(i, writer.addToBody(ar).getIndirectReference());
             } else if (obj instanceof PdfIndirectReference) {
-                numTree.put(i, (PdfIndirectReference)obj);
+                numTree.put(i, (PdfIndirectReference) obj);
             }
         }
     }
@@ -92,11 +95,12 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
     /**
      * Maps the user tags to the standard tags. The mapping will allow a standard application to make some sense of the tagged
      * document whatever the user tags may be.
-     * @param used the user tag
+     *
+     * @param used     the user tag
      * @param standard the standard tag
      */
     public void mapRole(PdfName used, PdfName standard) {
-        PdfDictionary rm = (PdfDictionary)get(PdfName.ROLEMAP);
+        PdfDictionary rm = (PdfDictionary) get(PdfName.ROLEMAP);
         if (rm == null) {
             rm = new PdfDictionary();
             put(PdfName.ROLEMAP, rm);
@@ -109,9 +113,9 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
             classMap = new PdfDictionary();
             classes = new HashMap<PdfName, PdfObject>();
         }
-        classes.put(name,object);
+        classes.put(name, object);
     }
-    
+
     void putIDTree(String record, PdfObject reference) {
         if (idTreeMap == null)
             idTreeMap = new HashMap<String, PdfObject>();
@@ -126,6 +130,7 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
 
     /**
      * Gets the writer.
+     *
      * @return the writer
      */
     public PdfWriter getWriter() {
@@ -139,8 +144,9 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
 
     /**
      * Gets the reference this object will be written to.
+     *
      * @return the reference this object will be written to
-     * @since	2.1.6 method removed in 2.1.5, but restored in 2.1.6
+     * @since 2.1.6 method removed in 2.1.5, but restored in 2.1.6
      */
     public PdfIndirectReference getReference() {
         return this.reference;
@@ -148,7 +154,7 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
 
     void setPageMark(int page, PdfIndirectReference struc) {
         Integer i = Integer.valueOf(page);
-        PdfArray ar = (PdfArray)parentTree.get(i);
+        PdfArray ar = (PdfArray) parentTree.get(i);
         if (ar == null) {
             ar = new PdfArray();
             parentTree.put(i, ar);
@@ -159,25 +165,25 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
     void setAnnotationMark(int structParentIndex, PdfIndirectReference struc) {
         parentTree.put(Integer.valueOf(structParentIndex), struc);
     }
-    
+
     void buildTree() throws IOException {
         createNumTree();
         PdfDictionary dicTree = PdfNumberTree.writeTree(numTree, writer);
         if (dicTree != null)
             put(PdfName.PARENTTREE, writer.addToBody(dicTree).getIndirectReference());
         if (classMap != null && !classes.isEmpty()) {
-            for (Map.Entry<PdfName,PdfObject> entry : classes.entrySet()) {
+            for (Map.Entry<PdfName, PdfObject> entry : classes.entrySet()) {
                 PdfObject value = entry.getValue();
                 if (value.isDictionary())
                     classMap.put(entry.getKey(), writer.addToBody(value).getIndirectReference());
                 else if (value.isArray()) {
                     PdfArray newArray = new PdfArray();
-                    PdfArray array = (PdfArray)value;
+                    PdfArray array = (PdfArray) value;
                     for (int i = 0; i < array.size(); ++i) {
                         if (array.getPdfObject(i).isDictionary())
                             newArray.add(writer.addToBody(array.getAsDict(i)).getIndirectReference());
                     }
-                    classMap.put(entry.getKey(),newArray);
+                    classMap.put(entry.getKey(), newArray);
                 }
             }
             put(PdfName.CLASSMAP, writer.addToBody(classMap).getIndirectReference());
@@ -191,12 +197,13 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
 
     /**
      * Gets the first entarance of attribute.
+     *
      * @returns PdfObject
      * @since 5.3.4
      */
-    public PdfObject getAttribute(PdfName name){
+    public PdfObject getAttribute(PdfName name) {
         PdfDictionary attr = getAsDict(PdfName.A);
-        if (attr != null){
+        if (attr != null) {
             if (attr.contains(name))
                 return attr.get(name);
         }
@@ -205,11 +212,12 @@ public class PdfStructureTreeRoot extends PdfDictionary implements IPdfStructure
 
     /**
      * Sets the attribute value.
+     *
      * @since 5.3.4
      */
-    public void setAttribute(PdfName name, PdfObject obj){
+    public void setAttribute(PdfName name, PdfObject obj) {
         PdfDictionary attr = getAsDict(PdfName.A);
-        if (attr == null){
+        if (attr == null) {
             attr = new PdfDictionary();
             put(PdfName.A, attr);
         }

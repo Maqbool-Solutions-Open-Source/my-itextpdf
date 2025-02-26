@@ -55,5 +55,6 @@ import com.itextpdf.text.pdf.PdfObject;
  */
 public interface IPdfStructureElement {
     public PdfObject getAttribute(PdfName name);
+
     public void setAttribute(PdfName name, PdfObject obj);
 }

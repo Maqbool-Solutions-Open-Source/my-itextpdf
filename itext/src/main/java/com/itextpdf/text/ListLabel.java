@@ -41,7 +41,7 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
- package com.itextpdf.text;
+package com.itextpdf.text;
 
 import com.itextpdf.text.pdf.PdfName;
 
@@ -76,16 +76,17 @@ public class ListLabel extends ListBody {
      * For example:
      * <code>
      * &lt;LI&gt;
-     *     &lt;Lbl&gt;
-     *         &lt;Span&gt;1.&lt;/Span&gt;
-     *     &lt;/Lbl&gt;
+     * &lt;Lbl&gt;
+     * &lt;Span&gt;1.&lt;/Span&gt;
+     * &lt;/Lbl&gt;
      * &lt;/LI&gt;
      * </code>
      * If the property set to <code>false</code> it will look as follows:
      * <code>
      * &lt;LI&gt;
-     *     &lt;Lbl&gt;1.&lt;/Lbl&gt;
+     * &lt;Lbl&gt;1.&lt;/Lbl&gt;
      * &lt;/LI&gt;
+     *
      * @return
      */
     @Deprecated
@@ -94,7 +95,8 @@ public class ListLabel extends ListBody {
     }
 
     @Deprecated
-    public void setTagLabelContent(boolean tagLabelContent) {}
+    public void setTagLabelContent(boolean tagLabelContent) {
+    }
 
     @Override
     public boolean isInline() {

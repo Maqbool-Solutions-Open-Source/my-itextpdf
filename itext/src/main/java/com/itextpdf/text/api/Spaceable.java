@@ -48,36 +48,37 @@ package com.itextpdf.text.api;
  */
 public interface Spaceable {
 
-	/**
-	 * Sets the spacing before.
-	 *
-	 * @param	spacing		the new spacing
-	 */
-	void setSpacingBefore(float spacing);
+    /**
+     * Sets the spacing before.
+     *
+     * @param spacing the new spacing
+     */
+    void setSpacingBefore(float spacing);
 
-	/**
-	 * Sets the spacing after.
-	 *
-	 * @param	spacing		the new spacing
-	 */
-	void setSpacingAfter(float spacing);
+    /**
+     * Sets the spacing after.
+     *
+     * @param spacing the new spacing
+     */
+    void setSpacingAfter(float spacing);
 
-	void setPaddingTop(float paddingTop);
+    void setPaddingTop(float paddingTop);
 
-	/**
-	 * Gets the spacing before.
-	 * @return	the spacing
-	 */
-	float getSpacingBefore();
+    /**
+     * Gets the spacing before.
+     *
+     * @return the spacing
+     */
+    float getSpacingBefore();
 
-	/**
-	 * Gets the spacing after.
-	 * @return	the spacing
-	 */
-	float getSpacingAfter();
+    /**
+     * Gets the spacing after.
+     *
+     * @return the spacing
+     */
+    float getSpacingAfter();
 
-	float getPaddingTop();
-
+    float getPaddingTop();
 
 
 }

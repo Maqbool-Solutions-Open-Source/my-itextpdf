@@ -42,6 +42,7 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.ExceptionConverter;
@@ -67,144 +68,154 @@ import com.itextpdf.text.error_messages.MessageLocalization;
  * textAlignment = Element.ALIGN_CENTER;
  * codeType = CODE128;
  * </pre>
+ *
  * @author Paulo Soares
  */
-public class Barcode128 extends Barcode{
+public class Barcode128 extends Barcode {
 
-    /** The bars to generate the code.
-     */    
-    private static final byte BARS[][] = 
-    {
-        {2, 1, 2, 2, 2, 2},
-        {2, 2, 2, 1, 2, 2},
-        {2, 2, 2, 2, 2, 1},
-        {1, 2, 1, 2, 2, 3},
-        {1, 2, 1, 3, 2, 2},
-        {1, 3, 1, 2, 2, 2},
-        {1, 2, 2, 2, 1, 3},
-        {1, 2, 2, 3, 1, 2},
-        {1, 3, 2, 2, 1, 2},
-        {2, 2, 1, 2, 1, 3},
-        {2, 2, 1, 3, 1, 2},
-        {2, 3, 1, 2, 1, 2},
-        {1, 1, 2, 2, 3, 2},
-        {1, 2, 2, 1, 3, 2},
-        {1, 2, 2, 2, 3, 1},
-        {1, 1, 3, 2, 2, 2},
-        {1, 2, 3, 1, 2, 2},
-        {1, 2, 3, 2, 2, 1},
-        {2, 2, 3, 2, 1, 1},
-        {2, 2, 1, 1, 3, 2},
-        {2, 2, 1, 2, 3, 1},
-        {2, 1, 3, 2, 1, 2},
-        {2, 2, 3, 1, 1, 2},
-        {3, 1, 2, 1, 3, 1},
-        {3, 1, 1, 2, 2, 2},
-        {3, 2, 1, 1, 2, 2},
-        {3, 2, 1, 2, 2, 1},
-        {3, 1, 2, 2, 1, 2},
-        {3, 2, 2, 1, 1, 2},
-        {3, 2, 2, 2, 1, 1},
-        {2, 1, 2, 1, 2, 3},
-        {2, 1, 2, 3, 2, 1},
-        {2, 3, 2, 1, 2, 1},
-        {1, 1, 1, 3, 2, 3},
-        {1, 3, 1, 1, 2, 3},
-        {1, 3, 1, 3, 2, 1},
-        {1, 1, 2, 3, 1, 3},
-        {1, 3, 2, 1, 1, 3},
-        {1, 3, 2, 3, 1, 1},
-        {2, 1, 1, 3, 1, 3},
-        {2, 3, 1, 1, 1, 3},
-        {2, 3, 1, 3, 1, 1},
-        {1, 1, 2, 1, 3, 3},
-        {1, 1, 2, 3, 3, 1},
-        {1, 3, 2, 1, 3, 1},
-        {1, 1, 3, 1, 2, 3},
-        {1, 1, 3, 3, 2, 1},
-        {1, 3, 3, 1, 2, 1},
-        {3, 1, 3, 1, 2, 1},
-        {2, 1, 1, 3, 3, 1},
-        {2, 3, 1, 1, 3, 1},
-        {2, 1, 3, 1, 1, 3},
-        {2, 1, 3, 3, 1, 1},
-        {2, 1, 3, 1, 3, 1},
-        {3, 1, 1, 1, 2, 3},
-        {3, 1, 1, 3, 2, 1},
-        {3, 3, 1, 1, 2, 1},
-        {3, 1, 2, 1, 1, 3},
-        {3, 1, 2, 3, 1, 1},
-        {3, 3, 2, 1, 1, 1},
-        {3, 1, 4, 1, 1, 1},
-        {2, 2, 1, 4, 1, 1},
-        {4, 3, 1, 1, 1, 1},
-        {1, 1, 1, 2, 2, 4},
-        {1, 1, 1, 4, 2, 2},
-        {1, 2, 1, 1, 2, 4},
-        {1, 2, 1, 4, 2, 1},
-        {1, 4, 1, 1, 2, 2},
-        {1, 4, 1, 2, 2, 1},
-        {1, 1, 2, 2, 1, 4},
-        {1, 1, 2, 4, 1, 2},
-        {1, 2, 2, 1, 1, 4},
-        {1, 2, 2, 4, 1, 1},
-        {1, 4, 2, 1, 1, 2},
-        {1, 4, 2, 2, 1, 1},
-        {2, 4, 1, 2, 1, 1},
-        {2, 2, 1, 1, 1, 4},
-        {4, 1, 3, 1, 1, 1},
-        {2, 4, 1, 1, 1, 2},
-        {1, 3, 4, 1, 1, 1},
-        {1, 1, 1, 2, 4, 2},
-        {1, 2, 1, 1, 4, 2},
-        {1, 2, 1, 2, 4, 1},
-        {1, 1, 4, 2, 1, 2},
-        {1, 2, 4, 1, 1, 2},
-        {1, 2, 4, 2, 1, 1},
-        {4, 1, 1, 2, 1, 2},
-        {4, 2, 1, 1, 1, 2},
-        {4, 2, 1, 2, 1, 1},
-        {2, 1, 2, 1, 4, 1},
-        {2, 1, 4, 1, 2, 1},
-        {4, 1, 2, 1, 2, 1},
-        {1, 1, 1, 1, 4, 3},
-        {1, 1, 1, 3, 4, 1},
-        {1, 3, 1, 1, 4, 1},
-        {1, 1, 4, 1, 1, 3},
-        {1, 1, 4, 3, 1, 1},
-        {4, 1, 1, 1, 1, 3},
-        {4, 1, 1, 3, 1, 1},
-        {1, 1, 3, 1, 4, 1},
-        {1, 1, 4, 1, 3, 1},
-        {3, 1, 1, 1, 4, 1},
-        {4, 1, 1, 1, 3, 1},
-        {2, 1, 1, 4, 1, 2},
-        {2, 1, 1, 2, 1, 4},
-        {2, 1, 1, 2, 3, 2}
-    };
-    
-    /** The stop bars.
-     */    
+    /**
+     * The bars to generate the code.
+     */
+    private static final byte BARS[][] =
+            {
+                    {2, 1, 2, 2, 2, 2},
+                    {2, 2, 2, 1, 2, 2},
+                    {2, 2, 2, 2, 2, 1},
+                    {1, 2, 1, 2, 2, 3},
+                    {1, 2, 1, 3, 2, 2},
+                    {1, 3, 1, 2, 2, 2},
+                    {1, 2, 2, 2, 1, 3},
+                    {1, 2, 2, 3, 1, 2},
+                    {1, 3, 2, 2, 1, 2},
+                    {2, 2, 1, 2, 1, 3},
+                    {2, 2, 1, 3, 1, 2},
+                    {2, 3, 1, 2, 1, 2},
+                    {1, 1, 2, 2, 3, 2},
+                    {1, 2, 2, 1, 3, 2},
+                    {1, 2, 2, 2, 3, 1},
+                    {1, 1, 3, 2, 2, 2},
+                    {1, 2, 3, 1, 2, 2},
+                    {1, 2, 3, 2, 2, 1},
+                    {2, 2, 3, 2, 1, 1},
+                    {2, 2, 1, 1, 3, 2},
+                    {2, 2, 1, 2, 3, 1},
+                    {2, 1, 3, 2, 1, 2},
+                    {2, 2, 3, 1, 1, 2},
+                    {3, 1, 2, 1, 3, 1},
+                    {3, 1, 1, 2, 2, 2},
+                    {3, 2, 1, 1, 2, 2},
+                    {3, 2, 1, 2, 2, 1},
+                    {3, 1, 2, 2, 1, 2},
+                    {3, 2, 2, 1, 1, 2},
+                    {3, 2, 2, 2, 1, 1},
+                    {2, 1, 2, 1, 2, 3},
+                    {2, 1, 2, 3, 2, 1},
+                    {2, 3, 2, 1, 2, 1},
+                    {1, 1, 1, 3, 2, 3},
+                    {1, 3, 1, 1, 2, 3},
+                    {1, 3, 1, 3, 2, 1},
+                    {1, 1, 2, 3, 1, 3},
+                    {1, 3, 2, 1, 1, 3},
+                    {1, 3, 2, 3, 1, 1},
+                    {2, 1, 1, 3, 1, 3},
+                    {2, 3, 1, 1, 1, 3},
+                    {2, 3, 1, 3, 1, 1},
+                    {1, 1, 2, 1, 3, 3},
+                    {1, 1, 2, 3, 3, 1},
+                    {1, 3, 2, 1, 3, 1},
+                    {1, 1, 3, 1, 2, 3},
+                    {1, 1, 3, 3, 2, 1},
+                    {1, 3, 3, 1, 2, 1},
+                    {3, 1, 3, 1, 2, 1},
+                    {2, 1, 1, 3, 3, 1},
+                    {2, 3, 1, 1, 3, 1},
+                    {2, 1, 3, 1, 1, 3},
+                    {2, 1, 3, 3, 1, 1},
+                    {2, 1, 3, 1, 3, 1},
+                    {3, 1, 1, 1, 2, 3},
+                    {3, 1, 1, 3, 2, 1},
+                    {3, 3, 1, 1, 2, 1},
+                    {3, 1, 2, 1, 1, 3},
+                    {3, 1, 2, 3, 1, 1},
+                    {3, 3, 2, 1, 1, 1},
+                    {3, 1, 4, 1, 1, 1},
+                    {2, 2, 1, 4, 1, 1},
+                    {4, 3, 1, 1, 1, 1},
+                    {1, 1, 1, 2, 2, 4},
+                    {1, 1, 1, 4, 2, 2},
+                    {1, 2, 1, 1, 2, 4},
+                    {1, 2, 1, 4, 2, 1},
+                    {1, 4, 1, 1, 2, 2},
+                    {1, 4, 1, 2, 2, 1},
+                    {1, 1, 2, 2, 1, 4},
+                    {1, 1, 2, 4, 1, 2},
+                    {1, 2, 2, 1, 1, 4},
+                    {1, 2, 2, 4, 1, 1},
+                    {1, 4, 2, 1, 1, 2},
+                    {1, 4, 2, 2, 1, 1},
+                    {2, 4, 1, 2, 1, 1},
+                    {2, 2, 1, 1, 1, 4},
+                    {4, 1, 3, 1, 1, 1},
+                    {2, 4, 1, 1, 1, 2},
+                    {1, 3, 4, 1, 1, 1},
+                    {1, 1, 1, 2, 4, 2},
+                    {1, 2, 1, 1, 4, 2},
+                    {1, 2, 1, 2, 4, 1},
+                    {1, 1, 4, 2, 1, 2},
+                    {1, 2, 4, 1, 1, 2},
+                    {1, 2, 4, 2, 1, 1},
+                    {4, 1, 1, 2, 1, 2},
+                    {4, 2, 1, 1, 1, 2},
+                    {4, 2, 1, 2, 1, 1},
+                    {2, 1, 2, 1, 4, 1},
+                    {2, 1, 4, 1, 2, 1},
+                    {4, 1, 2, 1, 2, 1},
+                    {1, 1, 1, 1, 4, 3},
+                    {1, 1, 1, 3, 4, 1},
+                    {1, 3, 1, 1, 4, 1},
+                    {1, 1, 4, 1, 1, 3},
+                    {1, 1, 4, 3, 1, 1},
+                    {4, 1, 1, 1, 1, 3},
+                    {4, 1, 1, 3, 1, 1},
+                    {1, 1, 3, 1, 4, 1},
+                    {1, 1, 4, 1, 3, 1},
+                    {3, 1, 1, 1, 4, 1},
+                    {4, 1, 1, 1, 3, 1},
+                    {2, 1, 1, 4, 1, 2},
+                    {2, 1, 1, 2, 1, 4},
+                    {2, 1, 1, 2, 3, 2}
+            };
+
+    /**
+     * The stop bars.
+     */
     private static final byte BARS_STOP[] = {2, 3, 3, 1, 1, 1, 2};
-    /** The charset code change.
+    /**
+     * The charset code change.
      */
     public static final char CODE_AB_TO_C = 99;
-    /** The charset code change.
+    /**
+     * The charset code change.
      */
     public static final char CODE_AC_TO_B = 100;
-    /** The charset code change.
+    /**
+     * The charset code change.
      */
     public static final char CODE_BC_TO_A = 101;
-    /** The code for UCC/EAN-128.
+    /**
+     * The code for UCC/EAN-128.
      */
     public static final char FNC1_INDEX = 102;
-    /** The start code.
+    /**
+     * The start code.
      */
     public static final char START_A = 103;
-    /** The start code.
+    /**
+     * The start code.
      */
     public static final char START_B = 104;
-    /** The start code.
+    /**
+     * The start code.
      */
     public static final char START_C = 105;
 
@@ -219,9 +230,12 @@ public class Barcode128 extends Barcode{
     public static final char STARTA = '\u00cb';
     public static final char STARTB = '\u00cc';
     public static final char STARTC = '\u00cd';
-    
+
     private static final IntHashtable ais = new IntHashtable();
-    /** Creates new Barcode128 */
+
+    /**
+     * Creates new Barcode128
+     */
     public Barcode128() {
         try {
             x = 0.8f;
@@ -231,8 +245,7 @@ public class Barcode128 extends Barcode{
             barHeight = size * 3;
             textAlignment = Element.ALIGN_CENTER;
             codeType = CODE128;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ExceptionConverter(e);
         }
     }
@@ -269,9 +282,10 @@ public class Barcode128 extends Barcode{
 
     /**
      * Removes the FNC1 codes in the text.
+     *
      * @param code the text to clean
      * @return the cleaned text
-     */    
+     */
     public static String removeFNC1(String code) {
         int len = code.length();
         StringBuffer buf = new StringBuffer(len);
@@ -282,12 +296,13 @@ public class Barcode128 extends Barcode{
         }
         return buf.toString();
     }
-    
+
     /**
      * Gets the human readable text of a sequence of AI.
+     *
      * @param code the text
      * @return the human readable text
-     */    
+     */
     public static String getHumanReadableUCCEAN(String code) {
         StringBuffer buf = new StringBuffer();
         String fnc1 = String.valueOf(FNC1);
@@ -317,30 +332,30 @@ public class Barcode128 extends Barcode{
                         break;
                     buf.append(removeFNC1(code.substring(0, n)));
                     code = code.substring(n);
-                }
-                else {
+                } else {
                     int idx = code.indexOf(FNC1);
                     if (idx < 0)
                         break;
-                    buf.append(code.substring(0,idx));
+                    buf.append(code.substring(0, idx));
                     code = code.substring(idx + 1);
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //empty
         }
         buf.append(removeFNC1(code));
         return buf.toString();
     }
-    
-    /** Returns <CODE>true</CODE> if the next <CODE>numDigits</CODE>
+
+    /**
+     * Returns <CODE>true</CODE> if the next <CODE>numDigits</CODE>
      * starting from index <CODE>textIndex</CODE> are numeric skipping any FNC1.
-     * @param text the text to check
+     *
+     * @param text      the text to check
      * @param textIndex where to check from
      * @param numDigits the number of digits to check
      * @return the check result
-     */    
+     */
     static boolean isNextDigits(String text, int textIndex, int numDigits) {
         int len = text.length();
         while (textIndex < len && numDigits > 0) {
@@ -360,14 +375,16 @@ public class Barcode128 extends Barcode{
         }
         return numDigits == 0;
     }
-    
-    /** Packs the digits for charset C also considering FNC1. It assumes that all the parameters
+
+    /**
+     * Packs the digits for charset C also considering FNC1. It assumes that all the parameters
      * are valid.
-     * @param text the text to pack
+     *
+     * @param text      the text to pack
      * @param textIndex where to pack from
      * @param numDigits the number of digits to pack. It is always an even number
      * @return the packed digits, two digits per character
-     */    
+     */
     static String getPackedRawDigits(String text, int textIndex, int numDigits) {
         StringBuilder out = new StringBuilder("");
         int start = textIndex;
@@ -380,16 +397,18 @@ public class Barcode128 extends Barcode{
             numDigits -= 2;
             int c1 = text.charAt(textIndex++) - '0';
             int c2 = text.charAt(textIndex++) - '0';
-            out.append((char)(c1 * 10 + c2));
+            out.append((char) (c1 * 10 + c2));
         }
-        return (char)(textIndex - start) + out.toString();
+        return (char) (textIndex - start) + out.toString();
     }
 
-    /** Converts the human readable text to the characters needed to
+    /**
+     * Converts the human readable text to the characters needed to
      * create a barcode using the specified code set.
-     * @param text the text to convert
-     * @param ucc <CODE>true</CODE> if it is an UCC/EAN-128. In this case
-     * the character FNC1 is added
+     *
+     * @param text    the text to convert
+     * @param ucc     <CODE>true</CODE> if it is an UCC/EAN-128. In this case
+     *                the character FNC1 is added
      * @param codeSet forced code set, or AUTO for optimized barcode.
      * @return the code ready to be fed to getBarsCode128Raw()
      */
@@ -419,23 +438,21 @@ public class Barcode128 extends Barcode{
             String out2 = getPackedRawDigits(text, index, 2);
             index += out2.charAt(0);
             out += out2.substring(1);
-        }
-        else if (c < ' ') {
+        } else if (c < ' ') {
             currentCode = START_A;
             out += currentCode;
             if (ucc)
                 out += FNC1_INDEX;
-            out += (char)(c + 64);
+            out += (char) (c + 64);
             ++index;
-        }
-        else {
+        } else {
             out += currentCode;
             if (ucc)
                 out += FNC1_INDEX;
             if (c == FNC1)
                 out += FNC1_INDEX;
             else
-                out += (char)(c - ' ');
+                out += (char) (c - ' ');
             ++index;
         }
         if (codeSet != Barcode128CodeSet.AUTO && currentCode != codeSet.getStartSymbol())
@@ -449,20 +466,18 @@ public class Barcode128 extends Barcode{
                         String out2 = getPackedRawDigits(text, index, 4);
                         index += out2.charAt(0);
                         out += out2.substring(1);
-                    }
-                    else {
+                    } else {
                         c = text.charAt(index++);
                         if (c == FNC1)
                             out += FNC1_INDEX;
                         else if (c > '_') {
                             currentCode = START_B;
                             out += CODE_AC_TO_B;
-                            out += (char)(c - ' ');
-                        }
-                        else if (c < ' ')
-                            out += (char)(c + 64);
+                            out += (char) (c - ' ');
+                        } else if (c < ' ')
+                            out += (char) (c + 64);
                         else
-                            out += (char)(c - ' ');
+                            out += (char) (c - ' ');
                     }
                 }
                 break;
@@ -473,18 +488,16 @@ public class Barcode128 extends Barcode{
                         String out2 = getPackedRawDigits(text, index, 4);
                         index += out2.charAt(0);
                         out += out2.substring(1);
-                    }
-                    else {
+                    } else {
                         c = text.charAt(index++);
                         if (c == FNC1)
                             out += FNC1_INDEX;
                         else if (c < ' ') {
                             currentCode = START_A;
                             out += CODE_BC_TO_A;
-                            out += (char)(c + 64);
-                        }
-                        else {
-                            out += (char)(c - ' ');
+                            out += (char) (c + 64);
+                        } else {
+                            out += (char) (c - ' ');
                         }
                     }
                 }
@@ -494,20 +507,18 @@ public class Barcode128 extends Barcode{
                         String out2 = getPackedRawDigits(text, index, 2);
                         index += out2.charAt(0);
                         out += out2.substring(1);
-                    }
-                    else {
+                    } else {
                         c = text.charAt(index++);
                         if (c == FNC1)
                             out += FNC1_INDEX;
                         else if (c < ' ') {
                             currentCode = START_A;
                             out += CODE_BC_TO_A;
-                            out += (char)(c + 64);
-                        }
-                        else {
+                            out += (char) (c + 64);
+                        } else {
                             currentCode = START_B;
                             out += CODE_AC_TO_B;
-                            out += (char)(c - ' ');
+                            out += (char) (c - ' ');
                         }
                     }
                 }
@@ -518,23 +529,27 @@ public class Barcode128 extends Barcode{
         }
         return out;
     }
-    
-    /** Converts the human readable text to the characters needed to
+
+    /**
+     * Converts the human readable text to the characters needed to
      * create a barcode. Some optimization is done to get the shortest code.
+     *
      * @param text the text to convert
-     * @param ucc <CODE>true</CODE> if it is an UCC/EAN-128. In this case
-     * the character FNC1 is added
+     * @param ucc  <CODE>true</CODE> if it is an UCC/EAN-128. In this case
+     *             the character FNC1 is added
      * @return the code ready to be fed to getBarsCode128Raw()
-     */    
+     */
     public static String getRawText(String text, boolean ucc) {
         return getRawText(text, ucc, Barcode128CodeSet.AUTO);
     }
-    
-    /** Generates the bars. The input has the actual barcodes, not
+
+    /**
+     * Generates the bars. The input has the actual barcodes, not
      * the human readable text.
+     *
      * @param text the barcode
      * @return the bars
-     */    
+     */
     public static byte[] getBarsCode128Raw(String text) {
         int idx = text.indexOf('\uffff');
         if (idx >= 0)
@@ -543,7 +558,7 @@ public class Barcode128 extends Barcode{
         for (int k = 1; k < text.length(); ++k)
             chk += k * text.charAt(k);
         chk = chk % 103;
-        text += (char)chk;
+        text += (char) chk;
         byte bars[] = new byte[(text.length() + 1) * 6 + 7];
         int k;
         for (k = 0; k < text.length(); ++k)
@@ -551,9 +566,11 @@ public class Barcode128 extends Barcode{
         System.arraycopy(BARS_STOP, 0, bars, k * 6, 7);
         return bars;
     }
-    
-    /** Gets the maximum area that the barcode and the text, if
+
+    /**
+     * Gets the maximum area that the barcode and the text, if
      * any, will occupy. The lower left corner is always (0, 0).
+     *
      * @return the size the barcode occupies.
      */
     public Rectangle getBarcodeSize() {
@@ -571,8 +588,7 @@ public class Barcode128 extends Barcode{
                     fullCode = "";
                 else
                     fullCode = code.substring(idx + 1);
-            }
-            else if (codeType == CODE128_UCC)
+            } else if (codeType == CODE128_UCC)
                 fullCode = getHumanReadableUCCEAN(code);
             else
                 fullCode = removeFNC1(code);
@@ -584,8 +600,7 @@ public class Barcode128 extends Barcode{
                 fullCode = code.substring(0, idx);
             else
                 fullCode = code;
-        }
-        else {
+        } else {
             fullCode = getRawText(code, codeType == CODE128_UCC, codeSet);
         }
         int len = fullCode.length();
@@ -594,40 +609,42 @@ public class Barcode128 extends Barcode{
         float fullHeight = barHeight + fontY;
         return new Rectangle(fullWidth, fullHeight);
     }
-    
-    /** Places the barcode in a <CODE>PdfContentByte</CODE>. The
+
+    /**
+     * Places the barcode in a <CODE>PdfContentByte</CODE>. The
      * barcode is always placed at coordinates (0, 0). Use the
      * translation matrix to move it elsewhere.<p>
      * The bars and text are written in the following colors:<p>
      * <P><TABLE BORDER=1>
      * <TR>
-     *   <TH><P><CODE>barColor</CODE></TH>
-     *   <TH><P><CODE>textColor</CODE></TH>
-     *   <TH><P>Result</TH>
-     *   </TR>
+     * <TH><P><CODE>barColor</CODE></TH>
+     * <TH><P><CODE>textColor</CODE></TH>
+     * <TH><P>Result</TH>
+     * </TR>
      * <TR>
-     *   <TD><P><CODE>null</CODE></TD>
-     *   <TD><P><CODE>null</CODE></TD>
-     *   <TD><P>bars and text painted with current fill color</TD>
-     *   </TR>
+     * <TD><P><CODE>null</CODE></TD>
+     * <TD><P><CODE>null</CODE></TD>
+     * <TD><P>bars and text painted with current fill color</TD>
+     * </TR>
      * <TR>
-     *   <TD><P><CODE>barColor</CODE></TD>
-     *   <TD><P><CODE>null</CODE></TD>
-     *   <TD><P>bars and text painted with <CODE>barColor</CODE></TD>
-     *   </TR>
+     * <TD><P><CODE>barColor</CODE></TD>
+     * <TD><P><CODE>null</CODE></TD>
+     * <TD><P>bars and text painted with <CODE>barColor</CODE></TD>
+     * </TR>
      * <TR>
-     *   <TD><P><CODE>null</CODE></TD>
-     *   <TD><P><CODE>textColor</CODE></TD>
-     *   <TD><P>bars painted with current color<br>text painted with <CODE>textColor</CODE></TD>
-     *   </TR>
+     * <TD><P><CODE>null</CODE></TD>
+     * <TD><P><CODE>textColor</CODE></TD>
+     * <TD><P>bars painted with current color<br>text painted with <CODE>textColor</CODE></TD>
+     * </TR>
      * <TR>
-     *   <TD><P><CODE>barColor</CODE></TD>
-     *   <TD><P><CODE>textColor</CODE></TD>
-     *   <TD><P>bars painted with <CODE>barColor</CODE><br>text painted with <CODE>textColor</CODE></TD>
-     *   </TR>
+     * <TD><P><CODE>barColor</CODE></TD>
+     * <TD><P><CODE>textColor</CODE></TD>
+     * <TD><P>bars painted with <CODE>barColor</CODE><br>text painted with <CODE>textColor</CODE></TD>
+     * </TR>
      * </TABLE>
-     * @param cb the <CODE>PdfContentByte</CODE> where the barcode will be placed
-     * @param barColor the color of the bars. It can be <CODE>null</CODE>
+     *
+     * @param cb        the <CODE>PdfContentByte</CODE> where the barcode will be placed
+     * @param barColor  the color of the bars. It can be <CODE>null</CODE>
      * @param textColor the color of the text. It can be <CODE>null</CODE>
      * @return the dimensions the barcode occupies
      */
@@ -639,8 +656,7 @@ public class Barcode128 extends Barcode{
                 fullCode = "";
             else
                 fullCode = code.substring(idx + 1);
-        }
-        else if (codeType == CODE128_UCC)
+        } else if (codeType == CODE128_UCC)
             fullCode = getHumanReadableUCCEAN(code);
         else
             fullCode = removeFNC1(code);
@@ -655,8 +671,7 @@ public class Barcode128 extends Barcode{
                 bCode = code.substring(0, idx);
             else
                 bCode = code;
-        }
-        else {
+        } else {
             bCode = getRawText(code, codeType == CODE128_UCC, codeSet);
         }
         int len = bCode.length();
@@ -712,12 +727,13 @@ public class Barcode128 extends Barcode{
         }
         return getBarcodeSize();
     }
-    
+
     /**
      * Sets the code to generate. If it's an UCC code and starts with '(' it will
      * be split by the AI. This code in UCC mode is valid:
      * <p>
      * <code>(01)00000090311314(10)ABC123(15)060916</code>
+     *
      * @param code the code to generate
      */
     public void setCode(String code) {
@@ -744,16 +760,14 @@ public class Barcode128 extends Barcode{
                 if (len < 0) {
                     if (idx >= 0)
                         ret.append(FNC1);
-                }
-                else if (next - end - 1 + sai.length() != len)
+                } else if (next - end - 1 + sai.length() != len)
                     throw new IllegalArgumentException(MessageLocalization.getComposedMessage("invalid.ai.length.1", sai));
             }
             super.setCode(ret.toString());
-        }
-        else
+        } else
             super.setCode(code);
     }
-    
+
     static {
         ais.put(0, 20);
         ais.put(1, 16);
@@ -814,13 +828,15 @@ public class Barcode128 extends Barcode{
     }
 
     // AWT related methods (remove this if you port to Android / GAE)
-    
-    /** Creates a <CODE>java.awt.Image</CODE>. This image only
+
+    /**
+     * Creates a <CODE>java.awt.Image</CODE>. This image only
      * contains the bars without any text.
+     *
      * @param foreground the color of the bars
      * @param background the color of the background
      * @return the image
-     */    
+     */
     public java.awt.Image createAwtImage(java.awt.Color foreground, java.awt.Color background) {
         int f = foreground.getRGB();
         int g = background.getRGB();
@@ -832,17 +848,16 @@ public class Barcode128 extends Barcode{
                 bCode = code.substring(0, idx);
             else
                 bCode = code;
-        }
-        else {
+        } else {
             bCode = getRawText(code, codeType == CODE128_UCC);
         }
         int len = bCode.length();
         int fullWidth = (len + 2) * 11 + 2;
         byte bars[] = getBarsCode128Raw(bCode);
-        
+
         boolean print = true;
         int ptr = 0;
-        int height = (int)barHeight;
+        int height = (int) barHeight;
         int pix[] = new int[fullWidth * height];
         for (int k = 0; k < bars.length; ++k) {
             int w = bars[k];
@@ -854,10 +869,10 @@ public class Barcode128 extends Barcode{
                 pix[ptr++] = c;
         }
         for (int k = fullWidth; k < pix.length; k += fullWidth) {
-            System.arraycopy(pix, 0, pix, k, fullWidth); 
+            System.arraycopy(pix, 0, pix, k, fullWidth);
         }
         java.awt.Image img = canvas.createImage(new java.awt.image.MemoryImageSource(fullWidth, height, pix, 0, fullWidth));
-        
+
         return img;
     }
 }

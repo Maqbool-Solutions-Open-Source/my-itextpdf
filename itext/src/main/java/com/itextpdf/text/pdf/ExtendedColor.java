@@ -46,42 +46,59 @@ package com.itextpdf.text.pdf;
 import com.itextpdf.text.BaseColor;
 
 /**
- *
- * @author  Paulo Soares
+ * @author Paulo Soares
  */
-public abstract class ExtendedColor extends BaseColor{
-    
-	private static final long serialVersionUID = 2722660170712380080L;
-	/** a type of extended color. */
+public abstract class ExtendedColor extends BaseColor {
+
+    private static final long serialVersionUID = 2722660170712380080L;
+    /**
+     * a type of extended color.
+     */
     public static final int TYPE_RGB = 0;
-    /** a type of extended color. */
+    /**
+     * a type of extended color.
+     */
     public static final int TYPE_GRAY = 1;
-    /** a type of extended color. */
+    /**
+     * a type of extended color.
+     */
     public static final int TYPE_CMYK = 2;
-    /** a type of extended color. */
+    /**
+     * a type of extended color.
+     */
     public static final int TYPE_SEPARATION = 3;
-    /** a type of extended color. */
+    /**
+     * a type of extended color.
+     */
     public static final int TYPE_PATTERN = 4;
-    /** a type of extended color. */
+    /**
+     * a type of extended color.
+     */
     public static final int TYPE_SHADING = 5;
-    /** a type of extended color. */
+    /**
+     * a type of extended color.
+     */
     public static final int TYPE_DEVICEN = 6;
-    /** a type of extended color. */
+    /**
+     * a type of extended color.
+     */
     public static final int TYPE_LAB = 7;
 
     protected int type;
 
     /**
      * Constructs an extended color of a certain type.
+     *
      * @param type
      */
     public ExtendedColor(int type) {
         super(0, 0, 0);
         this.type = type;
     }
-    
+
     /**
      * Constructs an extended color of a certain type and a certain color.
+     *
      * @param type
      * @param red
      * @param green
@@ -91,8 +108,10 @@ public abstract class ExtendedColor extends BaseColor{
         super(normalize(red), normalize(green), normalize(blue));
         this.type = type;
     }
+
     /**
      * Constructs an extended color of a certain type and a certain color.
+     *
      * @param type
      * @param red
      * @param green
@@ -100,26 +119,28 @@ public abstract class ExtendedColor extends BaseColor{
      * @param alpha
      */
     public ExtendedColor(int type, int red, int green, int blue, int alpha) {
-    	super(normalize((float)red / 0xFF), normalize((float)green / 0xFF), normalize((float)blue / 0xFF), normalize((float)alpha / 0xFF));
-		this.type = type;
-	}
+        super(normalize((float) red / 0xFF), normalize((float) green / 0xFF), normalize((float) blue / 0xFF), normalize((float) alpha / 0xFF));
+        this.type = type;
+    }
 
-	/**
+    /**
      * Gets the type of this color.
+     *
      * @return one of the types (see constants)
      */
     public int getType() {
         return type;
     }
-    
+
     /**
      * Gets the type of a given color.
+     *
      * @param color
      * @return one of the types (see constants)
      */
     public static int getType(BaseColor color) {
         if (color instanceof ExtendedColor)
-            return ((ExtendedColor)color).getType();
+            return ((ExtendedColor) color).getType();
         return TYPE_RGB;
     }
 

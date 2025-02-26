@@ -46,40 +46,43 @@ package com.itextpdf.text.pdf;
 import java.io.IOException;
 
 import com.itextpdf.text.ExceptionConverter;
-/** Implements PDF functions.
+
+/**
+ * Implements PDF functions.
  *
  * @author Paulo Soares
  */
 public class PdfFunction {
-    
+
     protected PdfWriter writer;
-    
+
     protected PdfIndirectReference reference;
-    
+
     protected PdfDictionary dictionary;
-    
-    /** Creates new PdfFunction */
+
+    /**
+     * Creates new PdfFunction
+     */
     protected PdfFunction(PdfWriter writer) {
         this.writer = writer;
     }
-    
+
     PdfIndirectReference getReference() {
         try {
             if (reference == null) {
                 reference = writer.addToBody(dictionary).getIndirectReference();
             }
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             throw new ExceptionConverter(ioe);
         }
         return reference;
     }
-        
+
     public static PdfFunction type0(PdfWriter writer, float domain[], float range[], int size[],
-        int bitsPerSample, int order, float encode[], float decode[], byte stream[]) {
+                                    int bitsPerSample, int order, float encode[], float decode[], byte stream[]) {
         PdfFunction func = new PdfFunction(writer);
         func.dictionary = new PdfStream(stream);
-        ((PdfStream)func.dictionary).flateCompress(writer.getCompressionLevel());
+        ((PdfStream) func.dictionary).flateCompress(writer.getCompressionLevel());
         func.dictionary.put(PdfName.FUNCTIONTYPE, new PdfNumber(0));
         func.dictionary.put(PdfName.DOMAIN, new PdfArray(domain));
         func.dictionary.put(PdfName.RANGE, new PdfArray(range));
@@ -124,14 +127,14 @@ public class PdfFunction {
         func.dictionary.put(PdfName.ENCODE, new PdfArray(encode));
         return func;
     }
-    
+
     public static PdfFunction type4(PdfWriter writer, float domain[], float range[], String postscript) {
         byte b[] = new byte[postscript.length()];
         for (int k = 0; k < b.length; ++k)
-            b[k] = (byte)postscript.charAt(k);
+            b[k] = (byte) postscript.charAt(k);
         PdfFunction func = new PdfFunction(writer);
         func.dictionary = new PdfStream(b);
-        ((PdfStream)func.dictionary).flateCompress(writer.getCompressionLevel());
+        ((PdfStream) func.dictionary).flateCompress(writer.getCompressionLevel());
         func.dictionary.put(PdfName.FUNCTIONTYPE, new PdfNumber(4));
         func.dictionary.put(PdfName.DOMAIN, new PdfArray(domain));
         func.dictionary.put(PdfName.RANGE, new PdfArray(range));

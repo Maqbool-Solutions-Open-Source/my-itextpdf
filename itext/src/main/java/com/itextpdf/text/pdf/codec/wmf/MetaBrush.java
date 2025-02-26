@@ -42,7 +42,9 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf.codec.wmf;
+
 import com.itextpdf.text.BaseColor;
+
 import java.io.IOException;
 
 public class MetaBrush extends MetaObject {
@@ -72,15 +74,15 @@ public class MetaBrush extends MetaObject {
         color = in.readColor();
         hatch = in.readWord();
     }
-    
+
     public int getStyle() {
         return style;
     }
-    
+
     public int getHatch() {
         return hatch;
     }
-    
+
     public BaseColor getColor() {
         return color;
     }

@@ -58,92 +58,98 @@ import java.util.Properties;
 @Deprecated
 public class MarkedObject implements Element {
 
-	/** The element that is wrapped in a MarkedObject. */
-	protected Element element;
+    /**
+     * The element that is wrapped in a MarkedObject.
+     */
+    protected Element element;
 
-	/** Contains extra markupAttributes */
-	protected Properties markupAttributes = new Properties();
+    /**
+     * Contains extra markupAttributes
+     */
+    protected Properties markupAttributes = new Properties();
 
-	/**
-	 * This constructor is for internal use only.
-	 */
-	protected MarkedObject() {
-		element = null;
-	}
+    /**
+     * This constructor is for internal use only.
+     */
+    protected MarkedObject() {
+        element = null;
+    }
 
-	/**
-	 * Creates a MarkedObject.
-	 * @param element the element
-	 */
-	public MarkedObject(final Element element) {
-		this.element = element;
-	}
+    /**
+     * Creates a MarkedObject.
+     *
+     * @param element the element
+     */
+    public MarkedObject(final Element element) {
+        this.element = element;
+    }
 
     /**
      * Gets all the chunks in this element.
      *
-     * @return  an <CODE>ArrayList</CODE>
+     * @return an <CODE>ArrayList</CODE>
      */
-	public List<Chunk> getChunks() {
-		return element.getChunks();
-	}
+    public List<Chunk> getChunks() {
+        return element.getChunks();
+    }
 
     /**
      * Processes the element by adding it (or the different parts) to an
      * <CODE>ElementListener</CODE>.
      *
-     * @param       listener        an <CODE>ElementListener</CODE>
+     * @param listener an <CODE>ElementListener</CODE>
      * @return <CODE>true</CODE> if the element was processed successfully
      */
-	public boolean process(final ElementListener listener) {
+    public boolean process(final ElementListener listener) {
         try {
             return listener.add(element);
-        }
-        catch(DocumentException de) {
+        } catch (DocumentException de) {
             return false;
         }
-	}
+    }
 
     /**
      * Gets the type of the text element.
      *
-     * @return  a type
+     * @return a type
      */
-	public int type() {
-		return MARKED;
-	}
+    public int type() {
+        return MARKED;
+    }
 
-	/**
-	 * @see com.itextpdf.text.Element#isContent()
-	 * @since	iText 2.0.8
-	 */
-	public boolean isContent() {
-		return true;
-	}
+    /**
+     * @see com.itextpdf.text.Element#isContent()
+     * @since iText 2.0.8
+     */
+    public boolean isContent() {
+        return true;
+    }
 
-	/**
-	 * @see com.itextpdf.text.Element#isNestable()
-	 * @since	iText 2.0.8
-	 */
-	public boolean isNestable() {
-		return true;
-	}
+    /**
+     * @see com.itextpdf.text.Element#isNestable()
+     * @since iText 2.0.8
+     */
+    public boolean isNestable() {
+        return true;
+    }
 
-	/**
-	 * Getter for the markup attributes.
-	 * @return the markupAttributes
-	 */
-	public Properties getMarkupAttributes() {
-		return markupAttributes;
-	}
+    /**
+     * Getter for the markup attributes.
+     *
+     * @return the markupAttributes
+     */
+    public Properties getMarkupAttributes() {
+        return markupAttributes;
+    }
 
-	/**
-	 * Adds one markup attribute.
-	 * @param key markup key
-	 * @param value markup value
-	 */
-	public void setMarkupAttribute(final String key, final String value) {
-		markupAttributes.setProperty(key, value);
-	}
+    /**
+     * Adds one markup attribute.
+     *
+     * @param key   markup key
+     * @param value markup value
+     */
+    public void setMarkupAttribute(final String key, final String value) {
+        markupAttributes.setProperty(key, value);
+    }
 
 }

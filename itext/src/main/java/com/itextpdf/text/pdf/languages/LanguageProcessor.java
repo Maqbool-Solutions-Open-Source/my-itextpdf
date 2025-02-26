@@ -50,16 +50,18 @@ package com.itextpdf.text.pdf.languages;
  */
 public interface LanguageProcessor {
 
-	/**
-	 * Processes a String
-	 * @param s	the original String
-	 * @return the processed String
-	 */
-	public String process(String s);
-	
-	/**
-	 * Indicates if the rundirection is right-to-left.
-	 * @return true if text needs to be rendered from right to left.
-	 */
-	public boolean isRTL();
+    /**
+     * Processes a String
+     *
+     * @param s the original String
+     * @return the processed String
+     */
+    public String process(String s);
+
+    /**
+     * Indicates if the rundirection is right-to-left.
+     *
+     * @return true if text needs to be rendered from right to left.
+     */
+    public boolean isRTL();
 }

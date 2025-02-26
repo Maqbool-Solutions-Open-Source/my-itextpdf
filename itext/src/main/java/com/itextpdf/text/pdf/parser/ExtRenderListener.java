@@ -46,7 +46,7 @@ package com.itextpdf.text.pdf.parser;
 /**
  * Simply extends the {@link com.itextpdf.text.pdf.parser.RenderListener} interface to provide
  * additional methods.
- *
+ * <p>
  * {@inheritDoc}
  *
  * @since 5.5.6

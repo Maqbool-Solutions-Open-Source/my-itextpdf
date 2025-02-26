@@ -55,31 +55,31 @@ import com.itextpdf.text.BaseColor;
  */
 
 public final class PdfPatternPainter extends PdfTemplate {
-    
+
     float xstep, ystep;
     boolean stencil = false;
     BaseColor defaultColor;
-    
+
     /**
-     *Creates a <CODE>PdfPattern</CODE>.
+     * Creates a <CODE>PdfPattern</CODE>.
      */
-    
+
     private PdfPatternPainter() {
         super();
         type = TYPE_PATTERN;
     }
-    
+
     /**
      * Creates new PdfPattern
      *
      * @param wr the <CODE>PdfWriter</CODE>
      */
-    
+
     PdfPatternPainter(PdfWriter wr) {
         super(wr);
         type = TYPE_PATTERN;
     }
-    
+
     PdfPatternPainter(PdfWriter wr, BaseColor defaultColor) {
         this(wr);
         stencil = true;
@@ -88,53 +88,57 @@ public final class PdfPatternPainter extends PdfTemplate {
         else
             this.defaultColor = defaultColor;
     }
-    
+
     /**
      * Sets the horizontal interval of this pattern.
      *
      * @param xstep the xstep in horizontal painting
      */
-    
+
     public void setXStep(float xstep) {
         this.xstep = xstep;
     }
-    
+
     /**
      * Sets the vertical interval of this pattern.
      *
      * @param ystep in vertical painting
      */
-    
+
     public void setYStep(float ystep) {
         this.ystep = ystep;
     }
-    
+
     /**
      * Returns the horizontal interval when repeating the pattern.
+     *
      * @return a value
      */
     public float getXStep() {
         return this.xstep;
     }
-    
+
     /**
      * Returns the vertical interval when repeating the pattern.
+     *
      * @return a value
      */
     public float getYStep() {
         return this.ystep;
     }
-    
+
     /**
      * Tells you if this pattern is colored/uncolored (stencil = uncolored, you need to set a default color).
+     *
      * @return true if the pattern is an uncolored tiling pattern (stencil).
      */
     public boolean isStencil() {
         return stencil;
     }
-    
+
     /**
      * Sets the transformation matrix for the pattern.
+     *
      * @param a
      * @param b
      * @param c
@@ -145,30 +149,34 @@ public final class PdfPatternPainter extends PdfTemplate {
     public void setPatternMatrix(float a, float b, float c, float d, float e, float f) {
         setMatrix(a, b, c, d, e, f);
     }
+
     /**
      * Gets the stream representing this pattern
+     *
      * @return the stream representing this pattern
      */
     public PdfPattern getPattern() {
         return new PdfPattern(this);
     }
-    
+
     /**
      * Gets the stream representing this pattern
-     * @param	compressionLevel	the compression level of the stream
+     *
+     * @param compressionLevel the compression level of the stream
      * @return the stream representing this pattern
-     * @since	2.1.3
+     * @since 2.1.3
      */
     public PdfPattern getPattern(int compressionLevel) {
         return new PdfPattern(this, compressionLevel);
     }
-    
+
     /**
      * Gets a duplicate of this <CODE>PdfPatternPainter</CODE>. All
      * the members are copied by reference but the buffer stays different.
+     *
      * @return a copy of this <CODE>PdfPatternPainter</CODE>
      */
-    
+
     public PdfContentByte getDuplicate() {
         PdfPatternPainter tpl = new PdfPatternPainter();
         tpl.writer = writer;
@@ -183,15 +191,16 @@ public final class PdfPatternPainter extends PdfTemplate {
         tpl.defaultColor = defaultColor;
         return tpl;
     }
-    
+
     /**
      * Returns the default color of the pattern.
+     *
      * @return a BaseColor
      */
     public BaseColor getDefaultColor() {
         return defaultColor;
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setGrayFill(float)
      */
@@ -199,7 +208,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setGrayFill(gray);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#resetGrayFill()
      */
@@ -207,7 +216,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.resetGrayFill();
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setGrayStroke(float)
      */
@@ -215,7 +224,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setGrayStroke(gray);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#resetGrayStroke()
      */
@@ -223,7 +232,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.resetGrayStroke();
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setRGBColorFillF(float, float, float)
      */
@@ -231,7 +240,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setRGBColorFillF(red, green, blue);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#resetRGBColorFill()
      */
@@ -239,7 +248,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.resetRGBColorFill();
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setRGBColorStrokeF(float, float, float)
      */
@@ -247,7 +256,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setRGBColorStrokeF(red, green, blue);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#resetRGBColorStroke()
      */
@@ -255,7 +264,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.resetRGBColorStroke();
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setCMYKColorFillF(float, float, float, float)
      */
@@ -263,7 +272,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setCMYKColorFillF(cyan, magenta, yellow, black);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#resetCMYKColorFill()
      */
@@ -271,7 +280,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.resetCMYKColorFill();
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setCMYKColorStrokeF(float, float, float, float)
      */
@@ -279,7 +288,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setCMYKColorStrokeF(cyan, magenta, yellow, black);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#resetCMYKColorStroke()
      */
@@ -287,7 +296,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.resetCMYKColorStroke();
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#addImage(com.itextpdf.text.Image, float, float, float, float, float, float)
      */
@@ -296,7 +305,7 @@ public final class PdfPatternPainter extends PdfTemplate {
             checkNoColor();
         super.addImage(image, a, b, c, d, e, f);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setCMYKColorFill(int, int, int, int)
      */
@@ -304,7 +313,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setCMYKColorFill(cyan, magenta, yellow, black);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setCMYKColorStroke(int, int, int, int)
      */
@@ -312,7 +321,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setCMYKColorStroke(cyan, magenta, yellow, black);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setRGBColorFill(int, int, int)
      */
@@ -320,7 +329,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setRGBColorFill(red, green, blue);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setRGBColorStroke(int, int, int)
      */
@@ -328,7 +337,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setRGBColorStroke(red, green, blue);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setColorStroke(com.itextpdf.text.BaseColor)
      */
@@ -336,7 +345,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setColorStroke(color);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setColorFill(com.itextpdf.text.BaseColor)
      */
@@ -344,7 +353,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setColorFill(color);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setColorFill(com.itextpdf.text.pdf.PdfSpotColor, float)
      */
@@ -352,7 +361,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setColorFill(sp, tint);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setColorStroke(com.itextpdf.text.pdf.PdfSpotColor, float)
      */
@@ -360,7 +369,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setColorStroke(sp, tint);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setPatternFill(com.itextpdf.text.pdf.PdfPatternPainter)
      */
@@ -368,7 +377,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setPatternFill(p);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setPatternFill(com.itextpdf.text.pdf.PdfPatternPainter, com.itextpdf.text.BaseColor, float)
      */
@@ -376,7 +385,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setPatternFill(p, color, tint);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setPatternStroke(com.itextpdf.text.pdf.PdfPatternPainter, com.itextpdf.text.BaseColor, float)
      */
@@ -384,7 +393,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setPatternStroke(p, color, tint);
     }
-    
+
     /**
      * @see com.itextpdf.text.pdf.PdfContentByte#setPatternStroke(com.itextpdf.text.pdf.PdfPatternPainter)
      */
@@ -392,7 +401,7 @@ public final class PdfPatternPainter extends PdfTemplate {
         checkNoColor();
         super.setPatternStroke(p);
     }
-    
+
     void checkNoColor() {
         if (stencil)
             throw new RuntimeException(MessageLocalization.getComposedMessage("colors.are.not.allowed.in.uncolored.tile.patterns"));

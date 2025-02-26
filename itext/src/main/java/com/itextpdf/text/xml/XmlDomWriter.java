@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2005 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,74 +28,89 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- *
  * @author psoares
  */
 public class XmlDomWriter {
-    
-    /** Print writer. */
+
+    /**
+     * Print writer.
+     */
     protected PrintWriter fOut;
-    
-    /** Canonical output. */
+
+    /**
+     * Canonical output.
+     */
     protected boolean fCanonical;
-    
-    /** Processing XML 1.1 document. */
+
+    /**
+     * Processing XML 1.1 document.
+     */
     protected boolean fXML11;
-    
+
     //
     // Constructors
     //
-    
-    /** Default constructor. */
+
+    /**
+     * Default constructor.
+     */
     public XmlDomWriter() {
     } // <init>()
-    
+
     public XmlDomWriter(boolean canonical) {
         fCanonical = canonical;
     } // <init>(boolean)
-    
+
     //
     // Public methods
     //
-    
-    /** Sets whether output is canonical. */
+
+    /**
+     * Sets whether output is canonical.
+     */
     public void setCanonical(boolean canonical) {
         fCanonical = canonical;
     } // setCanonical(boolean)
-    
-    /** Sets the output stream for printing. */
+
+    /**
+     * Sets the output stream for printing.
+     */
     public void setOutput(OutputStream stream, String encoding)
-    throws UnsupportedEncodingException {
-        
+            throws UnsupportedEncodingException {
+
         if (encoding == null) {
             encoding = "UTF8";
         }
-        
+
         java.io.Writer writer = new OutputStreamWriter(stream, encoding);
         fOut = new PrintWriter(writer);
-        
+
     } // setOutput(OutputStream,String)
-    
-    /** Sets the output writer. */
+
+    /**
+     * Sets the output writer.
+     */
     public void setOutput(java.io.Writer writer) {
-        
+
         fOut = writer instanceof PrintWriter
-                ? (PrintWriter)writer : new PrintWriter(writer);
-        
+                ? (PrintWriter) writer : new PrintWriter(writer);
+
     } // setOutput(java.io.Writer)
-    
-    /** Writes the specified node, recursively. */
+
+    /**
+     * Writes the specified node, recursively.
+     */
     public void write(Node node) {
-        
+
         // is there anything to do?
         if (node == null) {
             return;
         }
-        
+
         short type = node.getNodeType();
         switch (type) {
             case Node.DOCUMENT_NODE: {
-                Document document = (Document)node;
+                Document document = (Document) node;
                 fXML11 = false; //"1.1".equals(getVersion(document));
                 if (!fCanonical) {
                     if (fXML11) {
@@ -109,9 +124,9 @@ public class XmlDomWriter {
                 write(document.getDocumentElement());
                 break;
             }
-            
+
             case Node.DOCUMENT_TYPE_NODE: {
-                DocumentType doctype = (DocumentType)node;
+                DocumentType doctype = (DocumentType) node;
                 fOut.print("<!DOCTYPE ");
                 fOut.print(doctype.getName());
                 String publicId = doctype.getPublicId();
@@ -136,7 +151,7 @@ public class XmlDomWriter {
                 fOut.println('>');
                 break;
             }
-            
+
             case Node.ELEMENT_NODE: {
                 fOut.print('<');
                 fOut.print(node.getNodeName());
@@ -151,7 +166,7 @@ public class XmlDomWriter {
                 }
                 fOut.print('>');
                 fOut.flush();
-                
+
                 Node child = node.getFirstChild();
                 while (child != null) {
                     write(child);
@@ -159,7 +174,7 @@ public class XmlDomWriter {
                 }
                 break;
             }
-            
+
             case Node.ENTITY_REFERENCE_NODE: {
                 if (fCanonical) {
                     Node child = node.getFirstChild();
@@ -175,7 +190,7 @@ public class XmlDomWriter {
                 }
                 break;
             }
-            
+
             case Node.CDATA_SECTION_NODE: {
                 if (fCanonical) {
                     normalizeAndPrint(node.getNodeValue(), false);
@@ -187,13 +202,13 @@ public class XmlDomWriter {
                 fOut.flush();
                 break;
             }
-            
+
             case Node.TEXT_NODE: {
                 normalizeAndPrint(node.getNodeValue(), false);
                 fOut.flush();
                 break;
             }
-            
+
             case Node.PROCESSING_INSTRUCTION_NODE: {
                 fOut.print("<?");
                 fOut.print(node.getNodeName());
@@ -206,7 +221,7 @@ public class XmlDomWriter {
                 fOut.flush();
                 break;
             }
-            
+
             case Node.COMMENT_NODE: {
                 if (!fCanonical) {
                     fOut.print("<!--");
@@ -219,23 +234,25 @@ public class XmlDomWriter {
                 }
             }
         }
-        
+
         if (type == Node.ELEMENT_NODE) {
             fOut.print("</");
             fOut.print(node.getNodeName());
             fOut.print('>');
             fOut.flush();
         }
-        
+
     } // write(Node)
-    
-    /** Returns a sorted list of attributes. */
+
+    /**
+     * Returns a sorted list of attributes.
+     */
     protected Attr[] sortAttributes(NamedNodeMap attrs) {
-        
+
         int len = (attrs != null) ? attrs.getLength() : 0;
         Attr array[] = new Attr[len];
         for (int i = 0; i < len; i++) {
-            array[i] = (Attr)attrs.item(i);
+            array[i] = (Attr) attrs.item(i);
         }
         for (int i = 0; i < len - 1; i++) {
             String name = array[i].getNodeName();
@@ -253,29 +270,33 @@ public class XmlDomWriter {
                 array[index] = temp;
             }
         }
-        
+
         return array;
-        
+
     } // sortAttributes(NamedNodeMap):Attr[]
-    
+
     //
     // Protected methods
     //
-    
-    /** Normalizes and prints the given string. */
+
+    /**
+     * Normalizes and prints the given string.
+     */
     protected void normalizeAndPrint(String s, boolean isAttValue) {
-        
+
         int len = (s != null) ? s.length() : 0;
         for (int i = 0; i < len; i++) {
             char c = s.charAt(i);
             normalizeAndPrint(c, isAttValue);
         }
-        
+
     } // normalizeAndPrint(String,boolean)
-    
-    /** Normalizes and print the given character. */
+
+    /**
+     * Normalizes and print the given character.
+     */
     protected void normalizeAndPrint(char c, boolean isAttValue) {
-        
+
         switch (c) {
             case '<': {
                 fOut.print("&lt;");
@@ -324,8 +345,8 @@ public class XmlDomWriter {
                 // if the document is XML 1.1, since they would be normalized to LF
                 // when the document is reparsed.
                 if (fXML11 && ((c >= 0x01 && c <= 0x1F && c != 0x09 && c != 0x0A)
-                || (c >= 0x7F && c <= 0x9F) || c == 0x2028)
-                || isAttValue && (c == 0x09 || c == 0x0A)) {
+                        || (c >= 0x7F && c <= 0x9F) || c == 0x2028)
+                        || isAttValue && (c == 0x09 || c == 0x0A)) {
                     fOut.print("&#x");
                     fOut.print(Integer.toHexString(c).toUpperCase());
                     fOut.print(";");
@@ -335,7 +356,7 @@ public class XmlDomWriter {
             }
         }
     } // normalizeAndPrint(char,boolean)
-    
+
     /** Extracts the XML version from the Document. */
 //    protected String getVersion(Document document) {
 //        if (document == null) {

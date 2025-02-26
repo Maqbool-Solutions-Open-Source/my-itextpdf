@@ -44,97 +44,98 @@ package com.itextpdf.text.log;
 
 /**
  * A Simple System.out logger.
- * @author redlab_be
  *
+ * @author redlab_be
  */
 public class SysoLogger implements Logger {
 
-	private String name;
-	private final int shorten;
+    private String name;
+    private final int shorten;
 
-	/**
-	 * Defaults packageReduce to 1.
-	 */
-	public SysoLogger() {
-		this(1);
-	}
-	/**
-	 * Amount of characters each package name should be reduced with.
-	 * @param packageReduce
-	 *
-	 */
-	public SysoLogger(final int packageReduce) {
-		this.shorten = packageReduce;
-	}
+    /**
+     * Defaults packageReduce to 1.
+     */
+    public SysoLogger() {
+        this(1);
+    }
 
-	/**
-	 * @param klass
-	 * @param shorten
-	 */
-	protected SysoLogger(final String klass, final int shorten) {
-		this.shorten = shorten;
-		this.name = klass;
-	}
+    /**
+     * Amount of characters each package name should be reduced with.
+     *
+     * @param packageReduce
+     */
+    public SysoLogger(final int packageReduce) {
+        this.shorten = packageReduce;
+    }
 
-	public Logger getLogger(final Class<?> klass) {
-		return new SysoLogger(klass.getName(), shorten);
-	}
+    /**
+     * @param klass
+     * @param shorten
+     */
+    protected SysoLogger(final String klass, final int shorten) {
+        this.shorten = shorten;
+        this.name = klass;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.log.Logger#getLogger(java.lang.String)
-	 */
-	public Logger getLogger(final String name) {
-		return new SysoLogger("[itext]", 0);
-	}
+    public Logger getLogger(final Class<?> klass) {
+        return new SysoLogger(klass.getName(), shorten);
+    }
 
-	public boolean isLogging(final Level level) {
-		return true;
-	}
+    /* (non-Javadoc)
+     * @see com.itextpdf.text.log.Logger#getLogger(java.lang.String)
+     */
+    public Logger getLogger(final String name) {
+        return new SysoLogger("[itext]", 0);
+    }
 
-	public void warn(final String message) {
-		System.out.println(String.format("%s WARN  %s", shorten(name), message));
-	}
+    public boolean isLogging(final Level level) {
+        return true;
+    }
 
-	/**
-	 * @param name2
-	 * @return
-	 */
-	private String shorten(final String className) {
-		if (shorten != 0) {
-			StringBuilder target = new StringBuilder();
-			String name = className;
-			int fromIndex = className.indexOf('.');
-			while (fromIndex != -1) {
-				int parseTo = (fromIndex < shorten) ? (fromIndex) : (shorten);
-				target.append(name.substring(0, parseTo));
-				target.append('.');
-				name = name.substring(fromIndex + 1);
-				fromIndex = name.indexOf('.');
-			}
-			target.append(className.substring(className.lastIndexOf('.') + 1));
-			return target.toString();
-		}
-		return className;
-	}
+    public void warn(final String message) {
+        System.out.println(String.format("%s WARN  %s", shorten(name), message));
+    }
 
-	public void trace(final String message) {
-		System.out.println(String.format("%s TRACE %s", shorten(name), message));
-	}
+    /**
+     * @param name2
+     * @return
+     */
+    private String shorten(final String className) {
+        if (shorten != 0) {
+            StringBuilder target = new StringBuilder();
+            String name = className;
+            int fromIndex = className.indexOf('.');
+            while (fromIndex != -1) {
+                int parseTo = (fromIndex < shorten) ? (fromIndex) : (shorten);
+                target.append(name.substring(0, parseTo));
+                target.append('.');
+                name = name.substring(fromIndex + 1);
+                fromIndex = name.indexOf('.');
+            }
+            target.append(className.substring(className.lastIndexOf('.') + 1));
+            return target.toString();
+        }
+        return className;
+    }
 
-	public void debug(final String message) {
-		System.out.println(String.format("%s DEBUG %s", shorten(name), message));
-	}
+    public void trace(final String message) {
+        System.out.println(String.format("%s TRACE %s", shorten(name), message));
+    }
 
-	public void info(final String message) {
-		System.out.println(String.format("%s INFO  %s", shorten(name), message));
-	}
+    public void debug(final String message) {
+        System.out.println(String.format("%s DEBUG %s", shorten(name), message));
+    }
 
-	public void error(final String message) {
-		System.out.println(String.format("%s ERROR %s", name, message));
-	}
+    public void info(final String message) {
+        System.out.println(String.format("%s INFO  %s", shorten(name), message));
+    }
 
-	public void error(final String message, final Exception e) {
-		System.out.println(String.format("%s ERROR %s", name, message));
-		e.printStackTrace(System.out);
-	}
+    public void error(final String message) {
+        System.out.println(String.format("%s ERROR %s", name, message));
+    }
+
+    public void error(final String message, final Exception e) {
+        System.out.println(String.format("%s ERROR %s", name, message));
+        e.printStackTrace(System.out);
+    }
 }

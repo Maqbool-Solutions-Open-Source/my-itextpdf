@@ -54,10 +54,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
  * @author psoares
  */
-public class CidResource implements CidLocation{
+public class CidResource implements CidLocation {
 
     public PRTokeniser getLocation(String location) throws IOException {
         String fullName = BaseFont.RESOURCE_PATH + "cmaps/" + location;

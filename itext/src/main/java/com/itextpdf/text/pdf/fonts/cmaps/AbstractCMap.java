@@ -50,7 +50,6 @@ import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfString;
 
 /**
- *
  * @author psoares
  */
 public abstract class AbstractCMap {
@@ -59,7 +58,7 @@ public abstract class AbstractCMap {
     private String registry;
     private String ordering;
     private int supplement;
-    
+
     public String getName() {
         return cmapName;
     }
@@ -67,7 +66,7 @@ public abstract class AbstractCMap {
     void setName(String cmapName) {
         this.cmapName = cmapName;
     }
-    
+
     public String getOrdering() {
         return ordering;
     }
@@ -75,7 +74,7 @@ public abstract class AbstractCMap {
     void setOrdering(String ordering) {
         this.ordering = ordering;
     }
-    
+
     public String getRegistry() {
         return registry;
     }
@@ -83,17 +82,17 @@ public abstract class AbstractCMap {
     void setRegistry(String registry) {
         this.registry = registry;
     }
-    
+
     public int getSupplement() {
         return supplement;
     }
-    
+
     void setSupplement(int supplement) {
         this.supplement = supplement;
     }
 
     abstract void addChar(PdfString mark, PdfObject code);
-    
+
     void addRange(PdfString from, PdfString to, PdfObject code) {
         byte[] a1 = decodeStringToByte(from);
         byte[] a2 = decodeStringToByte(to);
@@ -101,7 +100,7 @@ public abstract class AbstractCMap {
             throw new IllegalArgumentException("Invalid map.");
         byte[] sout = null;
         if (code instanceof PdfString)
-            sout = decodeStringToByte((PdfString)code);
+            sout = decodeStringToByte((PdfString) code);
         int start = byteArrayToInt(a1);
         int end = byteArrayToInt(a2);
         for (int k = start; k <= end; ++k) {
@@ -109,13 +108,11 @@ public abstract class AbstractCMap {
             PdfString s = new PdfString(a1);
             s.setHexWriting(true);
             if (code instanceof PdfArray) {
-                addChar(s, ((PdfArray)code).getPdfObject(k - start));
-            }
-            else if (code instanceof PdfNumber) {
-                int nn = ((PdfNumber)code).intValue() + k - start;
+                addChar(s, ((PdfArray) code).getPdfObject(k - start));
+            } else if (code instanceof PdfNumber) {
+                int nn = ((PdfNumber) code).intValue() + k - start;
                 addChar(s, new PdfNumber(nn));
-            }
-            else if (code instanceof PdfString) {
+            } else if (code instanceof PdfString) {
                 PdfString s1 = new PdfString(sout);
                 s1.setHexWriting(true);
                 ++sout[sout.length - 1];
@@ -123,14 +120,14 @@ public abstract class AbstractCMap {
             }
         }
     }
-    
+
     private static void intToByteArray(int v, byte[] b) {
         for (int k = b.length - 1; k >= 0; --k) {
-            b[k] = (byte)v;
+            b[k] = (byte) v;
             v = v >>> 8;
         }
     }
-    
+
     private static int byteArrayToInt(byte[] b) {
         int v = 0;
         for (int k = 0; k < b.length; ++k) {
@@ -139,7 +136,7 @@ public abstract class AbstractCMap {
         }
         return v;
     }
-    
+
     public static byte[] decodeStringToByte(PdfString s) {
         byte[] b = s.getBytes();
         byte[] br = new byte[b.length];

@@ -53,32 +53,31 @@ import com.itextpdf.text.xml.simpleparser.NewLineHandler;
  * <code>blockqoute</code>and <code>br</code>
  *
  * @author Balder
- *
  */
 public class HTMLNewLineHandler implements NewLineHandler {
 
-	private final Set<String> newLineTags = new HashSet<String>();
+    private final Set<String> newLineTags = new HashSet<String>();
 
-	/**
-	 * Default constructor
-	 *
-	 * @since 5.0.6
-	 */
-	public HTMLNewLineHandler() {
-		newLineTags.add("p");
-		newLineTags.add("blockquote");
-		newLineTags.add("br");
-	}
+    /**
+     * Default constructor
+     *
+     * @since 5.0.6
+     */
+    public HTMLNewLineHandler() {
+        newLineTags.add("p");
+        newLineTags.add("blockquote");
+        newLineTags.add("br");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.itextpdf.text.xml.simpleparser.NewLineHandler#isNewLineTag(java.lang
-	 * .String)
-	 */
-	public boolean isNewLineTag(final String tag) {
-		return newLineTags.contains(tag);
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * com.itextpdf.text.xml.simpleparser.NewLineHandler#isNewLineTag(java.lang
+     * .String)
+     */
+    public boolean isNewLineTag(final String tag) {
+        return newLineTags.contains(tag);
+    }
 
 }

@@ -53,7 +53,8 @@ public class PdfLabColor implements ICachedColorSpace {
     float[] blackPoint = null;
     float[] range = null;
 
-    public PdfLabColor() {}
+    public PdfLabColor() {
+    }
 
     public PdfLabColor(float[] whitePoint) {
         if (whitePoint == null
@@ -100,7 +101,7 @@ public class PdfLabColor implements ICachedColorSpace {
 
     public BaseColor lab2Rgb(float l, float a, float b) {
         double[] clinear = lab2RgbLinear(l, a, b);
-        return new BaseColor((float)clinear[0], (float)clinear[1], (float)clinear[2]);
+        return new BaseColor((float) clinear[0], (float) clinear[1], (float) clinear[2]);
     }
 
     CMYKColor lab2Cmyk(float l, float a, float b) {
@@ -112,7 +113,7 @@ public class PdfLabColor implements ICachedColorSpace {
         double computedC = 0, computedM = 0, computedY = 0, computedK = 0;
 
         // BLACK
-        if (r==0 && g==0 && b==0) {
+        if (r == 0 && g == 0 && b == 0) {
             computedK = 1;
         } else {
             computedC = 1 - r;
@@ -120,14 +121,14 @@ public class PdfLabColor implements ICachedColorSpace {
             computedY = 1 - bee;
 
             double minCMY = Math.min(computedC,
-                    Math.min(computedM,computedY));
-            computedC = (computedC - minCMY) / (1 - minCMY) ;
-            computedM = (computedM - minCMY) / (1 - minCMY) ;
-            computedY = (computedY - minCMY) / (1 - minCMY) ;
+                    Math.min(computedM, computedY));
+            computedC = (computedC - minCMY) / (1 - minCMY);
+            computedM = (computedM - minCMY) / (1 - minCMY);
+            computedY = (computedY - minCMY) / (1 - minCMY);
             computedK = minCMY;
         }
 
-        return new CMYKColor((float)computedC, (float)computedM, (float)computedY, (float)computedK);
+        return new CMYKColor((float) computedC, (float) computedM, (float) computedY, (float) computedK);
     }
 
     protected double[] lab2RgbLinear(float l, float a, float b) {
@@ -147,9 +148,9 @@ public class PdfLabColor implements ICachedColorSpace {
         double fx = fy + (a / 500.0);
         double fz = fy - (b / 200.0);
 
-        double x = fx > theta ? whitePoint[0] * (fx * fx * fx) : (fx - 16.0/116.0) * 3 * (theta * theta) * whitePoint[0];
-        double y = fy > theta ? whitePoint[1] * (fy * fy * fy) : (fy - 16.0/116.0) * 3 * (theta * theta) * whitePoint[1];
-        double z = fz > theta ? whitePoint[2] * (fz * fz * fz) : (fz - 16.0/116.0) * 3 * (theta * theta) * whitePoint[2];
+        double x = fx > theta ? whitePoint[0] * (fx * fx * fx) : (fx - 16.0 / 116.0) * 3 * (theta * theta) * whitePoint[0];
+        double y = fy > theta ? whitePoint[1] * (fy * fy * fy) : (fy - 16.0 / 116.0) * 3 * (theta * theta) * whitePoint[1];
+        double z = fz > theta ? whitePoint[2] * (fz * fz * fz) : (fz - 16.0 / 116.0) * 3 * (theta * theta) * whitePoint[2];
 
         double[] clinear = new double[3];
         clinear[0] = x * 3.2410 - y * 1.5374 - z * 0.4986; // red
@@ -159,7 +160,7 @@ public class PdfLabColor implements ICachedColorSpace {
         for (int i = 0; i < 3; i++) {
             clinear[i] = (clinear[i] <= 0.0031308)
                     ? 12.92 * clinear[i]
-                    : (1 + 0.055) * Math.pow(clinear[i], (1.0/2.4)) - 0.055;
+                    : (1 + 0.055) * Math.pow(clinear[i], (1.0 / 2.4)) - 0.055;
             if (clinear[i] < 0)
                 clinear[i] = 0;
             else if (clinear[i] > 1f)
@@ -175,24 +176,24 @@ public class PdfLabColor implements ICachedColorSpace {
         double bLinear = baseColor.getBlue() / 255f;
 
         // convert to a sRGB form
-        double r = (rLinear > 0.04045) ? Math.pow((rLinear + 0.055) / (1 + 0.055), 2.2) : (rLinear/12.92);
-        double g = (gLinear > 0.04045) ? Math.pow((gLinear + 0.055) / (1 + 0.055), 2.2) : (gLinear/12.92);
-        double b = (bLinear > 0.04045) ? Math.pow((bLinear + 0.055) / (1 + 0.055), 2.2) : (bLinear/12.92);
+        double r = (rLinear > 0.04045) ? Math.pow((rLinear + 0.055) / (1 + 0.055), 2.2) : (rLinear / 12.92);
+        double g = (gLinear > 0.04045) ? Math.pow((gLinear + 0.055) / (1 + 0.055), 2.2) : (gLinear / 12.92);
+        double b = (bLinear > 0.04045) ? Math.pow((bLinear + 0.055) / (1 + 0.055), 2.2) : (bLinear / 12.92);
 
         // converts
         double x = r * 0.4124 + g * 0.3576 + b * 0.1805;
         double y = r * 0.2126 + g * 0.7152 + b * 0.0722;
         double z = r * 0.0193 + g * 0.1192 + b * 0.9505;
 
-        float l = Math.round((116.0 * fXyz(y/whitePoint[1]) - 16) * 1000) / 1000f;
-        float a = Math.round((500.0*(fXyz(x/whitePoint[0]) - fXyz(y/whitePoint[1]))) * 1000) / 1000f;
-        float bee = Math.round((200.0*(fXyz(y/whitePoint[1]) - fXyz(z/whitePoint[2]))) * 1000) / 1000f;
+        float l = Math.round((116.0 * fXyz(y / whitePoint[1]) - 16) * 1000) / 1000f;
+        float a = Math.round((500.0 * (fXyz(x / whitePoint[0]) - fXyz(y / whitePoint[1]))) * 1000) / 1000f;
+        float bee = Math.round((200.0 * (fXyz(y / whitePoint[1]) - fXyz(z / whitePoint[2]))) * 1000) / 1000f;
 
         return new LabColor(this, l, a, bee);
     }
 
     private static double fXyz(double t) {
-        return ((t > 0.008856) ? Math.pow(t, (1.0/3.0)) : (7.787*t + 16.0/116.0));
+        return ((t > 0.008856) ? Math.pow(t, (1.0 / 3.0)) : (7.787 * t + 16.0 / 116.0));
     }
 
     @Override

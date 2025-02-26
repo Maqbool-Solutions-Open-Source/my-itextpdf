@@ -52,5 +52,5 @@ package com.itextpdf.text.pdf;
  * @author Paulo Soares
  */
 public class PdfOCProperties extends PdfDictionary {
-    
+
 }

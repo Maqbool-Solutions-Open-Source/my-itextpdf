@@ -90,7 +90,7 @@ public class TempFileCache {
 
         size = cache.length() - offset;
 
-        return new ObjectPosition(offset, (int)size);
+        return new ObjectPosition(offset, (int) size);
     }
 
     public PdfObject get(ObjectPosition pos) throws IOException, ClassNotFoundException {

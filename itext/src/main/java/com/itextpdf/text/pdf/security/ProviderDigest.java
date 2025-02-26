@@ -47,7 +47,6 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 
 /**
- *
  * @author psoares
  */
 public class ProviderDigest implements ExternalDigest {
@@ -56,8 +55,8 @@ public class ProviderDigest implements ExternalDigest {
     public ProviderDigest(String provider) {
         this.provider = provider;
     }
-        
-    public MessageDigest getMessageDigest(String hashAlgorithm) throws GeneralSecurityException{
+
+    public MessageDigest getMessageDigest(String hashAlgorithm) throws GeneralSecurityException {
         return DigestAlgorithms.getMessageDigest(hashAlgorithm, provider);
     }
 }

@@ -48,40 +48,68 @@ import com.itextpdf.text.pdf.internal.PdfIsoKeys;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/** The graphic state dictionary.
+/**
+ * The graphic state dictionary.
  *
  * @author Paulo Soares
  */
 public class PdfGState extends PdfDictionary {
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_NORMAL = new PdfName("Normal");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_COMPATIBLE = new PdfName("Compatible");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_MULTIPLY = new PdfName("Multiply");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_SCREEN = new PdfName("Screen");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_OVERLAY = new PdfName("Overlay");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_DARKEN = new PdfName("Darken");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_LIGHTEN = new PdfName("Lighten");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_COLORDODGE = new PdfName("ColorDodge");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_COLORBURN = new PdfName("ColorBurn");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_HARDLIGHT = new PdfName("HardLight");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_SOFTLIGHT = new PdfName("SoftLight");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_DIFFERENCE = new PdfName("Difference");
-    /** A possible blend mode */
+    /**
+     * A possible blend mode
+     */
     public static final PdfName BM_EXCLUSION = new PdfName("Exclusion");
-    
+
     /**
      * Sets the flag whether to apply overprint for stroking.
+     *
      * @param op
      */
     public void setOverPrintStroking(boolean op) {
@@ -90,6 +118,7 @@ public class PdfGState extends PdfDictionary {
 
     /**
      * Sets the flag whether to apply overprint for non stroking painting operations.
+     *
      * @param op
      */
     public void setOverPrintNonStroking(boolean op) {
@@ -98,67 +127,74 @@ public class PdfGState extends PdfDictionary {
 
     /**
      * Sets the flag whether to toggle knockout behavior for overprinted objects.
+     *
      * @param opm - accepts 0 or 1
      */
     public void setOverPrintMode(int opm) {
-        put(PdfName.OPM, new PdfNumber(opm==0 ? 0 : 1));
+        put(PdfName.OPM, new PdfNumber(opm == 0 ? 0 : 1));
     }
-    
+
     /**
      * Sets the current stroking alpha constant, specifying the constant shape or
      * constant opacity value to be used for stroking operations in the transparent
      * imaging model.
+     *
      * @param ca
      */
     public void setStrokeOpacity(float ca) {
         put(PdfName.CA, new PdfNumber(ca));
     }
-    
+
     /**
      * Sets the current stroking alpha constant, specifying the constant shape or
      * constant opacity value to be used for nonstroking operations in the transparent
      * imaging model.
+     *
      * @param ca
      */
     public void setFillOpacity(float ca) {
         put(PdfName.ca, new PdfNumber(ca));
     }
-    
+
     /**
      * The alpha source flag specifying whether the current soft mask
      * and alpha constant are to be interpreted as shape values (true)
-     * or opacity values (false). 
+     * or opacity values (false).
+     *
      * @param ais
      */
     public void setAlphaIsShape(boolean ais) {
         put(PdfName.AIS, ais ? PdfBoolean.PDFTRUE : PdfBoolean.PDFFALSE);
     }
-    
+
     /**
      * Determines the behavior of overlapping glyphs within a text object
      * in the transparent imaging model.
+     *
      * @param tk
      */
     public void setTextKnockout(boolean tk) {
         put(PdfName.TK, tk ? PdfBoolean.PDFTRUE : PdfBoolean.PDFFALSE);
     }
-    
+
     /**
      * The current blend mode to be used in the transparent imaging model.
+     *
      * @param bm
      */
     public void setBlendMode(PdfName bm) {
         put(PdfName.BM, bm);
     }
-    
+
     /**
      * Set the rendering intent, possible values are: PdfName.ABSOLUTECOLORIMETRIC,
      * PdfName.RELATIVECOLORIMETRIC, PdfName.SATURATION, PdfName.PERCEPTUAL.
+     *
      * @param ri
      * @since 5.0.2
      */
     public void setRenderingIntent(PdfName ri) {
-    	put(PdfName.RI, ri);
+        put(PdfName.RI, ri);
     }
 
     @Override

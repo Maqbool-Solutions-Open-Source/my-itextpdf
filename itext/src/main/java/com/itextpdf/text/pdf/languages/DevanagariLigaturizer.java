@@ -45,7 +45,7 @@ package com.itextpdf.text.pdf.languages;
 
 /**
  * Implementation of the IndicLigaturizer for Devanagari.
- *
+ * <p>
  * Warning: this is an incomplete and experimental implementation of Devanagari. This implementation should not be used in production.
  */
 public class DevanagariLigaturizer extends IndicLigaturizer {
@@ -62,12 +62,12 @@ public class DevanagariLigaturizer extends IndicLigaturizer {
     public static final char DEVA_LETTER_KA = '\u0915';
     public static final char DEVA_LETTER_HA = '\u0939';
     public static final char DEVA_HALANTA = '\u094D';
-    
+
     /**
      * Constructor for the IndicLigaturizer for Devanagari.
      */
     public DevanagariLigaturizer() {
-    	langTable = new char[11];
+        langTable = new char[11];
         langTable[MATRA_AA] = DEVA_MATRA_AA;
         langTable[MATRA_I] = DEVA_MATRA_I;
         langTable[MATRA_E] = DEVA_MATRA_E;

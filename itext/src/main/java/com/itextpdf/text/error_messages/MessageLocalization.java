@@ -57,6 +57,7 @@ import java.util.HashMap;
  * com.itextpdf.text.error_messages in the form language_country.lng.
  * The internal file encoding is UTF-8 without any escape chars, it's not a
  * normal property file. See en.lng for more information on the internal format.
+ *
  * @author Paulo Soares (psoares@glintt.com)
  */
 public final class MessageLocalization {
@@ -79,6 +80,7 @@ public final class MessageLocalization {
 
     /**
      * Get a message without parameters.
+     *
      * @param key the key to the message
      * @return the message
      */
@@ -97,9 +99,9 @@ public final class MessageLocalization {
 
         if (useDefaultLanguageIfMessageNotFound) {
             cl = defaultLanguage;
-        	val = cl.get(key);
-        	if (val != null)
-            	return val;
+            val = cl.get(key);
+            if (val != null)
+                return val;
         }
 
         return "No message found for " + key;
@@ -108,45 +110,46 @@ public final class MessageLocalization {
     /**
      * Get a message with one parameter as an primitive int. The parameter will replace the string
      * "{1}" found in the message.
+     *
      * @param key the key to the message
-     * @param p1 the parameter
+     * @param p1  the parameter
      * @return the message
      */
     public static String getComposedMessage(String key, int p1) {
         return getComposedMessage(key, String.valueOf(p1), null, null, null);
     }
 
-	/**
-	 * Get a message with param.length parameters or none if param is null. In
-	 * the message the "{1}", "{2}" to "{lenght of param array}" are replaced
-	 * with the object.toString of the param array. (with param[0] being "{1}")
-	 *
-	 * @since iText 5.0.6
-	 * @param key
-	 *            the key to the message
-	 * @param param array of parameter objects, (toString is used to add it to the message)
-	 * @return the message
-	 */
-	public static String getComposedMessage(final String key, final Object... param) {
-		String msg = getMessage(key);
-		if (null != param) {
-			int i = 1;
-			for (Object o : param) {
-				if (null != o) {
-					msg = msg.replace("{" + i + "}", o.toString());
-				}
-				i++;
-			}
-		}
-		return msg;
-	}
+    /**
+     * Get a message with param.length parameters or none if param is null. In
+     * the message the "{1}", "{2}" to "{lenght of param array}" are replaced
+     * with the object.toString of the param array. (with param[0] being "{1}")
+     *
+     * @param key   the key to the message
+     * @param param array of parameter objects, (toString is used to add it to the message)
+     * @return the message
+     * @since iText 5.0.6
+     */
+    public static String getComposedMessage(final String key, final Object... param) {
+        String msg = getMessage(key);
+        if (null != param) {
+            int i = 1;
+            for (Object o : param) {
+                if (null != o) {
+                    msg = msg.replace("{" + i + "}", o.toString());
+                }
+                i++;
+            }
+        }
+        return msg;
+    }
 
     /**
      * Sets the language to be used globally for the error messages. The language
      * is a two letter lowercase country designation like "en" or "pt". The country
      * is an optional two letter uppercase code like "US" or "PT".
+     *
      * @param language the language
-     * @param country the country
+     * @param country  the country
      * @return true if the language was found, false otherwise
      * @throws IOException on error
      */
@@ -160,6 +163,7 @@ public final class MessageLocalization {
 
     /**
      * Sets the error messages directly from a Reader.
+     *
      * @param r the Reader
      * @throws IOException on error
      */
@@ -188,11 +192,10 @@ public final class MessageLocalization {
                 return readLanguageStream(is);
             else
                 return null;
-        }
-        finally {
+        } finally {
             try {
-                if (null != is){
-                	is.close();
+                if (null != is) {
+                    is.close();
                 }
             } catch (Exception exx) {
             }

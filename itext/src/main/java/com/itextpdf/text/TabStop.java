@@ -41,15 +41,15 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
- package com.itextpdf.text;
+package com.itextpdf.text;
 
 import com.itextpdf.text.pdf.draw.DrawInterface;
 
 public class TabStop {
 
     public static TabStop newInstance(float currentPosition, float tabInterval) {
-        currentPosition = (float)Math.round(currentPosition * 1000) / 1000;
-        tabInterval = (float)Math.round(tabInterval * 1000) / 1000;
+        currentPosition = (float) Math.round(currentPosition * 1000) / 1000;
+        tabInterval = (float) Math.round(tabInterval * 1000) / 1000;
 
         TabStop tabStop = new TabStop(currentPosition + tabInterval - currentPosition % tabInterval);
         return tabStop;

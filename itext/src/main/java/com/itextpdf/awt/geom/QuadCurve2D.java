@@ -93,12 +93,12 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
 
         @Override
         public void setCurve(double x1, double y1, double ctrlx, double ctrly, double x2, double y2) {
-            this.x1 = (float)x1;
-            this.y1 = (float)y1;
-            this.ctrlx = (float)ctrlx;
-            this.ctrly = (float)ctrly;
-            this.x2 = (float)x2;
-            this.y2 = (float)y2;
+            this.x1 = (float) x1;
+            this.y1 = (float) y1;
+            this.ctrlx = (float) ctrlx;
+            this.ctrly = (float) ctrly;
+            this.x2 = (float) x2;
+            this.y2 = (float) y2;
         }
 
         public void setCurve(float x1, float y1, float ctrlx, float ctrly, float x2, float y2) {
@@ -200,7 +200,7 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
     }
 
     /*
-     * QuadCurve2D path iterator 
+     * QuadCurve2D path iterator
      */
     class Iterator implements PathIterator {
 
@@ -221,7 +221,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
 
         /**
          * Constructs a new QuadCurve2D.Iterator for given line and transformation
-         * @param q - the source QuadCurve2D object
+         *
+         * @param q  - the source QuadCurve2D object
          * @param at - the AffineTransform object to apply rectangle path
          */
         Iterator(QuadCurve2D q, AffineTransform t) {
@@ -276,15 +277,15 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
             int count;
             if (index == 0) {
                 type = SEG_MOVETO;
-                coords[0] = (float)c.getX1();
-                coords[1] = (float)c.getY1();
+                coords[0] = (float) c.getX1();
+                coords[1] = (float) c.getY1();
                 count = 1;
             } else {
                 type = SEG_QUADTO;
-                coords[0] = (float)c.getCtrlX();
-                coords[1] = (float)c.getCtrlY();
-                coords[2] = (float)c.getX2();
-                coords[3] = (float)c.getY2();
+                coords[0] = (float) c.getCtrlX();
+                coords[1] = (float) c.getCtrlY();
+                coords[2] = (float) c.getX2();
+                coords[3] = (float) c.getY2();
                 count = 2;
             }
             if (t != null) {
@@ -366,8 +367,7 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
     }
 
     public static double getFlatness(double x1, double y1, double ctrlx,
-            double ctrly, double x2, double y2)
-    {
+                                     double ctrly, double x2, double y2) {
         return Line2D.ptSegDist(x1, y1, x2, y2, ctrlx, ctrly);
     }
 
@@ -404,8 +404,7 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
     }
 
     public static void subdivide(double src[], int srcoff, double left[],
-            int leftOff, double right[], int rightOff)
-    {
+                                 int leftOff, double right[], int rightOff) {
         double x1 = src[srcoff + 0];
         double y1 = src[srcoff + 1];
         double cx = src[srcoff + 2];

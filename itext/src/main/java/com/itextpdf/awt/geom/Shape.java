@@ -25,7 +25,6 @@ package com.itextpdf.awt.geom;
 
 /**
  * Shape
- *
  */
 public interface Shape {
     public boolean contains(double x, double y);

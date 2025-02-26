@@ -44,106 +44,107 @@
 package com.itextpdf.text;
 
 /**
- *
  * A special-version of <CODE>LIST</CODE> which use zapfdingbats-numbers (1..10).
  *
- * @see com.itextpdf.text.List
  * @author Michael Niedermair and Bruno Lowagie
+ * @see com.itextpdf.text.List
  */
 
 public class ZapfDingbatsNumberList extends List {
 
-	/**
-	 * which type
-	 */
-	protected int type;
+    /**
+     * which type
+     */
+    protected int type;
 
-	/**
-	 * Creates a ZapdDingbatsNumberList
-	 * @param type the type of list
-	 */
-	public ZapfDingbatsNumberList(int type) {
-		super(true);
-		this.type = type;
-		float fontsize = symbol.getFont().getSize();
-		symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL));
-		postSymbol = " ";
-	}
+    /**
+     * Creates a ZapdDingbatsNumberList
+     *
+     * @param type the type of list
+     */
+    public ZapfDingbatsNumberList(int type) {
+        super(true);
+        this.type = type;
+        float fontsize = symbol.getFont().getSize();
+        symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL));
+        postSymbol = " ";
+    }
 
-	/**
-	 * Creates a ZapdDingbatsNumberList
-	 * @param type the type of list
-	 * @param symbolIndent	indent
-	 */
-	public ZapfDingbatsNumberList(int type, int symbolIndent) {
-		super(true, symbolIndent);
-		this.type = type;
-		float fontsize = symbol.getFont().getSize();
-		symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL));
-		postSymbol = " ";
-	}
+    /**
+     * Creates a ZapdDingbatsNumberList
+     *
+     * @param type         the type of list
+     * @param symbolIndent indent
+     */
+    public ZapfDingbatsNumberList(int type, int symbolIndent) {
+        super(true, symbolIndent);
+        this.type = type;
+        float fontsize = symbol.getFont().getSize();
+        symbol.setFont(FontFactory.getFont(FontFactory.ZAPFDINGBATS, fontsize, Font.NORMAL));
+        postSymbol = " ";
+    }
 
-	/**
-	 * set the type
-	 *
-	 * @param type
-	 */
-	public void setType(int type) {
-		this.type = type;
-	}
+    /**
+     * set the type
+     *
+     * @param type
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
 
-	/**
-	 * get the type
-	 *
-	 * @return	char-number
-	 */
-	public int getType() {
-		return type;
-	}
+    /**
+     * get the type
+     *
+     * @return char-number
+     */
+    public int getType() {
+        return type;
+    }
 
-	/**
-	 * Adds an <CODE>Element</CODE> to the <CODE>List</CODE>.
-	 *
-	 * @param	o	the object to add.
-	 * @return true if adding the object succeeded
-	 */
-	@Override
-        public boolean add(Element o) {
-		if (o instanceof ListItem) {
-			ListItem item = (ListItem) o;
-			Chunk chunk = new Chunk(preSymbol, symbol.getFont());
+    /**
+     * Adds an <CODE>Element</CODE> to the <CODE>List</CODE>.
+     *
+     * @param o the object to add.
+     * @return true if adding the object succeeded
+     */
+    @Override
+    public boolean add(Element o) {
+        if (o instanceof ListItem) {
+            ListItem item = (ListItem) o;
+            Chunk chunk = new Chunk(preSymbol, symbol.getFont());
             chunk.setAttributes(symbol.getAttributes());
-			switch (type ) {
-				case 0:
-					chunk.append(String.valueOf((char)(first + list.size() + 171)));
-					break;
-				case 1:
-					chunk.append(String.valueOf((char)(first + list.size() + 181)));
-					break;
-				case 2:
-					chunk.append(String.valueOf((char)(first + list.size() + 191)));
-					break;
-				default:
-					chunk.append(String.valueOf((char)(first + list.size() + 201)));
-			}
-			chunk.append(postSymbol);
-			item.setListSymbol(chunk);
-			item.setIndentationLeft(symbolIndent, autoindent);
-			item.setIndentationRight(0);
-			list.add(item);
-		} else if (o instanceof List) {
-			List nested = (List) o;
-			nested.setIndentationLeft(nested.getIndentationLeft() + symbolIndent);
-			first--;
-			return list.add(nested);
-		}
-		return false;
-	}
+            switch (type) {
+                case 0:
+                    chunk.append(String.valueOf((char) (first + list.size() + 171)));
+                    break;
+                case 1:
+                    chunk.append(String.valueOf((char) (first + list.size() + 181)));
+                    break;
+                case 2:
+                    chunk.append(String.valueOf((char) (first + list.size() + 191)));
+                    break;
+                default:
+                    chunk.append(String.valueOf((char) (first + list.size() + 201)));
+            }
+            chunk.append(postSymbol);
+            item.setListSymbol(chunk);
+            item.setIndentationLeft(symbolIndent, autoindent);
+            item.setIndentationRight(0);
+            list.add(item);
+        } else if (o instanceof List) {
+            List nested = (List) o;
+            nested.setIndentationLeft(nested.getIndentationLeft() + symbolIndent);
+            first--;
+            return list.add(nested);
+        }
+        return false;
+    }
 
-	@Override
-	public List cloneShallow() {
-		ZapfDingbatsNumberList clone = new ZapfDingbatsNumberList(type);
-		populateProperties(clone);
-		return clone;
-	}
+    @Override
+    public List cloneShallow() {
+        ZapfDingbatsNumberList clone = new ZapfDingbatsNumberList(type);
+        populateProperties(clone);
+        return clone;
+    }
 }

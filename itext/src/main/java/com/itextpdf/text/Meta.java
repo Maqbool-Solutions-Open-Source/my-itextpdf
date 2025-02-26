@@ -49,75 +49,86 @@ import java.util.ArrayList;
 /**
  * This is an <CODE>Element</CODE> that contains
  * some meta information about the document.
- * <P>
+ * <p>
  * An object of type <CODE>Meta</CODE> can not be constructed by the user.
  * User defined meta information should be placed in a <CODE>Header</CODE>-object.
  * <CODE>Meta</CODE> is reserved for: Subject, Keywords, Author, Title, Producer
  * and Creationdate information.
  *
- * @see		Element
- * @see		Header
+ * @see Element
+ * @see Header
  */
 
 public class Meta implements Element {
 
     // membervariables
 
-	/** This is the type of Meta-information this object contains. */
+    /**
+     * This is the type of Meta-information this object contains.
+     */
     private final int type;
 
-    /** This is the content of the Meta-information. */
+    /**
+     * This is the content of the Meta-information.
+     */
     private final StringBuffer content;
 
-	/**
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6 (moved from ElementTags)
-	 */
-	public static final String UNKNOWN = "unknown";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6 (moved from ElementTags)
+     */
+    public static final String UNKNOWN = "unknown";
 
-	/**
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6 (moved from ElementTags)
-	 */
-	public static final String PRODUCER = "producer";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6 (moved from ElementTags)
+     */
+    public static final String PRODUCER = "producer";
 
-	/**
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6 (moved from ElementTags)
-	 */
-	public static final String CREATIONDATE = "creationdate";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6 (moved from ElementTags)
+     */
+    public static final String CREATIONDATE = "creationdate";
 
-	/**
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6 (moved from ElementTags)
-	 */
-	public static final String AUTHOR = "author";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6 (moved from ElementTags)
+     */
+    public static final String AUTHOR = "author";
 
-	/**
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6 (moved from ElementTags)
-	 */
-	public static final String KEYWORDS = "keywords";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6 (moved from ElementTags)
+     */
+    public static final String KEYWORDS = "keywords";
 
-	/**
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6 (moved from ElementTags)
-	 */
-	public static final String SUBJECT = "subject";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6 (moved from ElementTags)
+     */
+    public static final String SUBJECT = "subject";
 
-	/**
-	 * The possible value of an alignment attribute.
-	 * @since 5.0.6 (moved from ElementTags)
-	 */
-	public static final String TITLE = "title";
+    /**
+     * The possible value of an alignment attribute.
+     *
+     * @since 5.0.6 (moved from ElementTags)
+     */
+    public static final String TITLE = "title";
 
     // constructors
 
     /**
      * Constructs a <CODE>Meta</CODE>.
      *
-     * @param	type		the type of meta-information
-     * @param	content		the content
+     * @param type    the type of meta-information
+     * @param content the content
      */
     Meta(final int type, final String content) {
         this.type = type;
@@ -127,8 +138,8 @@ public class Meta implements Element {
     /**
      * Constructs a <CODE>Meta</CODE>.
      *
-     * @param	tag		    the tagname of the meta-information
-     * @param	content		the content
+     * @param tag     the tagname of the meta-information
+     * @param content the content
      */
     public Meta(final String tag, final String content) {
         this.type = Meta.getType(tag);
@@ -141,14 +152,13 @@ public class Meta implements Element {
      * Processes the element by adding it (or the different parts) to a
      * <CODE>ElementListener</CODE>.
      *
-     * @param	listener		the <CODE>ElementListener</CODE>
-     * @return	<CODE>true</CODE> if the element was processed successfully
+     * @param listener the <CODE>ElementListener</CODE>
+     * @return <CODE>true</CODE> if the element was processed successfully
      */
     public boolean process(final ElementListener listener) {
         try {
             return listener.add(this);
-        }
-        catch(DocumentException de) {
+        } catch (DocumentException de) {
             return false;
         }
     }
@@ -156,7 +166,7 @@ public class Meta implements Element {
     /**
      * Gets the type of the text element.
      *
-     * @return	a type
+     * @return a type
      */
     public int type() {
         return type;
@@ -165,35 +175,35 @@ public class Meta implements Element {
     /**
      * Gets all the chunks in this element.
      *
-     * @return	an <CODE>ArrayList</CODE>
+     * @return an <CODE>ArrayList</CODE>
      */
     public List<Chunk> getChunks() {
         return new ArrayList<Chunk>();
     }
 
-	/**
-	 * @see com.itextpdf.text.Element#isContent()
-	 * @since	iText 2.0.8
-	 */
-	public boolean isContent() {
-		return false;
-	}
+    /**
+     * @see com.itextpdf.text.Element#isContent()
+     * @since iText 2.0.8
+     */
+    public boolean isContent() {
+        return false;
+    }
 
-	/**
-	 * @see com.itextpdf.text.Element#isNestable()
-	 * @since	iText 2.0.8
-	 */
-	public boolean isNestable() {
-		return false;
-	}
+    /**
+     * @see com.itextpdf.text.Element#isNestable()
+     * @since iText 2.0.8
+     */
+    public boolean isNestable() {
+        return false;
+    }
 
     // methods
 
     /**
      * appends some text to this <CODE>Meta</CODE>.
      *
-     * @param	string      a <CODE>String</CODE>
-     * @return	a <CODE>StringBuffer</CODE>
+     * @param string a <CODE>String</CODE>
+     * @return a <CODE>StringBuffer</CODE>
      */
     public StringBuffer append(final String string) {
         return content.append(string);
@@ -201,19 +211,19 @@ public class Meta implements Element {
 
     // methods to retrieve information
 
-	/**
+    /**
      * Returns the content of the meta information.
      *
-     * @return	a <CODE>String</CODE>
+     * @return a <CODE>String</CODE>
      */
     public String getContent() {
         return content.toString();
     }
 
-	/**
+    /**
      * Returns the name of the meta information.
      *
-     * @return	a <CODE>String</CODE>
+     * @return a <CODE>String</CODE>
      */
 
     public String getName() {
@@ -230,8 +240,8 @@ public class Meta implements Element {
                 return Meta.PRODUCER;
             case Element.CREATIONDATE:
                 return Meta.CREATIONDATE;
-                default:
-                    return Meta.UNKNOWN;
+            default:
+                return Meta.UNKNOWN;
         }
     }
 
@@ -239,7 +249,7 @@ public class Meta implements Element {
      * Returns the name of the meta information.
      *
      * @param tag iText tag for meta information
-     * @return	the Element value corresponding with the given tag
+     * @return the Element value corresponding with the given tag
      */
     public static int getType(final String tag) {
         if (Meta.SUBJECT.equals(tag)) {

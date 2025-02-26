@@ -73,10 +73,10 @@ class PageResources {
         originalResources = new PdfDictionary();
         originalResources.merge(resources);
         for (Object element : resources.getKeys()) {
-            PdfName key = (PdfName)element;
+            PdfName key = (PdfName) element;
             PdfObject sub = PdfReader.getPdfObject(resources.get(key));
             if (sub != null && sub.isDictionary()) {
-                PdfDictionary dic = (PdfDictionary)sub;
+                PdfDictionary dic = (PdfDictionary) sub;
                 for (PdfName element2 : dic.getKeys()) {
                     forbiddenNames.add(element2);
                 }
@@ -161,7 +161,7 @@ class PageResources {
     }
 
     PdfDictionary getResources() {
-       PdfResources resources = new PdfResources();
+        PdfResources resources = new PdfResources();
         if (originalResources != null)
             resources.putAll(originalResources);
         resources.add(PdfName.FONT, fontDictionary);
@@ -176,11 +176,11 @@ class PageResources {
 
     boolean hasResources() {
         return fontDictionary.size() > 0
-            || xObjectDictionary.size() > 0
-            || colorDictionary.size() > 0
-            || patternDictionary.size() > 0
-            || shadingDictionary.size() > 0
-            || extGStateDictionary.size() > 0
-            || propertyDictionary.size() > 0;
+                || xObjectDictionary.size() > 0
+                || colorDictionary.size() > 0
+                || patternDictionary.size() > 0
+                || shadingDictionary.size() > 0
+                || extGStateDictionary.size() > 0
+                || propertyDictionary.size() > 0;
     }
 }

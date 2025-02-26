@@ -74,28 +74,32 @@ import java.util.*;
 
 /**
  * Class that signs your PDF.
+ *
  * @author Paulo Soares
  */
 public class MakeSignature {
 
-	/** The Logger instance. */
+    /**
+     * The Logger instance.
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(MakeSignature.class);
 
     public enum CryptoStandard {
-    	CMS, CADES
+        CMS, CADES
     }
 
     /**
      * Signs the document using the detached mode, CMS or CAdES equivalent.
-     * @param sap the PdfSignatureAppearance
+     *
+     * @param sap               the PdfSignatureAppearance
      * @param externalSignature the interface providing the actual signing
-     * @param chain the certificate chain
-     * @param crlList the CRL list
-     * @param ocspClient the OCSP client
-     * @param tsaClient the Timestamp client
-     * @param externalDigest an implementation that provides the digest
-     * @param estimatedSize the reserved size for the signature. It will be estimated if 0
-     * @param sigtype Either Signature.CMS or Signature.CADES
+     * @param chain             the certificate chain
+     * @param crlList           the CRL list
+     * @param ocspClient        the OCSP client
+     * @param tsaClient         the Timestamp client
+     * @param externalDigest    an implementation that provides the digest
+     * @param estimatedSize     the reserved size for the signature. It will be estimated if 0
+     * @param sigtype           Either Signature.CMS or Signature.CADES
      * @throws DocumentException
      * @throws IOException
      * @throws GeneralSecurityException
@@ -109,16 +113,17 @@ public class MakeSignature {
 
     /**
      * Signs the document using the detached mode, CMS or CAdES equivalent.
-     * @param sap the PdfSignatureAppearance
+     *
+     * @param sap               the PdfSignatureAppearance
      * @param externalSignature the interface providing the actual signing
-     * @param chain the certificate chain
-     * @param crlList the CRL list
-     * @param ocspClient the OCSP client
-     * @param tsaClient the Timestamp client
-     * @param externalDigest an implementation that provides the digest
-     * @param estimatedSize the reserved size for the signature. It will be estimated if 0
-     * @param sigtype Either Signature.CMS or Signature.CADES
-     * @param signaturePolicy the signature policy (for EPES signatures)
+     * @param chain             the certificate chain
+     * @param crlList           the CRL list
+     * @param ocspClient        the OCSP client
+     * @param tsaClient         the Timestamp client
+     * @param externalDigest    an implementation that provides the digest
+     * @param estimatedSize     the reserved size for the signature. It will be estimated if 0
+     * @param sigtype           Either Signature.CMS or Signature.CADES
+     * @param signaturePolicy   the signature policy (for EPES signatures)
      * @throws DocumentException
      * @throws IOException
      * @throws GeneralSecurityException
@@ -132,29 +137,30 @@ public class MakeSignature {
 
     /**
      * Signs the document using the detached mode, CMS or CAdES equivalent.
-     * @param sap the PdfSignatureAppearance
+     *
+     * @param sap               the PdfSignatureAppearance
      * @param externalSignature the interface providing the actual signing
-     * @param chain the certificate chain
-     * @param crlList the CRL list
-     * @param ocspClient the OCSP client
-     * @param tsaClient the Timestamp client
-     * @param externalDigest an implementation that provides the digest
-     * @param estimatedSize the reserved size for the signature. It will be estimated if 0
-     * @param sigtype Either Signature.CMS or Signature.CADES
-     * @param signaturePolicy the signature policy (for EPES signatures)
-     * @throws DocumentException 
-     * @throws IOException 
-     * @throws GeneralSecurityException 
-     * @throws NoSuchAlgorithmException 
-     * @throws Exception 
+     * @param chain             the certificate chain
+     * @param crlList           the CRL list
+     * @param ocspClient        the OCSP client
+     * @param tsaClient         the Timestamp client
+     * @param externalDigest    an implementation that provides the digest
+     * @param estimatedSize     the reserved size for the signature. It will be estimated if 0
+     * @param sigtype           Either Signature.CMS or Signature.CADES
+     * @param signaturePolicy   the signature policy (for EPES signatures)
+     * @throws DocumentException
+     * @throws IOException
+     * @throws GeneralSecurityException
+     * @throws NoSuchAlgorithmException
+     * @throws Exception
      */
     public static void signDetached(PdfSignatureAppearance sap, ExternalDigest externalDigest, ExternalSignature externalSignature, Certificate[] chain, Collection<CrlClient> crlList, OcspClient ocspClient,
                                     TSAClient tsaClient, int estimatedSize, CryptoStandard sigtype, SignaturePolicyIdentifier signaturePolicy) throws IOException, DocumentException, GeneralSecurityException {
         Collection<byte[]> crlBytes = null;
         int i = 0;
         while (crlBytes == null && i < chain.length)
-        	crlBytes = processCrl(chain[i++], crlList);
-    	if (estimatedSize == 0) {
+            crlBytes = processCrl(chain[i++], crlList);
+        if (estimatedSize == 0) {
             estimatedSize = 8192;
             if (crlBytes != null) {
                 for (byte[] element : crlBytes) {
@@ -168,7 +174,7 @@ public class MakeSignature {
         }
         sap.setCertificate(chain[0]);
         if (sigtype == CryptoStandard.CADES) {
-        	sap.addDeveloperExtension(PdfDeveloperExtension.ESIC_1_7_EXTENSIONLEVEL2);
+            sap.addDeveloperExtension(PdfDeveloperExtension.ESIC_1_7_EXTENSIONLEVEL2);
         }
         PdfSignature dic = new PdfSignature(PdfName.ADOBE_PPKLITE, sigtype == CryptoStandard.CADES ? PdfName.ETSI_CADES_DETACHED : PdfName.ADBE_PKCS7_DETACHED);
         dic.setReason(sap.getReason());
@@ -209,12 +215,13 @@ public class MakeSignature {
         dic2.put(PdfName.CONTENTS, new PdfString(paddedSig).setHexWriting(true));
         sap.close(dic2);
     }
-    
+
     /**
      * Processes a CRL list.
-     * @param cert	a Certificate if one of the CrlList implementations needs to retrieve the CRL URL from it.
-     * @param crlList	a list of CrlClient implementations
-     * @return	a collection of CRL bytes that can be embedded in a PDF.
+     *
+     * @param cert    a Certificate if one of the CrlList implementations needs to retrieve the CRL URL from it.
+     * @param crlList a list of CrlClient implementations
+     * @return a collection of CRL bytes that can be embedded in a PDF.
      */
     public static Collection<byte[]> processCrl(Certificate cert, Collection<CrlClient> crlList) {
         if (crlList == null)
@@ -224,7 +231,7 @@ public class MakeSignature {
             if (cc == null)
                 continue;
             LOGGER.info("Processing " + cc.getClass().getName());
-            Collection<byte[]> b = cc.getEncoded((X509Certificate)cert, null);
+            Collection<byte[]> b = cc.getEncoded((X509Certificate) cert, null);
             if (b == null)
                 continue;
             crlBytes.addAll(b);
@@ -234,16 +241,17 @@ public class MakeSignature {
         else
             return crlBytes;
     }
-    
+
     /**
      * Sign the document using an external container, usually a PKCS7. The signature is fully composed
      * externally, iText will just put the container inside the document.
-     * @param sap the PdfSignatureAppearance
+     *
+     * @param sap                        the PdfSignatureAppearance
      * @param externalSignatureContainer the interface providing the actual signing
-     * @param estimatedSize the reserved size for the signature
+     * @param estimatedSize              the reserved size for the signature
      * @throws GeneralSecurityException
      * @throws IOException
-     * @throws DocumentException 
+     * @throws DocumentException
      */
     public static void signExternalContainer(PdfSignatureAppearance sap, ExternalSignatureContainer externalSignatureContainer, int estimatedSize) throws GeneralSecurityException, IOException, DocumentException {
         PdfSignature dic = new PdfSignature(null, null);
@@ -272,17 +280,18 @@ public class MakeSignature {
         dic2.put(PdfName.CONTENTS, new PdfString(paddedSig).setHexWriting(true));
         sap.close(dic2);
     }
-    
+
     /**
      * Signs a PDF where space was already reserved.
-     * @param reader the original PDF
-     * @param fieldName the field to sign. It must be the last field
-     * @param outs the output PDF
-     * @param externalSignatureContainer the signature container doing the actual signing. Only the 
-     * method ExternalSignatureContainer.sign is used
+     *
+     * @param reader                     the original PDF
+     * @param fieldName                  the field to sign. It must be the last field
+     * @param outs                       the output PDF
+     * @param externalSignatureContainer the signature container doing the actual signing. Only the
+     *                                   method ExternalSignatureContainer.sign is used
      * @throws DocumentException
      * @throws IOException
-     * @throws GeneralSecurityException 
+     * @throws GeneralSecurityException
      */
     public static void signDeferred(PdfReader reader, String fieldName, OutputStream outs, ExternalSignatureContainer externalSignatureContainer) throws DocumentException, IOException, GeneralSecurityException {
         AcroFields af = reader.getAcroFields();
@@ -298,7 +307,7 @@ public class MakeSignature {
         RandomAccessSource readerSource = reader.getSafeFile().createSourceView();
         InputStream rg = new RASInputStream(new RandomAccessSourceFactory().createRanged(readerSource, gaps));
         byte[] signedContent = externalSignatureContainer.sign(rg);
-        int spaceAvailable = (int)(gaps[2] - gaps[1]) - 2;
+        int spaceAvailable = (int) (gaps[2] - gaps[1]) - 2;
         if ((spaceAvailable & 1) != 0)
             throw new DocumentException("Gap is not a multiple of 2");
         spaceAvailable /= 2;
@@ -311,7 +320,7 @@ public class MakeSignature {
         }
         int remain = (spaceAvailable - signedContent.length) * 2;
         for (int k = 0; k < remain; ++k) {
-            bb.append((byte)48);
+            bb.append((byte) 48);
         }
         bb.writeTo(outs);
         StreamUtil.CopyBytes(readerSource, gaps[2] - 1, gaps[3] + 1, outs);

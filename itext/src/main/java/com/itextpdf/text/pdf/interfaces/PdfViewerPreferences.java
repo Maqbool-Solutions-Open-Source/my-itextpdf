@@ -55,8 +55,8 @@ import com.itextpdf.text.pdf.PdfObject;
  * for reasons of convenience.
  */
 
-public interface PdfViewerPreferences {	
-		
+public interface PdfViewerPreferences {
+
     /**
      * Sets the page layout and page mode preferences by ORing one or two of these constants.
      * <p>
@@ -123,11 +123,12 @@ public interface PdfViewerPreferences {
      *   </ul>
      * <li><b>PrintScalingNone</b> - Indicates that the print dialog should reflect no page scaling.
      * </ul>
+     *
      * @param preferences the viewer preferences
-	 * @see PdfViewerPreferences#addViewerPreference
+     * @see PdfViewerPreferences#addViewerPreference
      */
     public void setViewerPreferences(int preferences);
-    
+
     /**
      * Adds a viewer preference.
      * <ul>
@@ -186,9 +187,10 @@ public interface PdfViewerPreferences {
      * <li>In case the key is PdfName.<b>NUMCOPIES</b>, the value must be of type PdfNumber.
      * <ul>
      * </ul>
-     * @param key	the name of the viewer preference
-     * @param value	the value of the viewer preference
-	 * @see PdfViewerPreferences#setViewerPreferences
+     *
+     * @param key   the name of the viewer preference
+     * @param value the value of the viewer preference
+     * @see PdfViewerPreferences#setViewerPreferences
      */
-    public void addViewerPreference(PdfName key, PdfObject value);    	
+    public void addViewerPreference(PdfName key, PdfObject value);
 }

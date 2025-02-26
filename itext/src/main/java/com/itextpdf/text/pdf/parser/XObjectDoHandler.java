@@ -54,6 +54,7 @@ import java.util.Stack;
  */
 public interface XObjectDoHandler {
     public void handleXObject(PdfContentStreamProcessor processor, PdfStream stream, PdfIndirectReference ref);
-    public void handleXObject(PdfContentStreamProcessor processor, PdfStream stream, PdfIndirectReference ref,Stack<MarkedContentInfo> markedContentStack);
+
+    public void handleXObject(PdfContentStreamProcessor processor, PdfStream stream, PdfIndirectReference ref, Stack<MarkedContentInfo> markedContentStack);
 
 }

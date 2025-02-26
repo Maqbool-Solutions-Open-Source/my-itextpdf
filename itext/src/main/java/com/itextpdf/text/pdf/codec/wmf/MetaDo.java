@@ -42,6 +42,7 @@
  * address: sales@itextpdf.com
  */
 package com.itextpdf.text.pdf.codec.wmf;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,74 +61,74 @@ import com.itextpdf.text.pdf.codec.BmpImage;
 
 public class MetaDo {
 
-    public static final int META_SETBKCOLOR            = 0x0201;
-    public static final int META_SETBKMODE             = 0x0102;
-    public static final int META_SETMAPMODE            = 0x0103;
-    public static final int META_SETROP2               = 0x0104;
-    public static final int META_SETRELABS             = 0x0105;
-    public static final int META_SETPOLYFILLMODE       = 0x0106;
-    public static final int META_SETSTRETCHBLTMODE     = 0x0107;
-    public static final int META_SETTEXTCHAREXTRA      = 0x0108;
-    public static final int META_SETTEXTCOLOR          = 0x0209;
-    public static final int META_SETTEXTJUSTIFICATION  = 0x020A;
-    public static final int META_SETWINDOWORG          = 0x020B;
-    public static final int META_SETWINDOWEXT          = 0x020C;
-    public static final int META_SETVIEWPORTORG        = 0x020D;
-    public static final int META_SETVIEWPORTEXT        = 0x020E;
-    public static final int META_OFFSETWINDOWORG       = 0x020F;
-    public static final int META_SCALEWINDOWEXT        = 0x0410;
-    public static final int META_OFFSETVIEWPORTORG     = 0x0211;
-    public static final int META_SCALEVIEWPORTEXT      = 0x0412;
-    public static final int META_LINETO                = 0x0213;
-    public static final int META_MOVETO                = 0x0214;
-    public static final int META_EXCLUDECLIPRECT       = 0x0415;
-    public static final int META_INTERSECTCLIPRECT     = 0x0416;
-    public static final int META_ARC                   = 0x0817;
-    public static final int META_ELLIPSE               = 0x0418;
-    public static final int META_FLOODFILL             = 0x0419;
-    public static final int META_PIE                   = 0x081A;
-    public static final int META_RECTANGLE             = 0x041B;
-    public static final int META_ROUNDRECT             = 0x061C;
-    public static final int META_PATBLT                = 0x061D;
-    public static final int META_SAVEDC                = 0x001E;
-    public static final int META_SETPIXEL              = 0x041F;
-    public static final int META_OFFSETCLIPRGN         = 0x0220;
-    public static final int META_TEXTOUT               = 0x0521;
-    public static final int META_BITBLT                = 0x0922;
-    public static final int META_STRETCHBLT            = 0x0B23;
-    public static final int META_POLYGON               = 0x0324;
-    public static final int META_POLYLINE              = 0x0325;
-    public static final int META_ESCAPE                = 0x0626;
-    public static final int META_RESTOREDC             = 0x0127;
-    public static final int META_FILLREGION            = 0x0228;
-    public static final int META_FRAMEREGION           = 0x0429;
-    public static final int META_INVERTREGION          = 0x012A;
-    public static final int META_PAINTREGION           = 0x012B;
-    public static final int META_SELECTCLIPREGION      = 0x012C;
-    public static final int META_SELECTOBJECT          = 0x012D;
-    public static final int META_SETTEXTALIGN          = 0x012E;
-    public static final int META_CHORD                 = 0x0830;
-    public static final int META_SETMAPPERFLAGS        = 0x0231;
-    public static final int META_EXTTEXTOUT            = 0x0a32;
-    public static final int META_SETDIBTODEV           = 0x0d33;
-    public static final int META_SELECTPALETTE         = 0x0234;
-    public static final int META_REALIZEPALETTE        = 0x0035;
-    public static final int META_ANIMATEPALETTE        = 0x0436;
-    public static final int META_SETPALENTRIES         = 0x0037;
-    public static final int META_POLYPOLYGON           = 0x0538;
-    public static final int META_RESIZEPALETTE         = 0x0139;
-    public static final int META_DIBBITBLT             = 0x0940;
-    public static final int META_DIBSTRETCHBLT         = 0x0b41;
+    public static final int META_SETBKCOLOR = 0x0201;
+    public static final int META_SETBKMODE = 0x0102;
+    public static final int META_SETMAPMODE = 0x0103;
+    public static final int META_SETROP2 = 0x0104;
+    public static final int META_SETRELABS = 0x0105;
+    public static final int META_SETPOLYFILLMODE = 0x0106;
+    public static final int META_SETSTRETCHBLTMODE = 0x0107;
+    public static final int META_SETTEXTCHAREXTRA = 0x0108;
+    public static final int META_SETTEXTCOLOR = 0x0209;
+    public static final int META_SETTEXTJUSTIFICATION = 0x020A;
+    public static final int META_SETWINDOWORG = 0x020B;
+    public static final int META_SETWINDOWEXT = 0x020C;
+    public static final int META_SETVIEWPORTORG = 0x020D;
+    public static final int META_SETVIEWPORTEXT = 0x020E;
+    public static final int META_OFFSETWINDOWORG = 0x020F;
+    public static final int META_SCALEWINDOWEXT = 0x0410;
+    public static final int META_OFFSETVIEWPORTORG = 0x0211;
+    public static final int META_SCALEVIEWPORTEXT = 0x0412;
+    public static final int META_LINETO = 0x0213;
+    public static final int META_MOVETO = 0x0214;
+    public static final int META_EXCLUDECLIPRECT = 0x0415;
+    public static final int META_INTERSECTCLIPRECT = 0x0416;
+    public static final int META_ARC = 0x0817;
+    public static final int META_ELLIPSE = 0x0418;
+    public static final int META_FLOODFILL = 0x0419;
+    public static final int META_PIE = 0x081A;
+    public static final int META_RECTANGLE = 0x041B;
+    public static final int META_ROUNDRECT = 0x061C;
+    public static final int META_PATBLT = 0x061D;
+    public static final int META_SAVEDC = 0x001E;
+    public static final int META_SETPIXEL = 0x041F;
+    public static final int META_OFFSETCLIPRGN = 0x0220;
+    public static final int META_TEXTOUT = 0x0521;
+    public static final int META_BITBLT = 0x0922;
+    public static final int META_STRETCHBLT = 0x0B23;
+    public static final int META_POLYGON = 0x0324;
+    public static final int META_POLYLINE = 0x0325;
+    public static final int META_ESCAPE = 0x0626;
+    public static final int META_RESTOREDC = 0x0127;
+    public static final int META_FILLREGION = 0x0228;
+    public static final int META_FRAMEREGION = 0x0429;
+    public static final int META_INVERTREGION = 0x012A;
+    public static final int META_PAINTREGION = 0x012B;
+    public static final int META_SELECTCLIPREGION = 0x012C;
+    public static final int META_SELECTOBJECT = 0x012D;
+    public static final int META_SETTEXTALIGN = 0x012E;
+    public static final int META_CHORD = 0x0830;
+    public static final int META_SETMAPPERFLAGS = 0x0231;
+    public static final int META_EXTTEXTOUT = 0x0a32;
+    public static final int META_SETDIBTODEV = 0x0d33;
+    public static final int META_SELECTPALETTE = 0x0234;
+    public static final int META_REALIZEPALETTE = 0x0035;
+    public static final int META_ANIMATEPALETTE = 0x0436;
+    public static final int META_SETPALENTRIES = 0x0037;
+    public static final int META_POLYPOLYGON = 0x0538;
+    public static final int META_RESIZEPALETTE = 0x0139;
+    public static final int META_DIBBITBLT = 0x0940;
+    public static final int META_DIBSTRETCHBLT = 0x0b41;
     public static final int META_DIBCREATEPATTERNBRUSH = 0x0142;
-    public static final int META_STRETCHDIB            = 0x0f43;
-    public static final int META_EXTFLOODFILL          = 0x0548;
-    public static final int META_DELETEOBJECT          = 0x01f0;
-    public static final int META_CREATEPALETTE         = 0x00f7;
-    public static final int META_CREATEPATTERNBRUSH    = 0x01F9;
-    public static final int META_CREATEPENINDIRECT     = 0x02FA;
-    public static final int META_CREATEFONTINDIRECT    = 0x02FB;
-    public static final int META_CREATEBRUSHINDIRECT   = 0x02FC;
-    public static final int META_CREATEREGION          = 0x06FF;
+    public static final int META_STRETCHDIB = 0x0f43;
+    public static final int META_EXTFLOODFILL = 0x0548;
+    public static final int META_DELETEOBJECT = 0x01f0;
+    public static final int META_CREATEPALETTE = 0x00f7;
+    public static final int META_CREATEPATTERNBRUSH = 0x01F9;
+    public static final int META_CREATEPENINDIRECT = 0x02FA;
+    public static final int META_CREATEFONTINDIRECT = 0x02FB;
+    public static final int META_CREATEBRUSHINDIRECT = 0x02FC;
+    public static final int META_CREATEREGION = 0x06FF;
 
     public PdfContentByte cb;
     public InputMeta in;
@@ -143,7 +144,7 @@ public class MetaDo {
         this.in = new InputMeta(in);
     }
 
-    public void readAll() throws IOException, DocumentException{
+    public void readAll() throws IOException, DocumentException {
         if (in.readInt() != 0x9AC6CDD7) {
             throw new DocumentException(MessageLocalization.getComposedMessage("not.a.placeable.windows.metafile"));
         }
@@ -153,8 +154,8 @@ public class MetaDo {
         right = in.readShort();
         bottom = in.readShort();
         inch = in.readWord();
-        state.setScalingX((float)(right - left) / (float)inch * 72f);
-        state.setScalingY((float)(bottom - top) / (float)inch * 72f);
+        state.setScalingX((float) (right - left) / (float) inch * 72f);
+        state.setScalingY((float) (bottom - top) / (float) inch * 72f);
         state.setOffsetWx(left);
         state.setOffsetWy(top);
         state.setExtentWx(right - left);
@@ -167,7 +168,7 @@ public class MetaDo {
         int function;
         cb.setLineCap(1);
         cb.setLineJoin(1);
-        for (;;) {
+        for (; ; ) {
             int lenMarker = in.getLength();
             tsize = in.readInt();
             if (tsize < 3)
@@ -181,35 +182,30 @@ public class MetaDo {
                 case META_DIBCREATEPATTERNBRUSH:
                     state.addMetaObject(new MetaObject());
                     break;
-                case META_CREATEPENINDIRECT:
-                {
+                case META_CREATEPENINDIRECT: {
                     MetaPen pen = new MetaPen();
                     pen.init(in);
                     state.addMetaObject(pen);
                     break;
                 }
-                case META_CREATEBRUSHINDIRECT:
-                {
+                case META_CREATEBRUSHINDIRECT: {
                     MetaBrush brush = new MetaBrush();
                     brush.init(in);
                     state.addMetaObject(brush);
                     break;
                 }
-                case META_CREATEFONTINDIRECT:
-                {
+                case META_CREATEFONTINDIRECT: {
                     MetaFont font = new MetaFont();
                     font.init(in);
                     state.addMetaObject(font);
                     break;
                 }
-                case META_SELECTOBJECT:
-                {
+                case META_SELECTOBJECT: {
                     int idx = in.readWord();
                     state.selectMetaObject(idx, cb);
                     break;
                 }
-                case META_DELETEOBJECT:
-                {
+                case META_DELETEOBJECT: {
                     int idx = in.readWord();
                     state.deleteMetaObject(idx);
                     break;
@@ -217,8 +213,7 @@ public class MetaDo {
                 case META_SAVEDC:
                     state.saveState(cb);
                     break;
-                case META_RESTOREDC:
-                {
+                case META_RESTOREDC: {
                     int idx = in.readShort();
                     state.restoreState(idx, cb);
                     break;
@@ -231,15 +226,13 @@ public class MetaDo {
                     state.setExtentWy(in.readShort());
                     state.setExtentWx(in.readShort());
                     break;
-                case META_MOVETO:
-                {
+                case META_MOVETO: {
                     int y = in.readShort();
                     Point p = new Point(in.readShort(), y);
                     state.setCurrentPoint(p);
                     break;
                 }
-                case META_LINETO:
-                {
+                case META_LINETO: {
                     int y = in.readShort();
                     int x = in.readShort();
                     Point p = state.getCurrentPoint();
@@ -249,8 +242,7 @@ public class MetaDo {
                     state.setCurrentPoint(new Point(x, y));
                     break;
                 }
-                case META_POLYLINE:
-                {
+                case META_POLYLINE: {
                     state.setLineJoinPolygon(cb);
                     int len = in.readWord();
                     int x = in.readShort();
@@ -264,8 +256,7 @@ public class MetaDo {
                     cb.stroke();
                     break;
                 }
-                case META_POLYGON:
-                {
+                case META_POLYGON: {
                     if (isNullStrokeFill(false))
                         break;
                     int len = in.readWord();
@@ -281,8 +272,7 @@ public class MetaDo {
                     strokeAndFill();
                     break;
                 }
-                case META_POLYPOLYGON:
-                {
+                case META_POLYPOLYGON: {
                     if (isNullStrokeFill(false))
                         break;
                     int numPoly = in.readWord();
@@ -304,8 +294,7 @@ public class MetaDo {
                     strokeAndFill();
                     break;
                 }
-                case META_ELLIPSE:
-                {
+                case META_ELLIPSE: {
                     if (isNullStrokeFill(state.getLineNeutral()))
                         break;
                     int b = in.readShort();
@@ -316,8 +305,7 @@ public class MetaDo {
                     strokeAndFill();
                     break;
                 }
-                case META_ARC:
-                {
+                case META_ARC: {
                     if (isNullStrokeFill(state.getLineNeutral()))
                         break;
                     float yend = state.transformY(in.readShort());
@@ -339,8 +327,7 @@ public class MetaDo {
                     cb.stroke();
                     break;
                 }
-                case META_PIE:
-                {
+                case META_PIE: {
                     if (isNullStrokeFill(state.getLineNeutral()))
                         break;
                     float yend = state.transformY(in.readShort());
@@ -372,8 +359,7 @@ public class MetaDo {
                     strokeAndFill();
                     break;
                 }
-                case META_CHORD:
-                {
+                case META_CHORD: {
                     if (isNullStrokeFill(state.getLineNeutral()))
                         break;
                     float yend = state.transformY(in.readShort());
@@ -406,8 +392,7 @@ public class MetaDo {
                     strokeAndFill();
                     break;
                 }
-                case META_RECTANGLE:
-                {
+                case META_RECTANGLE: {
                     if (isNullStrokeFill(true))
                         break;
                     float b = state.transformY(in.readShort());
@@ -418,8 +403,7 @@ public class MetaDo {
                     strokeAndFill();
                     break;
                 }
-                case META_ROUNDRECT:
-                {
+                case META_ROUNDRECT: {
                     if (isNullStrokeFill(true))
                         break;
                     float h = state.transformY(0) - state.transformY(in.readShort());
@@ -432,8 +416,7 @@ public class MetaDo {
                     strokeAndFill();
                     break;
                 }
-                case META_INTERSECTCLIPRECT:
-                {
+                case META_INTERSECTCLIPRECT: {
                     float b = state.transformY(in.readShort());
                     float r = state.transformX(in.readShort());
                     float t = state.transformY(in.readShort());
@@ -443,8 +426,7 @@ public class MetaDo {
                     cb.newPath();
                     break;
                 }
-                case META_EXTTEXTOUT:
-                {
+                case META_EXTTEXTOUT: {
                     int y = in.readShort();
                     int x = in.readShort();
                     int count = in.readWord();
@@ -462,7 +444,7 @@ public class MetaDo {
                     byte text[] = new byte[count];
                     int k;
                     for (k = 0; k < count; ++k) {
-                        byte c = (byte)in.readByte();
+                        byte c = (byte) in.readByte();
                         if (c == 0)
                             break;
                         text[k] = c;
@@ -470,20 +452,18 @@ public class MetaDo {
                     String s;
                     try {
                         s = new String(text, 0, k, "Cp1252");
-                    }
-                    catch (UnsupportedEncodingException e) {
+                    } catch (UnsupportedEncodingException e) {
                         s = new String(text, 0, k);
                     }
                     outputText(x, y, flag, x1, y1, x2, y2, s);
                     break;
                 }
-                case META_TEXTOUT:
-                {
+                case META_TEXTOUT: {
                     int count = in.readWord();
                     byte text[] = new byte[count];
                     int k;
                     for (k = 0; k < count; ++k) {
-                        byte c = (byte)in.readByte();
+                        byte c = (byte) in.readByte();
                         if (c == 0)
                             break;
                         text[k] = c;
@@ -491,8 +471,7 @@ public class MetaDo {
                     String s;
                     try {
                         s = new String(text, 0, k, "Cp1252");
-                    }
-                    catch (UnsupportedEncodingException e) {
+                    } catch (UnsupportedEncodingException e) {
                         s = new String(text, 0, k);
                     }
                     count = count + 1 & 0xfffe;
@@ -517,8 +496,7 @@ public class MetaDo {
                 case META_SETPOLYFILLMODE:
                     state.setPolyFillMode(in.readWord());
                     break;
-                case META_SETPIXEL:
-                {
+                case META_SETPIXEL: {
                     BaseColor color = in.readColor();
                     int y = in.readShort();
                     int x = in.readShort();
@@ -533,7 +511,8 @@ public class MetaDo {
                 case META_STRETCHDIB: {
                     int rop = in.readInt();
                     if (function == META_STRETCHDIB) {
-                        /*int usage = */ in.readWord();
+                        /*int usage = */
+                        in.readWord();
                     }
                     int srcHeight = in.readShort();
                     int srcWidth = in.readShort();
@@ -545,7 +524,7 @@ public class MetaDo {
                     float xDest = state.transformX(in.readShort());
                     byte b[] = new byte[tsize * 2 - (in.getLength() - lenMarker)];
                     for (int k = 0; k < b.length; ++k)
-                        b[k] = (byte)in.readByte();
+                        b[k] = (byte) in.readByte();
                     try {
                         ByteArrayInputStream inb = new ByteArrayInputStream(b);
                         Image bmp = BmpImage.getImage(inb, true, b.length);
@@ -557,8 +536,7 @@ public class MetaDo {
                         bmp.setAbsolutePosition(xDest - destWidth * xSrc / srcWidth, yDest + destHeight * ySrc / srcHeight - bmp.getScaledHeight());
                         cb.addImage(bmp);
                         cb.restoreState();
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         // empty on purpose
                     }
                     break;
@@ -574,8 +552,8 @@ public class MetaDo {
         float refX = state.transformX(x);
         float refY = state.transformY(y);
         float angle = state.transformAngle(font.getAngle());
-        float sin = (float)Math.sin(angle);
-        float cos = (float)Math.cos(angle);
+        float sin = (float) Math.sin(angle);
+        float cos = (float) Math.cos(angle);
         float fontSize = font.getFontSize(state);
         BaseFont bf = font.getFont();
         int align = state.getTextAlign();
@@ -637,7 +615,7 @@ public class MetaDo {
         return result;
     }
 
-    public void strokeAndFill(){
+    public void strokeAndFill() {
         MetaPen pen = state.getCurrentPen();
         MetaBrush brush = state.getCurrentBrush();
         int penStyle = pen.getStyle();
@@ -646,34 +624,31 @@ public class MetaDo {
             cb.closePath();
             if (state.getPolyFillMode() == MetaState.ALTERNATE) {
                 cb.eoFill();
-            }
-            else {
+            } else {
                 cb.fill();
             }
-        }
-        else {
+        } else {
             boolean isBrush = brushStyle == MetaBrush.BS_SOLID || brushStyle == MetaBrush.BS_HATCHED && state.getBackgroundMode() == MetaState.OPAQUE;
             if (isBrush) {
                 if (state.getPolyFillMode() == MetaState.ALTERNATE)
                     cb.closePathEoFillStroke();
                 else
                     cb.closePathFillStroke();
-            }
-            else {
+            } else {
                 cb.closePathStroke();
             }
         }
     }
 
     static float getArc(float xCenter, float yCenter, float xDot, float yDot) {
-        return (float)getArc((double)xCenter, (double)yCenter, (double)xDot, (double)yDot);
+        return (float) getArc((double) xCenter, (double) yCenter, (double) xDot, (double) yDot);
     }
 
     static double getArc(double xCenter, double yCenter, double xDot, double yDot) {
         double s = Math.atan2(yDot - yCenter, xDot - xCenter);
         if (s < 0)
             s += Math.PI * 2;
-        return (float)(s / Math.PI * 180);
+        return (float) (s / Math.PI * 180);
     }
 
     public static byte[] wrapBMP(Image image) throws IOException {
@@ -689,8 +664,7 @@ public class MetaDo {
                 out.write(b);
             imgIn.close();
             data = out.toByteArray();
-        }
-        else
+        } else
             data = image.getOriginalData();
         int sizeBmpWords = data.length - 14 + 1 >>> 1;
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -714,18 +688,18 @@ public class MetaDo {
 
         writeDWord(os, 5);
         writeWord(os, META_SETWINDOWEXT);
-        writeWord(os, (int)image.getHeight());
-        writeWord(os, (int)image.getWidth());
+        writeWord(os, (int) image.getHeight());
+        writeWord(os, (int) image.getWidth());
 
         writeDWord(os, 13 + sizeBmpWords);
         writeWord(os, META_DIBSTRETCHBLT);
         writeDWord(os, 0x00cc0020);
-        writeWord(os, (int)image.getHeight());
-        writeWord(os, (int)image.getWidth());
+        writeWord(os, (int) image.getHeight());
+        writeWord(os, (int) image.getWidth());
         writeWord(os, 0);
         writeWord(os, 0);
-        writeWord(os, (int)image.getHeight());
-        writeWord(os, (int)image.getWidth());
+        writeWord(os, (int) image.getHeight());
+        writeWord(os, (int) image.getWidth());
         writeWord(os, 0);
         writeWord(os, 0);
         os.write(data, 14, data.length - 14);

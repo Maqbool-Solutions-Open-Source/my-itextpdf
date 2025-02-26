@@ -54,7 +54,7 @@ public class Point extends Point2D implements Serializable {
             return true;
         }
         if (obj instanceof Point) {
-            Point p = (Point)obj;
+            Point p = (Point) obj;
             return x == p.x && y == p.y;
         }
         return false;
@@ -84,25 +84,27 @@ public class Point extends Point2D implements Serializable {
     }
 
     public void setLocation(int x, int y) {
-        setLocation((double)x, (double)y);
+        setLocation((double) x, (double) y);
     }
 
     @Override
     public void setLocation(double x, double y) {
-    	this.x = x;
-    	this.y = y;
+        this.x = x;
+        this.y = y;
     }
 
     public void move(int x, int y) {
-        move((double)x, (double)y);
+        move((double) x, (double) y);
     }
+
     public void move(double x, double y) {
         setLocation(x, y);
     }
 
     public void translate(int dx, int dy) {
-        translate((double)dx, (double)dy);
+        translate((double) dx, (double) dy);
     }
+
     public void translate(double dx, double dy) {
         x += dx;
         y += dy;

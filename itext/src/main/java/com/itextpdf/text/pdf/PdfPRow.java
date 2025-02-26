@@ -72,7 +72,7 @@ public class PdfPRow implements IAccessibleElement {
     /**
      * the right limit
      *
-     * @since	2.1.5
+     * @since 2.1.5
      */
     public static final float RIGHT_LIMIT = 20000;
 
@@ -83,7 +83,7 @@ public class PdfPRow implements IAccessibleElement {
     /**
      * extra heights that needs to be added to a cell because of rowspans.
      *
-     * @since	2.1.6
+     * @since 2.1.6
      */
     protected float extraHeights[];
 
@@ -186,7 +186,7 @@ public class PdfPRow implements IAccessibleElement {
     /**
      * Initializes the extra heights array.
      *
-     * @since	2.1.6
+     * @since 2.1.6
      */
     protected void initExtraHeights() {
         extraHeights = new float[cells.length];
@@ -198,9 +198,9 @@ public class PdfPRow implements IAccessibleElement {
     /**
      * Sets an extra height for a cell.
      *
-     * @param	cell	the index of the cell that needs an extra height
-     * @param	height	the extra height
-     * @since	2.1.6
+     * @param cell   the index of the cell that needs an extra height
+     * @param height the extra height
+     * @since 2.1.6
      */
     public void setExtraHeight(int cell, float height) {
         if (cell < 0 || cell >= cells.length) {
@@ -223,8 +223,7 @@ public class PdfPRow implements IAccessibleElement {
             } else {
                 if (cell.hasCalculatedHeight()) {
                     height = cell.getCalculatedHeight();
-                }
-                else {
+                } else {
                     height = cell.getMaxHeight();
                 }
                 if ((height > maxHeight) && (cell.getRowspan() == 1)) {
@@ -252,12 +251,12 @@ public class PdfPRow implements IAccessibleElement {
     /**
      * Writes the border and background of one cell in the row.
      *
-     * @param xPos The x-coordinate where the table starts on the canvas
-     * @param yPos The y-coordinate where the table starts on the canvas
+     * @param xPos             The x-coordinate where the table starts on the canvas
+     * @param yPos             The y-coordinate where the table starts on the canvas
      * @param currentMaxHeight The height of the cell to be drawn.
      * @param cell
      * @param canvases
-     * @since	2.1.6	extra parameter currentMaxHeight
+     * @since 2.1.6    extra parameter currentMaxHeight
      */
     public void writeBorderAndBackground(float xPos, float yPos, float currentMaxHeight, PdfPCell cell, PdfContentByte[] canvases) {
         BaseColor background = cell.getBackgroundColor();
@@ -287,7 +286,7 @@ public class PdfPRow implements IAccessibleElement {
     }
 
     /**
-     * @since	2.1.6 private is now protected
+     * @since 2.1.6 private is now protected
      */
     protected void saveAndRotateCanvases(PdfContentByte[] canvases, float a, float b, float c, float d, float e, float f) {
         int last = PdfPTable.TEXTCANVAS + 1;
@@ -304,7 +303,7 @@ public class PdfPRow implements IAccessibleElement {
     }
 
     /**
-     * @since	2.1.6 private is now protected
+     * @since 2.1.6 private is now protected
      */
     protected void restoreCanvases(PdfContentByte[] canvases) {
         int last = PdfPTable.TEXTCANVAS + 1;
@@ -319,7 +318,7 @@ public class PdfPRow implements IAccessibleElement {
     }
 
     /**
-     * @since	3.0.0 protected is now public static
+     * @since 3.0.0 protected is now public static
      */
     public static float setColumn(ColumnText ct, float left, float bottom, float right, float top) {
         if (left > right) {
@@ -335,15 +334,15 @@ public class PdfPRow implements IAccessibleElement {
     /**
      * Writes a number of cells (not necessarily all cells).
      *
-     * @param	colStart The first column to be written. Remember that the column
-     * index starts with 0.
-     * @param	colEnd The last column to be written. Remember that the column
-     * index starts with 0. If -1, all the columns to the end are written.
-     * @param	xPos The x-coordinate where the table starts on the canvas
-     * @param	yPos The y-coordinate where the table starts on the canvas
-     * @param	reusable if set to false, the content in the cells is "consumed";
-     * if true, you can reuse the cells, the row, the parent table as many times
-     * you want.
+     * @param colStart The first column to be written. Remember that the column
+     *                 index starts with 0.
+     * @param colEnd   The last column to be written. Remember that the column
+     *                 index starts with 0. If -1, all the columns to the end are written.
+     * @param xPos     The x-coordinate where the table starts on the canvas
+     * @param yPos     The y-coordinate where the table starts on the canvas
+     * @param reusable if set to false, the content in the cells is "consumed";
+     *                 if true, you can reuse the cells, the row, the parent table as many times
+     *                 you want.
      * @since 5.1.0 added the reusable parameter
      */
     public void writeCells(int colStart, int colEnd, float xPos, float yPos, PdfContentByte[] canvases, boolean reusable) {
@@ -638,10 +637,10 @@ public class PdfPRow implements IAccessibleElement {
         this.maxHeight = maxHeight;
     }
 
-	//end add
+    //end add
     float[] getEventWidth(float xPos, float[] absoluteWidths) {
         int n = 1;
-        for (int k = 0; k < cells.length;) {
+        for (int k = 0; k < cells.length; ) {
             if (cells[k] != null) {
                 n++;
                 k += cells[k].getColspan();
@@ -655,7 +654,7 @@ public class PdfPRow implements IAccessibleElement {
         float width[] = new float[n];
         width[0] = xPos;
         n = 1;
-        for (int k = 0; k < cells.length && n < width.length;) {
+        for (int k = 0; k < cells.length && n < width.length; ) {
             if (cells[k] != null) {
                 int colspan = cells[k].getColspan();
                 width[n] = width[n - 1];
@@ -678,8 +677,8 @@ public class PdfPRow implements IAccessibleElement {
      * Copies the content of a specific row in a table to this row. Don't do
      * this if the rows have a different number of cells.
      *
-     * @param table	the table from which you want to copy a row
-     * @param idx	the index of the row that needs to be copied
+     * @param table the table from which you want to copy a row
+     * @param idx   the index of the row that needs to be copied
      * @since 5.1.0
      */
     public void copyRowContent(PdfPTable table, int idx) {
@@ -705,7 +704,7 @@ public class PdfPRow implements IAccessibleElement {
      * return null if the newHeight was so small that only an empty row would
      * result.
      *
-     * @param new_height	the new height
+     * @param new_height the new height
      * @return the remainder row or null if the newHeight was so small that only
      * an empty row would result
      */
@@ -821,6 +820,7 @@ public class PdfPRow implements IAccessibleElement {
     }
 
     // Contributed by Deutsche Bahn Systel GmbH (Thorsten Seitz), splitting row spans
+
     /**
      * Split rowspan of cells with rowspan on next page by inserting copies with
      * the remaining rowspan and reducing the previous rowspan appropriately,
@@ -862,8 +862,8 @@ public class PdfPRow implements IAccessibleElement {
      * Returns the array of cells in the row. Please be extremely careful with
      * this method. Use the cells as read only objects.
      *
-     * @return	an array of cells
-     * @since	2.1.1
+     * @return an array of cells
+     * @since 2.1.1
      */
     public PdfPCell[] getCells() {
         return cells;

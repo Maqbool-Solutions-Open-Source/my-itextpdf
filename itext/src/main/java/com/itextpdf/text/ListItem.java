@@ -48,7 +48,7 @@ import com.itextpdf.text.pdf.PdfName;
 /**
  * A <CODE>ListItem</CODE> is a <CODE>Paragraph</CODE>
  * that can be added to a <CODE>List</CODE>.
- * <P>
+ * <p>
  * <B>Example 1:</B>
  * <BLOCKQUOTE><PRE>
  * List list = new List(true, 20);
@@ -56,19 +56,19 @@ import com.itextpdf.text.pdf.PdfName;
  * list.add(<STRONG>new ListItem("The second line is longer to see what happens once the end of the line is reached. Will it start on a new line?")</STRONG>);
  * list.add(<STRONG>new ListItem("Third line")</STRONG>);
  * </PRE></BLOCKQUOTE>
- *
+ * <p>
  * The result of this code looks like this:
- *	<OL>
- *		<LI>
- *			First line
- *		</LI>
- *		<LI>
- *			The second line is longer to see what happens once the end of the line is reached. Will it start on a new line?
- *		</LI>
- *		<LI>
- *			Third line
- *		</LI>
- *	</OL>
+ * <OL>
+ * <LI>
+ * First line
+ * </LI>
+ * <LI>
+ * The second line is longer to see what happens once the end of the line is reached. Will it start on a new line?
+ * </LI>
+ * <LI>
+ * Third line
+ * </LI>
+ * </OL>
  *
  * <B>Example 2:</B>
  * <BLOCKQUOTE><PRE>
@@ -76,33 +76,34 @@ import com.itextpdf.text.pdf.PdfName;
  * overview.add(<STRONG>new ListItem("This is an item")</STRONG>);
  * overview.add("This is another item");
  * </PRE></BLOCKQUOTE>
- *
+ * <p>
  * The result of this code looks like this:
- *	<UL>
- *		<LI>
- *			This is an item
- *		</LI>
- *		<LI>
- *			This is another item
- *		</LI>
- *	</UL>
+ * <UL>
+ * <LI>
+ * This is an item
+ * </LI>
+ * <LI>
+ * This is another item
+ * </LI>
+ * </UL>
  *
- * @see	Element
+ * @see Element
+ * @see Paragraph
  * @see List
- * @see	Paragraph
  */
 
 public class ListItem extends Paragraph {
 
     // constants
-	private static final long serialVersionUID = 1970670787169329006L;
+    private static final long serialVersionUID = 1970670787169329006L;
 
-	// member variables
+    // member variables
 
-	/**
-	 * this is the symbol that will precede the listitem.
-	 * @since	5.0	used to be private
-	 */
+    /**
+     * this is the symbol that will precede the listitem.
+     *
+     * @since 5.0    used to be private
+     */
     protected Chunk symbol;
 
     private ListBody listBody = null;
@@ -121,7 +122,7 @@ public class ListItem extends Paragraph {
     /**
      * Constructs a <CODE>ListItem</CODE> with a certain leading.
      *
-     * @param	leading		the leading
+     * @param leading the leading
      */
     public ListItem(final float leading) {
         super(leading);
@@ -131,7 +132,7 @@ public class ListItem extends Paragraph {
     /**
      * Constructs a <CODE>ListItem</CODE> with a certain <CODE>Chunk</CODE>.
      *
-     * @param	chunk		a <CODE>Chunk</CODE>
+     * @param chunk a <CODE>Chunk</CODE>
      */
     public ListItem(final Chunk chunk) {
         super(chunk);
@@ -141,7 +142,7 @@ public class ListItem extends Paragraph {
     /**
      * Constructs a <CODE>ListItem</CODE> with a certain <CODE>String</CODE>.
      *
-     * @param	string		a <CODE>String</CODE>
+     * @param string a <CODE>String</CODE>
      */
     public ListItem(final String string) {
         super(string);
@@ -152,8 +153,8 @@ public class ListItem extends Paragraph {
      * Constructs a <CODE>ListItem</CODE> with a certain <CODE>String</CODE>
      * and a certain <CODE>Font</CODE>.
      *
-     * @param	string		a <CODE>String</CODE>
-     * @param	font		a <CODE>String</CODE>
+     * @param string a <CODE>String</CODE>
+     * @param font   a <CODE>String</CODE>
      */
     public ListItem(final String string, final Font font) {
         super(string, font);
@@ -164,8 +165,8 @@ public class ListItem extends Paragraph {
      * Constructs a <CODE>ListItem</CODE> with a certain <CODE>Chunk</CODE>
      * and a certain leading.
      *
-     * @param	leading		the leading
-     * @param	chunk		a <CODE>Chunk</CODE>
+     * @param leading the leading
+     * @param chunk   a <CODE>Chunk</CODE>
      */
     public ListItem(final float leading, final Chunk chunk) {
         super(leading, chunk);
@@ -176,8 +177,8 @@ public class ListItem extends Paragraph {
      * Constructs a <CODE>ListItem</CODE> with a certain <CODE>String</CODE>
      * and a certain leading.
      *
-     * @param	leading		the leading
-     * @param	string		a <CODE>String</CODE>
+     * @param leading the leading
+     * @param string  a <CODE>String</CODE>
      */
     public ListItem(final float leading, final String string) {
         super(leading, string);
@@ -188,9 +189,9 @@ public class ListItem extends Paragraph {
      * Constructs a <CODE>ListItem</CODE> with a certain leading, <CODE>String</CODE>
      * and <CODE>Font</CODE>.
      *
-     * @param	leading		the leading
-     * @param	string		a <CODE>String</CODE>
-     * @param	font		a <CODE>Font</CODE>
+     * @param leading the leading
+     * @param string  a <CODE>String</CODE>
+     * @param font    a <CODE>Font</CODE>
      */
     public ListItem(final float leading, final String string, final Font font) {
         super(leading, string, font);
@@ -200,7 +201,7 @@ public class ListItem extends Paragraph {
     /**
      * Constructs a <CODE>ListItem</CODE> with a certain <CODE>Phrase</CODE>.
      *
-     * @param	phrase		a <CODE>Phrase</CODE>
+     * @param phrase a <CODE>Phrase</CODE>
      */
     public ListItem(final Phrase phrase) {
         super(phrase);
@@ -212,10 +213,10 @@ public class ListItem extends Paragraph {
     /**
      * Gets the type of the text element.
      *
-     * @return	a type
+     * @return a type
      */
     @Override
-	public int type() {
+    public int type() {
         return Element.LISTITEM;
     }
 
@@ -231,49 +232,49 @@ public class ListItem extends Paragraph {
     /**
      * Sets the listsymbol.
      *
-     * @param	symbol	a <CODE>Chunk</CODE>
+     * @param symbol a <CODE>Chunk</CODE>
      */
     public void setListSymbol(final Chunk symbol) {
-    	if (this.symbol == null) {
-    		this.symbol = symbol;
-    		if (this.symbol.getFont().isStandardFont()) {
-    			this.symbol.setFont(font);
-    		}
-    	}
+        if (this.symbol == null) {
+            this.symbol = symbol;
+            if (this.symbol.getFont().isStandardFont()) {
+                this.symbol.setFont(font);
+            }
+        }
     }
 
     /**
      * Sets the indentation of this paragraph on the left side.
      *
-     * @param	indentation		the new indentation
-     * @param autoindent if set to true, indentation is done automagically, the given indentation float is disregarded.
+     * @param autoindent  if set to true, indentation is done automagically, the given indentation float is disregarded.
+     * @param indentation the new indentation
      */
     public void setIndentationLeft(final float indentation, final boolean autoindent) {
-    	if (autoindent) {
-    		setIndentationLeft(getListSymbol().getWidthPoint());
-    	}
-    	else {
-    		setIndentationLeft(indentation);
-    	}
+        if (autoindent) {
+            setIndentationLeft(getListSymbol().getWidthPoint());
+        } else {
+            setIndentationLeft(indentation);
+        }
     }
 
     /**
      * Changes the font of the list symbol to the font of the first chunk
      * in the list item.
+     *
      * @since 5.0.6
      */
     public void adjustListSymbolFont() {
-		java.util.List<Chunk> cks = getChunks();
-		if (!cks.isEmpty() && symbol != null)
-			symbol.setFont(cks.get(0).getFont());
+        java.util.List<Chunk> cks = getChunks();
+        if (!cks.isEmpty() && symbol != null)
+            symbol.setFont(cks.get(0).getFont());
     }
 
     // methods to retrieve information
 
-	/**
+    /**
      * Returns the listsymbol.
      *
-     * @return	a <CODE>Chunk</CODE>
+     * @return a <CODE>Chunk</CODE>
      */
     public Chunk getListSymbol() {
         return symbol;

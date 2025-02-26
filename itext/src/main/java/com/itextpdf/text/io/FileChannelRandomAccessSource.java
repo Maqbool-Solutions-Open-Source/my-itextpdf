@@ -46,6 +46,7 @@ import java.nio.channels.FileChannel;
 
 /**
  * A RandomAccessSource that is based on an underlying {@link FileChannel}.  The entire channel will be mapped into memory for efficient reads.
+ *
  * @since 5.3.5
  */
 public class FileChannelRandomAccessSource implements RandomAccessSource {
@@ -54,7 +55,7 @@ public class FileChannelRandomAccessSource implements RandomAccessSource {
      * The channel this source is based on
      */
     private final FileChannel channel;
-    
+
     /**
      * Tracks the actual mapping
      */
@@ -62,24 +63,25 @@ public class FileChannelRandomAccessSource implements RandomAccessSource {
 
     /**
      * Constructs a new {@link FileChannelRandomAccessSource} based on the specified FileChannel.  The entire source channel will be mapped into memory.
+     *
      * @param channel the channel to use as the backing store
      * @throws IOException if the channel cannot be opened or mapped
      */
     public FileChannelRandomAccessSource(FileChannel channel) throws IOException {
-		this.channel = channel;
-		if(channel.size() == 0)
-			throw new IOException("File size is 0 bytes");
-		source = new MappedChannelRandomAccessSource(channel, 0, channel.size());
-		source.open();
-	}
-    
-	
+        this.channel = channel;
+        if (channel.size() == 0)
+            throw new IOException("File size is 0 bytes");
+        source = new MappedChannelRandomAccessSource(channel, 0, channel.size());
+        source.open();
+    }
+
+
     /**
      * {@inheritDoc}
      * Cleans the mapped bytebuffers and closes the channel
      */
     public void close() throws IOException {
-		source.close();
+        source.close();
         channel.close();
     }
 
@@ -87,24 +89,24 @@ public class FileChannelRandomAccessSource implements RandomAccessSource {
     /**
      * {@inheritDoc}
      */
-	public int get(long position) throws IOException {
-		return source.get(position);
-	}
+    public int get(long position) throws IOException {
+        return source.get(position);
+    }
 
 
     /**
      * {@inheritDoc}
      */
-	public int get(long position, byte[] bytes, int off, int len) throws IOException {
-		return source.get(position, bytes, off, len);
-	}
+    public int get(long position, byte[] bytes, int off, int len) throws IOException {
+        return source.get(position, bytes, off, len);
+    }
 
 
     /**
      * {@inheritDoc}
      */
-	public long length() {
-		return source.length();
-	}
+    public long length() {
+        return source.length();
+    }
 
 }

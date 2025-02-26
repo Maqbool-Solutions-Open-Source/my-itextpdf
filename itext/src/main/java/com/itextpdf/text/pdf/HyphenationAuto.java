@@ -46,7 +46,8 @@ package com.itextpdf.text.pdf;
 import com.itextpdf.text.pdf.hyphenation.Hyphenation;
 import com.itextpdf.text.pdf.hyphenation.Hyphenator;
 
-/** Hyphenates words automatically accordingly to the language and country.
+/**
+ * Hyphenates words automatically accordingly to the language and country.
  * The hyphenator engine was taken from FOP and uses the TEX patterns. If a language
  * is not provided and a TEX pattern for it exists, it can be easily adapted.
  *
@@ -54,39 +55,47 @@ import com.itextpdf.text.pdf.hyphenation.Hyphenator;
  */
 public class HyphenationAuto implements HyphenationEvent {
 
-    /** The hyphenator engine.
-     */    
+    /**
+     * The hyphenator engine.
+     */
     protected Hyphenator hyphenator;
-    /** The second part of the hyphenated word.
-     */    
+    /**
+     * The second part of the hyphenated word.
+     */
     protected String post;
-    
-    /** Creates a new hyphenation instance usable in <CODE>Chunk</CODE>.
-     * @param lang the language ("en" for English, for example)
-     * @param country the country ("GB" for Great-Britain or "none" for no country, for example)
-     * @param leftMin the minimum number of letters before the hyphen
+
+    /**
+     * Creates a new hyphenation instance usable in <CODE>Chunk</CODE>.
+     *
+     * @param lang     the language ("en" for English, for example)
+     * @param country  the country ("GB" for Great-Britain or "none" for no country, for example)
+     * @param leftMin  the minimum number of letters before the hyphen
      * @param rightMin the minimum number of letters after the hyphen
-     */    
+     */
     public HyphenationAuto(String lang, String country, int leftMin, int rightMin) {
         hyphenator = new Hyphenator(lang, country, leftMin, rightMin);
     }
 
-    /** Gets the hyphen symbol.
+    /**
+     * Gets the hyphen symbol.
+     *
      * @return the hyphen symbol
-     */    
+     */
     public String getHyphenSymbol() {
         return "-";
     }
-    
-    /** Hyphenates a word and returns the first part of it. To get
+
+    /**
+     * Hyphenates a word and returns the first part of it. To get
      * the second part of the hyphenated word call <CODE>getHyphenatedWordPost()</CODE>.
-     * @param word the word to hyphenate
-     * @param font the font used by this word
-     * @param fontSize the font size used by this word
+     *
+     * @param word           the word to hyphenate
+     * @param font           the font used by this word
+     * @param fontSize       the font size used by this word
      * @param remainingWidth the width available to fit this word in
      * @return the first part of the hyphenated word including
      * the hyphen symbol, if any
-     */    
+     */
     public String getHyphenatedWordPre(String word, BaseFont font, float fontSize, float remainingWidth) {
         post = word;
         String hyphen = getHyphenSymbol();
@@ -109,13 +118,15 @@ public class HyphenationAuto implements HyphenationEvent {
         post = hyphenation.getPostHyphenText(k);
         return hyphenation.getPreHyphenText(k) + hyphen;
     }
-    
-    /** Gets the second part of the hyphenated word. Must be called
+
+    /**
+     * Gets the second part of the hyphenated word. Must be called
      * after <CODE>getHyphenatedWordPre()</CODE>.
+     *
      * @return the second part of the hyphenated word
-     */    
+     */
     public String getHyphenatedWordPost() {
         return post;
     }
-    
+
 }

@@ -48,61 +48,66 @@ package com.itextpdf.text.log;
  * to receive logging statements while developing applications with iText
  *
  * @author redlab_b
- *
  */
 public class LoggerFactory {
 
-	static {
-		myself = new LoggerFactory();
-	}
+    static {
+        myself = new LoggerFactory();
+    }
 
-	private static LoggerFactory myself;
-	/**
-	 * Returns the logger set in this LoggerFactory. Defaults to {@link NoOpLogger}
-	 * @param klass
-	 * @return the logger.
-	 */
-	public static Logger getLogger(final Class<?> klass) {
-		return myself.logger.getLogger(klass);
-	}
-	/**
-	 * Returns the logger set in this LoggerFactory. Defaults to {@link NoOpLogger}
-	 * @param name
-	 * @return the logger.
-	 */
-	public static Logger getLogger(final String name) {
-		return myself.logger.getLogger(name);
-	}
-	/**
-	 * Returns the LoggerFactory
-	 * @return singleton instance of this LoggerFactory
-	 */
-	public static LoggerFactory getInstance() {
-		return myself;
-	}
+    private static LoggerFactory myself;
 
-	private Logger logger = new NoOpLogger();
+    /**
+     * Returns the logger set in this LoggerFactory. Defaults to {@link NoOpLogger}
+     *
+     * @param klass
+     * @return the logger.
+     */
+    public static Logger getLogger(final Class<?> klass) {
+        return myself.logger.getLogger(klass);
+    }
 
-	private LoggerFactory() {
-	}
+    /**
+     * Returns the logger set in this LoggerFactory. Defaults to {@link NoOpLogger}
+     *
+     * @param name
+     * @return the logger.
+     */
+    public static Logger getLogger(final String name) {
+        return myself.logger.getLogger(name);
+    }
 
-	/**
-	 * Set the global logger to process logging statements with.
-	 *
-	 * @param logger the logger
-	 */
-	public void setLogger(final Logger logger) {
-		this.logger = logger;
-	}
+    /**
+     * Returns the LoggerFactory
+     *
+     * @return singleton instance of this LoggerFactory
+     */
+    public static LoggerFactory getInstance() {
+        return myself;
+    }
 
-	/**
-	 * Get the logger.
-	 *
-	 * @return the logger
-	 */
-	public Logger logger() {
-		return logger;
-	}
+    private Logger logger = new NoOpLogger();
+
+    private LoggerFactory() {
+    }
+
+    /**
+     * Set the global logger to process logging statements with.
+     *
+     * @param logger the logger
+     */
+    public void setLogger(final Logger logger) {
+        this.logger = logger;
+    }
+
+    /**
+     * Get the logger.
+     *
+     * @return the logger
+     */
+    public Logger logger() {
+        return logger;
+    }
 
 
 }

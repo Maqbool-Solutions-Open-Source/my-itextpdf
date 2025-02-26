@@ -43,12 +43,13 @@
  */
 package com.itextpdf.text.pdf;
 
-/** The transparency group dictionary.
+/**
+ * The transparency group dictionary.
  *
  * @author Paulo Soares
  */
 public class PdfTransparencyGroup extends PdfDictionary {
-    
+
     /**
      * Constructs a transparencyGroup.
      */
@@ -56,9 +57,10 @@ public class PdfTransparencyGroup extends PdfDictionary {
         super();
         put(PdfName.S, PdfName.TRANSPARENCY);
     }
- 
+
     /**
      * Determining the initial backdrop against which its stack is composited.
+     *
      * @param isolated
      */
     public void setIsolated(boolean isolated) {
@@ -67,9 +69,10 @@ public class PdfTransparencyGroup extends PdfDictionary {
         else
             remove(PdfName.I);
     }
-    
+
     /**
      * Determining whether the objects within the stack are composited with one another or only with the group's backdrop.
+     *
      * @param knockout
      */
     public void setKnockout(boolean knockout) {

@@ -52,116 +52,132 @@ import com.itextpdf.text.html.HtmlUtilities;
 
 /**
  * Stores the hierarchy of tags along with the attributes of each tag.
+ *
  * @since 5.0.6 renamed from ChainedProperties
  * @deprecated since 5.5.2
  */
 @Deprecated
 public class ChainedProperties {
 
-	/**
-	 * Class that stores the info about one tag in the chain.
-	 */
-	private static final class TagAttributes {
-		/** A possible tag */
-	    final String tag;
-	    /** The styles corresponding with the tag */
-	    final Map<String, String> attrs;
-	    /**
-	     * Constructs a chained property.
-	     * @param	tag		an XML/HTML tag
-	     * @param	attrs	the tag's attributes
-	     */
-	    TagAttributes(String tag, Map<String, String> attrs) {
-	    	this.tag = tag;
-	    	this.attrs = attrs;
-	    }
-	}
+    /**
+     * Class that stores the info about one tag in the chain.
+     */
+    private static final class TagAttributes {
+        /**
+         * A possible tag
+         */
+        final String tag;
+        /**
+         * The styles corresponding with the tag
+         */
+        final Map<String, String> attrs;
 
-	/** A list of chained properties representing the tag hierarchy. */
-	public List<TagAttributes> chain = new ArrayList<TagAttributes>();
+        /**
+         * Constructs a chained property.
+         *
+         * @param tag   an XML/HTML tag
+         * @param attrs the tag's attributes
+         */
+        TagAttributes(String tag, Map<String, String> attrs) {
+            this.tag = tag;
+            this.attrs = attrs;
+        }
+    }
 
-	/** Creates a new instance of ChainedProperties */
-	public ChainedProperties() {
-	}
+    /**
+     * A list of chained properties representing the tag hierarchy.
+     */
+    public List<TagAttributes> chain = new ArrayList<TagAttributes>();
 
-	/**
-	 * Walks through the hierarchy (bottom-up) looking for
-	 * a property key. Returns a value as soon as a match
-	 * is found or null if the key can't be found.
-	 * @param	key	the key of the property
-	 * @return	the value of the property
-	 */
-	public String getProperty(String key) {
-		for (int k = chain.size() - 1; k >= 0; --k) {
-			TagAttributes p = chain.get(k);
-			Map<String, String> attrs = p.attrs;
-			String ret = attrs.get(key);
-			if (ret != null)
-				return ret;
-		}
-		return null;
-	}
-	
-	/**
-	 * Walks through the hierarchy (bottom-up) looking for
-	 * a property key. Returns true as soon as a match is
-	 * found or false if the key can't be found.
-	 * @param	key	the key of the property
-	 * @return	true if the key is found
-	 */
-	public boolean hasProperty(String key) {
-		for (int k = chain.size() - 1; k >= 0; --k) {
-			TagAttributes p = chain.get(k);
-			Map<String, String> attrs = p.attrs;
-			if (attrs.containsKey(key))
-				return true;
-		}
-		return false;
-	}
+    /**
+     * Creates a new instance of ChainedProperties
+     */
+    public ChainedProperties() {
+    }
 
-	/**
-	 * Adds a tag and its corresponding properties to the chain.
-	 * @param tag	the tags that needs to be added to the chain
-	 * @param props	the tag's attributes
-	 */
-	public void addToChain(String tag, Map<String, String> props) {
-		this.adjustFontSize(props);
-		chain.add(new TagAttributes(tag, props));
-	}
+    /**
+     * Walks through the hierarchy (bottom-up) looking for
+     * a property key. Returns a value as soon as a match
+     * is found or null if the key can't be found.
+     *
+     * @param key the key of the property
+     * @return the value of the property
+     */
+    public String getProperty(String key) {
+        for (int k = chain.size() - 1; k >= 0; --k) {
+            TagAttributes p = chain.get(k);
+            Map<String, String> attrs = p.attrs;
+            String ret = attrs.get(key);
+            if (ret != null)
+                return ret;
+        }
+        return null;
+    }
 
-	/**
-	 * Walks through the hierarchy (bottom-up) and removes the
-	 * first occurrence of a tag that is encountered.
-	 * @param	tag	the tag that needs to be removed
-	 */
-	public void removeChain(String tag) {
-		for (int k = chain.size() - 1; k >= 0; --k) {
-			if (tag.equals(chain.get(k).tag)) {
-				chain.remove(k);
-				return;
-			}
-		}
-	}
-	
-	/**
-	 * If the properties contain a font size, the size may need to
-	 * be adjusted based on font sizes higher in the hierarchy.
-	 * @param	attrs the attributes that may have to be updated
-	 * @since 5.0.6 (renamed)
-	 */
-	protected void adjustFontSize(Map<String, String> attrs) {
-		// fetch the font size
-		String value = attrs.get(HtmlTags.SIZE);
-		// do nothing if the font size isn't defined
-		if (value == null)
-			return;
-		// the font is defined as a real size: remove "pt"
-		if (value.endsWith("pt")) {
-			attrs.put(HtmlTags.SIZE,
-				value.substring(0, value.length() - 2));
-			return;
-		}
-		String old = getProperty(HtmlTags.SIZE);
-		attrs.put(HtmlTags.SIZE, Integer.toString(HtmlUtilities.getIndexedFontSize(value, old)));
-	}
+    /**
+     * Walks through the hierarchy (bottom-up) looking for
+     * a property key. Returns true as soon as a match is
+     * found or false if the key can't be found.
+     *
+     * @param key the key of the property
+     * @return true if the key is found
+     */
+    public boolean hasProperty(String key) {
+        for (int k = chain.size() - 1; k >= 0; --k) {
+            TagAttributes p = chain.get(k);
+            Map<String, String> attrs = p.attrs;
+            if (attrs.containsKey(key))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Adds a tag and its corresponding properties to the chain.
+     *
+     * @param tag   the tags that needs to be added to the chain
+     * @param props the tag's attributes
+     */
+    public void addToChain(String tag, Map<String, String> props) {
+        this.adjustFontSize(props);
+        chain.add(new TagAttributes(tag, props));
+    }
+
+    /**
+     * Walks through the hierarchy (bottom-up) and removes the
+     * first occurrence of a tag that is encountered.
+     *
+     * @param tag the tag that needs to be removed
+     */
+    public void removeChain(String tag) {
+        for (int k = chain.size() - 1; k >= 0; --k) {
+            if (tag.equals(chain.get(k).tag)) {
+                chain.remove(k);
+                return;
+            }
+        }
+    }
+
+    /**
+     * If the properties contain a font size, the size may need to
+     * be adjusted based on font sizes higher in the hierarchy.
+     *
+     * @param attrs the attributes that may have to be updated
+     * @since 5.0.6 (renamed)
+     */
+    protected void adjustFontSize(Map<String, String> attrs) {
+        // fetch the font size
+        String value = attrs.get(HtmlTags.SIZE);
+        // do nothing if the font size isn't defined
+        if (value == null)
+            return;
+        // the font is defined as a real size: remove "pt"
+        if (value.endsWith("pt")) {
+            attrs.put(HtmlTags.SIZE,
+                    value.substring(0, value.length() - 2));
+            return;
+        }
+        String old = getProperty(HtmlTags.SIZE);
+        attrs.put(HtmlTags.SIZE, Integer.toString(HtmlUtilities.getIndexedFontSize(value, old)));
+    }
 }

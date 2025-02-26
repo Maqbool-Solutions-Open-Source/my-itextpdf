@@ -52,11 +52,11 @@ package com.itextpdf.text.xml.simpleparser;
  */
 public interface NewLineHandler {
 
-	/**
-	 * @param tag the tag to check if after this one a new line should be in a document
-	 * @return true in case a new line should be added.
-	 * @since 5.0.6
-	 */
-	boolean isNewLineTag(String tag);
+    /**
+     * @param tag the tag to check if after this one a new line should be in a document
+     * @return true in case a new line should be added.
+     * @since 5.0.6
+     */
+    boolean isNewLineTag(String tag);
 
 }

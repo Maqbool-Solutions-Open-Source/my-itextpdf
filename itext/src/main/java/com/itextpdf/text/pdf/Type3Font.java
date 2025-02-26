@@ -53,7 +53,7 @@ import java.util.HashMap;
  */
 public class Type3Font extends BaseFont {
 
-	private boolean[] usedSlot;
+    private boolean[] usedSlot;
     private IntHashtable widths3 = new IntHashtable();
     private HashMap<Integer, Type3Glyph> char2glyph = new HashMap<Integer, Type3Glyph>();
     private PdfWriter writer;
@@ -63,10 +63,11 @@ public class Type3Font extends BaseFont {
 
     /**
      * Creates a Type3 font.
-     * @param writer the writer
-     * @param chars an array of chars corresponding to the glyphs used (not used, present for compatibility only)
+     *
+     * @param writer    the writer
+     * @param chars     an array of chars corresponding to the glyphs used (not used, present for compatibility only)
      * @param colorized if <CODE>true</CODE> the font may specify color, if <CODE>false</CODE> no color commands are allowed
-     * and only images as masks can be used
+     *                  and only images as masks can be used
      */
     public Type3Font(PdfWriter writer, char[] chars, boolean colorized) {
         this(writer, colorized);
@@ -95,9 +96,10 @@ public class Type3Font extends BaseFont {
      * document.add(new Paragraph("ababab", f));
      * document.close();
      * </pre>
-     * @param writer the writer
+     *
+     * @param writer    the writer
      * @param colorized if <CODE>true</CODE> the font may specify color, if <CODE>false</CODE> no color commands are allowed
-     * and only images as masks can be used
+     *                  and only images as masks can be used
      */
     public Type3Font(PdfWriter writer, boolean colorized) {
         this.writer = writer;
@@ -108,16 +110,17 @@ public class Type3Font extends BaseFont {
 
     /**
      * Defines a glyph. If the character was already defined it will return the same content
-     * @param c the character to match this glyph.
-     * @param wx the advance this character will have
+     *
+     * @param c   the character to match this glyph.
+     * @param wx  the advance this character will have
      * @param llx the X lower left corner of the glyph bounding box. If the <CODE>colorize</CODE> option is
-     * <CODE>true</CODE> the value is ignored
+     *            <CODE>true</CODE> the value is ignored
      * @param lly the Y lower left corner of the glyph bounding box. If the <CODE>colorize</CODE> option is
-     * <CODE>true</CODE> the value is ignored
+     *            <CODE>true</CODE> the value is ignored
      * @param urx the X upper right corner of the glyph bounding box. If the <CODE>colorize</CODE> option is
-     * <CODE>true</CODE> the value is ignored
+     *            <CODE>true</CODE> the value is ignored
      * @param ury the Y upper right corner of the glyph bounding box. If the <CODE>colorize</CODE> option is
-     * <CODE>true</CODE> the value is ignored
+     *            <CODE>true</CODE> the value is ignored
      * @return a content where the glyph can be defined
      */
     public PdfContentByte defineGlyph(char c, float wx, float llx, float lly, float urx, float ury) {
@@ -128,15 +131,14 @@ public class Type3Font extends BaseFont {
         Type3Glyph glyph = char2glyph.get(ck);
         if (glyph != null)
             return glyph;
-        widths3.put(c, (int)wx);
+        widths3.put(c, (int) wx);
         if (!colorized) {
             if (Float.isNaN(this.llx)) {
                 this.llx = llx;
                 this.lly = lly;
                 this.urx = urx;
                 this.ury = ury;
-            }
-            else {
+            } else {
                 this.llx = Math.min(this.llx, llx);
                 this.lly = Math.min(this.lly, lly);
                 this.urx = Math.max(this.urx, urx);
@@ -212,20 +214,20 @@ public class Type3Font extends BaseFont {
 
         // Get first & lastchar ...
         int firstChar = 0;
-        while( firstChar < usedSlot.length && !usedSlot[firstChar] ) firstChar++;
+        while (firstChar < usedSlot.length && !usedSlot[firstChar]) firstChar++;
 
-        if ( firstChar == usedSlot.length ) {
-        	throw new DocumentException(MessageLocalization.getComposedMessage("no.glyphs.defined.for.type3.font"));
+        if (firstChar == usedSlot.length) {
+            throw new DocumentException(MessageLocalization.getComposedMessage("no.glyphs.defined.for.type3.font"));
         }
         int lastChar = usedSlot.length - 1;
-        while( lastChar >= firstChar && !usedSlot[lastChar] ) lastChar--;
+        while (lastChar >= firstChar && !usedSlot[lastChar]) lastChar--;
 
         int[] widths = new int[lastChar - firstChar + 1];
         int[] invOrd = new int[lastChar - firstChar + 1];
 
         int invOrdIndx = 0, w = 0;
-        for( int u = firstChar; u<=lastChar; u++, w++ ) {
-            if ( usedSlot[u] ) {
+        for (int u = firstChar; u <= lastChar; u++, w++) {
+            if (usedSlot[u]) {
                 invOrd[invOrdIndx++] = u;
                 widths[w] = widths3.get(u);
             }
@@ -273,12 +275,13 @@ public class Type3Font extends BaseFont {
 
     /**
      * Always returns null, because you can't get the FontStream of a Type3 font.
-   	 * @return	null
-     * @since	2.1.3
+     *
+     * @return null
+     * @since 2.1.3
      */
     @Override
     public PdfStream getFullFontStream() {
-    	return null;
+        return null;
     }
 
 
@@ -290,7 +293,7 @@ public class Type3Font extends BaseFont {
         for (int k = 0; k < cc.length; ++k) {
             char c = cc[k];
             if (charExists(c))
-                b[p++] = (byte)c;
+                b[p++] = (byte) c;
         }
         if (b.length == p)
             return b;
@@ -302,7 +305,7 @@ public class Type3Font extends BaseFont {
     @Override
     byte[] convertToBytes(int char1) {
         if (charExists(char1))
-            return new byte[]{(byte)char1};
+            return new byte[]{(byte) char1};
         else return new byte[0];
     }
 
